@@ -1,0 +1,9 @@
+\documentclass{article}
+\begin{document}
+
+\begin{eqnarray*}
+  \mbox{tf}(\mbox{\small term}_i, \mbox{\small doc}_m) = & \frac{| \{ w \in \mbox{\small doc}_m : w = \mbox{\small term}_i \} |} {| \{ w \in \mbox{\small doc}_m \} |} \\
+  \mbox{idf}(\mbox{\small doc}_m) = & \frac{|D|}{| \{ d \in D : \mbox{\small term}_i \in \mbox{\small doc}_m \} | } \\
+  \mbox{tf-idf}(\mbox{\small term}_i, \mbox{\small doc}_m) = & \mbox{\small tf}(\mbox{\small term}_i, \mbox{\small doc}_m) \times \mbox{\small idf}(\mbox{\small doc}_m)
+\end{eqnarray*}
+\end{document}

@@ -1,0 +1,60 @@
+\documentclass[12pt]{puthesis}
+
+\usepackage{epsfig}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}   
+\usepackage{amsthm}
+\usepackage{latexsym}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{claim}{Claim}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem{problem}[theorem]{Problem}
+
+\title{Title of Thesis}
+\submitted{August 2012}  %graduation date
+\author{Sean M. Gerrish}
+
+\advisor{David M. Blei}
+
+\abstract{
+\input{abstract}
+}
+
+\acknowledgements{ \input{Foremost, I owe my advisor, David Blei, many
+thanks for his mentorship and support for the past four years.  The
+preponderance of this mentorship has been on research, but his support
+during the ``middle years'' also helped me to press through the program.
+
+Leon Bottou - From whom I learned more than I should have while TAing for him
+
+Graduate students.
+  Jordan Boyd-Graber -- tips on organization
+  Jonathan Chang -- stupendous music collection
+  Chong Wang
+  Indraneel -- inspiring chats about our futures
+
+Parents -- all four of them -- for supporting me in whatever career goals I have.
+
+Brothers for their steadfast encouragement
+
+Dear sister Kim, for being an inspiration for me at the best times.
+} }
+
+\begin{document}
+
+\chapter{Chapter 1}  %insert chapter 1 title
+\input{chp1}    %insert chapter 1 file name
+
+\chapter{Chapter 2}  %continue adding chapter titles
+\input{chp2}    %and files
+
+\input{bibliography}
+
+\end{document}

@@ -1,0 +1,140 @@
+\chapter{Preliminary material: quantitative methods}
+
+
+\section{Standards and naming conventions}
+  We begin by outlining naming and variable conventions in this work.
+  Random variables and their instantiations are given by roman or
+  greek characters; the role of a variable will typically evident from
+  its context.  Multivariate random variables such as vectors are
+  given by boldface, and collections of random variables are given by
+  uppercase Roman characters.
+
+  The reader may find \mytab{table:notation} a helpful resource in the subsequent chapters.  This table summarizes many of the variables described in this work.
+  \begin{table}
+    \caption{table:notation}
+    \begin{tabular}{|c|c|}
+      \textbf{Variable} & \textbf{Description} \\
+      $d$ & Document (subscript) \\
+      $\theta_d$ & Topic mixture for document $d$ \\
+      $z_n$ & $K-$variate topic indicator for term $n$ \\
+      $w$ & A collection of words, as in a document \\
+      $\alpha$ & Dirichlet parameter for LDA \\
+      $u$ & Person, e.g., a lawmaker (subscript) \\
+      $x_u$ & An ideal point indicating an individual's sentiment \\
+      $a_d$ & A document's polarization \\
+      $b_d$ & A document's popularity \\
+    \end{tabular}
+  \end{table}
+
+\section{Latent-variable models for exploratory analysis}
+  We develop the ideas outlined in the last chapter using the process
+  of data analysis outlined in \myfig{data_analysis_pipeline}.  This
+  pipeline, which is driven by a specific question, proceeds with the
+  development of a latent-variable model to answer that question or to
+  answer many questions like it.  Once a model is selected, we then
+  derive and implement an algorithm to estimate the values of the
+  latent random variables in it.  We will variously refer to this
+  stage of the process as \emph{fitting a model}, \emph{performing
+    inference}, and \emph{fitting the posterior}.
+
+  This is then followed by a process of data analysis and exploration,
+  along with the drawing of conclusions.  This may include
+  visualization tools such as \cite{chaney:2012}(chaney and blei).
+
+  In some cases, the model may be revised.  This revision is ideally
+  driven by findings in the data analysis step, although our decisions
+  in the model development step are of course informed by limitations
+  in the tools available for performing inference and the ease of
+  subsequent data analysis.
+
+  \begin{figure}
+    %\includegraphics[]{}
+    \caption{Data analysis pipeline}
+    \label{figure:data_analysis_pipeline}
+  \end{figure}
+  
+  \subsection{Latent-variable models}
+
+  As alluded to above, we will focus on latent-variable models in
+  stage 2 of the pipeline.  While some alternatives exist, latent
+  variable models have several benefits that appeal to us:
+  \begin{enumerate}
+    \item Flexibility. These models can describe, summarize, and explain a wide
+      variety of phenomena in the physical and social sciences.
+    \item Embeddability and Interpretability.  Any quantifiable metric in the dataset
+      can be encoded as a random variable in a probabilistic model.
+      The relationship between metrics can be likewise encoded
+      explicity. \label{lvm:matching}
+    \item Modularity. Parts of these models can be re-used across
+      different models.  This leads to efficient transfer of resources
+      and common paradigms.
+    \item Existing toolbox of statistical tools. There is a large and
+      growing body of literature around how to fit these models.
+      Practitioners no longer need to be experts in statistics to
+      correctly apply many of these tools.
+  \end{enumerate}
+
+  The risk with applying latent-variable models is that the
+  credibility and careful deliberation we often associate with
+  statistics suggests that an estimated posterior must be
+  credible.  This may not be true, particularly when the model is
+  poorly embedded into a statistical model, or when it is incorrectly
+  interpreted.  Both of these happen when Item~\ref{lvm:matching}
+  above is carried out carelessly.
+
+\subsection{Text as a medium for social science analysis}
+  Text data is the low-hanging fruit of most social science research
+  questions.  Its ubiquity is due to the ease with which it can be
+  both created and digitized.  At the same time, it provides a rich
+  source of data: documents, one of the basic units of information in
+  text analysis, are an observation in an extremely high-dimensional
+  and interpretable space \cite{changrtl:2009}.
+
+  \cite{grimmer:submitted} provides an excellent overview of text
+  analysis; we will summarize several methods here.
+
+% \subsection{Latent-variable models of text}
+  
+  Text is inherently extremly high-dimensional.  A large collection of
+  documents represented by a sequence $\bm w_n$ of words would be
+  unweildly for even a human to describe.  A number of tools have been
+  developed over the past several decades to simply find the
+  \emph{gist} of documents, making it possible to describe
+
+  Before describing these tools in more detail, we note that a
+  simplifying assumption that we can make about a text document $d$ is
+  that it can be represented as a vector $\bm w_d \in \mathcal{R}^V$
+  of word counts.  This assumption, known as the \emph{bag of words}
+  assumption, removes most of the information in a document, but it
+  allows us to capture the ``gist'' of a document very well.
+
+\subsubsection{Latent Dirichlet Allocation}
+  Latent Dirichlet Allocation 
+
+\subsubsection{Unigram models}
+
+\subsubsection{Text regression}
+  Text regrssion is a 
+
+\subsection{Ideal point models and matrix factorization}
+
+  - relevant sources
+  - mathematical foundation
+  - examples
+  - hinge loss
+  - inference (stochastic)
+
+\subsection{Hidden Markov Models and Kalman Filters}
+
+\section{Posterior inference and posterior evaluation}
+
+\subsection{MAP estimation}
+
+\subsection{Variational inference}
+  - objective
+
+\subsection{Stochastic optimization}
+  - examples
+
+\subsection{Posterior Predictive Checks}
+  - examples

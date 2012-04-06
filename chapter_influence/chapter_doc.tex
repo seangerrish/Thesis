@@ -1,0 +1,38 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage{natbib}
+\usepackage{multirow}
+% \usepackage{mathams}
+
+% For chapter_influence:
+\newcommand{\myeq}[1]{Equation~\ref{eq:#1}}
+\newcommand{\mysec}[1]{Section~\ref{sec:#1}}
+\newcommand{\myfig}[1]{Figure~\ref{fig:#1}}
+
+\newcommand{\g}{\, | \,}
+\newcommand{\w}{\textbf{w}}
+\newcommand{\W}{\textbf{W}}
+\newcommand{\bv}{\tilde{\beta}}
+\newcommand{\mv}{\tilde{m}} 
+\newcommand{\vv}[0]{\tilde{V}}
+\newcommand{\ellv}{\tilde{\ell}}
+\newcommand{\vlv}{\sigma^2_{\ell}}
+\newcommand{\vphi}{\phi}
+\newcommand{\expectq}[1]{\mathbb{E}_q\left[#1\right]}
+\newcommand{\partl}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\bb}{\beta}
+\newcommand{\diag}[1]{\mbox{Diag}\left( #1 \right)}
+\newcommand{\vbv}{\sigma^2}
+\newcommand{\vd}{\sigma^2_{d}}
+
+
+\begin{document}
+  \input{chapter_influence/chapter_influence.tex}
+
+  \bibliographystyle{abbrv}
+  \bibliography{../bib}
+\end{document}

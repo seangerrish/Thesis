@@ -1,0 +1,117 @@
+\documentclass{puthesis}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage{natbib}
+
+% For chapter_influence:
+\newcommand{\myeq}[1]{Equation~\ref{eq:#1}}
+\newcommand{\mysec}[1]{Section~\ref{sec:#1}}
+\newcommand{\myfig}[1]{Figure~\ref{fig:#1}}
+\newcommand{\mytab}[1]{Table~\ref{fig:#1}}
+
+\newcommand{\g}{\, | \,}
+\newcommand{\w}{\textbf{w}}
+\newcommand{\W}{\textbf{W}}
+\newcommand{\bv}{\tilde{\beta}}
+\newcommand{\mv}{\tilde{m}} 
+\newcommand{\vv}[0]{\tilde{V}}
+\newcommand{\ellv}{\tilde{\ell}}
+\newcommand{\vlv}{\sigma^2_{\ell}}
+\newcommand{\vphi}{\phi}
+\newcommand{\expectq}[1]{\mathbb{E}_q\left[#1\right]}
+\newcommand{\partl}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\bb}{\beta}
+\newcommand{\diag}[1]{\mbox{Diag}\left( #1 \right)}
+\newcommand{\vbv}{\sigma^2}
+\newcommand{\vd}{\sigma^2_{d}}
+
+\author{Sean M. Gerrish}
+\adviser{David M. Blei}
+\title{Applications of Latent Variable Models in Modeling Influence and Decision Making}
+\abstract{The abstract goes here.}
+\acknowledgements{
+
+This work was supported by grants from the Office of Naval Research,
+ONR 175-6343, NSF CAREER 0745520, AFOSR 09NL202, the Alfred P. Sloan
+foundation, and a grant from Google.
+
+\hrule
+
+Foremost, I owe my advisor, David Blei, many thanks for his mentorship
+and support for the past four years.  The preponderance of this
+mentorship has been on research, but Dave's support during the ``middle
+years'' also helped me to press through the program.
+
+I would also like to thank Leon Bottou, from whom I learned more than
+I should admit while TAing for him: Leon's deep understanding of
+mathematics and pleasant manner are a ...
+
+I owe many thanks to a number of current and former graduate students,
+who have helped me in this program both academically and personally.
+  Jordan Boyd-Graber -- tips on organization
+  Jonathan Chang -- stupendous music collection
+  Chong Wang
+  Indraneel -- inspiring chats about our futures
+  Gungor
+  Sam and John
+
+Friends
+
+My parents deserve many thanks, for their support in the past three
+decades.  Those early years, giving whatever career goals I have.
+
+My brother Jason has provided me with steadfast encouragement and
+reinforcement through this period, and I may have never become
+interested in computer science if my brother Josh hadn't shown me
+things like BASIC, Robot Odyssey, logic puzzles, division, fractals,
+
+I would like to thank my committee, who ...
+\begin{itemize}
+  \item (reader)
+  \item (reader)
+  \item (reader)
+  \item (non-reader)
+  \item (non-reader)
+\end{itemize}
+
+And I thank my dear sister Kim, who would have liked to see me
+graduate.  Kim shared many conversations with my my first year of
+graduate school and inspired me the rest of the years, through my
+generals, several tough exams, and through to the end.
+
+}
+
+\dedication{This thesis is dedicated to my sister, Kimberly Mesa.}
+
+\begin{document}
+
+\chapter{Previous Publications}
+The work here represents expanded versions of the following publications:
+\begin{itemize}
+	\item a
+	\item b
+\end{itemize}
+The current presentation attempts to provide deeper and broader understanding to the reader.
+
+\input{chapter_introduction/introduction.tex}
+
+\input{chapter_introductory_material/introductory_material.tex}
+
+\input{chapter_influence/chapter_influence.tex}
+
+\input{chapter_spatial_voting_with_text/chapter_spatial_voting_with_text.tex}
+
+\input{chapter_dissent/chapter_dissent.tex}
+
+%\input{chapter_tweets/chapter_tweets.tex}
+
+\input{chapter_foreign_relations/chapter_foreign_relations.tex}
+
+\input{chapter_appendix/chapter_appendix.tex}
+
+\bibliography{bib}
+
+\end{document}

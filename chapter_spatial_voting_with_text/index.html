@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:fb="http://www.facebook.com/2008/fbml" xmlns:og="http://opengraphprotocol.org/schema/" xmlns:lift="http://liftweb.net" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+    <meta content="foursquare" name="description" /> 
+    <meta content="" name="keywords" />
+    <meta content="foursquare" name="application-name" />
+    
+    <title>foursquare</title>
+    <link href="https://4sqstatic.s3.amazonaws.com/favicon-4d92ad72c5f32a63f2a0ec9cd2c7c88d.ico" type="image/x-icon" rel="shortcut icon" />
+    
+    
+  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript" id="jquery"></script>
+  
+  
+
+      <link href="https://4sqstatic.s3.amazonaws.com/styles/foursquare-6adebf4233af084e562fb2f379b8bc9d.css" type="text/css" rel="stylesheet" />
+      <script src="https://4sqstatic.s3.amazonaws.com/scripts/jquery-ui.custom.min-aaa935d70eb005078aeae8866f55fc5a.js" type="text/javascript"></script>
+      <script src="https://4sqstatic.s3.amazonaws.com/scripts/jquery.cookie-545bb6d4c898294c40c9a176a59e3423.js" type="text/javascript"></script>
+      <script src="https://4sqstatic.s3.amazonaws.com/scripts/foursquare-b4e598a789a79a35dcea79a0088f788d.js" type="text/javascript"></script>
+      
+    
+    <script src="https://4sqstatic.s3.amazonaws.com/scripts/json-0078019fdca0ed4b1b76945f6ce830c9.js" type="text/javascript" id="json"></script>
+    
+    <link href="https://4sqstatic.s3.amazonaws.com/facebox/facebox-827abc92ab3c3cdfe43fd1971738c5c6.css" type="text/css" rel="stylesheet" />
+    <script src="https://4sqstatic.s3.amazonaws.com/facebox/facebox-b58e113a9fd05d701723b3744bfbfa38.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(function() {
+        $('a[rel*=facebox]').facebox();
+        makeImgRollover('img.rollover');
+        
+        // Populate the search value with translated text
+        $('#searchEntry').val($('#searchEntry_translate').text());
+      })
+    </script>
+    <style type="text/css">
+    
+      body {background: #eee;}
+      
+      #footer {
+        background: #3e3e3e url('/img/bg-footer.png') top left repeat-x;
+        margin: 0 0 20px 24px;
+        width: 900px;
+        -webkit-border-bottom-right-radius: 5px;
+        -webkit-border-bottom-left-radius: 5px;
+        -moz-border-radius-bottomright: 5px;
+        -moz-border-radius-bottomleft: 5px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+      #footer .brands {display:none;}
+      #footer .links {background: none;}
+      
+    </style>
+  
+	
+<meta content="86734274142" property="fb:app_id" />
+
+	
+<style type="text/css">
+      div#leftpane {
+        float: left;
+        width: 519px;
+        padding: 20px 49px 0 49px;
+        background-color: white;
+      }
+      div#rightpane {
+        float: right;
+        width: 243px;
+        padding: 20px 20px 0 20px;
+        font-size: 14px;
+        font-weight: bold;
+        background-image:url('/img/sidenav_bg.png');
+      }
+      div.heading {
+        font-size: 14px;
+        font-weight: bold;
+        padding: 10px 0 3px 0;
+        border-bottom: 1px black dotted;
+      }
+      div.item {
+        clear: both;
+        font-size: 14px;
+        padding: 10px 0 3px 0;
+        border-bottom: 1px black dotted;
+      }
+      div.i_img {
+        float: left;
+        width: 51px;
+        margin-right: 10px;
+      }
+      div.i_img img {
+        padding: 2px;
+        border: 1px #999999 solid;
+      }
+      div.i_con {
+        float: left;
+        width: 391px;
+      }
+      div.i_icn {
+        float: left;
+        width: 57px;
+        margin-left: 10px;
+      }
+      
+      #header {
+        margin-left: 0px;
+        text-align: left;
+        width:948px;
+      }
+      
+      #linksModule a {
+        font-size: 13px;
+        padding: 15px 10px;
+        padding-left: 70px;
+      }
+      #linksModule a.linkMerchants {background: url('/img/homepage-merchants.png') 7px 3px no-repeat; border-top: none;}
+      #linksModule a.linkBrands {background: url('/img/homepage-brands.png') 7px 3px no-repeat;}
+      #linksModule a.linkDevelopers {background: url('/img/homepage-devs.png') 7px 3px no-repeat; border-bottom: none;}
+      
+    </style>
+
+	
+<script type="text/javascript">
+      var delay = 5000;
+      var count = 30;
+      var showing = 11;
+      var i = 0;
+      function move(i) {
+        return function() {
+          $('#recent'+i).remove().css('display', 'none').prependTo('#items');
+        }
+      }
+      function shift() {
+        var toShow = (i + showing) % count;
+        $('#recent'+toShow).slideDown(1000, move(i));
+        $('#recent'+i).slideUp(1000, move(i));
+        i = (i + 1) % count;
+        setTimeout('shift()', delay);
+      }    
+      $(document).ready(function() {
+        setTimeout('shift()', delay);
+      });
+    </script>
+
+	
+</head>
+<body id="loggedOutHomepage">
+    <div id="container">
+      <div class="translate" id="header">
+        <img src="https://4sqstatic.s3.amazonaws.com/img/loggedOutHeader-a16936e9d9cc2db32cbbade715e7c021.jpg" />
+        <h1>Check in <br /> Find your Friends <br /> Unlock your City</h1>
+        
+        <div id="tagline">
+          Foursquare gives you &amp; your friends new ways to explore your city.<br /> 
+          Earn points &amp; unlock badges for discovering new things.
+          <a rel="facebox" href="#demoVideo" id="learnMore">Learn More</a>
+        </div>
+        
+        <div id="login_nav">Already a member? <a href="/login">Log In</a></div>
+
+        <div id="searchbox">
+          <form method="get" action="/search">
+            <div style="display:none" class="translate" id="searchEntry_translate">Search places, people and tips</div>
+            <input onfocus="this.value=''" size="25" name="q" type="text" id="searchEntry" />
+            <button>Search</button>
+          </form>
+        </div>
+        
+        <div id="signupContainer">
+          <a class="newGreenButton" id="join" href="/signup/?source=logged_out_homepage">Join Now</a>
+        </div>
+      </div>
+      <div id="body_out">
+        
+  
+  <div id="leftpane">
+    <div class="heading translate">
+      RECENT ACTIVITY
+    </div>
+    <div id="items">
+      
+        <div style="display:none" id="recent29" class="item">
+          <div class="i_img"><a href="/user/9389333"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/5XZX5QQIO5OIYMHI.jpg" width="45" height="45"  alt="Mandi H." /></a></div>
+          <div class="i_con"><div><a href="/user/9389333">Mandi H.</a> in St. Petersburg, FL:</div><div><span class="translate">became the mayor of</span> <a href="/venue/273836">Sawgrass Lake County Park</a>.</div></div>
+          <div class="i_icn"><a href="/venue/273836"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_mayor-aea121f818348ce5084d5fb18897ad84.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent28" class="item">
+          <div class="i_img"><a href="/user/8922420"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/RAKFRHTNF1GGQPZS.jpg" width="45" height="45"  alt="Christopher M." /></a></div>
+          <div class="i_con"><div><a href="/user/8922420">Christopher M.</a> in Boston, MA:</div><div><span class="translate">became the mayor of</span> <a href="/venue/1360091">Hannaford Supermarket</a>.</div></div>
+          <div class="i_icn"><a href="/venue/1360091"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_mayor-aea121f818348ce5084d5fb18897ad84.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent27" class="item">
+          <div class="i_img"><a href="/user/1812037"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/R0QUDGFHO11SSSWJ.jpg" width="45" height="45"  alt="Sarah N." /></a></div>
+          <div class="i_con"><div><a href="/user/1812037">Sarah N.</a> in Farmington, CT:</div><div><span class="translate">became the mayor of</span> <a href="/venue/4723824">Bertuccis</a>.</div></div>
+          <div class="i_icn"><a href="/venue/4723824"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_mayor-aea121f818348ce5084d5fb18897ad84.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent26" class="item">
+          <div class="i_img"><a href="/user/3237385"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/PTHTK03UUC5VZGMH.jpg" width="45" height="45"  alt="carlo s." /></a></div>
+          <div class="i_con"><div><a href="/user/3237385">carlo s.</a> in Vancouver, BC:</div><div><span class="translate">became the mayor of</span> <a href="/venue/15902294">Naru</a>.</div></div>
+          <div class="i_icn"><a href="/venue/15902294"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_mayor-aea121f818348ce5084d5fb18897ad84.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent25" class="item">
+          <div class="i_img"><a href="/user/1405847"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/3A0QOUUP05L32MSP.jpg" width="45" height="45"  alt="Chia K." /></a></div>
+          <div class="i_con"><div><a href="/user/1405847">Chia K.</a> in Singapore, SG:</div><div><span class="translate">became the mayor of</span> <a href="/venue/5402401">Joo Chiat Place Fried Kway Teow</a>.</div></div>
+          <div class="i_icn"><a href="/venue/5402401"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_mayor-aea121f818348ce5084d5fb18897ad84.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent24" class="item">
+          <div class="i_img"><a href="/user/9611064"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/IVOTBKDVKL4HMWTQ.jpg" width="45" height="45"  alt="Maryana F." /></a></div>
+          <div class="i_con"><div><a href="/user/9611064">Maryana F.</a> in New York, NY:</div><div><span class="translate">unlocked the</span> '<a href="/user/9611064/badge/4deaab0eae60e989235fc764">Adventurer</a>' badge.</div></div>
+          <div class="i_icn"><a href="/user/9611064/badge/4deaab0eae60e989235fc764"><img src="https://playfoursquare.s3.amazonaws.com/badge/57/adventurer.png" width="57" height="57" title="Adventurer: You've checked into 10 different venues!" alt="Adventurer" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent23" class="item">
+          <div class="i_img"><a href="/victoremm"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/YCH0ZRVM4BDREUAI.jpg" width="45" height="45"  alt="Victor E." /></a></div>
+          <div class="i_con"><div><a href="/victoremm">Victor E.</a> in São Paulo, SP:</div><div><span class="translate">wrote a tip</span> @ <a href="/venue/2272880">Sala Vip Pizzaria</a>: Lugar agradável com ótimas opções de pizza.  Estacione fácil na rua Cipriano ao lado da pizzaria.</div></div>
+          <div class="i_icn"><a href="/item/4deaab11ae60e989235fc7d4"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_tip-475508fa8595de27c58ff50b8d2a9be4.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent22" class="item">
+          <div class="i_img"><a href="/user/3892782"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/QT3GRZUH53P45TL5.jpg" width="45" height="45"  alt="T'Juan J." /></a></div>
+          <div class="i_con"><div><a href="/user/3892782">T'Juan J.</a> in Honolulu, HI:</div><div><span class="translate">wrote a tip</span> @ <a href="/venue/269802">Maunakea Marketplace</a>: Bargain bargain bargain!!!!!</div></div>
+          <div class="i_icn"><a href="/item/4deaaafee4cdc079f48ae728"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_tip-475508fa8595de27c58ff50b8d2a9be4.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent21" class="item">
+          <div class="i_img"><a href="/xjayarex"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/D52D4OM4YWN1QFHZ.jpg" width="45" height="45"  alt="JR C." /></a></div>
+          <div class="i_con"><div><a href="/xjayarex">JR C.</a> in Daly City, CA:</div><div><span class="translate">unlocked the</span> '<a href="/xjayarex/badge/4deaab0dd4c00071b82a1802">Swarm</a>' badge.</div></div>
+          <div class="i_icn"><a href="/xjayarex/badge/4deaab0dd4c00071b82a1802"><img src="https://playfoursquare.s3.amazonaws.com/badge/57/swarm.png" width="57" height="57" title="Swarm: 50+ people are also checked in here - it's a foursquare flashmob!" alt="Swarm" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent20" class="item">
+          <div class="i_img"><a href="/christinewayne"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/BPTG5ZKXAJSBBNCR.jpg" width="45" height="45"  alt="Christine W." /></a></div>
+          <div class="i_con"><div><a href="/christinewayne">Christine W.</a> in Las Vegas, Nevada:</div><div><span class="translate">wrote a tip</span> @ <a href="/venue/894874">Spa &amp; Salon</a>: If you're getting a pedicure, ask for Nicole. She seems to love what she does -- which feels great when you know that your feet are in bad condition. She takes pride in her work! And I feel pretty!</div></div>
+          <div class="i_icn"><a href="/item/4deaaaf3b0fb8293f7dbbdf1"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_tip-475508fa8595de27c58ff50b8d2a9be4.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent19" class="item">
+          <div class="i_img"><a href="/carlglitter"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/Q1UUMPL2VA0PGH20.jpg" width="45" height="45"  alt="Carlos P." /></a></div>
+          <div class="i_con"><div><a href="/carlglitter">Carlos P.</a> in Monclova, Coahuila:</div><div><span class="translate">wrote a tip</span> @ <a href="/venue/19915185">La Maria</a>: Mal servicio, mala comida, super caro, no lo recomiendo..</div></div>
+          <div class="i_icn"><a href="/item/4deaaafcd22da22d4edac96f"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_tip-475508fa8595de27c58ff50b8d2a9be4.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent18" class="item">
+          <div class="i_img"><a href="/user/7323874"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/C50AN4JYRMNF3FI3.jpg" width="45" height="45"  alt="Sandra L." /></a></div>
+          <div class="i_con"><div><a href="/user/7323874">Sandra L.</a> in Brentwood, CA:</div><div><span class="translate">wrote a tip</span> @ <a href="/venue/10221678">Bank Of The West</a>: Go inside it's faster than the drive thru!</div></div>
+          <div class="i_icn"><a href="/item/4deaab0022713dd9739a89b4"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_tip-475508fa8595de27c58ff50b8d2a9be4.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent17" class="item">
+          <div class="i_img"><a href="/user/6916872"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/UXLYVK2F40LMKNY1.jpg" width="45" height="45"  alt="Ieda H." /></a></div>
+          <div class="i_con"><div><a href="/user/6916872">Ieda H.</a> in Kuala Lumpur:</div><div><span class="translate">became the mayor of</span> <a href="/venue/10517468">Pasar Malam Selayang Indah</a>.</div></div>
+          <div class="i_icn"><a href="/venue/10517468"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_mayor-aea121f818348ce5084d5fb18897ad84.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent16" class="item">
+          <div class="i_img"><a href="/user/7037937"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/RTZ5RAJYUTBHOBRN.jpg" width="45" height="45"  alt="Jose B." /></a></div>
+          <div class="i_con"><div><a href="/user/7037937">Jose B.</a> in El Paso, TX:</div><div><span class="translate">wrote a tip</span> @ <a href="/venue/18155963">WinkeyDoodles Paintball Adventures</a>: Not expensive but the staff is rude no full auto allowed I was told after I play for games and the paint sucks it bounces dosnt break there a longer list but let's leave it at that</div></div>
+          <div class="i_icn"><a href="/item/4deaaaf9fa76cc1b8aec20c1"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_tip-475508fa8595de27c58ff50b8d2a9be4.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent15" class="item">
+          <div class="i_img"><a href="/user/2308735"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/GCNE1ISWLNQC0XFL.jpg" width="45" height="45"  alt="rick t." /></a></div>
+          <div class="i_con"><div><a href="/user/2308735">rick t.</a> in PONTE VEDRA BEACH, FL:</div><div><span class="translate">became the mayor of</span> <a href="/venue/1045447">Bogey Grille</a>.</div></div>
+          <div class="i_icn"><a href="/venue/1045447"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_mayor-aea121f818348ce5084d5fb18897ad84.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent14" class="item">
+          <div class="i_img"><a href="/user/9476108"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/LROHZJQWNABP2WU0.jpg" width="45" height="45"  alt="Paul D." /></a></div>
+          <div class="i_con"><div><a href="/user/9476108">Paul D.</a> in Ashburn, Virginia:</div><div><span class="translate">wrote a tip</span> @ <a href="/venue/264505">American Flatbread/Ashburn Hearth (Closing business on 6/5/2011)</a>: Going out of business after this weekend (6/6/11)</div></div>
+          <div class="i_icn"><a href="/item/4deaab121f6e3ddebdd32ca5"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_tip-475508fa8595de27c58ff50b8d2a9be4.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent13" class="item">
+          <div class="i_img"><a href="/nobodiuno"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/TGPOKYRXLS4ZD3X1.jpg" width="45" height="45"  alt="Richelle H." /></a></div>
+          <div class="i_con"><div><a href="/nobodiuno">Richelle H.</a> in summerfield, fl:</div><div><span class="translate">unlocked the</span> '<a href="/nobodiuno/badge/4deaab0ac65be8091dacf08a">Superstar</a>' badge.</div></div>
+          <div class="i_icn"><a href="/nobodiuno/badge/4deaab0ac65be8091dacf08a"><img src="https://playfoursquare.s3.amazonaws.com/badge/57/superstar.png" width="57" height="57" title="Superstar: You've checked into 50 different venues!" alt="Superstar" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent12" class="item">
+          <div class="i_img"><a href="/user/9713785"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/DSD5GFZUUG3NJ311.jpg" width="45" height="45"  alt="Engin K." /></a></div>
+          <div class="i_con"><div><a href="/user/9713785">Engin K.</a> in İstanbul:</div><div><span class="translate">unlocked the</span> '<a href="/user/9713785/badge/4deaab0dfa76cc1b8aec2306">Super User</a>' badge.</div></div>
+          <div class="i_icn"><a href="/user/9713785/badge/4deaab0dfa76cc1b8aec2306"><img src="https://playfoursquare.s3.amazonaws.com/badge/57/superuser.png" width="57" height="57" title="Super User: That's 30 check-ins in a month for you!" alt="Super User" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:none" id="recent11" class="item">
+          <div class="i_img"><a href="/andywatsonbc"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/OF2MQB3K4DFSFUN2.jpg" width="45" height="45"  alt="Andy W." /></a></div>
+          <div class="i_con"><div><a href="/andywatsonbc">Andy W.</a> in Victoria, BC:</div><div><span class="translate">unlocked the</span> '<a href="/andywatsonbc/badge/4deaab0e88774880e3234bc4">Swarm</a>' badge.</div></div>
+          <div class="i_icn"><a href="/andywatsonbc/badge/4deaab0e88774880e3234bc4"><img src="https://playfoursquare.s3.amazonaws.com/badge/57/swarm.png" width="57" height="57" title="Swarm: 50+ people are also checked in here - it's a foursquare flashmob!" alt="Swarm" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:block" id="recent10" class="item">
+          <div class="i_img"><a href="/barbudo"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/JHU2LEWAPAIWFHWC.jpg" width="45" height="45"  alt="Grigori G." /></a></div>
+          <div class="i_con"><div><a href="/barbudo">Grigori G.</a> in Mexico City, DF:</div><div><span class="translate">wrote a tip</span> @ <a href="/venue/9900281">Los Sopes de Viaducto</a>: Recomiendo bistec con rajas y taquitos de bistec con un agua de guanábana. Cabe agregar que es un lugar muy limpio. Llevo años comiendo aquí y ni una sola vez me he enfermado.</div></div>
+          <div class="i_icn"><a href="/item/4deaaafbae60e989235fc511"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_tip-475508fa8595de27c58ff50b8d2a9be4.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:block" id="recent9" class="item">
+          <div class="i_img"><a href="/user/10222912"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/3O3ITNP1CBV3ISZH.jpg" width="45" height="45"  alt="Aj S." /></a></div>
+          <div class="i_con"><div><a href="/user/10222912">Aj S.</a> in Antipolo City, Rizal:</div><div><span class="translate">became the mayor of</span> <a href="/venue/15102546">Oro Vista Royale</a>.</div></div>
+          <div class="i_icn"><a href="/venue/15102546"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_mayor-aea121f818348ce5084d5fb18897ad84.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:block" id="recent8" class="item">
+          <div class="i_img"><a href="/user/10094513"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/XBRDOTLB1K10YXLY.jpg" width="45" height="45"  alt="Gus D." /></a></div>
+          <div class="i_con"><div><a href="/user/10094513">Gus D.</a> in Atlanta, GA:</div><div><span class="translate">unlocked the</span> '<a href="/user/10094513/badge/4deaab0ce4cdc079f48ae8dc">Swarm</a>' badge.</div></div>
+          <div class="i_icn"><a href="/user/10094513/badge/4deaab0ce4cdc079f48ae8dc"><img src="https://playfoursquare.s3.amazonaws.com/badge/57/swarm.png" width="57" height="57" title="Swarm: 50+ people are also checked in here - it's a foursquare flashmob!" alt="Swarm" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:block" id="recent7" class="item">
+          <div class="i_img"><a href="/whimsql"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/E1GF5KPA5OCB0VS5.jpg" width="45" height="45"  alt="Arlene G." /></a></div>
+          <div class="i_con"><div><a href="/whimsql">Arlene G.</a> in Rockwood, Tennessee:</div><div><span class="translate">became the mayor of</span> <a href="/venue/2508652">Kasumi Japanese Grill</a>.</div></div>
+          <div class="i_icn"><a href="/venue/2508652"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_mayor-aea121f818348ce5084d5fb18897ad84.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:block" id="recent6" class="item">
+          <div class="i_img"><a href="/abellaneda"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/AIMFAGOMSANPQRHQ.jpg" width="45" height="45"  alt="Luis A." /></a></div>
+          <div class="i_con"><div><a href="/abellaneda">Luis A.</a> in Albacete, Castilla-La Mancha:</div><div><span class="translate">wrote a tip</span> @ <a href="/venue/20513056">El Embrujo De Granada</a>: Un piso adecuado como local chillout muy vintage. Si quieres pillar sitio hay que ir antes de las 11</div></div>
+          <div class="i_icn"><a href="/item/4deaab0752b11677f0429482"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_tip-475508fa8595de27c58ff50b8d2a9be4.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:block" id="recent5" class="item">
+          <div class="i_img"><a href="/user/9480142"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/UYTGAAUPWZ0D1Z05.jpg" width="45" height="45"  alt="Ronald K." /></a></div>
+          <div class="i_con"><div><a href="/user/9480142">Ronald K.</a> in Assen, Nederland:</div><div><span class="translate">unlocked the</span> '<a href="/user/9480142/badge/4deaab1245dd3993a892b3fe">Crunked</a>' badge.</div></div>
+          <div class="i_icn"><a href="/user/9480142/badge/4deaab1245dd3993a892b3fe"><img src="https://playfoursquare.s3.amazonaws.com/badge/57/crunked.png" width="57" height="57" title="Crunked: That's 4+ stops in one night for you!" alt="Crunked" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:block" id="recent4" class="item">
+          <div class="i_img"><a href="/user/7483089"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/Q5OV5JACDCMH2HFF.jpg" width="45" height="45"  alt="Anirut R." /></a></div>
+          <div class="i_con"><div><a href="/user/7483089">Anirut R.</a> in MA:</div><div><span class="translate">unlocked the</span> '<a href="/user/7483089/badge/4deaab121520ed580a4abef2">U.S. Men’s National Soccer Team</a>' badge.</div></div>
+          <div class="i_icn"><a href="/user/7483089/badge/4deaab121520ed580a4abef2"><img src="https://playfoursquare.s3.amazonaws.com/badge/57/USAsoccer.png" width="57" height="57" title="U.S. Men’s National Soccer Team: “Oh When the Yanks Go Marching In!&quot; Thanks for supporting the U.S. Men’s National Team. Now let's hear you scream, cheer and chant until you’re red, white and blue in the face!" alt="U.S. Men’s National Soccer Team" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:block" id="recent3" class="item">
+          <div class="i_img"><a href="/andywatsonbc"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/OF2MQB3K4DFSFUN2.jpg" width="45" height="45"  alt="Andy W." /></a></div>
+          <div class="i_con"><div><a href="/andywatsonbc">Andy W.</a> in Victoria, BC:</div><div><span class="translate">unlocked the</span> '<a href="/andywatsonbc/badge/4deaab0e88774880e3234bc3">Newbie</a>' badge.</div></div>
+          <div class="i_icn"><a href="/andywatsonbc/badge/4deaab0e88774880e3234bc3"><img src="https://playfoursquare.s3.amazonaws.com/badge/57/newbie.png" width="57" height="57" title="Newbie: Congrats on your first check-in! In foursquare, you earn badges for your best check-ins – like going to museums, staying out late, or working out at the gym ten times in a month. Have fun exploring!" alt="Newbie" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:block" id="recent2" class="item">
+          <div class="i_img"><a href="/user/10009445"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/2NFEAIE3OV4OG2KJ.jpg" width="45" height="45"  alt="Paul Y." /></a></div>
+          <div class="i_con"><div><a href="/user/10009445">Paul Y.</a> in Ankeny, IA:</div><div><span class="translate">unlocked the</span> '<a href="/user/10009445/badge/4deaab0d18386283a3ebd409">Super User</a>' badge.</div></div>
+          <div class="i_icn"><a href="/user/10009445/badge/4deaab0d18386283a3ebd409"><img src="https://playfoursquare.s3.amazonaws.com/badge/57/superuser.png" width="57" height="57" title="Super User: That's 30 check-ins in a month for you!" alt="Super User" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:block" id="recent1" class="item">
+          <div class="i_img"><a href="/jdfierro"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/VX4EDWZE54BFEAJT.jpg" width="45" height="45"  alt="Joshua F." /></a></div>
+          <div class="i_con"><div><a href="/jdfierro">Joshua F.</a> in Austin, TX:</div><div><span class="translate">became the mayor of</span> <a href="/venue/4534270">Balcones Woods Pool</a>.</div></div>
+          <div class="i_icn"><a href="/venue/4534270"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_mayor-aea121f818348ce5084d5fb18897ad84.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+        <div style="display:block" id="recent0" class="item">
+          <div class="i_img"><a href="/m0n_dieu"><img src="https://playfoursquare.s3.amazonaws.com/userpix_thumbs/GAJUFEC0MPNESEYO.jpg" width="45" height="45"  alt="Sebastian D." /></a></div>
+          <div class="i_con"><div><a href="/m0n_dieu">Sebastian D.</a> in Santiago, Región Metropolitana:</div><div><span class="translate">wrote a tip</span> @ <a href="/venue/18478166">Persa Bio-Bio</a>: Buscando accesorios para mi Galaxy</div></div>
+          <div class="i_icn"><a href="/item/4deaaaf631515f4beba9a854"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_tip-475508fa8595de27c58ff50b8d2a9be4.png" width="57" height="57" /></a></div>
+          <div style="clear:both"></div>      
+        </div>
+      
+    </div>
+  </div>
+  <div class="translate" id="rightpane">
+    <div>
+      <div class="heading">
+        GET IT NOW
+      </div>
+      <div class="heading">
+        <a href="/download/"><img src="https://4sqstatic.s3.amazonaws.com/img/text_iphone-98a0fb62679db8b15acaed5fcbfa2013.png" alt="iPhone" width="243" height="35" /></a>
+      </div>
+      <div class="heading">
+        <a href="/download/"><img src="https://4sqstatic.s3.amazonaws.com/img/text_blackberry-b7d3b6ebb6c5f85204720c665abf4db2.png" alt="BlackBerry" width="243" height="35" /></a>
+      </div>
+      <div class="heading">
+        <a href="/download/"><img src="https://4sqstatic.s3.amazonaws.com/img/text_android-1d7a63ebee0996f8fb2a014bd97066ed.png" alt="Android" width="243" height="35" /></a>
+      </div>
+      <div class="heading">
+        <a href="/download/"><img src="https://4sqstatic.s3.amazonaws.com/img/text_palm-d2dbcfb4fd53f643edda4ceb92c7f914.png" alt="Palm" width="243" height="35" /></a>
+      </div>
+      <div class="heading">
+        <a href="/download/"><img src="https://4sqstatic.s3.amazonaws.com/img/text_ovi-a1bba48b4a4008fa06ec0239c31adf15.png" width="243" height="35" alt="Ovi" /></a>
+      </div>
+      <div class="heading">
+        <a href="/download/"><img src="https://4sqstatic.s3.amazonaws.com/img/text_other_devices-8e84192cc1ae39bd3eeae284daaf1913.png" alt="Other Devices" width="243" height="35" /></a>
+      </div>
+    </div>
+    <br />
+    <div class="heading">
+      What is foursquare?
+    </div>
+    <div style="margin: 10px 0px 0px 0px">
+      <a rel="facebox" href="#demoVideo"><img src="https://4sqstatic.s3.amazonaws.com/img/videothumbnail-308fba3b52f145f6d462c481d91d5439.png" /></a>
+    </div>
+    <div style="border-bottom:1px dotted #AAAAAA;margin-bottom:20px;margin-top:-10px;" class="heading"> </div>
+    <div id="linksModule">
+      <a class="linkMerchants" href="/business/venues">
+        <strong>merchants</strong>
+        attract &amp; retain customers
+      </a>
+      <a class="linkBrands" href="/business/brands">
+        <strong>brands</strong>
+        connect with your followers
+      </a>
+      <a class="linkDevelopers" href="http://developer.foursquare.com/">
+        <strong>developers</strong>
+        build your own apps
+      </a>
+    </div>
+    <br />
+    <div>
+      <div style="margin-bottom:10px" class="heading">
+        FIND US ON
+      </div>
+      <div id="findUsOn">
+        <a href="http://twitter.com/foursquare"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_twitter_32-8d3d1431e0545b5ce02e4088e4f7d4e6.png" height="32" width="32" alt="Twitter" /></a>
+        <a href="http://www.facebook.com/foursquare"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_facebook_32-95d95784c474d2d4538d28404f6fc23f.png" height="32" width="32" alt="Facebook" /></a>
+        <a href="http://www.flickr.com/photos/foursquare/"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_flickr_32-469d925ef3bd100c8159f3fdd46d9197.png" height="32" width="32" alt="Flickr" /></a>
+        <a href="http://www.meetup.com/foursquare/"><img src="https://4sqstatic.s3.amazonaws.com/img/icon_meetup_32-9bac1dc163a398fa42ead21738e1419c.png" height="32" width="32" alt="Meetup" /></a>
+      </div>
+    </div>
+  </div>
+  
+  <div style="text-align:center;font-size:9px;display:none" class="embedded-howcast-video" id="demoVideo">
+    <object id="howcastplayer" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" height="348" width="560">
+      <param value="http://www.howcast.com/flash/howcast_player.swf?file=386406&amp;theme=black&amp;no_rel=true" name="movie" />
+      <param value="true" name="allowFullScreen" /><param value="always" name="allowScriptAccess" />
+      <param value="autoplay=true&amp;&amp;fs=true" name="flashVars" />
+      <embed flashVars="autoplay=true&amp;&amp;fs=true" allowScriptAccess="always" allowFullScreen="true" height="348" width="560" type="application/x-shockwave-flash" src="http://www.howcast.com/flash/howcast_player.swf?file=386406&amp;theme=black&amp;no_rel=true"></embed>
+    </object>
+  </div>
+
+      </div>
+      <div style="clear:both" id="footer">
+  <div class="links translate">
+    <div class="outsideContainer">
+      <ul>
+  <li><a href="https://foursquare.com/about">about</a></li>
+  <li><a href="http://blog.foursquare.com">blog</a></li>
+  <li><a href="https://foursquare.com/contact">contact</a></li>
+  <li><a href="http://foursquare.com/help">help</a></li>
+  <li><a href="https://foursquare.com/jobs/">jobs</a></li>
+  <li><a href="https://foursquare.com/privacy/">privacy 101</a></li>
+  <li><a href="https://foursquare.com/legal/privacy">privacy policy</a></li>
+  <li><a href="https://foursquare.com/legal/terms">terms</a> (New)</li>
+  <li><a href="http://store.foursquare.com"><img src="https://4sqstatic.s3.amazonaws.com/img/storeSmall-84553511667271b64d26d029b597f925.png" style="height:20px;position:relative;top:6px;" /></a></li>
+</ul>
+      <div id="copyLang">
+        © 2011 foursquare
+  <script type="text/javascript">
+    //<![CDATA[
+    
+    // IMPORTANT: This is what does the redirect to the correct domain
+    fourSq.i18n.redirect();
+    
+    $(function() {
+      $('#currentLanguage a').text(fourSq.i18n.currentLang());
+    });
+    // ]]>
+  </script>
+  
+  <span id="currentLanguage">
+    · <a rel="facebox" href="#languagesContainer"></a>
+  </span>
+  
+  <div style="display:none" class="translate" id="languagesContainer">
+    Do none of the words on this site make sense to you? Select your
+    favorite language below for greater clarity:
+    <ul class="languages notranslate">
+      <li><a href="#" onclick="fourSq.i18n.setLang('en'); return false;">English</a></li><li><a href="#" onclick="fourSq.i18n.setLang('it'); return false;">Italiano</a></li><li><a href="#" onclick="fourSq.i18n.setLang('de'); return false;">Deutsch</a></li><li><a href="#" onclick="fourSq.i18n.setLang('es'); return false;">Español</a></li><li><a href="#" onclick="fourSq.i18n.setLang('fr'); return false;">Français</a></li><li><a href="#" onclick="fourSq.i18n.setLang('ja'); return false;">日本語</a></li>
+    </ul>
+  </div>
+
+      </div>
+    </div>
+  </div>
+  
+
+</div>
+
+    </div>
+    
+
+  <script src="https://ssl.google-analytics.com/ga.js" type="text/javascript"></script>
+
+
+
+<script type="text/javascript">
+  try {
+    var pageTracker = _gat._getTracker('UA-2322480-5');
+    pageTracker._trackPageview();
+    pageTracker._trackPageLoadTime();
+    } catch(err) {
+    }
+</script>
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+<script type="text/javascript">
+var _sf_async_config={uid:11280,domain:'foursquare.com'};
+if (window.chartbeat_path) {
+  _sf_async_config.path = chartbeat_path;
+}
+(function(){
+  function loadChartbeat() {
+    window._sf_endpt=(new Date()).getTime();
+    var e = document.createElement('script');
+    e.setAttribute('language', 'javascript');
+    e.setAttribute('type', 'text/javascript');
+    e.setAttribute('src',
+       (('https:' == document.location.protocol) ? 'https://s3.amazonaws.com/' : 'http://') +
+       'static.chartbeat.com/js/chartbeat.js');
+    document.body.appendChild(e);
+  }
+  var oldonload = window.onload;
+  window.onload = (typeof window.onload != 'function') ?
+     loadChartbeat : function() { oldonload(); loadChartbeat(); };
+})();
+
+</script>
+
+
+
+  <script src="/ajax_request/liftAjax.js" type="text/javascript"></script>
+
+	
+<script type="text/javascript">
+// <![CDATA[
+
+var lift_page = "F71586224377354I";
+// ]]>
+</script></body>
+</html>  
+  

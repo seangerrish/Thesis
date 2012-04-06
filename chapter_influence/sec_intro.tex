@@ -1,0 +1,71 @@
+\section{Introduction}
+
+Measuring the influence of a scientific article is an important and
+challenging problem.  Influence measurements are used to assess the
+quality of academic instruments, such as journals, scientists, and
+universities, and can play a role in decisions surrounding publishing
+and funding.  They are also important for academic research: finding
+and reading the influential articles of a field is central to good
+research practice.
+
+% With unprecedented availability of large collections of scientific
+% articles, modern researchers have at their disposal a large catalog of
+% previous work.  Their challenge is to find articles that are important
+% and interesting.
+
+The traditional method of assessing an article's influence is to count
+the citations to it.  The impact factor of a journal, for example, is
+based on aggregate citation counts~\cite{garfield:2002}.  This is
+intuitive: if more people have cited an article, then more people have
+read it, and it is likely to have had more impact on its field.
+Citation counts are used with other types of documents as well: the
+Pagerank algorithm, which uses hyperlinks of web-pages, has been
+essential to Google's early success in Web search~\cite{brin:1998}.
+
+Though citation counts can be powerful, they can be hard to use in
+practice.  Some collections, such as news stories, blog posts, or
+legal documents, contain articles that were influential on others but
+lack explicit citations between them.  Other collections, like OCR
+scans of historical scientific literature, do contain citations, but
+they are difficult to read in reliable electronic form.  Finally,
+citation counts only capture one kind of influence.  All citations
+from an article are counted equally in an impact factor, when some
+articles of a bibliography might have influenced the authors more than
+others.
+% Last sentence could be removed
+
+We take a different approach to identifying influential articles in a
+collection.  Our idea is that an influential article will affect how
+future articles are written and that this effect can be detected by
+examining the way corpus statistics change over time.  We encode this
+intuition in a time-series model of sequential document collections.
+
+%interdisciplinary journal such as \textit{Nature} might have influence
+%on Neuroscience without having influence on Genomics.  In our model,
+%both the topics and influential articles are inferred.
+
+We base our model on dynamic topic models, allowing for multiple
+threads of influence within a corpus~\cite{blei:2006}. Though our
+algorithm aims to capture something different from citation, we
+validate the inferred influence measurements by comparing them to
+citation counts.  We analyzed one hundred years of the Proceedings of
+the National Academy, one hundred years of \textit{Nature}, and a
+forty year corpus of articles on computational linguistics.  With only
+the language of the articles as input, our algorithm produces a
+meaningful measure of each document's influence in the corpus.
+
+%\paragraph{Contributions} 
+%In this paper, we make the following contributions.  We propose a
+% generative model for identifying and qualifying important documents
+% in a corpus.  We describe inference for this model and provide an
+% intuitive interpretation of the generative process.  We also provide
+% the reader with a tool for viewing these documents in the context of
+% a corpus's topics.
+
+% We begin with a discussion of previous work aimed at modeling
+% influential documents.  We then describe the Document Influence Model,
+% our unsupervised model for determining the influence of a document
+% using the changes in language used by documents over time.  This is
+% followed by experiments to both compare this model with citation
+% counts on three well-known corpora and to provide the reader with an
+% intuition for the model.

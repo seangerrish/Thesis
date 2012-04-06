@@ -1,0 +1,311 @@
+\documentclass{article}
+
+%\usepackage{icml2010,times}
+% \documentstyle[nips07submit_09,times]{article}
+
+%% Standard packages
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{rotating}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{epsfig}
+
+%% Math packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{bm}
+\usepackage{wrapfig}
+
+%% Common macros
+% \input{macros}
+
+%% Name macros
+\newcommand{\mv}{\tilde{m}} 
+\newcommand{\z}{\bold{z}} 
+\newcommand{\vv}[0]{\tilde{V}}
+\newcommand{\W}{\textbf{W}}
+\newcommand{\w}{\textbf{w}}
+\newcommand{\vphi}{\phi}
+\newcommand{\bv}{\tilde{\beta}}
+\newcommand{\bb}{\beta}
+\newcommand{\lv}{\tilde{l}}
+\newcommand{\vlv}{{\sigma^2_{l}}}
+\newcommand{\vd}{\sigma^2_{d}}
+\newcommand{\vbv}{\sigma^2}
+\newcommand{\ellv}{\tilde{\ell}}
+\newcommand{\stdnorm}[1]{\mathcal{N}\left(#1\right)}
+
+
+\newcommand{\tr}[0]{\mbox{Tr}}
+% \newcommand{\expect}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\expectq}[1]{\mathbb{E}_q\left[#1\right]}
+\newcommand{\expectqnoarg}[0]{\mathbb{E}_q}
+\newcommand{\defn}[0]{:=}
+\newcommand{\partl}[2]{\frac{\partial #1}{\partial #2}}
+
+\usepackage[compact]{titlesec}
+ 
+\newenvironment{packed_enum}{
+  \begin{enumerate}
+    \setlength{\topsep}{1pt}
+    \setlength{\itemsep}{2pt}
+    \setlength{\parskip}{1pt}
+    \setlength{\parsep}{1pt}
+}{\end{enumerate}}
+
+\title{Modeling Influence in Text Corpora}
+\author{Department of Computer Science \\
+Princeton University \\
+Princeton, NJ 08544 \\
+\texttt{sgerrish@cs.princeton.edu} \\
+\And
+David M. Blei \\
+Department of Computer Science \\
+Princeton University \\
+35 Olden St. \\
+Princeton, NJ 08544 \\
+\texttt{blei@cs.princeton.edu} \\
+}
+
+                                        % Helps LaTeX put figures where YOU want
+\renewcommand{\topfraction}{0.9}        % 90% of page top can be a float
+\renewcommand{\bottomfraction}{0.9}     % 90% of page bottom can be a float
+\renewcommand{\textfraction}{0.1}       % only 10% of page must to be text
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+%% 
+%% TODO for this paper:
+%% 1. Update equations, for \beta
+%% 2. Determine log likelihood
+%% 2. Implement
+%% 
+%% Experiments
+%% 1. Citations
+%% 2. Predictive likelihood of data.
+%% 3. Held-out perplexity
+%% 2. Metric:
+%%   Average increase in topic words vs. document weights
+%%     - 5, 
+%% 3. Run this over 3 corpora:
+%%   - Nature
+%%   - ACL anthology
+%%   - recommendation by Drago
+%%   - resource.org
+%% 4.
+
+\begin{document}
+\section{Appendix}
+
+\subsection{Variational posterior and evidence lower bound}
+\label{section:variational_posterior}
+In this section, we describe the evidence lower bound and expand its
+terms to derive the variational updates in the following section.  The
+evidence is given by the following formula:
+\begin{align}
+\label{eq:elbo}
+\mathcal{L}(q) &= \log p(\textbf{$d_{1:T}$}) \\
+            &\ge \int q( \beta, l, \theta, z | \bv, \lv, \gamma, \phi)
+                    \log \left(\frac{p(\beta, l, \theta, z)
+		                     p(d | \beta, l, \theta, z)}
+			 {q( \beta, l, \theta, z | \bv, \lv, \gamma, \phi)}
+                    \right)
+		    d_{\beta_{1:T}} \\
+            & = \expectq{ \log \prod_T \prod_K p(l_{T,k}) } \label{eq:l_prob} \\
+            & + \expectq{ \log \prod_T \prod_{D_t} \prod_{N_{d_t}} p(z_n | \theta_{d_t}) } \label{eq:z_prob} \\
+            & + \expectq{ \log \prod_{t=1}^T \prod_K p(\beta_{t,k}
+                                 		      | \beta_{t-f,k}) }
+    \label{eq:beta_prob} \\
+            & + \expectq{ \log \prod_T \prod_{D_t} \prod_{N_{d_t}} p(w_n | z_n) } \label{eq:w_prob} \\
+            & + H(q) \\
+            & + \ldots \label{eq:other},
+\end{align}
+where we have left out some terms (\ref{eq:other}) which are not
+relevant to this model's derivation.  To maximize this lower bound, we
+find locally optimal values for the parameters $\phi, \bv, \lv,$ and
+$\gamma$ numerically through the variational updates described below.
+
+We can expand~\ref{eq:l_prob} as:
+\begin{align}
+  \expectq{ \log \prod_T \prod_K p(l_{T,k}) }
+  & = \sum_T \sum_{D_t} \sum_K \expectq{-\frac{l_{d_,k}^2}{2 \vd} - \frac{1}{2} (\log 2 \pi + \log \vd) }  \\
+  & = \sum_T \sum_{D_t} \sum_K -\frac{1}{2 \vd} (\lv_{d_t,k}^2 + \vlv) - \frac{1}{2} (\log 2 \pi + \log \vd) \\
+\end{align}
+
+Equation~\ref{eq:z_prob} can be expanded as demonstrated in
+\cite{blei:2003}:
+\begin{align}
+  \expectq{ \log \prod_T \prod_{D_t} \prod_{N_{d_t}} p(z_n | \theta_{d_t}) }
+  & = \sum_T \sum_{D_t} \sum_{N_{d_t}} \expectq{ \log p( \z_{d_t} | \theta_{d_t} ) }  \\
+%  & = \sum_N \expectq{ \log p( \z_{d_t} | \theta_{d_t} ) }  \\
+  & = \sum_N \sum_K \phi_{n,k} \left( \Psi(\gamma_i) - \Psi(\sum_{j=1}^K \gamma_j ) \right) \\
+\end{align}
+
+\section{Update for $\ellv$}
+The update for $\ellv$ can be found by collecting terms with $\ellv$:
+\begin{align}
+\mathcal{L}(\ellv) & = &  \\
+  & \sum_T \sum_{D_t} \sum_K -\frac{1}{2 \vd} (\lv_{d_t,k}^2) \\
+  + \sum_T \sum_{D_t} (\W \circ \z) -\frac{1}{2 \vd} (\lv_{d_t,k}^2) \\
+\end{align}
+
+Finally, we expand~\ref{eq:beta_prob}:
+\begin{align}
+ \label{eq:chain_elbo}
+%g(s) := & \exp(-\mv_{s,k} + \vv_{s,k} / 2) \circ ( \W_{s,k} \circ \phi_{s,k} ) \lv_{s,k} \\
+%h(s) := & \left( (\W_{s,k} \circ \phi_{s,k}) l_{s,k} \right)^T
+%       \Lambda_{\exp(-2 \mv_{s,k} + 2 \vv_{s,k})}
+%       \left( (\W_{s,k} \circ \phi_{s,k}) l_{s,k} \right)^T \notag \\
+%       & + \exp(-2 \mv_{s,k} + 2 \vv_{s,k})^T ( \W_{s,k} \circ \W_{s,k} \circ ( \phi_{s,k} - \phi_{s,k} \circ \phi_{s,k} ) ) (\lv_{s,k} \circ \lv_{s,k} + \vec{\vlv}_{D_{s}}) \notag \\
+g_w(s) := & ( \W_{s,k} \circ \phi_{s,k} )_w \lv_{s,k} \\
+h(s, q) := & \left( (\W_{s,k} \circ \phi_{s,k}) l_{s,k} \right)^T
+       \Lambda_{\exp(-2 \mv_{q,k} + 2 \vv_{q,k})}
+       \left( (\W_{s,k} \circ \phi_{s,k}) l_{s,k} \right)^T \notag \\
+       & + \exp(-2 \mv_{q,k} + 2 \vv_{q,k})^T ( \W_{s,k} \circ \W_{s,k} \circ ( \phi_{s,k} - \phi_{s,k} \circ \phi_{s,k} ) ) (\lv_{s,k} \circ \lv_{s,k} + \vec{\vlv}_{D_{s}}) \notag \\
+       & + \exp(-2 \mv_{q,k} + 2 \vv_{q,k})^T ( \W_{s,k} \circ \W_{s,k} \circ \phi_{s,k} \circ \phi_{s,k} ) \vec{\vlv}_{D_{s}}. \notag \\
+ \expectq{ \log \prod_{t=1}^T \prod_K p(\beta_{t,k} |\beta_{t-1,k}) }
+%       & + \exp(-2 \mv_{s,k} + 2 \vv_{s,k})^T ( \W_{s,k} \circ \W_{s,k} \circ \phi_{s,k} \circ \phi_{s,k} ) \vec{\vlv}_{D_{s}}. \notag \\
+% \expectq{ \log \prod_{t=1}^T \prod_K p(\beta_{t,k} |\beta_{t-1,k}) }
+% = & \sum_{t=1}^T \sum_K \sum_W
+%   - \frac{1}{2 \sigma^2} \expectq{ \beta_{t,k,w}^2 + \beta_{t-1,k,w}^2 } \\
+%    & + \frac{1}{\sigma^2} \expectq{ \beta_{t,k,w} \beta_{t-1,k,w} } \notag \\
+%    & - \frac{1}{\sigma^2} \expectq{ (\beta_{t-1,k,w} - \beta_{t,k,w}) \circ \exp(-\beta_{t-1,k,w}) (\W_{t-1,w} \circ [ z_w ]_k) l_{t-1,k} } \notag \\
+%    & + \frac{1}{\sigma^2} \expectq{ \exp(-2 \beta_{t-1,k,w}) \left( (\W_{t-1,k,w} \circ [ z_w ]_k ) l_{t-2,k} \right)^2 } \notag \\
+%    & - \frac{VT}{2} (\log \sigma^2 + \log 2 \pi) \notag \\
+%  = & - \frac{VT}{2} (\log \sigma^2 + \log 2 \pi) \notag \\
+%  & - \frac{1}{\sigma^2} \sum_{t=1}^T \tr(\tilde{V_t}) + \frac{1}{2 \sigma^2} \left(\tr(\tilde{V_0}) - \tr(\tilde{V_T}) \right) \notag \\
+%  & - \frac{1}{2 \sigma^2} (\mv_t - \mv_{t-1} - \sum_{i=0}^t r(i) g(t-i))^2 \\
+%  & + \frac{1}{\sigma^2} \vv_{t,k} r(0) g(t) \notag \\
+%  & - \frac{1}{2 \sigma^2} \sum_{i=0}^t r(i)^2 \left( h(t-i) - g(t-i)^2 \right) \\
+ = & \sum_{t=1}^T \sum_K \sum_W
+   - \frac{1}{2 \sigma^2} \expectq{ \beta_{t,k,w}^2 + \beta_{t-1,k,w}^2 } \\
+    & + \frac{1}{\sigma^2} \expectq{ \beta_{t,k,w} \beta_{t-1,k,w} } \notag \\
+    & - \frac{1}{\sigma^2} \expectq{ (\beta_{t-1,k,w} - \beta_{t,k,w}) \circ \exp(-\beta_{t-1,k,w}) (\W_{t-1,w} \circ [ z_w ]_k) l_{t-1,k} } \notag \\
+    & + \frac{1}{\sigma^2} \expectq{ \exp(-2 \beta_{t-1,k,w}) \left( (\W_{t-1,k,w} \circ [ z_w ]_k ) l_{t-2,k} \right)^2 } \notag \\
+    & - \frac{VT}{2} (\log \sigma^2 + \log 2 \pi) \notag \\
+% = & - \frac{VT}{2} (\log \sigma^2 + \log 2 \pi) \notag \\
+%  & - \frac{1}{\sigma^2} \sum_{t=1}^T \tr(\tilde{V_t}) + \frac{1}{2 \sigma^2} \left(\tr(\tilde{V_0}) - \tr(\tilde{V_T}) \right) \notag \\
+%  & - \frac{1}{2 \sigma^2} (\mv_t - \mv_{t-1} - \sum_{i=0}^t r(i) g(t-i))^2 \\
+%  & + \frac{1}{\sigma^2} \vv_{t,k} r(0) g(t) \notag \\
+%  & - \frac{1}{2 \sigma^2} \sum_{i=0}^t r(i)^2 \left( h(t-i) - g(t-i)^2 \right) \\
+ = & - \frac{VT}{2} (\log \sigma^2 + \log 2 \pi) \notag \\
+  & - \frac{1}{\sigma^2} \sum_{t=1}^T \tr(\tilde{V_t}) + \frac{1}{2 \sigma^2} \left(\tr(\tilde{V_0}) - \tr(\tilde{V_T}) \right) \notag \\
+  & - \frac{1}{2 \sigma^2} (\mv_t - \mv_{t-1})^2 \\
+  & - \frac{1}{2 \sigma^2} (\mv_{t,k} + \vv_{t-1, k} - \mv_{t-1,k})_w \exp(-\mv_{t-1,k} + \vv_{t-1,k} / 2)_w \sum_{i=0}^t r(i) g_w(t-i) \\
+  & - \frac{1}{2 \sigma^2} \sum_{i=0}^t r(i) h(t - i, t-1) \\
+% Update the above two intermediate steps if you update what's below.
+%  & - \frac{1}{2 \sigma^2} \exp(-2 \mv_{t-1,k} + 2 \vv_{t,k})^T ( \W_{t-1,k} \circ \W_{t-1,l} \circ ( \phi_{t-1,k} ) (\lv_{t-1,k} \circ \lv_{t-1,k}) \notag \\
+\end{align}
+Above, $\circ$ refers to the Hadamard element-wise product and
+$\Lambda_{\vec{x}}$ refers to a diagonal matrix having the elements of
+$\vec{x}$ on its diagonal.
+
+Further, on line~\ref{eq:b_nexp_b}, we have used the fact that
+$\expectq{\beta_t \exp(-\beta_t)} = (\mv - \vv) \exp(-\mv + \vv / 2)$.
+
+\subsection{Update equations} \label{section:updates}
+We update $\theta$ and as in the DTM.  The updates for $\bv$
+and $\vphi$ are different in the Document Influence Model, and the
+document weights $\lv$ must also be updated.  As shown in
+equation~\ref{eq:regression}, the document weights are updated with a
+regression.  We determine this regression by collecting terms with
+$\lv$, taking the derivative, and setting equal to zero.
+
+To find the updates for $\phi$, we gather all terms from the evidence
+lower bound containing $\phi$ and form the Lagrangian to enforce the
+constraint $\sum_{j=1}^K \phi_{n,j} = 1$:
+\begin{align*}
+g_{w,k}(s) & := (W_{s,k} \circ \phi_{s,k}) \lv_{s,k} \\
+L[\phi] = \sum_N \sum_K \Bigg( & \phi_{n,k} \left ( -\log{\phi_{n,k}} + (\Psi(\gamma_k) - \Psi(\sum_{j=1}^K \gamma_j)) + \mv_{n,k}) \right) \\
+&     + \lambda_n (\sum_{j=1}^K \phi_{n,j} - 1) \\
+&  + \frac{1}{\sigma^2} \sum_{i=t}^{T-1} r(i-t) \exp(-\mv_i + \vv_i / 2) (\mv_{i + 1} - \mv_i + \vv_i) \phi_{n_d,k} w_{i,n} l_{d,k} \\
+&  - \frac{1} {\sigma^2} \sum_{i=t}^{T-1} r(i-t) \exp(-2\mv_i + 2 \vv_i) \phi_{n,k} w_{i,n} l_{d,n} \sum_{j=0\ldots t, j \neq i} \left( (W_{j} \circ \phi_{j,k}) \lv_{j,k,d_n} r(i-j) \right) \\
+&  - \frac{1} {\sigma^2} \sum_{i=t}^{T-1} r(i-t)^2 \exp(-2\mv_i + 2 \vv_i) \phi_{n,k} w_{i,n} (\phi_{\setminus d_n,k} \circ W_{\setminus d_n}^2) (\lv_{\setminus d_n}^2) \\
+&  - \frac{1} {\sigma^2} \sum_{i=t}^{T-1} r(i-t)^2 \exp(-2\mv_i + 2 \vv_i) \phi_{n,k} w_{i,n}^2 (\lv_{d_n}^2 + \sigma_l^2) \\
+&  - \frac{1} {\sigma^2} \sum_{i=t}^{T-1} r(i-t)^2 \exp(-2\mv_i + 2 \vv_i) \phi_{n,k} w_{i,n}^2 ({\vlv}_{\setminus d_n}) \\
+&  - \frac{1} {\sigma^2} \sum_{i=t}^{T-1} r(i-t)^2 \exp(-2\mv_i + 2 \vv_i) (1 - \phi_{n,k}) w_{i,n}^2 (\lv_{d_n}^2 + {\vlv}_{d_n}) \\
+\end{align*}
+
+Next, take the derivative with respect to $\phi_{n,i}$:
+\begin{align}
+  \label{eq:phi_term}
+  \partl{L}{\phi_{n,k}}
+ = & \sum_N \sum_K \Bigg( -\log{\phi_{n,k}} + \Psi(\gamma_k) - \Psi(\sum_{j=1}^K \gamma_j) + \mv_{n,k} + \lambda_n \\
+&  + \frac{1}{\sigma^2} w_{n} l_{d_n} \sum_{i=t}^{T-1} r(i-t) \exp(-\mv_i + \vv_i / 2) (\mv_{i + 1} - \mv_i + \vv_i) \\
+&  - \frac{1}{\sigma^2} w_{n} l_{d_n} \sum_{i=t}^{T-1} r(i-t) \exp(-2\mv_i + 2 \vv_i) \sum_{j=0\ldots i} \left( {({W_j} \circ {\phi_{j,k}})}_{\setminus D_n} \lv_{j,k\setminus D_n} r(i-j) \right) \\
+&  - \frac{1}{\sigma^2} w_{n} \sum_{i=t}^{T-1} r(i-t)^2 \exp(-2\mv_i + 2 \vv_i) (\phi_{D_n, \setminus w,k} \circ W_{D_n, \setminus w}) ({\lv}_{D_n}^2) \\
+&  - \frac{1} {\sigma^2} \sum_{i=t}^{T-1} r(i-t)^2 \exp(-2\mv_i + 2 \vv_i) w_{n}^2 ({\lv}_{d_n}^2 + \sigma_l^2) \\
+ = & \sum_N \sum_K \Bigg( -\log{\phi_{n,k}} + \Psi(\gamma_k) - \Psi(\sum_{j=1}^K \gamma_j) + \mv_{n,k} + \lambda_n \\
+&  + \frac{1}{\sigma^2} \sum_{i=t}^{T-1} r(i-t) \exp(-\mv_i + \vv_i / 2) (\mv_{i + 1} - \mv_i + \vv_i) w_{i,k} l_{d,n} \\
+&  - \frac{1} {\sigma^2} w_{t,n} l_{d,n} \sum_{i=t}^{T-1} r(i-t) \exp(-2\mv_i + 2 \vv_i) \sum_{j=0\ldots i, j \neq t} \left( (W_{j} \circ \phi_{j,k}) \lv_{j,k,d_n} r(i-j) \right) \\
+&  - \frac{1} {\sigma^2} (\phi_{D_n,k}^{\mbox{last}} \circ W_{D_n}) (\lv_{D_n}^2) \sum_{i=t}^{T-1} r(i-t)^2 \exp(-2\mv_i + 2 \vv_i) \\
+&  - \frac{1} {\sigma^2} w_{n}^2 (\lv_{d_n}^2 + \sigma_l^2) \sum_{i=t}^{T-1} r(i-t)^2 \exp(-2\mv_i + 2 \vv_i) \\
+&  + \frac{1} {\sigma^2} \phi_{n,k}^{\mbox{last}} w_{n}^2 (\lv_{d_n}^2) \sum_{i=t}^{T-1} r(i-t)^2 \exp(-2\mv_i + 2 \vv_i) \\
+\end{align}
+\begin{align}
+= & \sum_N \sum_K \Bigg( -\log{\phi_{n,k}} + \Psi(\gamma_k) - \Psi(\sum_{j=1}^K \gamma_j) + \mv_{n,k} + \lambda_n \\
+&  + \frac{1}{\sigma^2} w_{n} l_{D_n} \sum_{i=t}^{T-1} r(i-t) \exp(-\mv_i + \vv_i / 2) (\mv_{i + 1} - \mv_i + \vv_i) \\
+&  - \frac{1}{\sigma^2} \sum_{i=t}^{T-1} r(i-t) \exp(-2\mv_i + 2 \vv_i) w_{n} l_{d,n} \sum_{j=0\ldots i} \left( (W_{j} \circ \phi_{j,k}^{\mbox{last}}) \lv_{j,k,d_n} r(i-t) \right) \\
+%&  - \frac{1} {\sigma^2} \sum_{i=t}^{T-1} r(i-t) \exp(-2\mv_i + 2 \vv_i) (\phi_{i,k} \circ W_{i}^2) (\sigma_l^2) \\
+%&  - \frac{1} {\sigma^2} w_{n} (\lv_{D_n}^2 + \sigma_l^2) \sum_{i=t}^{T-1} r(i-t) \exp(-2\mv_i + 2 \vv_i) \\
+%&  + \frac{1} {\sigma^2} (\phi_{n,k}^{\mbox{last}} - w_{n}) w_{n} (\lv_{D_n}^2 + \sigma_l^2) \sum_{i=t}^{T-1} r(i-t) \exp(-2\mv_i + 2 \vv_i), \\
+&  + \frac{1} {\sigma^2} (w_{n}^2 (\lv_{D_n}^2 \phi_{n,k}^{\mbox{last}} - (\lv_{D_n}^2 + \vlv_{D_n})) \sum_{i=t}^{T-1} r(i-t) \exp(-2\mv_i + 2 \vv_i), \\
+. \\
+ = & \sum_N \sum_K \Bigg( -\log{\phi_{n,k}} + \Psi(\gamma_k) - \Psi(\sum_{j=1}^K \gamma_j) + \mv_{n,k} + \lambda_n \\
+&  + \frac{1}{\sigma^2} \w_{n} l_{D_n} \sum_{i=t}^{T-1} r(i-t) \exp(-\mv_i + \vv_i / 2) (\mv_{i + 1} - \mv_i + \vv_i) \\
+&  - \frac{1}{\sigma^2} w_{n} l_{D_n} \sum_{i=t}^{T-1} r(i-t) \exp(-2\mv_i + 2 \vv_i) \sum_{j=0\ldots i} \left( (W_{j} \circ \phi_{j,k}^{\mbox{last}}) \lv_{j,k,d_n} r(i-j) \right) \\
+% &  - \frac{1} {\sigma^2} (\phi_{i,k} \circ W_{i}) (\sigma_l^2) \sum_{i=t}^{T-1} r(i-t)^2 \exp(-2\mv_i + 2 \vv_i) \\
+% &  - \frac{1} {\sigma^2} w_{t,n}^2 (\lv_{d_n}^2 + \sigma_l^2) \sum_{i=t}^{T-1} r(i-t) \exp(-2\mv_i + 2 \vv_i) \\
+&  + \frac{1} {\sigma^2} w_{t,n}^2 (\phi_{n,k}^{\mbox{last}} \lv_{d_n}^2 - \lv_{d_n}^2 - \sigma_l^2) \sum_{i=t}^{T-1} r(i-t)^2 \exp(-2\mv_i + 2 \vv_i), \\
+\end{align}
+
+where we have introduced $\phi^{\mbox{last}}$, which is the last known value of
+$\phi$.  Therefore the update equation can be found by solving for $\phi$:
+\begin{eqnarray}
+\log(\phi) & \gets & \\
+ & & \Psi(\gamma_k) - \Psi(\sum_{j=1}^K \gamma_j) + \mv_{n,k} + \lambda_n \\
+& &  + \frac{1}{\sigma^2} \w_{t,k} l_{d_n} \sum_{i=t}^{T-1} r(i-t) \exp(-\mv_i + \vv_i / 2) (\mv_{i + 1} - \mv_i + \vv_i) \\
+& & - \frac{1}{\sigma^2} w_{t,n} l_{d_n} \sum_{i=t}^{T-1} r(i-t) \exp(-2\mv_i + 2 \vv_i) \sum_{j=0\ldots i} \left( (W_{j} \circ \phi_{j,k}^{\mbox{last}}) \lv_{j,k,d_n} r(i-j) \right) \\
+& & + \frac{1} {\sigma^2} w_{t,n}^2 (\phi_{n,k}^{\mbox{last}} \lv_{d_n}^2 - \lv_{d_n}^2 - \sigma_l^2) \sum_{i=t}^{T-1} r(i-t)^2 \exp(-2\mv_i + 2 \vv_i), \\
+\end{eqnarray}
+
+The update for $\bv$ can be found by collecting terms containing $\bv$
+from Equation~\ref{eq:elbo}.  We then maximize with respect to $\bv$:
+\begin{align*}
+%
+% Partial with respect to beta:
+%
+% First, collect all terms containing $\beta$.
+g(s) := & \expectq{\exp(-\beta_{s,k,w} ) ( \W_{s,k,w} \circ \z_{s,k,w} ) \ell_{s,k} } \\
+        & = \exp(-\mv_{s,k,w} + \vv_{s,k,w} / 2) ( \W_{s,k,w} \circ \phi_{s,k,w} ) \lv_{s,k} \\
+h(s) := & \left( \exp(-2 \mv_{s,k} + 2 \vv_{s,k}) + \exp(-2 \mv_{s,k} + \vv_{s,k}) \right) \\
+       & \times \Big( \left( (\W_{s,k,w} \circ \phi_{s,k,w}) l_{s,k} \right)^2 \\
+       & + ( \W_{s,k,w} \circ \W_{s,k,w} \circ ( \phi_{s,k,w} - \phi_{s,k,w} \circ \phi_{s,k,w} ) ) (\lv_{s,k} \circ \lv_{s,k} + \vec{\vlv}_{D_{s}}) \notag \\
+       & + ( \W_{s,k,w} \circ \W_{s,k,w} \circ \phi_{s,k,w} \circ \phi_{s,k,w} ) \vec{\vlv} \Big)\notag \\
+\partl{\mathcal{L}}{\bv_{sw}} =
+% From beta generative rule:
+   & - \frac{1}{\sigma^2} \sum_{t=1}^T
+     \left( \mv_{tw} - \mv_{t-1,w} - \sum_{i=0}^{t-1} r(i) g(t-i-1) \right) \\
+    &  \times \left( \partl{\mv_{tw}}{\bv_{sw}}
+     - \partl{\mv_{t-1,w}}{\bv_{sw}}
+     + \sum_{i=0}^{t-1} r(i) g(t-i-1) \partl{\mv_{t-i-1,w}}{\bv_{sw}} \right) \\
+   & + \sum_T \left(
+       n_{tw} - n_{t} \zeta^{-1}
+       \exp( \hat{m}_{\bb_{tw}} + \frac{\tilde{V}_{tw}}{2} ) \right)
+       \partl{\mv_t}{\bv_{sw}} \\
+   & + \frac{1}{\sigma^2} \sum_{t=1}^T
+         \sum_{i=0}^{t-1} \partl{\mv_{t-i-1}}{\bv_{sw}}
+         r(i)^2 \left( h(t-i-1) - g(t-i-1)^2 \right) \\
+   & + \frac{1}{\sigma^2} \sum_{t=0}^{T-1}
+         \partl{\mv_{t}}{\bv_{sw}}
+         r(0) g(t) \vv_{t,k}.
+\end{align*}
+
+\end{document}
