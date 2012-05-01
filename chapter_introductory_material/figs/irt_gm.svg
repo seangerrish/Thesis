@@ -9,8 +9,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="287.84201"
-   height="164.20001"
+   width="282.79999"
+   height="272.80002"
    id="svg2"
    version="1.1"
    inkscape:version="0.47 r22583"
@@ -219,6 +219,58 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2867"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2895"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <marker
+       inkscape:stockid="Arrow2Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow2Mend-4"
+       style="overflow:visible">
+      <path
+         id="path3699-4"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="scale(-0.6,-0.6)" />
+    </marker>
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3667-2-66-0-6-7-4"
+       is_visible="true" />
+    <inkscape:perspective
+       id="perspective2938"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2963"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective2988"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -228,8 +280,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="330.08091"
-     inkscape:cy="126.22674"
+     inkscape:cx="241.48091"
+     inkscape:cy="127.62675"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -237,7 +289,7 @@
      inkscape:snap-global="true"
      inkscape:window-width="1290"
      inkscape:window-height="651"
-     inkscape:window-x="161"
+     inkscape:window-x="306"
      inkscape:window-y="39"
      inkscape:window-maximized="0">
     <inkscape:grid
@@ -264,33 +316,33 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(49.242,-50.962183)">
+     transform="translate(-39.358003,56.237803)">
     <rect
        style="fill:#ff0000;fill-opacity:0;stroke:#000000;stroke-width:2.79999995;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect2818"
-       width="187.2"
-       height="161.40001"
-       x="50"
-       y="52.362183"
+       width="260"
+       height="160"
+       x="60.758003"
+       y="55.162201"
        ry="0" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       x="207.2"
-       y="83.762184"
+       x="290.758"
+       y="85.162193"
        id="text3592"><tspan
          sodipodi:role="line"
          id="tspan3594"
-         x="207.2"
-         y="83.762184"
+         x="290.758"
+         y="85.162193"
          style="font-size:30px">D</tspan></text>
     <rect
        style="fill:#ff0000;fill-opacity:0;stroke:#000000;stroke-width:2.79999995;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect2818-9"
-       width="117.2"
-       height="121.4"
-       x="70"
-       y="72.362183"
+       width="160"
+       height="250"
+       x="40.758003"
+       y="-54.837803"
        ry="0" />
     <path
        sodipodi:type="arc"
@@ -301,28 +353,28 @@
        sodipodi:rx="35"
        sodipodi:ry="30"
        d="m 510,132.36218 c 0,16.56855 -15.67003,30 -35,30 -19.32997,0 -35,-13.43145 -35,-30 0,-16.56854 15.67003,-30 35,-30 19.32997,0 35,13.43146 35,30 z"
-       transform="matrix(1,0,0,1.1666667,-351.8,-17.660366)" />
+       transform="matrix(1,0,0,1.1666667,-359.242,-24.260356)" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       x="108.2"
-       y="148.76219"
+       x="100.758"
+       y="145.1622"
        id="text3598-0"><tspan
          sodipodi:role="line"
          id="tspan3600-04"
-         x="108.2"
-         y="148.76219">w</tspan></text>
+         x="100.758"
+         y="145.1622">V</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       x="157.2"
-       y="103.76218"
+       x="170.758"
+       y="-24.837805"
        id="text3592-3"><tspan
          sodipodi:role="line"
          id="tspan3594-9"
-         x="157.2"
-         y="103.76218"
-         style="font-size:30px">N</tspan></text>
+         x="170.758"
+         y="-24.837805"
+         style="font-size:30px">U</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
@@ -342,23 +394,95 @@
        sodipodi:rx="35"
        sodipodi:ry="30"
        d="m 510,132.36218 c 0,16.56855 -15.67003,30 -35,30 -19.32997,0 -35,-13.43145 -35,-30 0,-16.56854 15.67003,-30 35,-30 19.32997,0 35,13.43146 35,30 z"
-       transform="matrix(1,0,0,1.1666667,-487.8,-20.660366)" />
+       transform="matrix(1,0,0,1.1666667,-209.242,-24.260355)" />
     <path
        style="fill:none;stroke:#000000;stroke-width:2.79999995;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
-       d="m 22.2,133.76219 60,0"
+       d="m 230.758,130.1622 -75,0"
        id="path3665-6-3-9-0-1"
        inkscape:path-effect="#path-effect3667-2-66-0-6-7"
-       inkscape:original-d="m 22.2,133.76219 60,0"
+       inkscape:original-d="m 230.758,130.1622 c 546.46579,14.2288 -94.99135,2.3e-4 -75,0"
+       sodipodi:nodetypes="cc" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.67006516;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="path3596-3-7-1"
+       sodipodi:cx="475"
+       sodipodi:cy="132.36218"
+       sodipodi:rx="35"
+       sodipodi:ry="30"
+       d="m 510,132.36218 c 0,16.56855 -15.67003,30 -35,30 -19.32997,0 -35,-13.43145 -35,-30 0,-16.56854 15.67003,-30 35,-30 19.32997,0 35,13.43146 35,30 z"
+       transform="matrix(1,0,0,1.1666667,-359.242,-159.26035)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2.79999995;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow2Mend)"
+       d="m 115.758,30.162195 0,60"
+       id="path3665-6-3-9-0-1-7"
+       inkscape:path-effect="#path-effect3667-2-66-0-6-7-4"
+       inkscape:original-d="m 115.758,30.162195 0,60"
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       x="-22.799999"
-       y="143.76219"
-       id="text3598-0-5"><tspan
+       x="100.758"
+       y="10.162195"
+       id="text2918"><tspan
          sodipodi:role="line"
-         id="tspan3600-04-6"
-         x="-22.799999"
-         y="143.76219">β</tspan></text>
+         id="tspan2920"
+         x="100.758"
+         y="10.162195">X</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="232.0437"
+       y="133.73363"
+       id="text2922"><tspan
+         sodipodi:role="line"
+         id="tspan2924"
+         x="232.0437"
+         y="133.73363"
+         style="font-size:25px">A  ,B</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="118.758"
+       y="148.1622"
+       id="text2926"><tspan
+         sodipodi:role="line"
+         id="tspan2928"
+         x="118.758"
+         y="148.1622"
+         style="font-size:15px">u,d</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="285.758"
+       y="143.1622"
+       id="text2926-4"><tspan
+         sodipodi:role="line"
+         id="tspan2928-1"
+         x="285.758"
+         y="143.1622"
+         style="font-size:20px">d</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="247.758"
+       y="143.1622"
+       id="text2926-4-6"><tspan
+         sodipodi:role="line"
+         id="tspan2928-1-3"
+         x="247.758"
+         y="143.1622"
+         style="font-size:20px">d</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       x="127.758"
+       y="15.162195"
+       id="text2926-5"><tspan
+         sodipodi:role="line"
+         id="tspan2928-10"
+         x="127.758"
+         y="15.162195"
+         style="font-size:20px">u</tspan></text>
   </g>
 </svg>
