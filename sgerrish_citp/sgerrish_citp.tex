@@ -91,17 +91,15 @@
 \large
 \vspace{20pt}
   \begin{itemize}
-  \item Understanding the main patterns of influence and events in collections of text documents
-    \begin{itemize}
-    \item How to find influential text documents
-    \item How to discover international relations using news articles
-    \end{itemize}
+  \item Understanding the main patterns of influence and events in collections of text documents: %    \item How to find influential text documents
+    Discovering international relations using news articles
+%    \end{itemize}
   \vspace{20pt}
-  \item Better understanding government
-    \begin{itemize}
-    \item Understanding lawmakers' issue preferences
-    \item How to predict votes on new bills
-    \end{itemize}
+  \item Better understanding government: Discovering how lawmakers feel about issues based on their votes
+%    \begin{itemize}
+%    \item Understand lawmakers' issue preferences
+%    \item How to predict votes on new bills
+%    \end{itemize}
   \end{itemize}
 }
 
@@ -131,561 +129,6 @@
 %    \item Much of Bibliometrics
 %    \end{itemize}
 %  \end{itemize}
-% }
-
-\frame {
-  \frametitle{Common approach: citations}
-
-  \begin{figure}
-    \includegraphics[width=0.75\textwidth]{figs/citation_network.pdf}
-  \end{figure}
-  \begin{itemize}
-    \item Traditionally, citations are used to identify influential documents.
-    \item E.g.: \emph{A novel progressive spongiform encephalopathy in
-      cattle}, \cite{wells:1987}
-      (Cited by 709)
-\vspace{2in}
-  \end{itemize}
-}
-
-\frame {
-  \frametitle{Common approach: citations}
-  \begin{figure}
-    \includegraphics[width=0.75\textwidth]{figs/no_citation_network.pdf}
-  \end{figure}
-  \begin{itemize}
-    \item Citations are limited
-      \begin{itemize}
-      \item Hard to get
-      \item May not exist
-      \item Describe only one kind of influence
-      \end{itemize}
-    \item A language-based approach enables us to measure the influence of
-      new kinds of documents
-      \begin{itemize}
-      \item News articles
-      \item Historic manuscripts
-      \end{itemize}
-  \end{itemize}
-}
-
-
-%% \frame {
-%%  \frametitle{Predicting influence in the absence of citations}
-%%   \begin{figure}
-%%     \includegraphics[width=0.8\textwidth]{../figures/topic_network.pdf}
-%%   \end{figure}
-
-%%   \begin{itemize}
-%%     \item \label{def} Our \emph{intuition} is that influential
-%%       documents change the language of their fields.
-%%     \item Our \emph{goal} is to model the influence of documents
-%%       without additional information.
-%%   \end{itemize}
-%%   Note that we assume documents influence their own subfields, not the
-%% entire corpus.
-%% \vspace{1in}
-%% }
-
-
-\frame {
-  \frametitle{Methodology}
-  \vspace{-.05in}
-  \begin{centering}
-    \begin{figure}
-    \hspace{0in} \includegraphics[width=0.8\textwidth]{figs/influence_intuition.pdf} \newline
-%    \begin{figure}
-%      \includegraphics[width=0.4\textwidth]{../figures/docinf_gm.pdf}
-%    \end{figure}
-    \end{figure}
-  \end{centering}
-  \vspace{-.25in}
-  \small
-  \begin{itemize}
-  \item We develop a probabilistic model to capture the influence of documents.
-    %    \item Build assumptions from \emph{topic models} into this model
-  \item The intuition: influential documents use language that becomes more popular in later years.
-  \item With posterior inference, we retrospectively see which documents have been influential on the corpus.
-%  \item Related to \cite{leskovec:2009} and [Shaparenko et al., 2007], with a focus on topics.  
-  \end{itemize}
-  \normalsize
-}
-
-
-\frame{
-  \frametitle{Latent Dirichlet Allocation}
-  \small
-  \hspace{140pt} \textcolor{gray}{\cite{blei:2003}} \\
-  \normalsize Topic models decompose a corpus into a set of topics, i.e. distributions over terms.
-  \large
-  \center
-  \begin{tabular}{cc}
-    \hspace{-0pt} \includegraphics[width=0.55\textwidth]{figs/topics.pdf}  \vspace{60pt} &
-    \hspace{-40pt} \includegraphics[width=0.55\textwidth]{figs/dtm.pdf}  \\
-  \end{tabular}
-}
-
-\frame {
-  \frametitle{Example topics}
-  \normalsize
-  \vspace{30pt}
-  \begin{figure}
-    \includegraphics[width=0.8\textwidth]{figs/example_topics.jpg}
-  \end{figure}
-  \vspace{30pt}
-  \tiny \textcolor{gray}{Image adapted from Chang et al. \cite{changrtl:2009}}
-}
-
-
-\section{Topic Models and LDA}
-
-
-%% \frame {
-%%   \frametitle{Topic models}
-%%   \begin{itemize}
-%%     \item Topic models help to identify latent themes in document collections (like text, images)
-
-%%       \begin{figure}
-%% 	\vspace{-5pt}
-%% 	\includegraphics[width=0.7\textwidth]{../figures/nyt_documents.pdf}
-%% 	\newline \tiny Image source \cite{changrtl:2009} \normalsize
-%%       \end{figure}
-
-%%       We use Latent Dirichlet Allocation (LDA) \cite{blei:2003}
-%%   \end{itemize}
-%% }
-
-%% \frame{
-
-%% \frametitle{Topics}
-
-%% We use posterior inference to discover these topics automatically.
-
-%% An LDA topic is formally a probability
-%% distribution over words.
-%% \newline
-%% Some topics from JSTOR: \newline
-%%   \begin{itemize}
-%%     \item agricultural, land, farm, environmental, water \newline
-%%     \item infection, patients, virus, cancer, mice \newline
-%%     \item health, nursing, nurses, hospital, medical \newline
-%%     \item theorem, lemma, proof, finite, algebra \newline
-%%   \end{itemize}
-%% }
-
-%% \frame { \frametitle{Latent Dirichlet Allocation} LDA assumes
-%%   documents are generated from a generative model.
-%%   \newline
-%%   Posterior influence is like ``filling in'' the hidden variables.
-%%   \newline
-%%   Given a set of topics $\beta$, draw a document as follows:
-%%   \begin{columns}
-%%     \begin{column}[left]{0.66\linewidth}
-%%       \begin{itemize}
-%% 	\item Choose topic mixture $\theta \sim \mbox{Dir}(\bm \alpha)$.
-%% 	  \newline For each term:
-%% 	\begin{itemize}
-%% 	  \item Choose a topic indicator $z_n \sim \mbox{Multinomial}(\theta)$.
-%% 	  \item Choose a word $w_n \sim p(w_n | z_n, \beta)$.
-%% 	\end{itemize}
-%%       \end{itemize}
-%%       \end{column}
-%%     \begin{column}[center]{0.34\linewidth}
-%%       \begin{figure}
-%%       \includegraphics[width=1\textwidth]{../figures/lda.pdf}
-%%       \end{figure}
-%%     \end{column}
-%%   \end{columns}
-%% }
-
-\section{Model}
-
-
-
-%% \frame {
-%%   \frametitle{The Dynamic Topic Model}
-
-%%   Assumes topics drift in a Markov chain:\newline
-%%   $\beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2)$  \newline
-%%   $D_t \sim$ LDA($\alpha_t, \beta_t$) \newline
-
-%%   \begin{columns}
-%%     \begin{column}[left]{0.5\linewidth}
-%%       \begin{figure}
-%% 	\vspace{-8pt}
-%% 	\hspace{105pt}
-%% 	\includegraphics[width=3.0\linewidth]{../figures/dtm.pdf}
-%%       \end{figure}
-%%     \end{column}
-%%     \begin{column}[left]{0.5\linewidth}
-%%       \vspace{-500pt}
-%%       For time $t = 1, \ldots, T$:
-%%       \begin{itemize}
-%%       \item For topic $k = 1, \ldots, K$: \label{gen:beta} \\
-%% 	Draw natural parameters $\beta_{t,k} | \beta_{t-1,k}, \sigma^2 I$
-%%       \item For each document $d_t$:
-%%         \begin{itemize}
-%%    	\item Generate document $d_t$ using traditional LDA with parameters
-%% 	  $\alpha_t$ and $\beta_{t}$.
-%%         \end{itemize}
-%%       \end{itemize}
-
-%%     \end{column}
-%%   \end{columns}
-%% }
-
-
-
-% \frame {
-%   \frametitle{The Dynamic Topic Model}
-%   \begin{itemize}
-%   \item Topics drift in a Markov chain:\newline
-%      $\beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2)$ \newline
-%   \item Documents are generated from Latent Dirichlet Allocation \newline
-%      $D_t \sim$ LDA($\alpha_t, \beta_t$) \newline
-
-%    \end{itemize}
-%    % Assumes each document has a weight which affects topic drift...\newline
-% %     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
-% \vspace{-0.43in}
-%   \begin{figure}
-%     \includegraphics[width=0.44\linewidth]{figs/dtm_gm.pdf}
-%   \end{figure}
-% }
-
-\frame {
-  \frametitle{Dynamic topics  \small \textcolor{gray}{\cite{blei:2006}}}
-   \begin{itemize}
-  \item Documents are generated from Latent Dirichlet Allocation:
-    \begin{align*}
-      D_t \sim \mbox{LDA}( \alpha_t, \beta_t )
-    \end{align*}
-    % \textcolor{white}{\item Topics drift in a Markov chain:
-    %  \begin{align*} \beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2) \end{align*}}
-  \end{itemize}
-  \begin{figure}
-    \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm.pdf}
-  \end{figure}
-   % Assumes each document has a weight which affects topic drift...\newline
-%     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
-%\vspace{-0.43in}
-  % \begin{figure}
-  %   \includegraphics[width=0.85\linewidth]{figs/docinf_dtm_gm.pdf}
-  % \end{figure}
-}
-
-
-\frame {
-  \frametitle{Dynamic topics  \small \textcolor{gray}{\cite{blei:2006}}}
-   \begin{itemize}
-  \item Documents are generated from Latent Dirichlet Allocation:
-    \begin{align*}
-      D_t \sim \mbox{LDA}( \alpha_t, \beta_t )
-    \end{align*}
-    % \textcolor{white}{\item Topics drift in a Markov chain:
-    %  \begin{align*} \beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2) \end{align*}}
-  \end{itemize}
-  \begin{figure}
-    \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm_1.pdf}
-  \end{figure}
-   % Assumes each document has a weight which affects topic drift...\newline
-%     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
-%\vspace{-0.43in}
-  % \begin{figure}
-  %   \includegraphics[width=0.85\linewidth]{figs/docinf_dtm_gm.pdf}
-  % \end{figure}
-}
-
-
-\frame {
-  \frametitle{Dynamic topics  \small \textcolor{gray}{\cite{blei:2006}}}
-   \begin{itemize}
-  \item Documents are generated from Latent Dirichlet Allocation:
-    \begin{align*}
-      D_t \sim \mbox{LDA}( \alpha_t, \beta_t )
-    \end{align*}
-  % \textcolor{white}{\item Topics drift in a Markov chain:
-  %    \begin{align*} \beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2) \end{align*}
-  %  }
-  \end{itemize}
-  \begin{figure}
-    \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm_2.pdf}
-  \end{figure}
-   % Assumes each document has a weight which affects topic drift...\newline
-%     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
-%\vspace{-0.43in}
-  % \begin{figure}
-  %   \includegraphics[width=0.85\linewidth]{figs/docinf_dtm_gm.pdf}
-  % \end{figure}
-}
-
-\frame {
-  \frametitle{Dynamic topics  \small \textcolor{gray}{\cite{blei:2006}}}
-   \begin{itemize}
-  \item Documents are generated from Latent Dirichlet Allocation:
-    \begin{align*}
-      D_t \sim \mbox{LDA}( \alpha_t, \beta_t )
-    \end{align*}
-   \item Topics drift in a Markov chain:
-     \begin{align*} \beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2) \end{align*}
-  \end{itemize}
-  \begin{figure}
-    \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm_3.pdf}
-  \end{figure}
-   % Assumes each document has a weight which affects topic drift...\newline
-%     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
-%\vspace{-0.43in}
-  % \begin{figure}
-  %   \includegraphics[width=0.85\linewidth]{figs/docinf_dtm_gm.pdf}
-  % \end{figure}
-}
-
-
-% \frame {
-%   \frametitle{Dynamic topics}
-%   The Dynamic Topic Model allows topics to change over time.
-%   \begin{figure}
-%     \includegraphics[width=0.8\textwidth]{figs/devices-topic-34.pdf}
-%   \end{figure}
-%   \tiny \hspace{150pt} \textcolor{gray}{Image from \cite{blei:2006}}.
-% }
-
-\frame {
-  \frametitle{The Document Influence Model}
-   \begin{itemize}
-  \item Documents are generated from Latent Dirichlet Allocation:
-  \begin{align*} D_t \sim \mbox{LDA}(\alpha_t, \beta_t) \end{align*}
-   \item Topics drift in a Markov chain:
-     \begin{align*} \beta_t \sim \mathcal{N}(\beta_{t-1} \textcolor{blue}{ + \mbox{Infl}(...)}, \sigma^2) \end{align*}
-  %   \small \textcolor{white}{\cite{blei:2006}} \\
-  \end{itemize}
-  \begin{figure}
-    \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm_4.pdf}
-  \end{figure}
-   % Assumes each document has a weight which affects topic drift...\newline
-%     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
-% \vspace{-0.43in}
-  % \begin{figure}
-  %   \includegraphics[width=0.85\linewidth]{figs/docinf_gm.pdf}
-  % \end{figure}
-}
-
-%% \frame {
-%%   \frametitle{The Document Influence Model}
-%%   ... with documents having potential influence in the distant future. \newline
-%%   $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
-%%   $\beta_t \sim \mathcal{N}(\beta_{t-1} + \mbox{Inf}(l_{s<t}, z_{s<t}, w_{s<t}), \sigma^2)$ \newline
-%%   $D_t \sim$ LDA($\alpha_t, \beta_t$)
-%%   \begin{figure}
-%%     \includegraphics[width=1.0\linewidth]{../figures/docinf_gm_all_arrows.pdf}
-%%   \end{figure}
-%% }
-
-\frame{
-  \frametitle{The influence function}
-  Markov step: $\beta_{t,k} \sim \mathcal{N}(\beta_{t-1,k} + \textcolor{blue}{\sum_D \mbox{Infl}_{d,t,k}}, \sigma^2 I)$,
-  \vspace{30pt}
-  \newline
-  We developed the model to have certain characteristics:
-  \begin{enumerate}
-    \item More recent documents have greater influence.
-      \begin{itemize}
-        \item Progress is sequential
-        \item Empirically, we see that research has a short half-life
-        \end{itemize}
-    \item A document only influences relevant topics.
-      \begin{itemize}
-      \item A document about mad cow disease could influence a
-        medicine topic.
-        \item A document about mad cow disease \emph{will not}
-          influence language in the space/cosmology topic.
-          \begin{center}
-          \includegraphics[width=0.34\textwidth]{figs/cowsmonaut.pdf}
-          \end{center}
-          \end{itemize}
-        \end{enumerate}
-  % \begin{figure}
-  %   \includegraphics[width=0.9\linewidth]{figs/influence_function_new.pdf}
-  % \end{figure}
-}
-
-%% \frame{
-%%   \frametitle{The DIM influence function}
-%%   Markov step: $\beta_{t,k} \sim \mathcal{N}(\beta_{t-1,k} + \textcolor{blue}{Infl(t,k)}, \sigma^2 I)$, \newline
-%%   $\textcolor{blue}{Infl(s,k)} := $\textcolor{black}{$\exp(-\beta_{s-1,k})$}$ \circ \sum_{i=0}^{s-1} \textcolor{black}{r(s - 1 - i)}
-%%     (\textcolor{black}{[\z_{i}]_k} \circ \W_{i}) l_{i,k}$,
-%%   \begin{itemize}
-%%   \item $\textcolor{black}{r(j)}$ is the fraction of a document's influence after $j$
-%%     years (called the influence envelope)
-%%   \item $\textcolor{black}{[z]_k}$ is the indicator describing whether term $z$ is in
-%%     topic $k$
-%%   \item \textcolor{black}{$\exp(-\beta_{s-1,k})$} means we add inches to inches and not to log(inches)
-%%   \end{itemize}
-%%   \begin{figure}
-%%     \includegraphics[width=0.9\linewidth]{../figures/influence_function_new.pdf}
-%%  \end{figure}
-%% }
-
-\frame {
-  \frametitle{Posterior Inference}
-  \begin{itemize}
-    \item We observe only the words $\bm w$.
-    \item We want to find the posterior $p(I, \theta, z, \beta | \bm w)$.
-    \item We use variational methods \cite{jordan:1999}.
-  \end{itemize}
-  \begin{centering}
-    \begin{figure}
-      \includegraphics[width=0.6\textwidth]{figs/variational_distribution.pdf}
-    \end{figure}
-  \end{centering}
-}
-
-%% \frame {
-%%   \frametitle{We use variational inference}
-%%   \begin{itemize}
-%%     \item Variational inference approximates the posterior density $p(x | \bm w)$ with some distribution $q(x)$.
-%%     \item $q(x)$ comes from a simplified family of distributions. \cite{jordan:1999}
-%%     \item We find $q(x)$ by minimizing $KL(q || p(x | \bm w))$.
-%%   \end{itemize}
-%%   \begin{centering}
-%%     \begin{figure}
-%%       \includegraphics[width=0.5\textwidth]{../figures/variational_distribution.jpg} \\
-%%     \end{figure}
-%%   \end{centering}
-%% }
-
-\frame{
-  \frametitle{Experiments}
-  \large
-  \begin{itemize}
-  \item We analyzed three corpora with the DIM.
-    \begin{itemize}
-    \item The \emph{ACL Anthology}: 7561 documents
-    \item \emph{Nature}: 34454 documents
-    \item \emph{PNAS}: 11855 documents
-    \end{itemize}
-  \vspace{20pt}
-  \item This provides estimates of the influence of each article.
-  \end{itemize}
-    
-}
-
-\frame {
-  \frametitle{Topics in ACL and PNAS}
-% \emph{Using Restriction To Extend Parsing Algorithms For Complex-Feature-Based Formalisms}
-  \begin{figure}
-    \includegraphics[width=0.7\textwidth]{figs/dynamic_topics.pdf}
-  \end{figure}
-}
-
-%\frame{
-%  \frametitle{A closer look: terms across time}
-%  \emph{Genetics of Human Cell Lines, IV. DNA-Mediated Heritable Transformation of a Biochemical Trait}
-%  \begin{figure}
-%      \begin{centering}
-%    \begin{tabular}{cc}
-%      \includegraphics[width=0.45\textwidth]{../figures/genetics_cell_lines_terms_time.pdf}
-%      \emph{Genetics of Human Cell Lines}
-%    \end{tabular}
-%      \end{centering}
-%  \end{figure}
-%}
-
-% \frame{
-%   \frametitle{A closer look}
-%   \begin{itemize}
-%   \item We can inspect documents with high or low scores.
-%     \begin{itemize}
-%     \item High influence and high citations
-%     \item Low influence and high citations
-%     \item High influence and low citations
-%     \end{itemize}
-%   \end{itemize}
-% }
-
-\frame{
-  \frametitle{High influence and high citations}
-  \begin{columns}
-    \begin{column}[left]{0.3\linewidth}
-      \fbox{
-	\includegraphics[width=0.9\textwidth]{figs/mathematics_statistical.pdf}
-      }
-      ACL citations: 7561
-      \end{column}
-    \begin{column}[left]{0.7\linewidth}
-      \includegraphics[width=1.0\textwidth]{figs/acl_brown.pdf}
-    \end{column}
-  \end{columns}
-
-}
-
-
-% \frame{
-%   \begin{itemize}
-%   \large
-%   \item We computed the Spearman rank correlation with citations.
-%     \begin{itemize}
-%     \item ACL Anthology Network \cite{Radev:2009}
-%     \item Google Scholar (PNAS and Nature)
-%     \end{itemize}
-%     \item Significant correlation with citations ($p \le 1e-4$)
-% %    \item Window sizes are 4 years for \emph{ACL} and
-% %    \emph{PNAS} and 5 years for \emph{Nature}
-%     \item Spearman rank correlation: \\
-%       0.37 (ACL); 0.28 (Nature); 0.20 (PNAS)
-%     \item Also developed a simple baseline which does well: \\
-%     0.2 (ACL, PNAS) and 0.26 (Nature)
-%   \end{itemize}
-%   \frametitle{Results}
-% }
-
-\frame{
-  \frametitle{Comparison with citation counts}
-  \large
-  \begin{itemize}
-  \item We can sort articles by decreasing influence and inspect how many citations
-    the top $N$ have.
-  \item For example, the top 20\% of \emph{Nature} articles (by the influence function) receive 50\% of
-    its citations.
-  \end{itemize}
-  \begin{figure}
-    \includegraphics[width=1.1\linewidth]{figs/results_roc.pdf}
-  \end{figure}
-}
-
-\frame{
-  \frametitle{Results}
-  \large
-  \begin{itemize}
-  \item We can sort articles by decreasing influence and inspect how many citations
-    the top $N$ have.
-  \item For example, the top 20\% of \emph{Nature} articles (by the influence function) receive 50\% of
-    its citations.
-  \end{itemize}
-  \begin{figure}
-    \includegraphics[width=1.1\linewidth]{figs/results_roc_marked.pdf}
-  \end{figure}
-}
-
-% \frame {
-%   \frametitle{Summary}
-%   \begin{itemize}
-%   \item We developed an algorithm that identifies influential documents by analyzing their texts
-%   \item The Document Influence Model
-%     \begin{itemize}
-%     \item Divides the words of a corpus into topics
-%     \item Infers which articles ``influenced'' their topics
-%     \end{itemize}
-%   \item Based only on analyzing the language, our model finds a
-%     measure of influence that correlates significantly with citation.
-    
-%   \item Some future directions
-%     \begin{itemize}
-%     \item Per-document influence envelope \newline
-%     \item Validation on non-citation data (e.g., usage data) \newline
-%     \item Application to corpora without citations \newline
-%     \end{itemize}
-%   \end{itemize}
 % }
 
 
@@ -928,7 +371,7 @@
   \item Use this approach to understand how different news sources
     frame international relations
   \item Use better supervision than Mechanical Turk workers
-  \item Fit the foreign relations model in an unsupervised way \tiny \textcolor{gray}{(c.f. \cite{chang:2009})}
+  \item Fit the foreign relations model in an unsupervised way \tiny \textcolor{gray}{(c.f. \cite{chang:2009})} \normalsize
   \item Add intercepts to countries
   \end{itemize}
 }
@@ -1146,27 +589,6 @@ Images credit Susan Walsh (Associated Press) and EPA
 % }
 
 \frame{
-  \frametitle{Item Response Theory}
-  \tiny
-    \textcolor{gray}{
-  \begin{tabular}{lll}
-Jackman, 2001 & Poole and Rosenthal, 1985 & Martin and Quinn, 2002 \\
-Jounson and Albert, 1999 & Clinton et al., 2004 & \\
-  \end{tabular}
-}
-  \large
-%  \center
-  \begin{align*}
-    \vspace{-70pt}
-    p(v_{ud} = \mbox{Yes}| x_u, a_d, b_d) = \mbox{logistic}(x_u \cdot a_d + b_d) \\
-  \end{align*}
-  \normalsize
-  \vspace{20pt}
-  \center
-  \includegraphics[width=0.6\textwidth]{figs/ip_gm.pdf} \\
-}
-
-\frame{
   \frametitle{Ideal points}
   Ideal points $\textcolor{blue}{x_u}$ position lawmakers in a latent political space.
   \tiny
@@ -1334,32 +756,16 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
 
 \frame{
   \frametitle{An issue-adjusted ideal point model}
-  \tiny
-    \textcolor{gray}{
-%  \begin{tabular}{l}
-%    Gerrish and Blei \\
-%  \end{tabular}
-}
   \large
 %  \center
+  Ideal points:
   \begin{align*}
-    p(v_{ud} = \mbox{Yes}| \ldots) = \ldots
+    p(v_{ud} = \mbox{Yes}| \ldots) = \mbox{logistic}(x_u \cdot a_d + b_d) \\
   \end{align*}
-  \vspace{10pt}
-  \begin{tabular}{c|c}
-    $\mbox{logistic}(x_u \cdot a_d + b_d)$
- %   \vspace{30pt}
-    &
-    $\mbox{logistic}((x_u \textcolor{blue}{+ \bm z_u^T \theta_d}) \cdot a_d + b_d)$
-%    \vspace{10pt}
-    \\
-%    \vspace{-90pt}
-      \includegraphics[width=0.45\textwidth]{figs/ip_gm.pdf} 
-
-      &
-%      \vspace{30pt}
-      \includegraphics[width=0.55\textwidth]{figs/legis_gm.pdf} \\
-  \end{tabular}
+  Issue-adjusted ideal points:
+  \begin{align*}
+    p(v_{ud} = \mbox{Yes}| \ldots) = \mbox{logistic}((x_u \textcolor{blue}{+ \bm z_u^T \theta_d}) \cdot a_d + b_d)
+  \end{align*}
   \normalsize
 }
 
@@ -1385,6 +791,7 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
 \frame {
   \frametitle{Heldout log-likelihood}
   We used 6-fold cross-validation to assess the model.
+  \vspace{20pt}
   \center
   \begin{tabular}{|c|cccccc|}
     \hline
@@ -1411,13 +818,6 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
     & \hspace{-4pt} \textbf{-0.188} \hspace{-5pt}
     & \hspace{-4pt} \textbf{-0.205} \hspace{-5pt}
     & \hspace{-4pt} \textbf{-0.180} \hspace{-4pt} \\
-    \hspace{-5pt} Perm. Issue \hspace{-5pt}
-    & \hspace{-4pt} -0.210 \hspace{-5pt}
-    & \hspace{-4pt} -0.210 \hspace{-5pt}
-    & \hspace{-4pt} -0.183 \hspace{-5pt}
-    & \hspace{-4pt} -0.203 \hspace{-5pt}
-    & \hspace{-4pt} -0.211 \hspace{-5pt}
-    & \hspace{-4pt} -0.186 \hspace{-4pt} \\
     % Permuted Issue & & & & & & \\
     \hline
     \hline
@@ -1436,13 +836,6 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
     & \hspace{-4pt} \textbf{-0.116} \hspace{-5pt}
     & \hspace{-4pt} \textbf{-0.087} \hspace{-5pt}
     & \hspace{-4pt} \textbf{-0.180} \hspace{-4pt} \\
-    \hspace{-5pt} Perm. Issue \hspace{-5pt}
-    & \hspace{-4pt} -0.210 \hspace{-5pt}
-    & \hspace{-4pt} -0.211 \hspace{-5pt}
-    & \hspace{-4pt} -0.100 \hspace{-5pt}
-    & \hspace{-4pt} -0.123 \hspace{-5pt}
-    & \hspace{-4pt} -0.098 \hspace{-5pt}
-    & \hspace{-4pt} -0.187 \hspace{-4pt} \\
     \hline
   \end{tabular}
 }
@@ -1541,38 +934,38 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
 \end{frame}
 
 
-\frame {
-  \frametitle{Procedural Cartels}
-  \emph{Procedural cartel theory} explains the difference in voting patterns between substantive issues and procedural issues.
-\tiny
-%  \begin{center}
-\textcolor{gray}{
- %   \begin{tabular}{ll}
-  (\cite{fenno:1965}, \cite{jones:1964},
-  \cite{cox:2002}, \cite{cox:1993})
-%  \end{tabular}
-  }
-%  \end{center}
-  \normalsize
-%  \vspace{20pt}
-\begin{itemize}
-  \item
-    \emph{Parties in the House -- especially the majority party -- are a
-      species of 'legislative cartel' [ which usurp the power ] to make
-      rules governing the structure and process of legislation.}
-      \tiny \textcolor{gray}{\citet{cox:1993}} \normalsize
-  %% The cartel's primary goal in procedural control is to structure the rules
-  %% of the House to ensure party unity and to dissuade defection among
-  %% party members.
-  \item The majority party delegates an agenda-setting monopoly to senior
-  partners in the party. %, who set the procedural agenda in the House
-\item The cartel ensures that senior members hold
-  agenda-setting seats (such as committee chairs) while rank-and-file
-  members of the party support agenda-setting decisions % (instead of
-%  defecting).
-  \tiny \textcolor{gray}{\citep{cox:2005}} \normalsize
-  \end{itemize}
-}
+% \frame {
+%   \frametitle{Procedural Cartels}
+%   \emph{Procedural cartel theory} explains the difference in voting patterns between substantive issues and procedural issues.
+% \tiny
+% %  \begin{center}
+% \textcolor{gray}{
+%  %   \begin{tabular}{ll}
+%   (\cite{fenno:1965}, \cite{jones:1964},
+%   \cite{cox:2002}, \cite{cox:1993})
+% %  \end{tabular}
+%   }
+% %  \end{center}
+%   \normalsize
+% %  \vspace{20pt}
+% \begin{itemize}
+%   \item
+%     \emph{Parties in the House -- especially the majority party -- are a
+%       species of 'legislative cartel' [ which usurp the power ] to make
+%       rules governing the structure and process of legislation.}
+%       \tiny \textcolor{gray}{\citet{cox:1993}} \normalsize
+%   %% The cartel's primary goal in procedural control is to structure the rules
+%   %% of the House to ensure party unity and to dissuade defection among
+%   %% party members.
+%   \item The majority party delegates an agenda-setting monopoly to senior
+%   partners in the party. %, who set the procedural agenda in the House
+% \item The cartel ensures that senior members hold
+%   agenda-setting seats (such as committee chairs) while rank-and-file
+%   members of the party support agenda-setting decisions % (instead of
+% %  defecting).
+%   \tiny \textcolor{gray}{\citep{cox:2005}} \normalsize
+%   \end{itemize}
+% }
 
 % \frame{
 %   \frametitle{Adding text to the ideal point model}
@@ -1813,13 +1206,6 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
 % }
 
 \frame {
-  \frametitle{Example: Ronald Paul}
-  \begin{center}
-  \includegraphics[height=0.9\textheight]{figs/3393_house_Ronald_Paul_400311.pdf}
-  \end{center}
-}
-
-\frame {
   \frametitle{Example: Donald Young}
   \begin{center}
   \includegraphics[height=0.9\textheight]{figs/3393_house_Donald_Young_400440.pdf}
@@ -1828,17 +1214,17 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
 
 \frame {
   \frametitle{Summary}
-  Two new models for finding patterns in collections of text data
+  A new model for finding patterns in collections of text data
   \begin{itemize}
-  \item A method to find influence in text collections
-  \item A method to map the interactions of countries through time
+  % \item A method to find influence in text collections
+    \item Map the interactions of countries through time
   \end{itemize}
   \vspace{30pt}
   Automatically infer lawmakers' voting patterns on issues
   \begin{itemize}
     \item Traditional ideal points are limited and hard to interpret
     \item Issue-adjusted ideal points represent votes better and
-      provide a window into issue preferences.
+      provide a window into issue preferences
   \end{itemize}
 }
 
@@ -1873,8 +1259,660 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
   \bibliography{bib} 
 \end{frame}
 
+
+
+\frame {
+  \frametitle{Common approach: citations}
+
+  \begin{figure}
+    \includegraphics[width=0.75\textwidth]{figs/citation_network.pdf}
+  \end{figure}
+  \begin{itemize}
+    \item Traditionally, citations are used to identify influential documents.
+    \item E.g.: \emph{A novel progressive spongiform encephalopathy in
+      cattle}, \cite{wells:1987}
+      (Cited by 709)
+\vspace{2in}
+  \end{itemize}
+}
+
+\frame {
+  \frametitle{Common approach: citations}
+  \begin{figure}
+    \includegraphics[width=0.75\textwidth]{figs/no_citation_network.pdf}
+  \end{figure}
+  \begin{itemize}
+    \item Citations are limited
+      \begin{itemize}
+      \item Hard to get
+      \item May not exist
+      \item Describe only one kind of influence
+      \end{itemize}
+    \item A language-based approach enables us to measure the influence of
+      new kinds of documents
+      \begin{itemize}
+      \item News articles
+      \item Historic manuscripts
+      \end{itemize}
+  \end{itemize}
+}
+
+
+%% \frame {
+%%  \frametitle{Predicting influence in the absence of citations}
+%%   \begin{figure}
+%%     \includegraphics[width=0.8\textwidth]{../figures/topic_network.pdf}
+%%   \end{figure}
+
+%%   \begin{itemize}
+%%     \item \label{def} Our \emph{intuition} is that influential
+%%       documents change the language of their fields.
+%%     \item Our \emph{goal} is to model the influence of documents
+%%       without additional information.
+%%   \end{itemize}
+%%   Note that we assume documents influence their own subfields, not the
+%% entire corpus.
+%% \vspace{1in}
+%% }
+
+
+\frame {
+  \frametitle{Methodology}
+  \vspace{-.05in}
+  \begin{centering}
+    \begin{figure}
+    \hspace{0in} \includegraphics[width=0.8\textwidth]{figs/influence_intuition.pdf} \newline
+%    \begin{figure}
+%      \includegraphics[width=0.4\textwidth]{../figures/docinf_gm.pdf}
+%    \end{figure}
+    \end{figure}
+  \end{centering}
+  \vspace{-.25in}
+  \small
+  \begin{itemize}
+  \item Develop a probabilistic model to capture the influence of documents.
+    %    \item Build assumptions from \emph{topic models} into this model
+  \item The intuition: influential documents use language that becomes more popular in later years.
+  \item With posterior inference, we retrospectively see which documents have been influential on the corpus.
+%  \item Related to \cite{leskovec:2009} and [Shaparenko et al., 2007], with a focus on topics.  
+  \end{itemize}
+  \normalsize
+}
+
+
+\frame{
+  \frametitle{Latent Dirichlet Allocation}
+  \small
+  \hspace{140pt} \textcolor{gray}{\cite{blei:2003}} \\
+  \normalsize Topic models decompose a corpus into a set of topics, i.e. distributions over terms.
+  \large
+  \begin{center}
+%  \begin{tabular}{cc}
+   \includegraphics[width=0.92\textwidth]{figs/topics.pdf}
+%  \vspace{60pt} &
+%    \hspace{-40pt} \includegraphics[width=0.55\textwidth]{figs/dtm.pdf}
+%  \\
+%  \end{tabular}
+   \end{center}
+}
+
+\frame {
+  \frametitle{Example topics}
+  \normalsize
+  \vspace{30pt}
+  \begin{figure}
+    \includegraphics[width=0.8\textwidth]{figs/example_topics.jpg}
+  \end{figure}
+  \vspace{30pt}
+  \tiny \textcolor{gray}{Image adapted from Chang et al. \cite{changrtl:2009}}
+}
+
+
+\section{Topic Models and LDA}
+
+
+%% \frame {
+%%   \frametitle{Topic models}
+%%   \begin{itemize}
+%%     \item Topic models help to identify latent themes in document collections (like text, images)
+
+%%       \begin{figure}
+%% 	\vspace{-5pt}
+%% 	\includegraphics[width=0.7\textwidth]{../figures/nyt_documents.pdf}
+%% 	\newline \tiny Image source \cite{changrtl:2009} \normalsize
+%%       \end{figure}
+
+%%       We use Latent Dirichlet Allocation (LDA) \cite{blei:2003}
+%%   \end{itemize}
+%% }
+
+%% \frame{
+
+%% \frametitle{Topics}
+
+%% We use posterior inference to discover these topics automatically.
+
+%% An LDA topic is formally a probability
+%% distribution over words.
+%% \newline
+%% Some topics from JSTOR: \newline
+%%   \begin{itemize}
+%%     \item agricultural, land, farm, environmental, water \newline
+%%     \item infection, patients, virus, cancer, mice \newline
+%%     \item health, nursing, nurses, hospital, medical \newline
+%%     \item theorem, lemma, proof, finite, algebra \newline
+%%   \end{itemize}
+%% }
+
+%% \frame { \frametitle{Latent Dirichlet Allocation} LDA assumes
+%%   documents are generated from a generative model.
+%%   \newline
+%%   Posterior influence is like ``filling in'' the hidden variables.
+%%   \newline
+%%   Given a set of topics $\beta$, draw a document as follows:
+%%   \begin{columns}
+%%     \begin{column}[left]{0.66\linewidth}
+%%       \begin{itemize}
+%% 	\item Choose topic mixture $\theta \sim \mbox{Dir}(\bm \alpha)$.
+%% 	  \newline For each term:
+%% 	\begin{itemize}
+%% 	  \item Choose a topic indicator $z_n \sim \mbox{Multinomial}(\theta)$.
+%% 	  \item Choose a word $w_n \sim p(w_n | z_n, \beta)$.
+%% 	\end{itemize}
+%%       \end{itemize}
+%%       \end{column}
+%%     \begin{column}[center]{0.34\linewidth}
+%%       \begin{figure}
+%%       \includegraphics[width=1\textwidth]{../figures/lda.pdf}
+%%       \end{figure}
+%%     \end{column}
+%%   \end{columns}
+%% }
+
+\section{Model}
+
+\frame {
+  \frametitle{A model of influence}
+  We encode several assumptions into a statistical model.
+  \begin{itemize}
+  \item Assumption 1: Documents at time $t$ come from LDA:
+    \begin{figure}
+      \includegraphics[width=0.3\textwidth]{figs/dtm.pdf}
+    \end{figure}
+  \item Assumption 2: Topics $\beta_k$ evolve over time: 
+    \begin{align*}
+      \beta_{k,t} = \beta_{k,t-1} + \varepsilon_1 
+    \end{align*}
+  \item Assumption 3: Topics don't drift randomly:
+    \begin{align*} \beta_{k,t} = \beta_{k,t-1} + \sum_{d=1}^D \sum_{W=1}^{N_d} \mbox{Influence}(\textcolor{blue}{I_d}, w_{nd}) + \varepsilon \end{align*}
+  \end{itemize}
+}
+
+%% \frame {
+%%   \frametitle{The Dynamic Topic Model}
+
+%%   Assumes topics drift in a Markov chain:\newline
+%%   $\beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2)$  \newline
+%%   $D_t \sim$ LDA($\alpha_t, \beta_t$) \newline
+
+%%   \begin{columns}
+%%     \begin{column}[left]{0.5\linewidth}
+%%       \begin{figure}
+%% 	\vspace{-8pt}
+%% 	\hspace{105pt}
+%% 	\includegraphics[width=3.0\linewidth]{../figures/dtm.pdf}
+%%       \end{figure}
+%%     \end{column}
+%%     \begin{column}[left]{0.5\linewidth}
+%%       \vspace{-500pt}
+%%       For time $t = 1, \ldots, T$:
+%%       \begin{itemize}
+%%       \item For topic $k = 1, \ldots, K$: \label{gen:beta} \\
+%% 	Draw natural parameters $\beta_{t,k} | \beta_{t-1,k}, \sigma^2 I$
+%%       \item For each document $d_t$:
+%%         \begin{itemize}
+%%    	\item Generate document $d_t$ using traditional LDA with parameters
+%% 	  $\alpha_t$ and $\beta_{t}$.
+%%         \end{itemize}
+%%       \end{itemize}
+
+%%     \end{column}
+%%   \end{columns}
+%% }
+
+
+
+% \frame {
+%   \frametitle{The Dynamic Topic Model}
+%   \begin{itemize}
+%   \item Topics drift in a Markov chain:\newline
+%      $\beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2)$ \newline
+%   \item Documents are generated from Latent Dirichlet Allocation \newline
+%      $D_t \sim$ LDA($\alpha_t, \beta_t$) \newline
+
+%    \end{itemize}
+%    % Assumes each document has a weight which affects topic drift...\newline
+% %     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
+% \vspace{-0.43in}
+%   \begin{figure}
+%     \includegraphics[width=0.44\linewidth]{figs/dtm_gm.pdf}
+%   \end{figure}
+% }
+
+% \frame {
+%   \frametitle{Dynamic topics  \small \textcolor{gray}{\cite{blei:2006}}}
+%    \begin{itemize}
+%   \item Words are generated based on Latent Dirichlet Allocation.
+% % :
+% %     \begin{align*}
+% %       p(\bm W, \bm Z, \beta, \bm \theta) = \prod_{k=1}^K p(\beta_k) \times \prod_{d=1}^D p( \theta_d) \prod_{n=1}^{N_d} p(z_{nd} | \theta_d) p(w_{nd} | z_{nd}, \beta)
+% %     \end{align*}
+%     % \textcolor{white}{\item Topics drift in a Mawrkov chain:
+%     %  \begin{align*} \beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2) \end{align*}}
+%   \end{itemize}
+%   \begin{figure}
+%     \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm.pdf}
+%   \end{figure}
+%    % Assumes each document has a weight which affects topic drift...\newline
+% %     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
+% %\vspace{-0.43in}
+%   % \begin{figure}
+%   %   \includegraphics[width=0.85\linewidth]{figs/docinf_dtm_gm.pdf}
+%   % \end{figure}
+% }
+
+
+% \frame {
+%   \frametitle{Dynamic topics  \small \textcolor{gray}{\cite{blei:2006}}}
+%    \begin{itemize}
+%   \item Documents are generated from Latent Dirichlet Allocation:
+%     \begin{align*}
+%       D_t \sim \mbox{LDA}( \alpha_t, \beta_t )
+%     \end{align*}
+%     % \textcolor{white}{\item Topics drift in a Markov chain:
+%     %  \begin{align*} \beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2) \end{align*}}
+%   \end{itemize}
+%   \begin{figure}
+%     \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm_1.pdf}
+%   \end{figure}
+%    % Assumes each document has a weight which affects topic drift...\newline
+% %     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
+% %\vspace{-0.43in}
+%   % \begin{figure}
+%   %   \includegraphics[width=0.85\linewidth]{figs/docinf_dtm_gm.pdf}
+%   % \end{figure}
+% }
+
+
+% \frame {
+%   \frametitle{Dynamic topics  \small \textcolor{gray}{\cite{blei:2006}}}
+%    \begin{itemize}
+%   \item Documents are generated from Latent Dirichlet Allocation:
+%     \begin{align*}
+%       D_t \sim \mbox{LDA}( \alpha_t, \beta_t )
+%     \end{align*}
+%   % \textcolor{white}{\item Topics drift in a Markov chain:
+%   %    \begin{align*} \beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2) \end{align*}
+%   %  }
+%   \end{itemize}
+%   \begin{figure}
+%     \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm_2.pdf}
+%   \end{figure}
+%    % Assumes each document has a weight which affects topic drift...\newline
+% %     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
+% %\vspace{-0.43in}
+%   % \begin{figure}
+%   %   \includegraphics[width=0.85\linewidth]{figs/docinf_dtm_gm.pdf}
+%   % \end{figure}
+% }
+
+% \frame {
+%   \frametitle{Dynamic topics  \small \textcolor{gray}{\cite{blei:2006}}}
+%    \begin{itemize}
+%   \item Documents are generated from Latent Dirichlet Allocation:
+%     \begin{align*}
+%       D_t \sim \mbox{LDA}( \alpha_t, \beta_t )
+%     \end{align*}
+%    \item Topics drift in a Markov chain:
+%      \begin{align*} \beta_t = \beta_{t-1} + \varepsilon \end{align*}
+%   \end{itemize}
+%   \begin{figure}
+%     \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm_3.pdf}
+%   \end{figure}
+%    % Assumes each document has a weight which affects topic drift...\newline
+% %     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
+% %\vspace{-0.43in}
+%   % \begin{figure}
+%   %   \includegraphics[width=0.85\linewidth]{figs/docinf_dtm_gm.pdf}
+%   % \end{figure}
+% }
+
+
+% \frame {
+%   \frametitle{Dynamic topics}
+%   The Dynamic Topic Model allows topics to change over time.
+%   \begin{figure}
+%     \includegraphics[width=0.8\textwidth]{figs/devices-topic-34.pdf}
+%   \end{figure}
+%   \tiny \hspace{150pt} \textcolor{gray}{Image from \cite{blei:2006}}.
+% }
+
+% \frame {
+%   \frametitle{The Document Influence Model}
+%    \begin{itemize}
+%   \item Documents are generated from Latent Dirichlet Allocation:
+%   \begin{align*} D_t \sim \mbox{LDA}(\alpha_t, \beta_t) \end{align*}
+%    \item Topics drift in a Markov chain:
+%      \begin{align*} \beta_t = \beta_{t-1} \textcolor{red}{ + \mbox{Infl}(z, w)} + \varepsilon \end{align*}
+%   %   \small \textcolor{white}{\cite{blei:2006}} \\
+%   \end{itemize}
+%   \begin{figure}
+%     \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm_4.pdf}
+%   \end{figure}
+%    % Assumes each document has a weight which affects topic drift...\newline
+% %     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
+% % \vspace{-0.43in}
+%   % \begin{figure}
+%   %   \includegraphics[width=0.85\linewidth]{figs/docinf_gm.pdf}
+%   % \end{figure}
+% }
+
+%% \frame {
+%%   \frametitle{The Document Influence Model}
+%%   ... with documents having potential influence in the distant future. \newline
+%%   $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
+%%   $\beta_t \sim \mathcal{N}(\beta_{t-1} + \mbox{Inf}(l_{s<t}, z_{s<t}, w_{s<t}), \sigma^2)$ \newline
+%%   $D_t \sim$ LDA($\alpha_t, \beta_t$)
+%%   \begin{figure}
+%%     \includegraphics[width=1.0\linewidth]{../figures/docinf_gm_all_arrows.pdf}
+%%   \end{figure}
+%% }
+
+
+%% \frame{
+%%   \frametitle{The DIM influence function}
+%%   Markov step: $\beta_{t,k} \sim \mathcal{N}(\beta_{t-1,k} + \textcolor{blue}{Infl(t,k)}, \sigma^2 I)$, \newline
+%%   $\textcolor{blue}{Infl(s,k)} := $\textcolor{black}{$\exp(-\beta_{s-1,k})$}$ \circ \sum_{i=0}^{s-1} \textcolor{black}{r(s - 1 - i)}
+%%     (\textcolor{black}{[\z_{i}]_k} \circ \W_{i}) l_{i,k}$,
+%%   \begin{itemize}
+%%   \item $\textcolor{black}{r(j)}$ is the fraction of a document's influence after $j$
+%%     years (called the influence envelope)
+%%   \item $\textcolor{black}{[z]_k}$ is the indicator describing whether term $z$ is in
+%%     topic $k$
+%%   \item \textcolor{black}{$\exp(-\beta_{s-1,k})$} means we add inches to inches and not to log(inches)
+%%   \end{itemize}
+%%   \begin{figure}
+%%     \includegraphics[width=0.9\linewidth]{../figures/influence_function_new.pdf}
+%%  \end{figure}
+%% }
+
+\frame {
+  \frametitle{Posterior Inference}
+  \begin{itemize}
+    \item We observe only the words $\bm W$.
+      \vspace{20pt}
+    \item We want to find the posterior $p(\bm I, \theta, \bm Z, \beta | \bm W)$.
+      \vspace{20pt}
+    \item We use variational methods. \tiny \textcolor{gray}{\citep{jordan:1999}} \normalsize
+  \end{itemize}
+  % \begin{centering}
+  %   \begin{figure}
+  %     \includegraphics[width=0.6\textwidth]{figs/variational_distribution.pdf}
+  %   \end{figure}
+  % \end{centering}
+}
+
+%% \frame {
+%%   \frametitle{We use variational inference}
+%%   \begin{itemize}
+%%     \item Variational inference approximates the posterior density $p(x | \bm w)$ with some distribution $q(x)$.
+%%     \item $q(x)$ comes from a simplified family of distributions. \cite{jordan:1999}
+%%     \item We find $q(x)$ by minimizing $KL(q || p(x | \bm w))$.
+%%   \end{itemize}
+%%   \begin{centering}
+%%     \begin{figure}
+%%       \includegraphics[width=0.5\textwidth]{../figures/variational_distribution.jpg} \\
+%%     \end{figure}
+%%   \end{centering}
+%% }
+
+\frame{
+  \frametitle{Experiments}
+  \large
+  \begin{itemize}
+  \item We analyzed three corpora with the DIM.
+    \begin{itemize}
+    \item The \emph{ACL Anthology}: 7,561 documents
+    \item \emph{Nature}: 34,454 documents
+    \item \emph{PNAS}: 11,855 documents
+    %\item 40K documents
+    \end{itemize}
+  \vspace{20pt}
+  \item This provides estimates of the influence of each article.
+  \end{itemize}
+    
+}
+
+\frame {
+  \frametitle{Topics in ACL and PNAS}
+% \emph{Using Restriction To Extend Parsing Algorithms For Complex-Feature-Based Formalisms}
+  \begin{figure}
+    \includegraphics[width=0.7\textwidth]{figs/dynamic_topics.pdf}
+  \end{figure}
+}
+
+%\frame{
+%  \frametitle{A closer look: terms across time}
+%  \emph{Genetics of Human Cell Lines, IV. DNA-Mediated Heritable Transformation of a Biochemical Trait}
+%  \begin{figure}
+%      \begin{centering}
+%    \begin{tabular}{cc}
+%      \includegraphics[width=0.45\textwidth]{../figures/genetics_cell_lines_terms_time.pdf}
+%      \emph{Genetics of Human Cell Lines}
+%    \end{tabular}
+%      \end{centering}
+%  \end{figure}
+%}
+
+% \frame{
+%   \frametitle{A closer look}
+%   \begin{itemize}
+%   \item We can inspect documents with high or low scores.
+%     \begin{itemize}
+%     \item High influence and high citations
+%     \item Low influence and high citations
+%     \item High influence and low citations
+%     \end{itemize}
+%   \end{itemize}
+% }
+
+\frame{
+  \frametitle{High influence and high citations}
+  \begin{columns}
+    \begin{column}[left]{0.3\linewidth}
+      \fbox{
+	\includegraphics[width=0.9\textwidth]{figs/mathematics_statistical.pdf}
+      }
+      ACL citations: 7561
+      \end{column}
+    \begin{column}[left]{0.7\linewidth}
+      \includegraphics[width=1.0\textwidth]{figs/acl_brown.pdf}
+    \end{column}
+  \end{columns}
+
+}
+
+
+% \frame{
+%   \begin{itemize}
+%   \large
+%   \item We computed the Spearman rank correlation with citations.
+%     \begin{itemize}
+%     \item ACL Anthology Network \cite{Radev:2009}
+%     \item Google Scholar (PNAS and Nature)
+%     \end{itemize}
+%     \item Significant correlation with citations ($p \le 1e-4$)
+% %    \item Window sizes are 4 years for \emph{ACL} and
+% %    \emph{PNAS} and 5 years for \emph{Nature}
+%     \item Spearman rank correlation: \\
+%       0.37 (ACL); 0.28 (Nature); 0.20 (PNAS)
+%     \item Also developed a simple baseline which does well: \\
+%     0.2 (ACL, PNAS) and 0.26 (Nature)
+%   \end{itemize}
+%   \frametitle{Results}
+% }
+
+\frame{
+  \frametitle{Comparison with citation counts}
+  \large
+  \begin{itemize}
+  \item We can sort articles by decreasing influence and inspect how many citations
+    the top $N$ have.
+  \item For example, the top 20\% of \emph{Nature} articles (by the influence function) receive 50\% of
+    its citations.
+  \end{itemize}
+  \begin{figure}
+    \includegraphics[width=1.1\linewidth]{figs/results_roc.pdf}
+  \end{figure}
+}
+
+\frame{
+  \frametitle{Results}
+  \large
+  \begin{itemize}
+  \item We can sort articles by decreasing influence and inspect how many citations
+    the top $N$ have.
+  \item For example, the top 20\% of \emph{Nature} articles (by the influence function) receive 50\% of
+    its citations.
+  \end{itemize}
+  \begin{figure}
+    \includegraphics[width=1.1\linewidth]{figs/results_roc_marked.pdf}
+  \end{figure}
+}
+
+% \frame {
+%   \frametitle{Summary}
+%   \begin{itemize}
+%   \item We developed an algorithm that identifies influential documents by analyzing their texts
+%   \item The Document Influence Model
+%     \begin{itemize}
+%     \item Divides the words of a corpus into topics
+%     \item Infers which articles ``influenced'' their topics
+%     \end{itemize}
+%   \item Based only on analyzing the language, our model finds a
+%     measure of influence that correlates significantly with citation.
+    
+%   \item Some future directions
+%     \begin{itemize}
+%     \item Per-document influence envelope \newline
+%     \item Validation on non-citation data (e.g., usage data) \newline
+%     \item Application to corpora without citations \newline
+%     \end{itemize}
+%   \end{itemize}
+% }
+
+\frame{
+  End of influential docs section.
+}
+
+
+
+\frame{
+  \frametitle{An issue-adjusted ideal point model}
+  \tiny
+    \textcolor{gray}{
+%  \begin{tabular}{l}
+%    Gerrish and Blei \\
+%  \end{tabular}
+}
+  \large
+%  \center
+  \begin{align*}
+    p(v_{ud} = \mbox{Yes}| \ldots) = \ldots
+  \end{align*}
+  \vspace{10pt}
+  \begin{tabular}{c|c}
+    $\mbox{logistic}(x_u \cdot a_d + b_d)$
+ %   \vspace{30pt}
+    &
+    $\mbox{logistic}((x_u \textcolor{blue}{+ \bm z_u^T \theta_d}) \cdot a_d + b_d)$
+%    \vspace{10pt}
+    \\
+%    \vspace{-90pt}
+      \includegraphics[width=0.45\textwidth]{figs/ip_gm.pdf} 
+
+      &
+%      \vspace{30pt}
+      \includegraphics[width=0.55\textwidth]{figs/legis_gm.pdf} \\
+  \end{tabular}
+  \normalsize
+}
+
+
+\frame{
+  \frametitle{Item Response Theory}
+  \tiny
+    \textcolor{gray}{
+  \begin{tabular}{lll}
+Jackman, 2001 & Poole and Rosenthal, 1985 & Martin and Quinn, 2002 \\
+Jounson and Albert, 1999 & Clinton et al., 2004 & \\
+  \end{tabular}
+}
+  \large
+%  \center
+  \begin{align*}
+    \vspace{-70pt}
+    p(v_{ud} = \mbox{Yes}| x_u, a_d, b_d) = \mbox{logistic}(x_u \cdot a_d + b_d) \\
+  \end{align*}
+  \normalsize
+  \vspace{20pt}
+  \center
+  \includegraphics[width=0.6\textwidth]{figs/ip_gm.pdf} \\
+}
+
+\frame{
+  \frametitle{The influence function}
+  Markov step:
+  $\beta_{t,k,w} = \beta_{t-1,k,w} \textcolor{red}{ + \sum_{d=1}^D \sum_{W=1}^{N_d} \mbox{Influence}(\textcolor{blue}{I}, w_{nd})} + \varepsilon $
+  \vspace{30pt}
+  \newline
+  We developed the ``influence function'' to have certain characteristics:
+  \begin{itemize}
+    \item Assumption 4: More recent documents have greater influence.
+      \begin{itemize}
+        \item Progress is sequential
+        \item Empirically, we see that research has a short half-life
+        \end{itemize}
+    \item Assumption 5: A document only influences relevant topics.
+      \begin{itemize}
+      \item A document about mad cow disease could influence a
+        medicine topic.
+        \item A document about mad cow disease \emph{will not}
+          influence language in the space/cosmology topic.
+          \begin{center}
+          \includegraphics[width=0.34\textwidth]{figs/cowsmonaut.pdf}
+          \end{center}
+          \end{itemize}
+        \end{itemize}
+  % \begin{figure}
+  %   \includegraphics[width=0.9\linewidth]{figs/influence_function_new.pdf}
+  % \end{figure}
+}
+
 \frame{
   \frametitle{Appendix}
+}
+
+\frame {
+  \frametitle{Example: Ronald Paul}
+  \begin{center}
+  \includegraphics[height=0.9\textheight]{figs/3393_house_Ronald_Paul_400311.pdf}
+  \end{center}
+}
+
+\frame{
+  \frametitle{Results for the }
+  \includegraphics[width=0.8\textwidth]{figs/fraction_docs_vs_fraction_citations.pdf}
 }
 
 \frame{
@@ -2128,7 +2166,7 @@ h(s, q) := & \big( (\W_{s,k} \circ \vphi_{s,k})^T \Lambda_{\exp(-2 \mv_q + 2 \vv
              \begin{itemize}
                 \item For topic $k = 1, \ldots, K$: \label{gen:beta} \\
 		  Draw natural parameters $\beta_{t,k} | \beta_{t-1,k}, \z_{s<t}, l_{s<t} \sim
-		  \mathcal{N}(\beta_{t-1,k} + Infl(t,k), \sigma^2 I)$
+		  \mathcal{N}(\beta_{t-1,k} + \mbox{Influence}(t,k), \sigma^2 I)$
                \item For each document $d_t$:
                \begin{itemize}
    	         \item Generate document $d_t$ using traditional LDA with parameters
