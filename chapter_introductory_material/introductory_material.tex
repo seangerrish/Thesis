@@ -1,23 +1,26 @@
 \chapter{Preliminary material: quantitative methods}
-The work in this thesis builds upon the foundations set up by earlier
-researchers.  In this chapter, we will describe the relevant
-foundations.  Some of this work is general knowledge in the machine
-learning community; when the foundational work is considered general
-knowledge, we will provide references to well-known resources in the
-community.  After this chapter, the reader should have a high-level overview of the tools and methods we will use in later chapters.
+The work in this thesis builds upon the foundations built by decades
+of research in the development of machine learning.  In this chapter,
+we will describe those foundations. After this chapter, the reader
+should have a high-level overview of the tools and methods we will use
+in later chapters.
+
+Some of this work is general knowledge in the machine learning
+community; when the foundational work is considered general knowledge,
+we will provide references to well-known resources in the community.
 
 \section{Standards and naming conventions}
-  We begin by outlining naming and variable conventions in this work.
-  Random variables and their instantiations are given by roman or
-  greek characters; the role of a variable will typically evident from
-  its context.  Multivariate random variables such as vectors are
-  given by boldface, and collections of random variables are given by
-  uppercase Roman characters.
+We begin by outlining naming and variable conventions in this work.
+Random variables and their instantiations are given by roman or greek
+characters; the role of a variable will typically evident from its
+context.  Multivariate random variables such as vectors are given by
+boldface, and collections of random variables are given by uppercase
+Roman characters.
 
-  The reader may find \mytab{table:notation} a helpful resource in the
-  subsequent chapters.  This table summarizes many of the variables
-  described in this work.
-  \begin{table}
+The reader may find \mytab{table:notation} a helpful resource in the
+subsequent chapters.  This table summarizes many of the variables
+described in this work.
+\begin{table}
     \caption{table:notation}
     \begin{center}
       \begin{tabular}{|c|c|}
@@ -41,32 +44,36 @@ community.  After this chapter, the reader should have a high-level overview of 
   \end{table}
 
 \section{Latent-variable models for prediction and exploratoration}
-  \label{section:pipeline}
-  We develop the ideas outlined in the last chapter using the process
-  of data analysis outlined in \myfig{data_analysis_pipeline}.  This
-  pipeline, which is driven by a specific question, proceeds with the
-  development of a latent-variable model to answer that question or to
-  answer many questions like it.  Once a model is selected, we then
-  derive and implement an algorithm to estimate the values of the
-  latent random variables in it.  We will variously refer to this
-  stage of the process as \emph{fitting a model}, \emph{performing
-    inference}, and \emph{fitting the posterior}.
+\label{section:pipeline}
 
-  This is then followed by a process of data analysis and exploration,
-  along with the drawing of conclusions.  This may include
-  visualization tools such as \cite{chaney:2012}(chaney and blei).
+We develop the ideas outlined in the last chapter using the process of
+data analysis outlined in \myfig{data_analysis_pipeline}.  This
+pipeline, which is driven by a specific question, proceeds with the
+development of a latent-variable model to answer that question or to
+answer many questions like it.  Once a model is selected, we then
+derive and implement an algorithm to estimate the values of the latent
+random variables in it.  We will variously refer to this stage of the
+process as \emph{fitting a model}, \emph{performing inference}, and
+\emph{fitting the posterior}.
 
-  In some cases, the model may be revised.  This revision is ideally
-  driven by findings in the data analysis step, although our decisions
-  in the model development step are of course informed by limitations
-  in the tools available for performing inference and the ease of
-  subsequent data analysis.
+\begin{figure}
+  \center \includegraphics[width=0.4\textwidth]{chapter_introductory_material/figs/model_pipeline.pdf}
+  \caption{A data analysis pipeline.  In this work, we discuss
+    elements of defining modeling assumptions, model implementation,
+    and model revision.  We will focus on applications which use
+    text data.}
+  \label{figure:data_analysis_pipeline}
+\end{figure}
 
-  \begin{figure}
-    %\includegraphics[]{}
-    \caption{Data analysis pipeline}
-    \label{figure:data_analysis_pipeline}
-  \end{figure}
+This is then followed by a process of data analysis and exploration,
+along with the drawing of conclusions.  This may include visualization
+tools such as \cite{chaney:2012}(chaney and blei).
+
+In some cases, the model may be revised.  This revision is ideally
+driven by findings in the data analysis step, although our decisions
+in the model development step are of course informed by limitations in
+the tools available for performing inference and the ease of
+subsequent data analysis.
   
   \subsection{Latent-variable models}
 
@@ -110,10 +117,13 @@ While some practitioners may index this family of probability
 distributions with some index set $\{ \theta \}$ with the goal of
 learning that index $\hat \theta$ which makes the data most likely, we
 will usually focus on a single distribution.  Further, as $p$ is a
-probability distribution, it satisfies $\int_{x_1, \ldots, x_{M_1},
-  y_1, \ldots, y_{M_2}} p(X_1, \ldots, X_{M_1}, Y_1, \ldots, Y_{M_2})
-d x_1, \ldots, d x_{M_1}, d y_1, \ldots, d y_{M_2} = 1$.
-
+probability distribution, it satisfies 
+\begin{align*}
+  \int_{x_1, \ldots, x_{M_1},
+    y_1, \ldots, y_{M_2}} p(X_1, \ldots, X_{M_1}, Y_1, \ldots, Y_{M_2})
+  d x_1, \ldots, d x_{M_1}, d y_1, \ldots, d y_{M_2} = 1.
+\end{align*}
+  
 For $p$ to be at all useful, we typically will make distributional
 assumptions about it.  We often describe assumptions about
 factorization (and conditional independence, which we'll describe
@@ -156,12 +166,12 @@ shown in a corner of the plate). In the graphical model shown in
     \begin{tabular}{cc}
       \includegraphics[width=0.2\textwidth]{chapter_introductory_material/figs/bagofwords_gm.pdf} & 
       \includegraphics[width=0.4667\textwidth]{chapter_introductory_material/figs/lda_gm.pdf} \\
-      (A) & (B) \\
+      Unigram language model & Latent Dirichlet allocation \\
     \end{tabular}
   \end{center}
-  \caption{Left (A): Graphical model for a unigram language model.  Documents $1, \ldots, D$ are
+  \caption{Left: graphical model for a unigram language model.  Documents $1, \ldots, D$ are
     treated as \emph{bags of words}, or collections of words $w_n$.
-    Right (B): Graphical model for Latent Dirichlet Allocation.  Circles are random variables, arrows connote dependency, and plates represent replication.  The circles represent observed random variables (words in this case).}
+    Right: graphical model for Latent Dirichlet Allocation.  Circles are random variables, arrows connote dependency, and plates represent replication.  The circles represent observed random variables (words in this case).}
   \label{figure:bagofwords_lda_gm}
 \end{figure}
 
@@ -489,10 +499,13 @@ simplifying bounds -- make it possible to express the lower bound in
 terms of the variational parameters $\theta$.  This is followed by
 coordinate or gradient ascent.
 
-In later sections, we will develop several algorithms using
-variational methods.  We will also consider alternative methods for
-performing variational inference which remove the onus of deriving new
-variational updates from the practitioner.
+The role of variational inference in statistical machine learning will
+become more clear as we develop several algorithms using these methods
+over the next two chapters.  Later we will also consider an
+alternative method for performing variational inference.  This
+alternative method will remove the onus of deriving new variational
+updates from the practitioner, making it easy to perform rapid model
+development on simple models.
 
 % \subsection{Stochastic optimization}
 %   - examples
