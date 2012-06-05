@@ -6,6 +6,13 @@
 \usepackage{bm}
 \usepackage{natbib}
 
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{url}
+
+%\usepackage[bookmarks=false]{hyperref}
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
 % For chapter_influence:
 \newcommand{\myeq}[1]{Equation~\ref{eq:#1}}
 \newcommand{\mysec}[1]{Section~\ref{sec:#1}}
@@ -21,12 +28,19 @@
 \newcommand{\ellv}{\tilde{\ell}}
 \newcommand{\vlv}{\sigma^2_{\ell}}
 \newcommand{\vphi}{\phi}
+\newcommand{\expect}[1]{\mathbb{E}\left[#1\right]}
 \newcommand{\expectq}[1]{\mathbb{E}_q\left[#1\right]}
+\newcommand{\expectd}[1]{\mathbb{E}_{\mathcal{D}}\left[#1\right]}
+\newcommand{\expectqarg}[2]{\mathbb{E}_{q_{#2}}\left[#1\right]}
+\newcommand{\expectqnoarg}[0]{\mathbb{E}_q}
 \newcommand{\partl}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\partll}[2]{\frac{\partial^2 #1}{\partial {#2}^2}}
+\newcommand{\partlapprox}[2]{{\tilde \nabla_{ #2}{ #1}}}
 \newcommand{\bb}{\beta}
 \newcommand{\diag}[1]{\mbox{Diag}\left( #1 \right)}
 \newcommand{\vbv}{\sigma^2}
 \newcommand{\vd}{\sigma^2_{d}}
+\newcommand{\ev}{\bm \hat \eta}
 
 \author{Sean M. Gerrish}
 \adviser{David M. Blei}
@@ -86,21 +100,33 @@ generals, several tough exams, and through to the end.
 
 \dedication{This thesis is dedicated to my sister, Kimberly Mesa.}
 
+% \hypersetup{ 
+%   pdfauthor={Your Name},
+%   colorlinks,
+% %  linkcolor=darkblue,
+% %  filecolor=darkgreen,
+% %  urlcolor=darkred,
+% %  citecolor=darkblue
+% }
+
 \begin{document}
 
-\chapter{Previous Publications}
+%\addcontentsline{toc}{chapter}{Title Page}
+
+\section*{Previous Publications}
 The work here represents expanded versions of the following publications:
 \begin{itemize}
-	\item a
 	\item b
 \end{itemize}
-The current presentation attempts to provide deeper and broader understanding to the reader.
+The current presentation attempts to provide deeper and broader
+understanding to the reader of the above work.
 
 \input{chapter_introduction/introduction.tex}
 
 \input{chapter_introductory_material/introductory_material.tex}
 
 \input{chapter_influence/chapter_influence.tex}
+\input{chapter_dissent/chapter_dissent.tex}
 
 \input{chapter_spatial_voting_with_text/chapter_spatial_voting_with_text.tex}
 
@@ -110,8 +136,12 @@ The current presentation attempts to provide deeper and broader understanding to
 
 \input{chapter_foreign_relations/chapter_foreign_relations.tex}
 
+\input{chapter_stochastic_variational_optimization/chapter_stochastic_variational_optimization.tex}
+
 \input{chapter_appendix/chapter_appendix.tex}
 
+%\bibliographystyle{mla}
+\bibliographystyle{unsrt}
 \bibliography{bib}
 
 \end{document}
