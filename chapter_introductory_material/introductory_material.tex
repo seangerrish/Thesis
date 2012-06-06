@@ -1,13 +1,23 @@
 \chapter{Preliminary material: quantitative methods}
+\label{chapter:introductory_material}
+
 The work in this thesis builds upon the foundations built by decades
 of research in the development of machine learning.  In this chapter,
-we will describe those foundations. After this chapter, the reader
-should have a high-level overview of the tools and methods we will use
-in later chapters.
+we will describe enough of these foundations for the reader to
+understand later chapters.
 
-Some of this work is general knowledge in the machine learning
-community; when the foundational work is considered general knowledge,
-we will provide references to well-known resources in the community.
+Some of this work builds off of general knowledge in the machine
+learning community; when the foundational work is beyond the scope of
+this introduction, we will provide references to well-known resources
+in the community.
+
+In this chapter we will outline the basic methodology for
+probabilistic modeling in datasets.  We begin by discussing a ``data
+analysis pipeline'' so the reader will understand what we mean by
+phrases like ``the data'', ``fit the model'', and ``heldout
+log-likelihood''.  We then provide basic definitions from
+probabilistic modeling and illustrate these ideas with models that
+will be used as building blocks later in this thesis.
 
 \section{Standards and naming conventions}
 We begin by outlining naming and variable conventions in this work.
@@ -43,18 +53,96 @@ described in this work.
     \end{center}
   \end{table}
 
-\section{Latent-variable models for prediction and exploratoration}
 \label{section:pipeline}
 
-We develop the ideas outlined in the last chapter using the process of
-data analysis outlined in \myfig{data_analysis_pipeline}.  This
-pipeline, which is driven by a specific question, proceeds with the
-development of a latent-variable model to answer that question or to
-answer many questions like it.  Once a model is selected, we then
-derive and implement an algorithm to estimate the values of the latent
-random variables in it.  We will variously refer to this stage of the
-process as \emph{fitting a model}, \emph{performing inference}, and
-\emph{fitting the posterior}.
+\section{Latent-variable models for prediction and exploratoration}
+
+\subsection{Data analysis pipepline}
+\label{section:data_analysis_pipeline}
+We will develop the ideas outlined in the last chapter by referring to
+a ``data analysis pipeline'' illustrated in
+\myfig{data_analysis_pipeline}.\footnote{I have discussed similar
+  pipelines over chats with David Blei.}  This pipeline, which is
+driven by a specific question about a set of data, serves as a recipe
+for answering questions about these data.  The pipeline has several
+important steps.
+
+\begin{enumerate}
+  \item \textbf{Questions.} One of the first, most critical steps is
+    defining the question at hand.  In our case, the questions include
+    ``How lawmakers feel about specific issues?'' and ``Which articles
+    are of interest to the field of historiography''? Notice that
+    these questions may have multiple answers.
+
+  \item \textbf{Data.} A parallel question is that of deciding which
+    set of data will allow us to address the question at hand.  Of
+    course, the questions we ask may be guided by the data available
+    to us.  We cannot answer the question ``How do Martian politicians
+    feel about social issues?`` because we have no data about
+    Martian politicians.
+
+  \item \textbf{Modeling assumptions.} Once we have established a set
+    of questions and available data, we define a set of assumptions
+    that will allow us to capture statistics of interest.  When we
+    analyze lawmakers' issue preferences, for example, we will define
+    latent variables to represent lawmakers' issue preferences.
+
+    This step arguably allows the practitioner wide latitude in
+    defining variables of interest.  We consider this step to
+    represent one of the biggest contributions of this work.
+
+    As with the \textbf{Data} step, our decisions in the \textbf{model
+      assumptions} step are informed by limitations in the
+    tools available for performing inference and the ease of
+    subsequent data analysis.
+
+  \item \textbf{Model implementation.} In this stage, the model is
+    defined, and the practitioner must encode these modeling
+    assumptions into an algorithm and run that algorithm.  We will
+    variously refer to this stage of the process as \emph{fitting a
+      model}, \emph{performing inference}, and \emph{fitting the
+      posterior}.
+
+  \item \textbf{Model evaluation.} The goals of this stage are to
+    evaluate performance of the model and to criticize the model.
+    The criticism may warrant model revision, in which case the
+    modeling assumptions are adjusted, the model is refit, and the
+    model is re-evaluated.
+
+    Model criticism can take many forms, including prior and posterior
+    checks \cite{box:1980,gelman:1996}. We will primarily focus on
+    evaluating models based on external measures.
+  
+  \item \textbf{Conclusions.} Finally, the practitioner may draw
+    conclusions from the model.  In our case, this leads to two
+    applications: \emph{exploratoration} and \emph{prediction}.
+    Models build for exploration can be used to answer multiple
+    \emph{future} questions about the data with the guidance of a
+    human (``Which lawmakers are most right-wing on foreign policy?
+    How does Ron Paul feel about Taxation?'') with the guidance of a
+    human.  Models build for prediction can be used to draw specific
+    inferences in the future (``How will Ron Paul vote on the pending
+    taxation bill?'').
+
+    It is worth pointing out the other types of conclusions one may
+    draw in this stage. Some researchers may define their models with
+    very specific questions in mind (``Has Ronald Paul sided more with
+    Democrats than Republicans on wartime spending since the 2003 Iraq
+    invasion?'').  Others may draw causal conclusions (``The Iraq war
+    caused Ronald Paul to favor wartime spending less''). These
+    questions require domain knowledge which we will not assume.
+
+    In building models for exploratory analysis, we will focus on the
+    modeling assumptions instead of tools for exploration.  For
+    completeness, we note that many researchers create tools to
+    display information meaningfully to -- and elicit interaction with
+    -- users.  Well-known sources for display of this information
+    include Tufte \cite{tufte:2001} and Wilkinson
+    \cite{wilkinson:2005}, while visualization tools for models like
+    those in this work have been developed by Chaney and Blei
+    \cite{chaney:2012}.
+
+\end{enumerate}
 
 \begin{figure}
   \center \includegraphics[width=0.4\textwidth]{chapter_introductory_material/figs/model_pipeline.pdf}
@@ -65,22 +153,14 @@ process as \emph{fitting a model}, \emph{performing inference}, and
   \label{figure:data_analysis_pipeline}
 \end{figure}
 
-This is then followed by a process of data analysis and exploration,
-along with the drawing of conclusions.  This may include visualization
-tools such as \cite{chaney:2012}(chaney and blei).
+As alluded to above, this work will focus on modeling assumptions and
+model implementation.  To encode our assumptions, we will use latent
+variable models because they have several clear benefits.
 
-In some cases, the model may be revised.  This revision is ideally
-driven by findings in the data analysis step, although our decisions
-in the model development step are of course informed by limitations in
-the tools available for performing inference and the ease of
-subsequent data analysis.
-  
-  \subsection{Latent-variable models}
+\subsection{Latent-variable models}
 
-  As alluded to above, we will focus on probabilistic models, which
-  use both hidden and latent random variables, in stage 2 of the
-  pipeline.  Latent variable models have several benefits that appeal
-  to us:
+The benefits in using latent variable models are broad:
+
   \begin{enumerate}
     \item Flexibility. These models can describe, summarize, and explain
     a wide variety of phenomena in the physical and social sciences.
@@ -99,67 +179,73 @@ subsequent data analysis.
 
   The risk with applying latent-variable models is that the
   credibility and careful deliberation we often associate with
-  statistics suggests that an estimated posterior must be
-  credible.  This may not be true, particularly when the model is
-  poorly embedded into a statistical model, or when it is incorrectly
-  interpreted.  Both of these happen when Item~\ref{lvm:matching}
-  above is carried out carelessly.
+  statistics suggests that an estimated posterior must be meaningful.
+  This may not be true, particularly when the question is poorly
+  embedded into a statistical model, when the model incorrectly
+  interpreted, or when the data is poorly fit by the model.  Both of
+  these can easily happen when Item~\ref{lvm:matching} above is carried out
+  carelessly.
 
 \subsection{Undirected graphical models for summarizing distributional assumptions}
 A latent variable model can be fully specified with
 \begin{itemize}
-  \item A set of latent random variables $X_1, \ldots, X_{M_1}$;
-  \item A set of observed random variables $Y_1, \ldots, Y_{M_2}$;
-  \item A joint probability distribution $p(X_1, \ldots,
-    X_{M_1}, Y_1, \ldots, Y_{M_2})$ indexed by $\theta$.
+  \item A set of latent random variables $X_1, \ldots, X_{M_1}$ ($X_{1:M_x}$ for shorthand);
+  \item A set of observed random variables $Y_1, \ldots, Y_{M_2}$ ($Y_{1:M_y}$ for shorthand);
+  \item A joint probability distribution $p(X_{1:M_x}, Y_{1:M_y})$.
 \end{itemize}
-While some practitioners may index this family of probability
-distributions with some index set $\{ \theta \}$ with the goal of
-learning that index $\hat \theta$ which makes the data most likely, we
-will usually focus on a single distribution.  Further, as $p$ is a
-probability distribution, it satisfies 
+While some practitioners may index the distribution $p$ with some
+index set $\{ \theta \}$ with the goal of learning that index $\hat
+\theta$ which makes the data most likely, we will usually focus on a
+single distribution.  Further, as $p$ is a probability distribution,
+it satisfies
 \begin{align*}
-  \int_{x_1, \ldots, x_{M_1},
-    y_1, \ldots, y_{M_2}} p(X_1, \ldots, X_{M_1}, Y_1, \ldots, Y_{M_2})
-  d x_1, \ldots, d x_{M_1}, d y_1, \ldots, d y_{M_2} = 1.
+  \int_{x_{1:M_x}, y_{1:M_y}} p(X_{1:M_x}, Y_{1:M_y}) d x_{1:M_x}, d
+  y_{1:M_y} = 1.
 \end{align*}
   
-For $p$ to be at all useful, we typically will make distributional
+For $p$ to be useful, we typically will make distributional
 assumptions about it.  We often describe assumptions about
 factorization (and conditional independence, which we'll describe
 below) using a \emph{graphical model} (sometimes called a Bayesian
 network).  A graphical model is a directed, acyclic graph $G = (V, E)$
-in which vertices $V=Z_1, \ldots, Z_M$ are random variables and a
-\emph{lack} of edges between random variables connotes conditional
-independence.
+in which vertices $V=1, \ldots, M$, with $M = M_x + M_y$, index random
+variables and a \emph{lack} of edges between random variables connotes
+conditional independence.
 
 We state this more precisely be defining the ``parents'' function
-$\pi_G : V \rightarrow 2^V$, which takes a random variable $Z_m$ to
-its parents $\{ Z_i : i \neq m \mbox{ and } (Z_i, Z_m) \in E \}$.  In
-the language of graphical models, the distribution of a random
-variable $Z_m$ can be specified by its parents. A probability
+$\pi_G : \{ 1, \ldots, M \} \rightarrow 2^{\{ 1, \ldots, M \}}$, which
+takes the random variable index $m$ to its parents $\{ i : i \neq m
+\mbox{ and } (Z_i, Z_m) \in E \}$.  By definition, a probability
 distribution described by a graphical model $G$ can be factorized as
 \begin{align}
   p(Z_1, \ldots, Z_M) = \prod_{i=1, \ldots, M} p_\theta(Z_i | \pi_G(Z_i) ).
 \end{align}
 Note that there is a many-to-many relationship between graphical
-models and probability distributions. Every graphical model may
+models and probability distributions. Each graphical model may
 describe many different distributions (but all such distributions must
-be factorizable based on this graphical model).  Likewise, most
-distributions can be described by multiple graphical models (but each
-distribution must be factorizable based on all of its corresponding
-graphical models). Still, the language of graphical models makes it
-possible to succinctly describe many joint probability distributions,
-and it makes inference with these models much easier to discuss.
+be factorizable based on this graphical model).  Likewise, each
+probability distribution can be described by multiple graphical
+models (but each distribution must be factorizable based on all of its
+corresponding graphical models). The language of graphical
+models makes it possible to succinctly describe many joint probability
+distributions, and it makes model implementation and inference with
+with these models much easier to discuss formally.
 
-A graphical model $G$ is often drawn as a block-and-arrow diagram.  An
-additional convention in these diagrams is that boxes, or
+TODO(sgerrish): cite Judea Pearl.
+
+Conventionally, a graphical model $G$ is often drawn as a
+block-and-arrow diagram, where we write out the graph with each random
+variable (vertex) drawn as a circle and each edge edge drawn as an
+arrow.  An additional convention in these diagrams is that boxes, or
 \emph{plates}, represent replication (with the number of replications
 shown in a corner of the plate). In the graphical model shown in
-\myfig{bagofwords_lda_gm} (B), for example, the corresponding factorization is
+\myfig{bagofwords_lda_gm} (B), for example, the corresponding
+factorization is
 \begin{align}
-  \prod_K p(\beta_k) \times \prod_{d=1,\ldots,D} p(\theta_d | \alpha) \prod_{n=1,\ldots,N_d} p(z_n | \theta_d) p(w_n | z_n, \beta_{z_n})
+  \prod_K p(\beta_k) \times \prod_{d=1,\ldots,D} p(\theta_d | \alpha) \prod_{n=1,\ldots,N_d} p(z_n | \theta_d) p(w_n | z_n, \beta_{z_n}),
 \end{align}
+where we have used the further convention that observed random
+variables are shaded and hidden random variables are unshaded.
 
 \begin{figure}
   \begin{center}
@@ -169,28 +255,33 @@ shown in a corner of the plate). In the graphical model shown in
       Unigram language model & Latent Dirichlet allocation \\
     \end{tabular}
   \end{center}
-  \caption{Left: graphical model for a unigram language model.  Documents $1, \ldots, D$ are
-    treated as \emph{bags of words}, or collections of words $w_n$.
-    Right: graphical model for Latent Dirichlet Allocation.  Circles are random variables, arrows connote dependency, and plates represent replication.  The circles represent observed random variables (words in this case).}
-  \label{figure:bagofwords_lda_gm}
+  \caption{Left: graphical model for a unigram language model.
+    Documents $1, \ldots, D$ are treated as \emph{bags of words}, or
+    collections of words $w_n$.  Right: graphical model for Latent
+    Dirichlet Allocation.  Circles are random variables, arrows
+    connote dependency, and plates represent replication.  The circles
+    represent observed random variables (words in this case).}
+  \label{fig:bagofwords_lda_gm}
 \end{figure}
 
-One of the most useful assumptions is conditional independence.  Given
-random variables $Z_1, Z_2,$ and $Z_3$, we say that $Z_1$ is
-conditionally independent of $Z_2$ given $Z_3$ if $p(Z_1, Z_2 | Z_3) =
-p(Z_1 | Z_3) p(Z_2 | Z_3)$ \cite{bishop:2006}.
+One of the most useful assumptions we can make about a probability
+distribution is conditional independence.  Given random variables
+$Z_1, Z_2$, and $Z_3$, we say that $Z_1$ is conditionally independent
+of $Z_2$ given $Z_3$ if $p(Z_1, Z_2 | Z_3) = p(Z_1 | Z_3) p(Z_2 |
+Z_3)$ \cite{bishop:2006}.  Conditional independence statements about
+distributions can often be inferred from these distributions'
+factorizations \cite{bishop:2006} and become important when one
+implements a probabilistic model or makes predictions with one.
 
 \subsection{Text as a medium for social science analysis}
   \label{section:text_intro}
-  Text data is the low-hanging fruit of most social science research
-  questions.  Its ubiquity is due to the ease with which it can be
-  both created and digitized.  At the same time, it provides a rich
-  source of data: documents, one of the basic units of information in
-  text analysis, are an observation in an extremely high-dimensional
-  and interpretable space \cite{changrtl:2009}.
-
-  \cite{grimmer:submitted} provides an excellent overview of text
-  analysis; we will summarize several methods here.
+  We first illustrate these ideas in an application of text modeling.
+  As noted in the last chapter, text data is as easy to work with as
+  it is ubiquitous. Importantly, researchers and other practitioners
+  are becoming more proficient with tools for text analysis.
+  \cite{grimmer:submitted} provides an excellent overview of methods
+  for analyzing text for social scientists; we will summarize several
+  like methods here.
 
 % \subsection{Latent-variable models of text}
   
@@ -202,11 +293,12 @@ p(Z_1 | Z_3) p(Z_2 | Z_3)$ \cite{bishop:2006}.
   succinctly and efficiently.
 
   In this work we will use the simplifying assumption that each text
-  document can be represented as a vector $\bm w_d \in \mathcal{R}^V$
-  of word counts.  This assumption, known as the \emph{bag of words}
-  assumption, removes most of the information in a document.  At the
-  same time, it allows us to capture the ``gist'' of a document very
-  well. One of the simplest bag-of-words models is the unigram
+  document is described by a vector $\bm w_d \in \mathcal{R}^V$ of
+  word counts.  This assumption, known as the \emph{bag of words}
+  assumption, removes most of the information in a document (here we
+  use ``information'' in a very loose sense).  At the same time, this
+  assumption still allows us to capture the ``gist'' of a document
+  very well. One of the simplest bag-of-words models is the unigram
   model. In the unigram model, every word is assumed to come from the
   some multinomial distribution $\beta$ over the vocabulary:
   \[
@@ -222,16 +314,19 @@ p(Z_1 | Z_3) p(Z_2 | Z_3)$ \cite{bishop:2006}.
 We will capture the gist of documents using the topic model Latent
 Dirichlet Allocation \cite{blei:2003}.  Latent Dirichlet allocation
 (LDA) posits a set of $K$ \emph{topics} $\beta_1, \ldots, \beta_K$ to
-formalize what we mean by the \emph{gist} of a document.  LDA describes each
-document $d$ as a mixture $\bm \theta_d$ of themes, where $\sum_K
-\theta_{dk} = 1$ and $\theta_{dk} > 0 \forall d,k$.
+formalize what we mean by the \emph{gist} of a document.  LDA
+describes each document $d$ as a mixture $\bm \theta_d$ of themes
+(called topics), where $\sum_K \theta_{dk} = 1$ and $\theta_{dk} > 0
+\forall d,k$.
 
-Formally, we represent this using a generative process of the collection of documents:
+Formally, we represent this using a \emph{generative process} of the
+collection of documents.  The generative process can be interpreted as
+a recipe for creating the observations -- documents, in our case:
 \begin{enumerate}
   \item Draw topics $\beta_1, \ldots, \beta_K \sim \mbox{Dir}(\eta)$.
     \item For document $d=1, \ldots, D$:
     \begin{enumerate}
-    \item Draw topic mixture $\theta_d \sim \mbox{Dir}(\alpha)$.
+    \item Draw topic mixture $\theta_d \sim \mbox{Dir}(\alpha, \ldots, \alpha)$.
     \item For term $n=1, \ldots, N$:
       \begin{enumerate}
       \item Draw topic indicator $z_n \sim \mbox{Mult}(\theta_d)$.
@@ -239,33 +334,62 @@ Formally, we represent this using a generative process of the collection of docu
       \end{enumerate}
     \end{enumerate}
 \end{enumerate}
-Above, the parameter $\alpha > 0$ is a Dirichlet prior, often set to
-$1/K$.
+Above, the parameter $\alpha > 0$ above is a Dirichlet prior (it is often set by
+topic model researchers to $1/K$).  The distribtion $\mbox{Dir}(\alpha_1, \ldots, \alpha_M)$ refers to the Dirichlet distribution.  Its density is given by
+\begin{align}
+  p(x_1, \ldots, x_M | \alpha_1, \ldots, \alpha_M) =
+  \frac{\large \Gamma \left( \sum_{i=1}^M \alpha_i \right)}
+       {\prod_{i=1}^M \large \Gamma(\alpha_i)}
+       \prod_{i=1}^M x_i^{\alpha_i - 1}
+\end{align}
 
-The joint distribution of a collection of documents under Latent Dirichlet Allocation is
+We illustrate this model graphically in \myfig{bagofwords_lda_gm}.  Given the graphical model, we can immediately write the joint distribution of a collection of $D$ documents as
 \begin{align}
   p(\beta_k, \theta, \bm Z, \bm W | \alpha) = 
   \prod_K p(\beta_k)
   \prod_D p(\theta_d) \prod_N p(z_n | \theta_d) p(w_n | z_n, \beta_{z_n}) d\beta d\theta dz,
 \end{align}
 where $p(\beta_k)$ and $p(\theta_d)$ are understood to be conditioned
-on $\eta$ and $\alpha$ respectively (we treat them as hyperparameters
-and omit them so they're not confused with random variables).
+on $\eta$ and $\alpha$ respectively (we treat $\alpha, \eta$ as
+hyperparameters and omit them so they're not confused with random
+variables).
 
-Before describing how to fit such a model, we show an example of
-topics from LDA in \myfig{}.
-
-\begin{figure}
-\end{figure}
+Before describing how to fit such a model, we show four
+topics from LDA in Table~\ref{table:example_lda_topics}.  Note that some
+of these ``words'' are instead phrases.  This can be done by creating
+a vocabulary of phrases instead of words and describing documents as a
+mixture of phrases.  We will describe in a later section how to accomplish
+this.
+\begin{table}
+  \caption{Example topics from Latent Dirichlet Allocation fit to sentences from the the textbook \emph{Biology} by Campbell and Reece.  This is a small subset of the 1000 topics. These topics were graciously provided by Ricky Wong.}
+  \center  \begin{tabular}{|c|c|c|c|}
+% tissue bone collagen connective connective_tissue cartilage bones fibers 
+% population growth rate age rates population growth populations life mortality
+% dinosaurs dinosaur birds pterosaurs cretaceous bird long flight feet 
+% forest diversity plant ectomycorrhizal fungi fungal treatment emf effects 
+    \hline
+    virus & forest & population & dinosaurs \\
+    viruses & diversity & growth & dinosaur \\
+    viral & plant & rate & birds \\
+    host & ectomycorrhizal & age & pterosaurs \\
+    phage & fungi & rates & cretaceous \\
+    rna & fungal & population growth & bird \\
+    genome & treatment & populations & long \\
+    infection & emf & life & flight \\
+    cell & effects & mortality & feed \\
+    \hline
+  \end{tabular}
+  \label{table:example_lda_topics}
+\end{table}
 
 \subsubsection{Inference}
 Of course, we only observe the words $\bm Z$ in a collection of
 documents, and we are interested in estimating what the topics $\beta$
 and topic mixtures $\theta$ are.  We will generally accomplish this
-with posterior inference, in which we aim to estimate the
-posterior distribution
+with posterior inference, in which we aim to estimate the posterior
+distribution
 \begin{align}
-  p(\beta, \theta, \bm Z | \bm W) = \frac{p(W | \beta, \theta, \bm Z) p(\beta, \theta, \bm Z)}{p(\bm W)}. \\
+  p(\beta, \theta, \bm Z | \bm W) = \frac{p(W | \beta, \theta, \bm Z) p(\beta, \theta, \bm Z)}{p(\bm W)}.
 \end{align}
 
 This conditional distribution is impossible to compute because of the
@@ -318,7 +442,7 @@ More formally, we can say that the matrix $\{V\}_{ud}$ of boolean outcomes (for 
       a_1 & \cdots & a_D \\
       b_1 & \cdots & b_D \\
     \end{array}
-    \right]^T 
+    \right]
   \right),
 \end{align}
 where the matrix operator $\hat \sigma(\cdot)$ produces a matrix in
@@ -370,7 +494,7 @@ states $X$ and Gaussian noise: $p(Y_t | X_t) \propto \mathcal{N}(X_t,
   \includegraphics[width=0.6\textwidth]{chapter_introductory_material/figs/hmm_gm.pdf}
   \end{center}
   \caption{A hidden Markov model.  Observations $Y_1, \ldots, Y_T$ are observed at discrete times $t=1, \ldots, T$, and are conditionally independent given the hidden states $X_1, \ldots, X_T$.}
-  \label{figure:bagofwords_lda_gm}
+  \label{figure:hmm_gm}
 \end{figure}
 
 It is worth pointing out that many language models \emph{do}
@@ -408,10 +532,10 @@ which is often a good summary of the posterior distribution.
 % samples $x_m$ from a posterior distribution $p(X | Y)$.
 
 We briefly review the key components of Markov Chain Monte Carlo
-(MCMC) estimation.  We will not go into detail about MCMC in this work except to
-draw a contrast with variational methods (which are introduced in the
-next section), and readers unfamiliar with MCMC can refer to a
-standard text such as Bishop et al. \cite{bishop:2006}.
+(MCMC) estimation.  We will not go into detail about MCMC in this work
+except to build up to (and draw a contrast with) variational methods,
+which are introduced in the next section. Readers unfamiliar with MCMC
+can refer to a standard text such as Bishop et al. \cite{bishop:2006}.
 
 % Markov Chain Monte-Carlo methods provide non-independent samples from
 % a posterior.  These samples are unbiased, and, when the number of
@@ -429,7 +553,7 @@ samples are often used to summarize statistics such as marginal means
 and variances of $p(x | y)$.  They are unbiased and, given enough
 time, will accurately represent $p(x | y)$.
 
-MCMC methods are used widely, and they have well-known limitations.
+MCMC methods are used widely, but they have limitations.
 One of these limitations is runtime: while one may need $N$ \emph{iid}
 samples from a distribution $p(x | y)$ to estimate its mean and
 variance, he typically needs many more MCMC samples to estimate these
@@ -438,11 +562,10 @@ as a Markov chain needs more samples to converge. MCMC algorithms can
 also suffer from memory bottlenecks, as samples are stored and
 convergence is measured.
 
-Even when memory is not a bottleneck, the
-practitioner is often interested in only the marginals of the
-posterior (as with most mixture-of-Gaussian applications); a large
-number of discarded samples indicates that there is an inefficiency in
-the inference pipeline.
+Even when memory is not a bottleneck, the practitioner is often
+interested in only the marginals of the posterior (as with most
+mixture-of-Gaussian applications); a large number of discarded samples
+indicates that there is an inefficiency in the inference pipeline.
 
 \subsection{Variational inference}
 \label{section:variational_inference}
@@ -452,33 +575,33 @@ providing a fast, deterministic alternative to MCMC
 \cite{jordan:2003,jordan:1999}.  We review the key ideas here and will
 use use these methods as we develop models in later chapters.
 
-Variational methods posit a simplified
-family $\mathcal{F}$ of distributions and select the member $q_\theta
-\in \mathcal{F}$ of this family that is closest in KL-divergence to
-the true posterior $p(x | y)$:
+Variational methods posit a simplified family of
+distributions and select the member $q_\theta$ of this
+family that is closest in KL-divergence to the true posterior $p(x |
+y)$:
 \begin{align}
-  \arg \min_{q_\theta \in \mathcal{F}} \mbox{KL}(q_\theta || p) = \arg \min_{q_\theta \in \mathcal{F}} \int_x q_\theta(x) \log \frac{q_\theta(x)}{p(x | y)} dx.
+  \arg \min_{\theta} \mbox{KL}(q_\theta || p) = \arg \min_{\theta} \int_x q_\theta(x) \log \frac{q_\theta(x)}{p(x | y)} dx.
   \label{equation:variational_objective}
 \end{align}
-Finding the optimal variational distribution $q_\theta \in
-\mathcal{F}$ is equivalent to optimizing an ``evidence lower bound''
-($\mbox{Elbo}_\theta$) on the data likelihood
+Finding the optimal variational distribution $q_\theta$ is equivalent
+to optimizing an ``evidence lower bound'' (ELBO) ($\mathcal{L}_\theta$) on
+the data likelihood
 \begin{eqnarray}
   \log p(y) \ge \expectq{\log p(x, y) - \log q_\theta(x)}
-  =: \mbox{Elbo}_\theta,
+  =: \mathcal{L}_\theta,
   \label{equation:traditional_variational_objective}
 \end{eqnarray}
 where the slack of the bound is equal to the KL divergence from
 Equation~\ref{equation:variational_objective}.
 
-The family $\mathcal{F}$ is chosen by the practitioner to make the
+The family is chosen by the practitioner to make the
 resulting algorithm tractable and to capture the parameters of
 interest. A common assumption is that the posterior is
 fully-factorized into simple marginal distributions; such an
 assumption is known as \emph{naive mean-field variational inference}.
 
 For example, a multivariate posterior $p(x | Y), x \in \mathcal{R}^D$
-might be represented by the product $q(x) = \prod_D \mathcal{N}(\mu_d,
+might be represented by the product $q(x_{1:D}) = \prod_D \mathcal{N}(x_d | \mu_d,
 \sigma_d^2)$ of $D$ Gaussian distributions. and a Dirichlet
 distribution might represent a multinomial random variable
 \cite{bishop:2006}.  In the case of Latent Dirichlet Allocation, for
@@ -491,21 +614,22 @@ distributions.
 Once a family is selected, the bound in
 Equation~\ref{equation:traditional_variational_objective} is evaluated
 symbolically, as a practitioner fully expands $\expectq{ \log p(x, y)
-  - \log q_\theta(x)}$ and (usually) its gradient. This bound may
-itself be bounded or approximated with a Taylor approximation such as
-the delta method \cite{bickel:2007,braun:2007}. These simplifying
-assumptions -- an approximate, fully factorized posterior with further
-simplifying bounds -- make it possible to express the lower bound in
-terms of the variational parameters $\theta$.  This is followed by
-coordinate or gradient ascent.
+  - \log q_\theta(x)}$ and (usually) its gradient. As we will show in
+subsequent chapters, this bound may itself be bounded or approximated
+with a Taylor approximation such as the delta method
+\cite{bickel:2007,braun:2007}. These simplifying assumptions -- an
+approximate, fully factorized posterior with further simplifying
+bounds -- make it possible to express the lower bound in terms of the
+variational parameters $\theta$.  This is followed by coordinate or
+gradient ascent.
 
 The role of variational inference in statistical machine learning will
 become more clear as we develop several algorithms using these methods
-over the next two chapters.  Later we will also consider an
-alternative method for performing variational inference.  This
-alternative method will remove the onus of deriving new variational
-updates from the practitioner, making it easy to perform rapid model
-development on simple models.
+over the next two chapters.  We will also introduce an alternative
+method for performing variational inference.  This alternative method
+will remove the onus of deriving new variational updates from the
+practitioner, making it easy to perform rapid model development on
+simple models.
 
 % \subsection{Stochastic optimization}
 %   - examples
@@ -513,35 +637,26 @@ development on simple models.
 % \subsection{Posterior Predictive Checks}
 %   - examples
 \subsection{Model evaluation}
-As we progress through the pipeline described in \mysec{pipeline}, it
-is important to evaluate the model.  The quality of a model depends on
-the practitioner's goals, so evaluation methods differ greatly.
-However, several standard metrics exist.
-
-\subsubsection{Likelihood of heldout observations $Y_1, \ldots, Y_{N_{\mbox{heldout}}}$}
-One of the most common metrics of a model is its ability to model
-unseen observations $Y_{\mbox{heldout},1}, \ldots,
-Y_{\mbox{heldout},N_{\mbox{heldout}}}$.  One of the most frequently
-used metrics for this is the log-likelihood $\log
-p(Y_{\mbox{heldout},1}, \ldots, Y_{\mbox{heldout},N_{\mbox{heldout}}} |
-  Y_1, \ldots, Y_{N_{\mbox{obs}}}, X )$ of these observations. When
-  these observations are conditionally independent given the observed
-  data (nearly always the case), the log-likelihood can be
-  written $\sum_{n=1}^N \log p(Y_{\mbox{heldout},n} | Y_1{\mbox{observed}},
-  X)$.\footnote{This log-likelihood is frequently exponentiated to
-    yield perplexity.}
+After a model has been fit with an approach such as variational
+inference, it is important to evaluate the model, as alluded to in
+\mysec{data_analysis_pipeline}.  In general, practitioners will have
+different goals in modeling data, so their evaluation methods vary
+greatly.  However, several standard metrics exist.
 
 \subsubsection{Likelihood of training data $Y_1, \ldots, Y_{N_{\mbox{obs}}}$}
-For completeness, we note that an even simpler metric of a model is its ability to model training data
-$Y_{\mbox{obs},1}, \ldots, Y_{\mbox{obs},N_{\mbox{obs}}}$.
-One of the most frequently used metrics for this is the log-likelihood
-$\log p(Y_{\mbox{obs},1}, \ldots,
-Y_{\mbox{obs},N_{\mbox{obs}}} | Y_1, \ldots,
-Y_{N_{\mbox{obs}}}, X )$ of these observations. When these
-observations are conditionally independent given the observed data
-(nearly always the case), the log-likelihood can be written
-$\sum_{n=1}^N \log p(Y_{\mbox{heldout},n} | Y_1{\mbox{obs}}, X)$.
-The downfall of this metric is of course that it does not measure whether a model is overfit.
+We first describe one of the simplest metrics of how well a model is fit:
+its ability to model training data $Y_{\mbox{\small obs},1},$
+$\ldots,$ $Y_{\mbox{\small obs},N_{\mbox{\tiny obs}}}$.  Like before,
+one of the most frequently used metrics for this is the training
+log-likelihood $\log p(Y_{\mbox{\small obs},1}, \ldots,
+Y_{\mbox{\small obs},N_{\mbox{\tiny obs}}})$ of these
+observations. When these observations are conditionally independent
+given the observed data (nearly always the case), the log-likelihood
+can be written $\sum_{n=1}^{N_{\mbox{\tiny obs}}} \log
+p(Y_{\mbox{\small obs},n})$.  The downfall of this metric is of course
+that it does not measure whether a model is overfit.  However, it is
+the objective function used when an MAP or MLE estimate is
+fit.  In addition, it can be used to measure the flexibility of a model.
 
 % \subsubsection{Predictive accuracy}
 % When a model is created for the purpose of making predictions, heldout
@@ -556,3 +671,38 @@ The downfall of this metric is of course that it does not measure whether a mode
 
 % In a model we will develop later, we are operating in a
 % vacuum: This can be useful when, for example, the model
+
+\subsubsection{Likelihood of heldout observations $Y_1, \ldots, Y_{N_{\mbox{heldout}}}$}
+One of the most common metrics of a model is its ability to model
+unseen, heldout observations $Y_{\mbox{\small hdt},1},$ $\ldots,$
+$Y_{\mbox{\small hdt},N_{\mbox{\tiny hdt}}}$ given a set of ``training''
+  observations $Y_{\mbox{\small h},1},$ $\ldots,$ $Y_{\mbox{\small
+      h},N_{\mbox{\tiny obs}}}$ One of the most frequently used metrics
+    for this is the log-likelihood
+\begin{align*}
+  \log
+  p(Y_{\mbox{\small hdt},1}, \ldots, Y_{\mbox{\small hdt},N_{\mbox{\tiny hdt}}}
+  | Y_{\mbox{\small obs},1}, \ldots, Y_{\mbox{\small obs}, N_{\mbox{\tiny obs}}})
+\end{align*}
+of these observations. When these observations are conditionally
+independent given the observed data (nearly always the case), the
+log-likelihood can be written $\sum_{n=1}^{N_{\mbox{\tiny hdt}}} \log
+  p(Y_{\mbox{\small hdt},n} | Y_{\mbox{obs},1}, \ldots, Y_{\mbox{\small obs},N_{\mbox{obs}}})$.
+
+When training data is scarce, practitioners often use leave-one-out
+cross-validation.  Cross-validation requires that the training data be
+partitioned into $K$ equal-size parts $P_1, \ldots, P_K$, fit $K$
+times on each of the $K - 1$ subsets which omit exactly one of the
+partitions, and evaluated on the omitted partition.  Such a model has
+the benefit that all of the data is used for training and evaluation.
+
+\section{Using these tools to understand influence and decisionmaking}
+
+The tools outlined in this chapter cover only the tip of the iceberg
+of tools used by machine learning experts, but they will serve as
+building blocks for future sections.  In the next chapter we will use
+some of these blocks as we return to the original questions that
+motivated this thesis: how can we identify influential documents in a
+larger collection?
+
+TODO(sgerrish): elaborate on this more.
