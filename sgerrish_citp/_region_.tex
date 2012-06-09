@@ -1,4 +1,4 @@
-\message{ !name(sgerrish_prefpo.tex)}\documentclass{beamer}
+\message{ !name(sgerrish_citp.tex)}\documentclass{beamer}
 \usepackage{amsmath,amssymb,amsthm,graphicx}
 \usepackage{color}
 \usetheme{Gerrish}
@@ -7,11 +7,14 @@
 \usepackage{bm}
 \usepackage{wrapfig}
 \usepackage{multirow}
+\newcommand{\newblock}{}
 
+%\usepackage[natbib=true, bibstyle=authoryear, citestyle=authoryear-comp]{biblatex}
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{outlinem}{}
 
 %\bibliographystyle{icml2012}
+\usepackage{natbib}
 \bibliographystyle{apalike}
 
 \newcommand{\z}{\textbf{z}} 
@@ -38,7 +41,7 @@
 
 \title{Latent-variable models of influence and decision-making}
  \subtitle{}
- \date{29 February 2012}
+ \date{3 May 2012}
  \author{ Sean Gerrish \\
    Princeton University \\
    Computer Science Department }
@@ -47,7 +50,7 @@
 
 \begin{document}
 
-\message{ !name(sgerrish_prefpo.tex) !offset(-3) }
+\message{ !name(sgerrish_citp.tex) !offset(-3) }
 
 \frame{\titlepage}
 
@@ -99,8 +102,8 @@
   \vspace{20pt}
   \item Better understanding government
     \begin{itemize}
-    \item Understanding lawmakers' issue preferences
-    \item How to predict votes on new bills
+    \item Understand lawmakers' issue preferences
+%    \item How to predict votes on new bills
     \end{itemize}
   \end{itemize}
 }
@@ -202,7 +205,7 @@
   \vspace{-.25in}
   \small
   \begin{itemize}
-  \item We develop a probabilistic model to capture the influence of documents.
+  \item Develop a probabilistic model to capture the influence of documents.
     %    \item Build assumptions from \emph{topic models} into this model
   \item The intuition: influential documents use language that becomes more popular in later years.
   \item With posterior inference, we retrospectively see which documents have been influential on the corpus.
@@ -218,11 +221,14 @@
   \hspace{140pt} \textcolor{gray}{\cite{blei:2003}} \\
   \normalsize Topic models decompose a corpus into a set of topics, i.e. distributions over terms.
   \large
-  \center
-  \begin{tabular}{cc}
-    \hspace{-0pt} \includegraphics[width=0.55\textwidth]{figs/topics.pdf}  \vspace{60pt} &
-    \hspace{-40pt} \includegraphics[width=0.55\textwidth]{figs/dtm.pdf}  \\
-  \end{tabular}
+  \begin{center}
+%  \begin{tabular}{cc}
+   \includegraphics[width=0.92\textwidth]{figs/topics.pdf}
+%  \vspace{60pt} &
+%    \hspace{-40pt} \includegraphics[width=0.55\textwidth]{figs/dtm.pdf}
+%  \\
+%  \end{tabular}
+   \end{center}
 }
 
 \frame {
@@ -355,20 +361,91 @@
 
 \frame {
   \frametitle{Dynamic topics  \small \textcolor{gray}{\cite{blei:2006}}}
-  \begin{itemize}
-  \item Topics drift in a Markov chain:\newline
-     $\beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2)$
-  \item Documents are generated from Latent Dirichlet Allocation \newline
-     $D_t \sim$ LDA($\alpha_t, \beta_t$) \newline
-
-   \end{itemize}
+   \begin{itemize}
+  \item Words are generated based on Latent Dirichlet Allocation:
+    \begin{align*}
+      p(\bm W, \bm Z, \beta, \bm \theta) = \prod_{k=1}^K p(\beta_k) \times \prod_{d=1}^D p( \theta_d) \prod_{n=1}^{N_d} p(z_{nd} | \theta_d) p(w_{nd} | z_{nd}, \beta)
+    \end{align*}
+    % \textcolor{white}{\item Topics drift in a Mawrkov chain:
+    %  \begin{align*} \beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2) \end{align*}}
+  \end{itemize}
+  \begin{figure}
+    \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm.pdf}
+  \end{figure}
    % Assumes each document has a weight which affects topic drift...\newline
 %     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
-\vspace{-0.43in}
-  \begin{figure}
-    \includegraphics[width=0.85\linewidth]{figs/docinf_dtm_gm.pdf}
-  \end{figure}
+%\vspace{-0.43in}
+  % \begin{figure}
+  %   \includegraphics[width=0.85\linewidth]{figs/docinf_dtm_gm.pdf}
+  % \end{figure}
 }
+
+
+\frame {
+  \frametitle{Dynamic topics  \small \textcolor{gray}{\cite{blei:2006}}}
+   \begin{itemize}
+  \item Documents are generated from Latent Dirichlet Allocation:
+    \begin{align*}
+      D_t \sim \mbox{LDA}( \alpha_t, \beta_t )
+    \end{align*}
+    % \textcolor{white}{\item Topics drift in a Markov chain:
+    %  \begin{align*} \beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2) \end{align*}}
+  \end{itemize}
+  \begin{figure}
+    \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm_1.pdf}
+  \end{figure}
+   % Assumes each document has a weight which affects topic drift...\newline
+%     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
+%\vspace{-0.43in}
+  % \begin{figure}
+  %   \includegraphics[width=0.85\linewidth]{figs/docinf_dtm_gm.pdf}
+  % \end{figure}
+}
+
+
+\frame {
+  \frametitle{Dynamic topics  \small \textcolor{gray}{\cite{blei:2006}}}
+   \begin{itemize}
+  \item Documents are generated from Latent Dirichlet Allocation:
+    \begin{align*}
+      D_t \sim \mbox{LDA}( \alpha_t, \beta_t )
+    \end{align*}
+  % \textcolor{white}{\item Topics drift in a Markov chain:
+  %    \begin{align*} \beta_t \sim \mathcal{N}(\beta_{t-1}, \sigma^2) \end{align*}
+  %  }
+  \end{itemize}
+  \begin{figure}
+    \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm_2.pdf}
+  \end{figure}
+   % Assumes each document has a weight which affects topic drift...\newline
+%     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
+%\vspace{-0.43in}
+  % \begin{figure}
+  %   \includegraphics[width=0.85\linewidth]{figs/docinf_dtm_gm.pdf}
+  % \end{figure}
+}
+
+\frame {
+  \frametitle{Dynamic topics  \small \textcolor{gray}{\cite{blei:2006}}}
+   \begin{itemize}
+  \item Documents are generated from Latent Dirichlet Allocation:
+    \begin{align*}
+      D_t \sim \mbox{LDA}( \alpha_t, \beta_t )
+    \end{align*}
+   \item Topics drift in a Markov chain:
+     \begin{align*} \beta_t = \beta_{t-1} + \varepsilon \end{align*}
+  \end{itemize}
+  \begin{figure}
+    \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm_3.pdf}
+  \end{figure}
+   % Assumes each document has a weight which affects topic drift...\newline
+%     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
+%\vspace{-0.43in}
+  % \begin{figure}
+  %   \includegraphics[width=0.85\linewidth]{figs/docinf_dtm_gm.pdf}
+  % \end{figure}
+}
+
 
 % \frame {
 %   \frametitle{Dynamic topics}
@@ -381,19 +458,22 @@
 
 \frame {
   \frametitle{The Document Influence Model}
-  \begin{itemize}
-  \item Topics drift in a Markov chain:\newline
-     $\beta_t \sim \mathcal{N}(\beta_{t-1} \textcolor{blue}{ + \mbox{Infl}(...)}, \sigma^2)$ \small \textcolor{white}{\cite{blei:2006}} \\
-  \item Documents are generated from Latent Dirichlet Allocation \newline
-     $D_t \sim$ LDA($\alpha_t, \beta_t$) \newline
-
-   \end{itemize}
+   \begin{itemize}
+  \item Documents are generated from Latent Dirichlet Allocation:
+  \begin{align*} D_t \sim \mbox{LDA}(\alpha_t, \beta_t) \end{align*}
+   \item Topics drift in a Markov chain:
+     \begin{align*} \beta_t = \beta_{t-1} \textcolor{red}{ + \mbox{Infl}(z, w)} + \varepsilon \end{align*}
+  %   \small \textcolor{white}{\cite{blei:2006}} \\
+  \end{itemize}
+  \begin{figure}
+    \hspace{-40pt} \includegraphics[height=0.45\textwidth]{figs/dtm_4.pdf}
+  \end{figure}
    % Assumes each document has a weight which affects topic drift...\newline
 %     $l_{d,k} \sim \mathcal{N}(0, \sigma_l^2)$ \newline
-\vspace{-0.43in}
-  \begin{figure}
-    \includegraphics[width=0.85\linewidth]{figs/docinf_gm.pdf}
-  \end{figure}
+% \vspace{-0.43in}
+  % \begin{figure}
+  %   \includegraphics[width=0.85\linewidth]{figs/docinf_gm.pdf}
+  % \end{figure}
 }
 
 %% \frame {
@@ -409,7 +489,8 @@
 
 \frame{
   \frametitle{The influence function}
-  Markov step: $\beta_{t,k} \sim \mathcal{N}(\beta_{t-1,k} + \textcolor{blue}{\sum_D \mbox{Infl}_{d,t,k}}, \sigma^2 I)$,
+  Markov step:
+  $\beta_{t,k} = \beta_{t-1,k} \textcolor{red}{ + \sum_D \mbox{Infl}(d, z, w)} + \varepsilon $
   \vspace{30pt}
   \newline
   We developed the model to have certain characteristics:
@@ -455,8 +536,8 @@
 \frame {
   \frametitle{Posterior Inference}
   \begin{itemize}
-    \item We observe only the words $\bm w$.
-    \item We want to find the posterior $p(I, \theta, z, \beta | \bm w)$.
+    \item We observe only the words $\bm W$.
+    \item We want to find the posterior $p(\bm I, \theta, \bm Z, \beta | \bm W)$.
     \item We use variational methods \cite{jordan:1999}.
   \end{itemize}
   \begin{centering}
@@ -486,9 +567,10 @@
   \begin{itemize}
   \item We analyzed three corpora with the DIM.
     \begin{itemize}
-    \item The \emph{ACL Anthology}: 7561 documents
-    \item \emph{Nature}: 34454 documents
-    \item \emph{PNAS}: 11855 documents
+    \item The \emph{ACL Anthology}: 7,561 documents
+    \item \emph{Nature}: 34,454 documents
+    \item \emph{PNAS}: 11,855 documents
+    %\item 40K documents
     \end{itemize}
   \vspace{20pt}
   \item This provides estimates of the influence of each article.
@@ -736,26 +818,26 @@
  \end{eqnarray*}
 }
 
-\frame {
-  \frametitle{The relationship between countries over time}
-  \begin{center}
-    \includegraphics[width=0.8\textwidth]{figs/countries_gm_bare.pdf}
-  \end{center}
-}
+% \frame {
+%   \frametitle{The relationship between countries over time}
+%   \begin{center}
+%     \includegraphics[width=0.8\textwidth]{figs/countries_gm_bare.pdf}
+%   \end{center}
+% }
 
-\frame {
-  \frametitle{The relationship between countries over time}
-  \begin{center}
-    \includegraphics[width=0.8\textwidth]{figs/countries_gm_norev.pdf}
-  \end{center}
-}
+% \frame {
+%   \frametitle{The relationship between countries over time}
+%   \begin{center}
+%     \includegraphics[width=0.8\textwidth]{figs/countries_gm_norev.pdf}
+%   \end{center}
+% }
 
-\frame {
-  \frametitle{The relationship between countries over time}
-  \begin{center}
-    \includegraphics[width=0.8\textwidth]{figs/countries_gm.pdf}
-  \end{center}
-}
+% \frame {
+%   \frametitle{The relationship between countries over time}
+%   \begin{center}
+%     \includegraphics[width=0.8\textwidth]{figs/countries_gm.pdf}
+%   \end{center}
+% }
 
 % \frame {
 %   \frametitle{Labeling sentiment}
@@ -854,7 +936,7 @@
   \item Use this approach to understand how different news sources
     frame international relations
   \item Use better supervision than Mechanical Turk workers
-  \item Fit the foreign relations model in an unsupervised way \textcolor{gray}{(c.f. \cite{chang:2009})}
+  \item Fit the foreign relations model in an unsupervised way \tiny \textcolor{gray}{(c.f. \cite{chang:2009})}
   \item Add intercepts to countries
   \end{itemize}
 }
@@ -1396,6 +1478,110 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
 \vspace{90pt}
 }
 
+\begin{frame}
+\begin{tabular}{|p{3.7cm}|c|c|}
+%\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Bill description}
+& \textbf{Votes by ideal point}
+& \textbf{Votes by adjusted point} \\
+% \small
+% \hline
+% %To prevent mail, telemarketing, and Internet fraud targeting seniors
+% %in the United States... and for other purposes
+% %H. Res 806 (amending an education and environment trust fund)
+% % \vspace{7pt}
+% % & \includegraphics[width=0.4\textwidth]{figs/3397_ideal_point_10.pdf}
+% % & \includegraphics[width=0.4\textwidth]{figs/3397_adjusted_ideal_point_10.pdf} \\
+\hline
+% To restore sums to the Highway Trust Fund, and for other purposes
+ \small Providing for conditional adjournment of %and recess of
+ Congress
+ %% NEWBORN Act \vspace{7pt}
+ %% Recess of the Houses \vspace{7pt}
+ %% Emergency Unemployment Compensation Continuation
+ %% Highway trust fund \vspace{7pt}
+ & \includegraphics[width=0.3\textwidth]{figs/3397_ideal_point_9.pdf}
+ & \includegraphics[width=0.3\textwidth]{figs/3397_adjusted_ideal_point_9.pdf} \\
+% %Establish R\&D program for gas turbines 
+% %& \includegraphics[width=0.4\textwidth]{figs/3397_ideal_point_8.pdf}
+% %& \includegraphics[width=0.4\textwidth]{figs/3397_adjusted_ideal_point_8.pdf} \\
+% %Providing for an adjournment or recess of the two Houses
+\hline
+\small Recognizing AmeriCorps and community service
+& \includegraphics[width=0.3\textwidth]{figs/3397_ideal_point_7.pdf}
+& \includegraphics[width=0.3\textwidth]{figs/3397_adjusted_ideal_point_7.pdf} \\
+% %Emergency Unemployment Compensation Continuation Act
+% %Providing for conditional adjournment of Congress
+% %& \includegraphics[width=0.4\textwidth]{figs/3397_ideal_point_6.pdf}
+% %& \includegraphics[width=0.4\textwidth]{figs/3397_adjusted_ideal_point_6.pdf} \\
+\hline
+%Providing for a conditional adjournment of the House of Representatives & & \\
+%and a conditional recess or adjournment of the Senate
+\small Providing for the sine die adjournment of Congress
+& \includegraphics[width=0.3\textwidth]{figs/3397_ideal_point_5.pdf}
+& \includegraphics[width=0.3\textwidth]{figs/3397_adjusted_ideal_point_5.pdf} \\
+\hline
+% %Recognizing the significant accomplishments of AmeriCorps and
+% %encouraging... community service
+% %Providing for an adjournment / recess of Congress
+% %& \includegraphics[width=0.4\textwidth]{figs/3397_ideal_point_4.pdf}
+% %& \includegraphics[width=0.4\textwidth]{figs/3397_adjusted_ideal_point_4.pdf} \\
+% %Providing for the sine die adjournment of & & \\
+% %the first session of the One Hundred Eleventh Congress
+\small Preventing child marriage in developing countries
+& \includegraphics[width=0.3\textwidth]{figs/3397_ideal_point_3.pdf}
+& \includegraphics[width=0.3\textwidth]{figs/3397_adjusted_ideal_point_3.pdf} \\
+% %A bill to protect girls in developing countries through the
+% %prevention of child marriage, and for other purposes
+% %Providing for a conditional House adjournment
+% %& \includegraphics[width=0.4\textwidth]{figs/3397_ideal_point_2.pdf}
+% %& \includegraphics[width=0.4\textwidth]{figs/3397_adjusted_ideal_point_2.pdf} \\
+\hline
+%Congratulating the 2009-2010 University of Maryland Men's
+%Basketball Team, Greivis Vasquez, and Coach Gary Williams on an outstanding season
+\small Congratulating the UMD Men's basketball team
+& \includegraphics[width=0.3\textwidth]{figs/3397_ideal_point_1.pdf}
+& \includegraphics[width=0.3\textwidth]{figs/3397_adjusted_ideal_point_1.pdf} \\
+\hline
+\end{tabular}
+
+\end{frame}
+
+
+\frame {
+  \frametitle{Procedural Cartels}
+  \emph{Procedural cartel theory} explains the difference in voting patterns between substantive issues and procedural issues.
+\tiny
+%  \begin{center}
+\textcolor{gray}{
+ %   \begin{tabular}{ll}
+  (\cite{fenno:1965}, \cite{jones:1964},
+  \cite{cox:2002}, \cite{cox:1993})
+%  \end{tabular}
+  }
+%  \end{center}
+  \normalsize
+%  \vspace{20pt}
+\begin{itemize}
+  \item
+    \emph{Parties in the House -- especially the majority party -- are a
+      species of 'legislative cartel' [ which usurp the power ] to make
+      rules governing the structure and process of legislation.}
+      \tiny \textcolor{gray}{\citet{cox:1993}} \normalsize
+  %% The cartel's primary goal in procedural control is to structure the rules
+  %% of the House to ensure party unity and to dissuade defection among
+  %% party members.
+  \item The majority party delegates an agenda-setting monopoly to senior
+  partners in the party. %, who set the procedural agenda in the House
+\item The cartel ensures that senior members hold
+  agenda-setting seats (such as committee chairs) while rank-and-file
+  members of the party support agenda-setting decisions % (instead of
+%  defecting).
+  \tiny \textcolor{gray}{\citep{cox:2005}} \normalsize
+  \end{itemize}
+}
+
 % \frame{
 %   \frametitle{Adding text to the ideal point model}
 %   \normalsize
@@ -1644,7 +1830,7 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
 \frame {
   \frametitle{Example: Donald Young}
   \begin{center}
-  \includegraphics[height=1.3\textheight]{figs/3393_house_Donald_Young_400440.pdf}
+  \includegraphics[height=0.9\textheight]{figs/3393_house_Donald_Young_400440.pdf}
   \end{center}
 }
 
@@ -1657,6 +1843,11 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
   \end{itemize}
   \vspace{30pt}
   Automatically infer lawmakers' voting patterns on issues
+  \begin{itemize}
+    \item Traditional ideal points are limited and hard to interpret
+    \item Issue-adjusted ideal points represent votes better and
+      provide a window into issue preferences.
+  \end{itemize}
 }
 
 \frame {
@@ -1692,6 +1883,11 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
 
 \frame{
   \frametitle{Appendix}
+}
+
+\frame{
+  \frametitle{Results for the }
+  \includegraphics[width=0.8\textwidth]{figs/fraction_docs_vs_fraction_citations.pdf}
 }
 
 \frame{
@@ -1968,6 +2164,7 @@ h(s, q) := & \big( (\W_{s,k} \circ \vphi_{s,k})^T \Lambda_{\exp(-2 \mv_q + 2 \vv
 
 \frame{
   \frametitle{Posterior Inference}
+  \normalsize
   Recall that we only observe words $\bm W$ and votes $V$. \\
   We are interested in the posterior
   \begin{eqnarray*}
@@ -2043,9 +2240,8 @@ of documents and how they relate to one another
    \frametitle{Results - Topics}
    \center
    \includegraphics[width=1.0\textwidth]{figs/64_topic_plot.pdf}
- }
-
+}
 
 \end{document}
 
-\message{ !name(sgerrish_prefpo.tex) !offset(-2051) }
+\message{ !name(sgerrish_citp.tex) !offset(-2247) }

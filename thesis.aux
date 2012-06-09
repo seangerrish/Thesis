@@ -1,1 +1,493 @@
 \relax 
+\@writefile{toc}{\contentsline {section}{Abstract}{iii}}
+\@writefile{toc}{\contentsline {section}{Acknowledgements}{iv}}
+\citation{googleblog:2008}
+\citation{changrtl:2009}
+\@writefile{toc}{\contentsline {chapter}{\numberline {1}Introduction}{2}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {1.1}Influence and decision making}{2}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.2}The availability of observational social science data on a massive scale}{2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.1}Text}{2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.2}Dyadic data: networks and interaction between entities}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.3}Time-series data}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.4}The insufficiency of traditional methods}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2.5}Causal inference in modern observational setting}{3}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}The role of statistical machine learning}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.1}Probabilistic latent variable models}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.2}Tools and abstractions for probabilistic inference}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3.3}Ability to perform inference on large-scale datasets}{3}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {2}Preliminary material: quantitative methods}{4}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{chapter:introductory_material}{{2}{4}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}Standards and naming conventions}{4}}
+\@writefile{lot}{\contentsline {table}{\numberline {2.1}{\ignorespaces Notation used throughout this thesis.}}{5}}
+\newlabel{section:pipeline}{{2.1}{5}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}Latent-variable models for prediction and exploratoration}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Data analysis pipepline}{5}}
+\newlabel{section:data_analysis_pipeline}{{2.2.1}{5}}
+\citation{box:1980,gelman:1996}
+\citation{tufte:2001}
+\citation{wilkinson:2005}
+\citation{chaney:2012}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces A data analysis pipeline. In this work, we discuss elements of defining modeling assumptions, model implementation, and model revision. We will focus on applications which use text data.}}{7}}
+\newlabel{figure:data_analysis_pipeline}{{2.1}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Latent-variable models}{7}}
+\newlabel{lvm:matching}{{2}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}Undirected graphical models for summarizing distributional assumptions}{8}}
+\citation{bishop:2006}
+\citation{bishop:2006}
+\citation{grimmer:submitted}
+\citation{blei:2003}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces Left: graphical model for a unigram language model. Documents $1, \ldots  , D$ are treated as \emph  {bags of words}, or collections of words $w_n$. Right: graphical model for Latent Dirichlet Allocation. Circles are random variables, arrows connote dependency, and plates represent replication. The circles represent observed random variables (words in this case).}}{10}}
+\newlabel{fig:bagofwords_lda_gm}{{2.2}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.4}Text as a medium for social science analysis}{10}}
+\newlabel{section:text_intro}{{2.2.4}{10}}
+\@writefile{toc}{\contentsline {subsubsection}{Latent Dirichlet Allocation}{11}}
+\citation{salakhutdinov:2008a}
+\citation{clinton:2004,martin:2002,poole:1991,enelow:1984,albert:1992}
+\@writefile{lot}{\contentsline {table}{\numberline {2.2}{\ignorespaces Example topics from Latent Dirichlet Allocation fit to sentences from the the textbook \emph  {Biology} by Campbell and Reece. This is a small subset of the 1000 topics. These topics were graciously provided by Ricky Wong.}}{12}}
+\newlabel{table:example_lda_topics}{{2.2}{12}}
+\@writefile{toc}{\contentsline {subsubsection}{Inference}{12}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.5}Ideal point models and matrix factorization}{12}}
+\citation{wang:2011,salakhutdinov:2008a,poole:1985,poole:1991,clinton:2004}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces Probabilistic matrix factorization. We observe interactions $V_{ud}$ between users represented by $X_u$ and items represented by $A_d, B_d$.}}{13}}
+\newlabel{figure:irt_gm}{{2.3}{13}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.6}Hidden Markov Models and Kalman Filters}{13}}
+\citation{bishop:2006}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces A hidden Markov model. Observations $Y_1, \ldots  , Y_T$ are observed at discrete times $t=1, \ldots  , T$, and are conditionally independent given the hidden states $X_1, \ldots  , X_T$.}}{14}}
+\newlabel{figure:hmm_gm}{{2.4}{14}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}Posterior inference and model evaluation}{14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}MAP estimation}{14}}
+\citation{jordan:2003,jordan:1999}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}MCMC}{15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}Variational inference}{15}}
+\newlabel{section:variational_inference}{{2.3.3}{15}}
+\newlabel{equation:variational_objective}{{2.10}{15}}
+\newlabel{equation:traditional_variational_objective}{{2.11}{15}}
+\citation{bishop:2006}
+\citation{blei:2003}
+\citation{bickel:2007,braun:2007}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.4}Model evaluation}{16}}
+\@writefile{toc}{\contentsline {subsubsection}{Likelihood of training data $Y_1, \ldots  , Y_{N_{\unhbox \voidb@x \hbox {obs}}}$}{16}}
+\@writefile{toc}{\contentsline {subsubsection}{Likelihood of heldout observations $Y_1, \ldots  , Y_{N_{\unhbox \voidb@x \hbox {heldout}}}$}{17}}
+\@writefile{toc}{\contentsline {subsubsection}{Relationship with external data}{17}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Using these tools to understand influence and decisionmaking}{17}}
+\citation{garfield:2002}
+\citation{brin:1998}
+\citation{osareh:1996}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}A model of influence in text documents}{18}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\citation{blei:2006}
+\citation{tang:2009}
+\citation{lokker:2008}
+\citation{tang:2009,lokker:2008}
+\citation{nallapati:2008,chang:2009,dietz:2007,Cohn01themissing}
+\citation{mcnee:2002,ibanez:2009}
+\citation{qazvinian:2008}
+\citation{mann:2006}
+\citation{borner:2003}
+\citation{blei:2006}
+\citation{blei:2003,deerwester:1990,hofman:1999}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}The Document Influence Model}{20}}
+\newlabel{section:model}{{3.1}{20}}
+\citation{blei:2006}
+\newlabel{fig:doc_influence_model}{{3.1}{21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces  The Dynamic Topic Model (a) and the the Document Influence Model (b).}}{21}}
+\newlabel{fig:gm}{{3.1}{21}}
+\@writefile{toc}{\contentsline {paragraph}{Drifting Topics.}{21}}
+\newlabel{eq:softmax}{{3.1}{21}}
+\newlabel{eq:logistic-normal}{{3.2}{21}}
+\@writefile{toc}{\contentsline {paragraph}{Documents generated at time $t$.}{21}}
+\citation{blei:2003}
+\newlabel{eq:logistic-normal-influence}{{3.3}{22}}
+\@writefile{toc}{\contentsline {paragraph}{Multiple topics.}{22}}
+\citation{porter:2005}
+\citation{leskovec:2009}
+\citation{shaparenko:2007}
+\citation{shaparenko:2007}
+\newlabel{eq:logistic-normal-influence-topics}{{3.4}{23}}
+\citation{blei:2003}
+\citation{blei:2006}
+\citation{blei:2006}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Inference and parameter estimation}{24}}
+\newlabel{section:inference}{{3.2}{24}}
+\citation{blei:2006}
+\citation{blei:2006}
+\@writefile{toc}{\contentsline {paragraph}{Topic trajectories.}{25}}
+\citation{blei:2003}
+\@writefile{toc}{\contentsline {paragraph}{Influence values.}{26}}
+\@writefile{toc}{\contentsline {paragraph}{Topic proportions and topic assignments.}{26}}
+\citation{bird:2008}
+\citation{Radev:2009}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Empirical study}{27}}
+\newlabel{sec:data}{{3.3}{27}}
+\citation{Thompson:2009}
+\newlabel{sec:results}{{3.3}{28}}
+\newlabel{eq:score}{{3.7}{28}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Spearman rank correlation between citation counts and posterior influence score, controlling for date (top) and fraction of citations explained by posterior influence (bottom).}}{29}}
+\newlabel{fig:results}{{3.2}{29}}
+\@writefile{toc}{\contentsline {paragraph}{Heuristic model.}{29}}
+\citation{brown:1993}
+\citation{brown:1993}
+\citation{marcus:1993}
+\@writefile{toc}{\contentsline {paragraph}{Shuffled corpus}{30}}
+\@writefile{toc}{\contentsline {paragraph}{IBM Model 3}{30}}
+\@writefile{toc}{\contentsline {paragraph}{The Penn Treebank}{30}}
+\citation{marcus:1993}
+\citation{brown:1993}
+\citation{toole:1984}
+\citation{brown:1993}
+\citation{toole:1984}
+\citation{Nature.success:1969}
+\citation{NSF.website:2010}
+\citation{toole:1984}
+\@writefile{toc}{\contentsline {paragraph}{Success in 1972}{31}}
+\@writefile{toc}{\contentsline {paragraph}{Genetics in \emph  {Nature}}{31}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Most active words appearing in \cite  {brown:1993} (left) which have changed the most in a topic about translation. On right are words appearing in \cite  {toole:1984} in a topic about DNA and genetics. Terms are sorted by increase over 10 years.}}{32}}
+\newlabel{fig:words}{{3.3}{32}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}A parallel implementation of the model}{33}}
+\newlabel{section:influence_parallel_inference}{{3.4}{33}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.5}A parallel implementation of the model}{34}}
+\newlabel{section:influence_parallel_inference}{{3.5}{34}}
+\citation{leskovec:2009}
+\citation{alvarez:2009}
+\citation{shaparenko:2007}
+\citation{dietz:2007}
+\@writefile{toc}{\contentsline {section}{\numberline {3.6}Conclusions and future work}{36}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}The influence of Judges' opinions in higher courts}{38}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Introduction: Decisions and influence in the higher courts}{38}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Influence and the progress of ideas in the higher courts}{38}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}The Cardozo Topic}{38}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Influence of Judges' dissenting opinions}{38}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}A model of influence among opinions}{38}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}A posterior-predictive checks among dissenting opinions}{38}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}Do lower court opinions influence higher courts?}{38}}
+\citation{poole:1991,jackman:2001,clinton:2004}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Models of Spatial Voting and text}{39}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}The role of text in lawmaking bodies}{40}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.1}The Ideal Point Model}{40}}
+\newlabel{sec:model}{{5.1.1}{40}}
+\newlabel{eq:ideal-point}{{5.1}{40}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.2}A model for predicting votes with the text of new bills}{40}}
+\citation{clinton:2004}
+\citation{lord:1980}
+\citation{blei:2008}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Sample Senator ideal points in the 111th Congress. Ideal points tend to separate the U.S. political parties: Democrat are blue, and Republicans are red. A plot of all legislators is included in the supplementary materials.}}{41}}
+\newlabel{fig:ideal_points}{{5.1}{41}}
+\citation{Kogan:2009}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces The ideal point topic model. Priors over the multinomials $\theta _d$ and $\beta $ are both symmetric Dirichlet distributions.}}{42}}
+\newlabel{fig:legis_gm}{{5.2}{42}}
+\citation{blei:2008}
+\citation{blei:2003}
+\newlabel{eq:posterior}{{5.2}{43}}
+\citation{jackman:2001,clinton:2004,martin:2002}
+\citation{clinton:2004}
+\citation{enelow:1984}
+\citation{poole:1985,heckman:1996}
+\citation{jackman:2001,martin:2002,clinton:2004}
+\citation{martin:2002,wang:2010}
+\citation{jackman:2001,heckman:1996}
+\citation{johnson:1999ch6}
+\citation{quinn:2006}
+\citation{thomas:2006}
+\citation{pang:2008}
+\citation{Salakhutdinov:2008a}
+\citation{agarwal:2010}
+\citation{wang:2010}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.3}Related work}{44}}
+\citation{johnson:1999ch6,jackman:2001,martin:2002,clinton:2004}
+\citation{jordan:1999}
+\citation{jordan:1999}
+\citation{blei:2003}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.4}Posterior estimation for the ideal point topic model}{45}}
+\newlabel{sec:inference}{{5.1.4}{45}}
+\newlabel{eq:var_post}{{5.3}{45}}
+\citation{treetagger}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.5}An empirical analysis}{46}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Analyzing the U.S. House and Senate}{46}}
+\newlabel{sec:experiments}{{5.2}{46}}
+\newlabel{fig:log_likelihood}{{5.1.5}{47}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Vote log likelihood on heldout votes. Models are shown by color for different regularizations (x axis), for Congresses 106 to 111. For LARS and L2, the regularization is the complexity parameter; for the ITPM, the regularization is the the number of topics. The \emph  {yea} baseline is the horizontal black line. LARS is below the fold for 106-107. The ideal point topic model performs with less variance across its regularization parameter. }}{47}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Topics can be visualized in the same latent political space as legislators and bills. This plot shows selected topics by coefficients $\bm  {\mathaccentV {hat}05E}\eta $, for a 64-topic model ($\bm  {\mathaccentV {hat}05E}\eta $s are normalized by mean and variance). Two topics (\emph  {people, month, recognize, ...} and \emph  {clause, motion, chair, ...}) with difficulty 4.68 and discrimination 7.4 (respectively) are not shown.}}{48}}
+\newlabel{fig:topics}{{5.4}{48}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Exploring topics and bills}{48}}
+\citation{herszenhorn:2010}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Checking the ideal points}{49}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.3}Predicting votes from text}{50}}
+\citation{clinton:2004,poole:1985,martin:2002}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}A study of lawmakers' voting on specific issues}{51}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}A model of exceptional voting patterns}{51}}
+\newlabel{section:exceptional_model}{{5.3.1}{51}}
+\@writefile{toc}{\contentsline {subsubsection}{Modeling politics with ideal points.}{51}}
+\citation{poole:1991,clinton:2004}
+\citation{clinton:2004}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Traditional ideal points separate Republicans (red) from Democrats (blue).}}{52}}
+\newlabel{fig:classic_ideal_points}{{5.5}{52}}
+\newlabel{eq:trad_ipm}{{5.4}{52}}
+\@writefile{toc}{\contentsline {subsubsection}{Limitations of ideal point models.}{52}}
+\citation{ramage:2009}
+\citation{ramage:2009}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces In a traditional ideal point model, lawmakers' ideal points are static (top line of each figure). In the issue-adjusted ideal point model, lawmakers' ideal points change when they vote on certain issues, such as \emph  {Taxation} (top) and \emph  {Health} (bottom).}}{53}}
+\newlabel{fig:moving_ideal_points}{{5.6}{53}}
+\@writefile{toc}{\contentsline {subsubsection}{Issue-adjusted ideal points.}{53}}
+\citation{ramage:2009}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Left: the issue-adjusted ideal point model, which models votes $v_{ud}$ from lawmakers and legislative items. Classic item response theory models votes $v$ using $x_u$ and $a_d, b_d$. For our work, documents' issue vectors $\bm  {\theta }$ were estimated fit with a topic model (left of dashed line) using bills' words $w$ and labeled topics $\beta $. Expected issue vectors $\mathbb  {E}_q\left [\bm  {\theta }| \bm  {w}\right ]$ are then treated as constants in the issue model (right of dashed line). Right: Top words from topics fit using labeled LDA \cite  {ramage:2009}. }}{54}}
+\newlabel{figure:legis_gm}{{5.7}{54}}
+\newlabel{table:example_topics}{{5.7}{54}}
+\newlabel{equation:exploratory_ipm_old}{{5.5}{54}}
+\citation{blei:2003}
+\citation{ramage:2009}
+\citation{crs:2011}
+\citation{clinton:2004,martin:2002,poole:1985}
+\citation{enelow:1984}
+\citation{albert:1992}
+\citation{heckman:1996}
+\citation{jackman:2001}
+\citation{gerrish:2011}
+\citation{wang:2010}
+\@writefile{toc}{\contentsline {subsubsection}{Using Labeled LDA to associate bills with issues.}{55}}
+\newlabel{section:lda}{{5.3.1}{55}}
+\@writefile{toc}{\contentsline {subsubsection}{Related Work.}{55}}
+\citation{wang:2011}
+\citation{agarwal:2010}
+\citation{agarwal:2010}
+\citation{wang:2011}
+\citation{johnson:1999ch6,jackman:2001,martin:2002,clinton:2004}
+\citation{jordan:1999}
+\citation{gerrish:2011}
+\citation{robbins:1951,bottou:2004}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.2}Inference for the adjusted ideal point model}{56}}
+\newlabel{section:inference}{{5.3.2}{56}}
+\newlabel{equation:variational_posterior}{{5.6}{56}}
+\citation{govtrack:2009}
+\newlabel{equation:approx_elbo_gradient}{{5.7}{57}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.3}An empirical analysis of voting patterns}{57}}
+\newlabel{section:empirical_analysis}{{5.3.3}{57}}
+\@writefile{toc}{\contentsline {subsubsection}{Data and Experiment Setup}{57}}
+\newlabel{section:corpus_details}{{5.3.3}{57}}
+\citation{gerrish:2011}
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces Average log-likelihood of heldout votes using six-fold cross validation. These results cover Congresses 106 to 111 (1999-2010) with regularization $\lambda =1$. The issue-adjusted model yields higher heldout log-likelihood for all congresses in both chambers than a standard ideal point model. Perm. Issue illustrates the issue model fit when bills' issue labels were randomly permuted. \emph  {Perm. Issue} is results for the issue model fit using permuted document labels.}}{58}}
+\newlabel{table:performance_comparison}{{5.1}{58}}
+\@writefile{toc}{\contentsline {subsubsection}{Comparison of classic and exploratory ideal points}{58}}
+\@writefile{toc}{\contentsline {subsubsection}{Evaluation and significance}{58}}
+\newlabel{section:performance}{{5.3.3}{58}}
+\@writefile{toc}{\contentsline {subsubsection}{Checking issue affinity}{59}}
+\@writefile{toc}{\contentsline {subsubsection}{Issues improved by issue adjustment}{59}}
+\newlabel{equation:likelihood_improvement}{{5.9}{59}}
+\citation{fenno:1965,cox:1993,cox:2002,cox:2005}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces Ideal points $x_u$ and issue-adjusted ideal points $x_u + z_{uk}$ from the 111th House. Votes about Finance were better fit with this model. Republicans (red) saw more adjustment than Democrats (blue). }}{60}}
+\newlabel{figure:issue_improvements_ideals}{{5.8}{60}}
+\@writefile{toc}{\contentsline {subsubsection}{Analyzing lawmakers}{60}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.9}{\ignorespaces Significant issue adjustments for exceptional senators in Congress 111. Statistically significant issue adjustments are shown with each $\times $.}}{61}}
+\newlabel{figure:significant_offsets}{{5.9}{61}}
+\@writefile{toc}{\contentsline {subsubsection}{Issue model misfit}{62}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}The influence of Judges' opinions in higher courts}{64}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Introduction: Decisions and influence in the higher courts}{64}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.1}Influence and the progress of ideas in the higher courts}{64}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1.2}The Cardozo Topic}{64}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Influence of Judges' dissenting opinions}{64}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.1}A model of influence among opinions}{64}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.2}A posterior-predictive checks among dissenting opinions}{64}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.3}Do lower court opinions influence higher courts?}{64}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}A time-series model of foreign affairs: sentiment between nation-states}{65}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {7.1}Foreign relations and their influence on news reporting}{65}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.2}A latent-space model of foreign relations}{65}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.1}Posterior inference}{65}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.2}Supervised sentiment analysis}{65}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.3}Unsupervised sentiment analysis}{65}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.3}Empirical studies: comparisons with ground truth}{66}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.1}Comparisons with Ground Truth}{66}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.2}Relation to ideal points inferred from the UN General Assembly}{66}}
+\citation{bishop:2006}
+\citation{jordan:1999}
+\citation{winn:2004}
+\@writefile{toc}{\contentsline {chapter}{\numberline {8}Appendix}{67}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {8.1}A.1. Optimizing the variational bound stochastically}{67}}
+\citation{carbonetto:2009,graves:2011}
+\citation{carbonetto:2009}
+\citation{graves:2011}
+\citation{carbonetto:2009}
+\citation{jordan:2003,jordan:1999}
+\@writefile{toc}{\contentsline {section}{\numberline {8.2}Stochastic optimization of the variational objective}{68}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2.1}Variational inference}{68}}
+\newlabel{equation:variational_objective}{{8.1}{68}}
+\citation{jaakkola:2000,jordan:1999,bickel:2007,braun:2007}
+\citation{graves:2011,wei:1990,carbonetto:2009}
+\citation{robbins:1951}
+\newlabel{equation:traditional_variational_objective}{{8.2}{69}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2.2}Stochastic optimization of the variational objective}{69}}
+\newlabel{equation:gradient-as-expectation}{{8.4}{69}}
+\citation{carbonetto:2009,graves:2011}
+\citation{wei:1990}
+\citation{carbonetto:2009}
+\citation{bottou:2004,robbins:1951}
+\newlabel{equation:svo_gradient}{{8.5}{70}}
+\newlabel{equation:svo_update}{{8.6}{70}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.1}{\ignorespaces A non-conjugate posterior density (dashed) and a Gaussian variational approximation (solid).}}{71}}
+\newlabel{figure:univariate_comparison_approximation}{{8.1}{71}}
+\@writefile{toc}{\contentsline {subsubsection}{Example: Gaussian variational marginal}{71}}
+\newlabel{section:gaussian}{{8.2.2}{71}}
+\newlabel{equation:gaussian_mean_gradient}{{8.7}{71}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.2}{\ignorespaces A comparison of our algorithm using first-order vs. second-order updates (top vs. bottom); and estimating gradients using \emph  {iid} samples from $q$ vs. quasi-Monte Carlo samples from $q$ (left vs. right).}}{72}}
+\newlabel{figure:comparision_order_sampling}{{8.2}{72}}
+\newlabel{equation:gaussian_mean}{{8.9}{72}}
+\newlabel{equation:gaussian_variance_gradient}{{8.10}{72}}
+\@writefile{toc}{\contentsline {paragraph}{Testing convergence.}{72}}
+\citation{tang:1993,owen:1998,niederreiter:1992}
+\citation{wei:1990}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2.3}Improving performance}{73}}
+\@writefile{toc}{\contentsline {subsubsection}{Minibatch sampling}{73}}
+\newlabel{section:minibatch_sampling}{{8.2.3}{73}}
+\citation{robbins:1951,bottou:2004}
+\citation{carbonetto:2009}
+\citation{wei:1990}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Second-order SVO. We begin with a variational distribution $q_{\theta _0}(x)$ and joint likelihood $p(x, y)$. }}{74}}
+\newlabel{figure:second_order_algorithm}{{1}{74}}
+\@writefile{toc}{\contentsline {subsubsection}{Second-order updates}{74}}
+\newlabel{section:second_order_updates}{{8.2.3}{74}}
+\citation{bottou:2004}
+\citation{hoffman:2010}
+\newlabel{equation:empirical_second_order_estimates}{{8.12}{75}}
+\newlabel{equation:second_order_updates}{{8.13}{75}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2.4}Multivariate distributions}{75}}
+\citation{carbonetto:2009}
+\citation{carbonetto:2009}
+\citation{wei:1990}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2.5}Related work}{76}}
+\@writefile{toc}{\contentsline {paragraph}{Stochastic optimization.}{76}}
+\@writefile{toc}{\contentsline {paragraph}{Stochastic sampling with variational inference.}{76}}
+\@writefile{toc}{\contentsline {section}{\numberline {8.3}Empirical study}{76}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.3}{\ignorespaces Experimental results comparing SVO and MCMC estimates. We show lawmaker posteriors in the probit IRT model (left) and observation means from a change point model (right). In each table we illustrate runtime, log-likelihood (LL) or mean-squared error (MSE) on heldout observations. We also estimate MSE against the ``True'' posterior means, estimated using long Gibbs runs (500K and 50K samples for left and right respectively). }}{77}}
+\newlabel{figure:changepoint_results}{{8.3}{77}}
+\newlabel{figure:irt_results}{{8.3}{77}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3.1}Univariate examples}{77}}
+\newlabel{section:univariate_example}{{8.3.1}{77}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.4}{\ignorespaces figure}}{78}}
+\newlabel{figure:univariate_comparison}{{8.4}{78}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8.5}{\ignorespaces Well-log data (grey) fit with a variational switching Kalman filter. The inferred means $\mathaccentV {bar}016\mu _{t}$ of the filter are shown in black. Each timestamp also has an associated variational change point $\mathaccentV {bar}016c_t$ which indicates the probability that the filter is making a large transition. Transitions at change points with mean $\mathaccentV {bar}016c_t > \frac  {1}{2}$ are marked in red.}}{78}}
+\newlabel{figure:switching_kalman_filter}{{8.5}{78}}
+\citation{poole:1991,martin:2002,albert:1992}
+\citation{clinton:2004}
+\citation{albert:1992}
+\citation{gerrish:2011}
+\citation{armagan:2011}
+\citation{murphy:1998}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3.2}Probit regression and ideal points}{79}}
+\newlabel{section:probit_regression}{{8.3.2}{79}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3.3}Switching Kalman filter}{79}}
+\newlabel{section:switching_kalman_filter}{{8.3.3}{79}}
+\citation{ghahramani:1996,murphy:1998}
+\citation{ghahramani:1996}
+\citation{adams:2007}
+\citation{ruanaidh:1996,adams:2007}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3.4}Alternative variational distributions: Laplace variational posterior}{81}}
+\newlabel{section:complicated_posteriors}{{8.3.4}{81}}
+\@writefile{toc}{\contentsline {section}{\numberline {8.4}Discussion}{81}}
+\bibstyle{unsrt}
+\bibdata{bib}
+\@writefile{toc}{\contentsline {chapter}{\numberline {9}Appendix}{82}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {9.1}Processing text data}{82}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.1.1}Stemming and parsing}{82}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.1.2}Current libraries and software}{82}}
+\@writefile{toc}{\contentsline {section}{\numberline {9.2}Model estimation basics}{82}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.2.1}Multimodal distributions and identification}{82}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.2.2}Setup of a typical program}{82}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.2.3}The role of traditional dimensionality reduction in evaluating underconstrained distributions}{82}}
+\@writefile{toc}{\contentsline {section}{\numberline {9.3}Stochastic optimization}{82}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.3.1}Round-robin updates}{82}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.3.2}Bounded step size}{82}}
+\bibcite{bishop:2006}{{1}{}{{}}{{}}}
+\bibcite{changrtl:2009}{{2}{}{{}}{{}}}
+\bibcite{grimmer:submitted}{{3}{}{{}}{{}}}
+\bibcite{blei:2003}{{4}{}{{}}{{}}}
+\bibcite{salakhutdinov:2008a}{{5}{}{{}}{{}}}
+\bibcite{clinton:2004}{{6}{}{{}}{{}}}
+\bibcite{martin:2002}{{7}{}{{}}{{}}}
+\bibcite{poole:1991}{{8}{}{{}}{{}}}
+\bibcite{enelow:1984}{{9}{}{{}}{{}}}
+\bibcite{albert:1992}{{10}{}{{}}{{}}}
+\bibcite{wang:2011}{{11}{}{{}}{{}}}
+\bibcite{poole:1985}{{12}{}{{}}{{}}}
+\bibcite{jordan:2003}{{13}{}{{}}{{}}}
+\bibcite{jordan:1999}{{14}{}{{}}{{}}}
+\bibcite{bickel:2007}{{15}{}{{}}{{}}}
+\bibcite{braun:2007}{{16}{}{{}}{{}}}
+\bibcite{garfield:2002}{{17}{}{{}}{{}}}
+\bibcite{brin:1998}{{18}{}{{}}{{}}}
+\bibcite{blei:2006}{{19}{}{{}}{{}}}
+\bibcite{porter:2005}{{20}{}{{}}{{}}}
+\bibcite{osareh:1996}{{21}{}{{}}{{}}}
+\bibcite{borner:2003}{{22}{}{{}}{{}}}
+\bibcite{tang:2009}{{23}{}{{}}{{}}}
+\bibcite{lokker:2008}{{24}{}{{}}{{}}}
+\bibcite{nallapati:2008}{{25}{}{{}}{{}}}
+\bibcite{chang:2009}{{26}{}{{}}{{}}}
+\bibcite{dietz:2007}{{27}{}{{}}{{}}}
+\bibcite{Cohn01themissing}{{28}{}{{}}{{}}}
+\bibcite{mcnee:2002}{{29}{}{{}}{{}}}
+\bibcite{ibanez:2009}{{30}{}{{}}{{}}}
+\bibcite{qazvinian:2008}{{31}{}{{}}{{}}}
+\bibcite{mann:2006}{{32}{}{{}}{{}}}
+\bibcite{leskovec:2009}{{33}{}{{}}{{}}}
+\bibcite{shaparenko:2007}{{34}{}{{}}{{}}}
+\bibcite{bird:2008}{{35}{}{{}}{{}}}
+\bibcite{Radev:2009}{{36}{}{{}}{{}}}
+\bibcite{Thompson:2009}{{37}{}{{}}{{}}}
+\bibcite{brown:1993}{{38}{}{{}}{{}}}
+\bibcite{marcus:1993}{{39}{}{{}}{{}}}
+\bibcite{toole:1984}{{40}{}{{}}{{}}}
+\bibcite{Nature.success:1969}{{41}{}{{}}{{}}}
+\bibcite{NSF.website:2010}{{42}{}{{}}{{}}}
+\bibcite{jackman:2001}{{43}{}{{}}{{}}}
+\bibcite{lord:1980}{{44}{}{{}}{{}}}
+\bibcite{blei:2008}{{45}{}{{}}{{}}}
+\bibcite{Kogan:2009}{{46}{}{{}}{{}}}
+\bibcite{heckman:1996}{{47}{}{{}}{{}}}
+\bibcite{wang:2010}{{48}{}{{}}{{}}}
+\bibcite{johnson:1999ch6}{{49}{}{{}}{{}}}
+\bibcite{quinn:2006}{{50}{}{{}}{{}}}
+\bibcite{thomas:2006}{{51}{}{{}}{{}}}
+\bibcite{pang:2008}{{52}{}{{}}{{}}}
+\bibcite{agarwal:2010}{{53}{}{{}}{{}}}
+\bibcite{treetagger}{{54}{}{{}}{{}}}
+\bibcite{herszenhorn:2010}{{55}{}{{}}{{}}}
+\bibcite{ramage:2009}{{56}{}{{}}{{}}}
+\bibcite{crs:2011}{{57}{}{{}}{{}}}
+\bibcite{gerrish:2011}{{58}{}{{}}{{}}}
+\bibcite{robbins:1951}{{59}{}{{}}{{}}}
+\bibcite{bottou:2004}{{60}{}{{}}{{}}}
+\bibcite{govtrack:2009}{{61}{}{{}}{{}}}
+\bibcite{fenno:1965}{{62}{}{{}}{{}}}
+\bibcite{cox:1993}{{63}{}{{}}{{}}}
+\bibcite{cox:2002}{{64}{}{{}}{{}}}
+\bibcite{cox:2005}{{65}{}{{}}{{}}}
+\bibcite{winn:2004}{{66}{}{{}}{{}}}
+\bibcite{carbonetto:2009}{{67}{}{{}}{{}}}
+\bibcite{graves:2011}{{68}{}{{}}{{}}}
+\bibcite{jaakkola:2000}{{69}{}{{}}{{}}}
+\bibcite{wei:1990}{{70}{}{{}}{{}}}
+\bibcite{tang:1993}{{71}{}{{}}{{}}}
+\bibcite{owen:1998}{{72}{}{{}}{{}}}
+\bibcite{niederreiter:1992}{{73}{}{{}}{{}}}
+\bibcite{hoffman:2010}{{74}{}{{}}{{}}}
+\bibcite{armagan:2011}{{75}{}{{}}{{}}}
+\bibcite{murphy:1998}{{76}{}{{}}{{}}}
+\bibcite{ghahramani:1996}{{77}{}{{}}{{}}}
+\bibcite{adams:2007}{{78}{}{{}}{{}}}
+\bibcite{ruanaidh:1996}{{79}{}{{}}{{}}}
+\providecommand\NAT@force@numbers{}\NAT@force@numbers

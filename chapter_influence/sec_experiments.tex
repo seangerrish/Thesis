@@ -18,7 +18,7 @@ exploratory tool of influential articles.
 % provides a bibliometric similar to citations with distinctive
 % qualities.
 
-\subsection{Data}
+\subsection*{Data}
 \label{sec:data}
 
 % dmb: put this fact somewhere else.  did inference take the same
@@ -48,7 +48,6 @@ for assessing change in language (a sample of such non-varying
 terms from \emph{Nature} is ``ordinarily'', ``shake'', ``centimetre'',
 ``traffic'', and ``themselves'').
 
-\vspace{-1pt}
 \textbf{ACL Anthology.} The \emph{Association for Computational
   Linguistics Anthology} is a digital collection of publications about
 computational linguistics and natural language
@@ -57,7 +56,6 @@ anthology, spanning 1964 to 2002.  Our sample contains 7,561
 articles and 11,763 unique terms after preprocessing.  For this corpus
 we used article citation counts from the \emph{ACL Anthology
   Network}~\cite{Radev:2009}.
-\vspace{-1pt}
 
 \textbf{PNAS.} The \emph{Proceedings of the National Academy of
   Sciences} is a leading, highly-cited, multidisciplinary scientific
@@ -66,7 +64,6 @@ sampled one seventh of the collection, spanning 1914 (when it was
 founded) to 2004.  Our sample contains 12,145 articles and 14,504
 distinct terms after preprocessing.  We found citations using Google
 Scholar for 78\% of this collection.
-\vspace{-1pt}
 
 \textbf{Nature.} The journal \emph{Nature} is the world's most highly
 cited interdisciplinary science journal~\cite{Thompson:2009} with
@@ -76,14 +73,12 @@ sample from this corpus, spanning 1869 (when it was founded) to
 after preprocessing.  We found citations using Google Scholar for 31\%
 of these documents.
 
-\vspace{-1pt}
 % smg: Note that this will make us run out of space.
 Inference for 10 topics on each corpus above took about 11 hours to
 converge on a desktop Intel 2.4GHz Core 2 Quad cpu.  Our convergence
 criterion was met when the evidence lower bound increased by no more
 than 0.01\%.  For the experiments described below, we set topics'
 Markov chain variance $\sigma^2=0.005$ and $\sigma_d=\sigma_l=0.0001$.
-\vspace{-1pt}
 % \begin{figure}
 %  \small
 % \begin{centering}
@@ -105,10 +100,9 @@ Markov chain variance $\sigma^2=0.005$ and $\sigma_d=\sigma_l=0.0001$.
 %     \vspace{-10pt} \\
 % \end{figure}
 
-\subsection{Relating posterior influence and citation}
+\subsection*{Relating posterior influence and citation}
 \label{sec:results}
 
-\vspace{-1pt}
 We studied the DIM with varying numbers of topics.  We measured the
 relationship between the posterior influence values of each article
 $\ellv_d$ and its citation count $c_d$.
@@ -177,15 +171,12 @@ similar results.)
 
 \begin{figure*}[t]
   \centering
-  \vspace{-.21in}
   \includegraphics[width=0.8\textwidth]{chapter_influence/figures/results_correlation.pdf} \\
   \includegraphics[width=0.8\textwidth]{chapter_influence/figures/results_roc.pdf} \\
-  \vspace{-0.22in}
   \caption{Spearman rank correlation between citation counts and
     posterior influence score, controlling for date (top) and fraction
     of citations explained by posterior influence (bottom).}
   \label{fig:results}
-  \vspace{-0.11in}
 \end{figure*}
 
 \myfig{results} displays the Spearman rank correlation between the
@@ -236,7 +227,6 @@ influence scores very close to zero.
 % model over \emph{Nature}, for example, the correlation coefficient
 % of documents' posterior influence is 0.72.
 
-\vspace{-2pt}
 \paragraph{Heuristic model.} 
  The DIM is a complicated model. To
 justify its complexity, we describe a simple baseline (the
@@ -266,7 +256,6 @@ heuristic for 20, 50, and 75 topics.  Correlation is matched for
 \emph{PNAS}, the model slightly beating the heuristic at 5 topics.
 \emph{ACL} outperforms the heuristic for all numbers of topics.
 
-\vspace{-4pt}
 \paragraph{Shuffled corpus} Though we have eliminated date as a
 confounder by controlling for it in correlations, there may be other
 confounders such as document length or topic distribution.  We
@@ -282,14 +271,13 @@ shuffles of \emph{PNAS}. While this shuffled experiment and
 controlling for date do not entirely preclude confounding, they eliminate many
 potential confounders.
 
-\subsection{A closer look}
+\subsection*{A closer look}
 Experiments showing correlation with citations demonstrate consistency
 with existing bibliometrics. However, the DIM also finds qualitatively
 different articles than citation counts. In this section we describe
 several documents to give the reader an intuition behind the kind of
 analysis that the DIM provides.
 
-\vspace{-2pt}
 \paragraph{IBM Model 3} The second-most cited article in the \emph{ACL
   Anthology Network} is \emph{The Mathematics of Statistical Machine
   Translation: Parameter Estimation}~\cite{brown:1993}. It has 450
@@ -311,7 +299,6 @@ evident (although it is not clear whether ``brown'' refers to the
 author or the corpus).
 
 % dmb: below, how many intra-acl citations are there?
-\vspace{-2pt}
 \paragraph{The Penn Treebank}
 The most-cited article in our subset of the \emph{ACL Anthology
   Network} is \emph{Building a large annotated corpus of English: the
@@ -334,17 +321,14 @@ discover this kind of influence.
 
 % dmb: below, remind us 1st out of how many articles?
 % smg: Added 34,418.
-\begin{figure*}[t]
+\begin{figure*}
 \normalsize
 \begin{tabular}{c}
 \includegraphics[width=0.7\textwidth]{chapter_influence/figures/acl_brown.pdf}
 \\
-%\vspace{-16pt}
-%  \vspace{-4pt}
 \includegraphics[width=0.7\textwidth]{chapter_influence/figures/nature_cloning.pdf} \\
 \end{tabular}
   \small
-  \vspace{-16pt}
 \caption{Most active words appearing in \cite{brown:1993} (left) which
   have changed the most in a topic about translation. On right are
   words appearing in \cite{toole:1984} in a topic about DNA and
@@ -352,10 +336,8 @@ discover this kind of influence.
 %\label{fig:acl_brown_words}
 %\label{fig:nature_cloning}
 \label{fig:words}
-\vspace{-8pt}
 \end{figure*}
 
-\vspace{-2pt}
 \paragraph{Success in 1972}
 In 1967, The College Science Improvement Program was established to
 assist predominantly undergraduate institutions.  Two years later
@@ -383,7 +365,6 @@ DIM has provided a metric with which to gauge interest in the article.
 % dmb: again, remind us out of how many articles.
 % smg: Done.
 
-\vspace{-2pt}
 \paragraph{Genetics in \emph{Nature}}
 The sixth most influential document by the DIM in a 20-topic model of
 \emph{Nature} is \emph{Molecular cloning of a cDNA encoding human

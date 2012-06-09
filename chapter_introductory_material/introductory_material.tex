@@ -31,9 +31,9 @@ The reader may find \mytab{table:notation} a helpful resource in the
 subsequent chapters.  This table summarizes many of the variables
 described in this work.
 \begin{table}
-    \caption{table:notation}
-    \begin{center}
-      \begin{tabular}{|c|c|}
+  \caption{Notation used throughout this thesis.}
+  \begin{center}
+    \begin{tabular}{|c|c|}
       \hline
       \textbf{Variable} & \textbf{Description} \\
       \hline
@@ -49,9 +49,26 @@ described in this work.
       $a_d$ & A document's polarization \\
       $b_d$ & A document's popularity \\
       \hline
+      $\gamma_d$ & Variational parameter for document mixture $\theta_d$ \\
+      $\bv_t$ & Variational parameter for topic chain $\beta_t$ \\
+      $\phi_n$ & Variational parameter for a word's topic indicator $z_n$ \\
+      $\ellv$ & Variational parameter for influence score $I$ \\
+      $\tilde a_d$ & Variational parameter for polarity $a_d$ \\
+      $\tilde b_d$ & Variational parameter for popularity $b_d$ \\
+      $\tilde x_u$ & Variational parameter for lawmaker ideal point $x_u$ \\
+      \hline
     \end{tabular}
-    \end{center}
-  \end{table}
+  \end{center}
+\end{table}
+When we refer to a variable, we will sometimes subscript it with
+multiple indices.  For example, in the next chapter, we will refer to
+the probability $\beta_{t,k,n}$ of word $n$ in topic $k$ at time
+$t$. We sometimes refer to only a subset of these indices. In such
+cases, we are referring to the appropriately-shaped variable:
+$\beta_{t,k,n}$ is a scalar, for example; $\beta_{t,k}$ and $\beta_{k,n}$ are
+vectors; $\beta_t$ and $\beta_k$ are matrices; and
+$\beta$ is a three-dimensional tensor.  In the interest of brevity and
+clarity, the shape of such variables will be understood from context.
 
 \label{section:pipeline}
 
@@ -205,12 +222,11 @@ it satisfies
   
 For $p$ to be useful, we typically will make distributional
 assumptions about it.  We often describe assumptions about
-factorization (and conditional independence, which we'll describe
-below) using a \emph{graphical model} (sometimes called a Bayesian
-network).  A graphical model is a directed, acyclic graph $G = (V, E)$
-in which vertices $V=1, \ldots, M$, with $M = M_x + M_y$, index random
-variables and a \emph{lack} of edges between random variables connotes
-conditional independence.
+factorization using a \emph{graphical model} (sometimes called a
+Bayesian network).  A graphical model is a directed, acyclic graph $G
+= (V, E)$ in which vertices $V=1, \ldots, M$, with $M = M_x + M_y$,
+index random variables and a \emph{lack} of edges between random
+variables connotes conditional independence.
 
 We state this more precisely be defining the ``parents'' function
 $\pi_G : \{ 1, \ldots, M \} \rightarrow 2^{\{ 1, \ldots, M \}}$, which
@@ -265,13 +281,14 @@ variables are shaded and hidden random variables are unshaded.
 \end{figure}
 
 One of the most useful assumptions we can make about a probability
-distribution is conditional independence.  Given random variables
-$Z_1, Z_2$, and $Z_3$, we say that $Z_1$ is conditionally independent
-of $Z_2$ given $Z_3$ if $p(Z_1, Z_2 | Z_3) = p(Z_1 | Z_3) p(Z_2 |
-Z_3)$ \cite{bishop:2006}.  Conditional independence statements about
-distributions can often be inferred from these distributions'
-factorizations \cite{bishop:2006} and become important when one
-implements a probabilistic model or makes predictions with one.
+distribution is conditional independence between groups of random
+variables.  Given random variables $Z_1, Z_2$, and $Z_3$, we say that
+$Z_1$ is conditionally independent of $Z_2$ given $Z_3$ if $p(Z_1, Z_2
+| Z_3) = p(Z_1 | Z_3) p(Z_2 | Z_3)$ \cite{bishop:2006}.  Conditional
+independence statements about distributions can often be inferred from
+these distributions' factorizations \cite{bishop:2006} and become
+important when one implements a probabilistic model or makes
+predictions with one.
 
 \subsection{Text as a medium for social science analysis}
   \label{section:text_intro}
@@ -640,8 +657,8 @@ simple models.
 After a model has been fit with an approach such as variational
 inference, it is important to evaluate the model, as alluded to in
 \mysec{data_analysis_pipeline}.  In general, practitioners will have
-different goals in modeling data, so their evaluation methods vary
-greatly.  However, several standard metrics exist.
+different goals in modeling data, so they will have different goals in
+model evaluation.  However, several standard approaches exist.
 
 \subsubsection{Likelihood of training data $Y_1, \ldots, Y_{N_{\mbox{obs}}}$}
 We first describe one of the simplest metrics of how well a model is fit:
@@ -695,6 +712,9 @@ partitioned into $K$ equal-size parts $P_1, \ldots, P_K$, fit $K$
 times on each of the $K - 1$ subsets which omit exactly one of the
 partitions, and evaluated on the omitted partition.  Such a model has
 the benefit that all of the data is used for training and evaluation.
+
+\subsubsection{Relationship with external data}
+One of the final 
 
 \section{Using these tools to understand influence and decisionmaking}
 

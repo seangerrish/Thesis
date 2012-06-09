@@ -6,25 +6,22 @@ Our computational challenge is to compute the posterior distribution
 of the latent variables---the sequences of topics and the per-document
 influence values---conditioned on an observed corpus.  As for simpler
 topic models, this posterior is intractable to compute exactly. We
-employ variational methods to approximate it. Variational methods
-posit a simpler distribution over the latent variables with free
-parameters (called variational parameters).  These parameters are fit
-to minimize the KL divergence between the variational distribution and
-the true posterior, which is equivalent to maximizing a lower bound on
-the marginal probability of the observations. See~\cite{jordan:1999} % citet
-for a review of this class of approximate inference methods.
+employ variational methods---introduced in Chapter 2---to fit this
+posterior.
 
-We begin by specifying a variational distribution for the DIM
-posterior.  First, the word assignments $z_n$ and topic proportions
-$\theta_d$ are governed by multinomial parameters $\phi_d$ and
-Dirichlet parameters $\gamma_d$, as in LDA~\cite{blei:2003}.   % citep
+To apply variational methods, we begin by specifying a variational
+distribution for the DIM posterior.  First, the word assignments $z_n$
+and topic proportions $\theta_d$ are governed by multinomial
+parameters $\phi_d$ and Dirichlet parameters $\gamma_d$, as in
+LDA~\cite{blei:2003}; we refer to these distributions as $q(z_n |
+\phi_n)$ and $q(\theta_d | \gamma_d)$.
 
 The variational distribution for topic trajectories
 $\{\beta_{k,1}, \ldots, \beta_{k,T} \}$ is described by a linear
 Gaussian chain.  It is governed by parameters $\{ \bv_{k,1}, \ldots,
 \bv_{k,T} \}$, which are interpreted as the ``variational
 observations'' of the chain.  These induce a sequence of means $\mv_t$
-and variances $\vv_t$. \cite{blei:2006} call this a ``variational   % citet
+and variances $\vv_t$. \cite{blei:2006} call this a ``variational
 Kalman filter.''
 
 Finally, the variational distribution of the document influence value
@@ -45,35 +42,41 @@ $\vlv$.
 % we really need this shorthand?
 % smg: I can try to 
 
-The variational distribution is
-\begin{align*}
-  q(\beta, \ell, z, \theta | & \bv, \ellv, \phi, \gamma) = \nonumber \\
-  & \hspace{-38pt} \textstyle \prod_{k=1}^K q(\beta_{k,1:T} | \bv_{k,1:T}) \nonumber \\
-  & \hspace{-38pt} \textstyle \prod_{t=1}^T \prod_{d=1}^{D_t} q(\theta_{t,d} | \gamma_{t,d})
+In full, the variational distribution is
+\begin{align}
+  q(\beta, \ell, z, \theta | & \bv, \ellv, \phi, \gamma) = \\ \nonumber
+  & \prod_{k=1}^K q(\beta_{k,1:T} | \bv_{k,1:T})
+  \prod_{t=1}^T \prod_{d=1}^{D_t} q(\theta_{t,d} | \gamma_{t,d})
   q(\ell_{d} | \ellv_{d})
-  \textstyle \prod_{n=1}^{N_{t,d}} q(z_{t,d,n} | \vphi_{t,d,n}). \nonumber \\ % \label{eq:variational_posterior} \\
-\end{align*}
-
+  \prod_{n=1}^{N_{t,d}} q(z_{t,d,n} | \vphi_{t,d,n}). \nonumber
+\end{align}
 % dmb: use different notation from d... it looks like the document index
 % smg: that's what d is -- which d are you referring to?
-
 % dmb: in general, clean up this equation.  i'm not sure you need the
 % first integral.  it suffices to go right to the terms.  and, i think
 % that multiple sums will look better than parentheses.
 \vspace{-5pt}
-Using this variational family, our goal is to maximize the following
-lower bound on the model evidence of the observed words $\W$:
-\begin{align*}
- \hspace{-0pt} \ln & \textstyle \hspace{3pt} p(\W) \geq \textstyle \sum_T \expectq{\ln p(\beta_{t} | \beta_{t-1})} \nonumber \\
- & \hspace{-5pt} + \textstyle \sum_{T} \textstyle \sum_{D_t} \expectq{\ln p(\ell_{d})} + \expectq{\ln p(\theta_{d} | \alpha)} \nonumber \\
- & \hspace{-5pt} + \textstyle \sum_{T} \textstyle \sum_{D_t} \textstyle \sum_{N_d} \expectq{\ln p( z_n | \theta_d)} \hspace{-1pt} + \hspace{-1pt} \expectq{\ln p(w_n | z_n, \beta_t)} \\
- & \hspace{-5pt} + H(q). \nonumber \\
+Using this variational family, our goal is to maximize the Evidence Lower Bound (Elbo) $\mathcal{L}$ on the model evidence of the observed words $\W$:
+\begin{align}
+  \ln p(\W) \geq & \mathcal{L}(\bv, \phi, \gamma) \\ \nonumber
+  = & \sum_T \expectq{\ln p(\beta_{t} | \beta_{t-1})} \\ \nonumber 
+  & + \sum_{T} \sum_{D_t} \expectq{\ln p(\ell_{d})} + \expectq{\ln p(\theta_{d} | \alpha)} \\ \nonumber
+  & + \sum_{T} \sum_{D_t} \sum_{N_d} \expectq{\ln p( z_n | \theta_d)} + \expectq{\ln p(w_n | z_n, \beta_t)} \\ \nonumber
+  & + H(q). \\ \nonumber
   \label{eq:elbo}
-\end{align*}
+\end{align}
 
-\vspace{-20pt}
-This bound is optimized by coordinate ascent, with the variational
-parameters optimized sequentially in blocks.  These updates are
+\subsection*{Optimizing the variational bound}
+This bound is optimized by variational EM, with an update schedule similar to that in Blei and Lafferty \cite{blei:2006}:
+\begin{enumerate}
+  \item For Topic $k=1, \ldots, K$:
+    \begin{enumerate}
+      \item Update parameters $\bv_k$.
+    \end{enumerate}
+  \item For topic 
+\end{enumerate}
+where the variational
+parameters are optimized as sequentially in blocks.  These updates are
 repeated until the relative increase in the lower bound is below a
 threshold.
 
@@ -84,19 +87,19 @@ The variational update for $\bv$ is similar to that in
 \begin{align*}
 \partl{\mathcal{L}}{\bv_{sw}} =
 % From beta generative rule:
-   & - \textstyle \frac{1}{\sigma^2} \sum_{t=1}^T
+   & -  \frac{1}{\sigma^2} \sum_{t=1}^T
      \left( \mv_{tw} - \mv_{t-1,w} - G_{t-1,w} \right) \\
-   & \hspace{30pt} \textstyle \times \left( \partl{\mv_{tw}}{\bv_{sw}}
+   & \hspace{30pt}  \times \left( \partl{\mv_{tw}}{\bv_{sw}}
      - \partl{\mv_{t-1,w}}{\bv_{sw}}
      + G_{t-1,w} \partl{\mv_{t-1,w}}{\bv_{sw}} \right) \\
-   & + \textstyle \sum_T \left(
+   & +  \sum_T \left(
        N_{w,t} - N_{t} \zeta_t^{-1}
        \exp( \hat{m}_{\bb_{tw}} + \frac{\tilde{V}_{tw}}{2} ) \right)
        \partl{\mv_{tw}}{\bv_{sw}} \\
-   & + \textstyle \frac{1}{\sigma^2} \sum_{t=1}^T
+   & +  \frac{1}{\sigma^2} \sum_{t=1}^T
          \partl{\mv_{t-1,w}}{\bv_{sw}}
          \left( H_{t-1,w} - G_{t-1,w}^2 \right) \\
-   & + \textstyle \frac{1}{\sigma^2} \sum_{t=0}^{T-1}
+   & +  \frac{1}{\sigma^2} \sum_{t=0}^{T-1}
          \partl{\mv_{tw}}{\bv_{sw}}
          G_{tw} \vv_{tw}, \\
 \end{align*}
@@ -105,9 +108,9 @@ The variational update for $\bv$ is similar to that in
 where
 \begin{eqnarray*}
 %\mbox{where} \\
-\textstyle G_{sn} &=& \expectq{\exp(-\beta_{s,k,n} ) ( \W_{s,k,n} \circ
+ G_{sn} &=& \expectq{\exp(-\beta_{s,k,n} ) ( \W_{s,k,n} \circ
   z_{s,k,n} ) \ell_{s,k}} \\
-\textstyle H_{sn} &=& \mathbb{E}_q \big[ \exp(-2 \beta_{s,k,n}) \left( (\W_{s,k,n} \circ z_{s,k,n} ) \ell_{s,k} \right)^2 \big]. \\
+ H_{sn} &=& \mathbb{E}_q \big[ \exp(-2 \beta_{s,k,n}) \left( (\W_{s,k,n} \circ z_{s,k,n} ) \ell_{s,k} \right)^2 \big]. \\
 \end{eqnarray*}
 
 \vspace{-14pt}
@@ -137,38 +140,38 @@ The parameter updates for document influence $\ellv_{t,k}$ are
 defined, for each time $t$ and each topic $k$, by the
 variational normal equation
 \[
-\ellv_{t, k} \gets \big( \textstyle \frac{\vbv}{\vd} \bm I
+\ellv_{t, k} \gets \big(  \frac{\vbv}{\vd} \bm I
   + \expectq{X^T X} \big)^{-1} \expectq{X^T \bm{\Delta_{\beta,t,k}}}.
 \]
 %\begin{align*}
 %\[ \small
 %\bm H_{t,k} = \expectq{(\bm W_t \circ z_{t,k})^T \diag{\exp(-2\beta_{t,k})} (\bm W_t \circ z_{t,k})}; \\
 %\normalsize
-% & \textstyle
+% & 
 % (\bm W_{t,k} \circ \vphi_{t,k})^T \diag{h_{\exp}}
 %   (\bm W_{t,k} \circ \vphi_{t,k}) \nonumber \\
-% & \hspace{-25pt} \textstyle + \mbox{Diag} \Big( (\bm W_{t,k} \circ \bm W_{t,k} \circ ( \vphi_{t,k} - \vphi_{t,k} \circ \vphi_{t,k}))^T h_{\exp} \Big), \nonumber \\
+% & \hspace{-25pt}  + \mbox{Diag} \Big( (\bm W_{t,k} \circ \bm W_{t,k} \circ ( \vphi_{t,k} - \vphi_{t,k} \circ \vphi_{t,k}))^T h_{\exp} \Big), \nonumber \\
 %\end{align*}
 %\]
 The expectation $\expectq{X^TX}$ is a matrix with dimension $D_t \times D_t$.  Its elements are
 \begin{eqnarray*}
-\textstyle {\expectq{X^T X}}_{d,d'} = & \hspace{-15pt} \textstyle \sum_n \exp(-2\mv_{t,k,n} + 2 \vv_{t,k,n}) \\
-\textstyle  & \hspace{14pt} \times (w_{t,d,n} w_{t,d',n} \phi_{t,k,d,n } \phi_{t,k,d',n})
+ {\expectq{X^T X}}_{d,d'} = & \hspace{-15pt}  \sum_n \exp(-2\mv_{t,k,n} + 2 \vv_{t,k,n}) \\
+  & \hspace{14pt} \times (w_{t,d,n} w_{t,d',n} \phi_{t,k,d,n } \phi_{t,k,d',n})
 \vspace{-20pt}
 \end{eqnarray*}
 % \vspace{-20pt}
 when $d \neq d'$ and
 \begin{eqnarray*}
 \vspace{-20pt}
-\hspace{-10pt} \textstyle {\expectq{X^T X}}_{d,d} = & \hspace{-5pt} \textstyle \sum_n \exp(-2\mv_{t,k,n} + 2 \vv_{t,k,n}) \\
-\textstyle  & \hspace{15pt} \times (w_{t,d,n}^2 \phi_{t,k,d,n}) \\
+\hspace{-10pt}  {\expectq{X^T X}}_{d,d} = & \hspace{-5pt}  \sum_n \exp(-2\mv_{t,k,n} + 2 \vv_{t,k,n}) \\
+  & \hspace{15pt} \times (w_{t,d,n}^2 \phi_{t,k,d,n}) \\
 \end{eqnarray*}
 otherwise. The expectation $\expectq{X^T \bm{\Delta_{\beta,t,k}}}$
 is a $D_t$-dimensional matrix with elements
 \begin{eqnarray*}
-\textstyle {\expectq{X^T \bm{\Delta_{\beta,t,k}}}}_d = & \hspace{-10pt} \sum_n & \hspace{-10pt} w_{t,d,n} \phi_{t,k,d,n} \nonumber \\
-\textstyle && \hspace{-20pt} \times (\mv_{t+1,k,n} - \mv_{t,k,n} + \vv_{t,k,n}/2) \nonumber \\
-\textstyle && \hspace{-20pt} \times \exp(-\mv_{t,k,n} + \vv_{t,k,n}/2). \nonumber
+ {\expectq{X^T \bm{\Delta_{\beta,t,k}}}}_d = & \hspace{-10pt} \sum_n & \hspace{-10pt} w_{t,d,n} \phi_{t,k,d,n} \nonumber \\
+ && \hspace{-20pt} \times (\mv_{t+1,k,n} - \mv_{t,k,n} + \vv_{t,k,n}/2) \nonumber \\
+ && \hspace{-20pt} \times \exp(-\mv_{t,k,n} + \vv_{t,k,n}/2). \nonumber
 \end{eqnarray*}
 
 \paragraph{Topic proportions and topic assignments.}
@@ -187,7 +190,7 @@ closed-form updates
 %        \ellv_{d} \times (\bm W_t \circ \phi_{t,k}^{\mbox{L}} \ellv_{t,k})_w \nonumber \\
 %   & & \hspace{55pt} + \bm w_{t} \phi_{w,k}^{\mbox{L}} \ellv_{d}^2 - \ellv_{d}^2 - \sigma_l^2 \big) \nonumber \\
 \small
-\textstyle \log(\phi_{n,k}) & \gets & \Psi(\gamma_k) + \mv_{t,k,n} \nonumber \\
+ \log(\phi_{n,k}) & \gets & \Psi(\gamma_k) + \mv_{t,k,n} \nonumber \\
 & & \hspace{-68pt} + \frac{1}{\sigma^2} w_{t} \ellv_{d_n,k} \exp(-\mv_{t,k} \hspace{-1pt} + \hspace{-1pt} \vv_{t,k} / 2) (\mv_{t+1,k} \hspace{-1pt} - \hspace{-1pt} \mv_{t,k} \hspace{-1pt} + \hspace{-1pt} \vv_{t,k})  \\
    & & \hspace{-68pt} - \frac{1}{\sigma^2} w_{t,n} \Big[ \ellv_{d_n,k} \exp(-2\mv_{t,k} + 2 \vv_{t,k}) \\
 & & \hspace{-22pt} \times (\bm W_{t,n,\setminus{d_n}} \circ \phi_{t,n,k,\setminus{d_n}}) \ellv_{t,k,\setminus d_n} \Big] \\
