@@ -1,7 +1,0 @@
-\beamer@endinputifotherversion {3.07pt}
-\beamer@sectionintoc {2}{Introduction}{2}{0}{1}
-\beamer@subsectionintoc {2}{1}{The problem}{3}{0}{1}
-\beamer@sectionintoc {3}{Topic Models and LDA}{7}{0}{2}
-\beamer@sectionintoc {4}{Model}{8}{0}{3}
-\beamer@sectionintoc {6}{Appendix}{23}{0}{4}
-\beamer@subsectionintoc {6}{1}{Heuristic solution}{23}{0}{4}
