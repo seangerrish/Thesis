@@ -1,8 +1,9 @@
 \section{Empirical study}
 
-We studied three sequential corpora of scientific articles.  For each
-corpus, we estimated and examined the posterior distributions of its
-articles' influence.
+We studied three collections of scientific articles and a collection
+of opinions written by judges in the New York Appellate Court system.
+For each corpus, we estimated and examined the posterior distributions
+of its articles' influence.
 
 In this section, we demonstrate that the estimate of an article's
 influence is robustly correlated to the number of citations it
@@ -38,15 +39,15 @@ exploratory tool of influential articles.
 % smg: re-added, below.
 % 
 
-The three corpora we analyzed were the \emph{ACL Anthology}, \emph{The
-  Proceedings of the National Academy of Science}, and the journal
-\emph{Nature}.  For each corpus, we removed short documents, terms
-that occurred in too few documents, and terms that occurred in too
-many documents.  We also removed terms whose statistics did not vary
-over the course of the collection, as such terms would not be useful
-for assessing change in language (a sample of such non-varying
-terms from \emph{Nature} is ``ordinarily'', ``shake'', ``centimetre'',
-``traffic'', and ``themselves'').
+The three scientific corpora we analyzed were the \emph{ACL
+  Anthology}, \emph{The Proceedings of the National Academy of
+  Science}, and the journal \emph{Nature}.  For each corpus, we
+removed short documents, terms that occurred in too few documents, and
+terms that occurred in too many documents.  We also removed terms
+whose statistics did not vary over the course of the collection, as
+such terms would not be useful for assessing change in language (a
+sample of such non-varying terms from \emph{Nature} is ``ordinarily'',
+``shake'', ``centimetre'', ``traffic'', and ``themselves'').
 
 \textbf{ACL Anthology.} The \emph{Association for Computational
   Linguistics Anthology} is a digital collection of publications about
@@ -79,6 +80,8 @@ converge on a desktop Intel 2.4GHz Core 2 Quad cpu.  Our convergence
 criterion was met when the evidence lower bound increased by no more
 than 0.01\%.  For the experiments described below, we set topics'
 Markov chain variance $\sigma^2=0.005$ and $\sigma_d=\sigma_l=0.0001$.
+
+
 % \begin{figure}
 %  \small
 % \begin{centering}
@@ -376,3 +379,55 @@ appearing in this article are shown in
 Figure~\ref{fig:words} (right).  The plot shows some of the
 document's key words -- ``expression'', ``primer'', ``blot'' -- become
 prominent words in the topic.
+
+\section{New York Appellate Courts.}
+
+We finally apply this method to the New York Appellate Court
+system. The New York Appellate Court system hears appeals cases within
+the state of New York.  This court ``was established to articulate
+statewide principles of law in the context of deciding particular
+lawsuits.'' \cite{}, acting as a form of ``Supreme Court'' for the
+state of New York.  Judges who hear these cases make decisions about
+the cases and write opinions summarizing their reasoning for these
+decisions.  These decisions and opinions are extremely important
+within the court system because they set precedent for later
+decisions.
+
+These opinions written by judges are therefore written expressly to be
+\emph{influential} on later court decisions, and judges' opinions
+frequently make explicit citations to earlier cases.  However, these
+citations are limited in two respects.  First, multiple opinions may
+exist per case, stating the majority opinion, supporting it in part,
+or entirely disagreeing with it. Although judges' citations are
+explicit and well-formatted, their citations do not make this
+distinction machine-readable making large-scale analyses difficult
+without expensive hand-coding. Second, lawmakers may have different
+reasons for citing opinions; it has been hypothesized by some
+political methodologists that researchers do not cite dissenting
+opinions because dissenting opinions are considered to hold little if
+any legal sway; citing dissenting opinions is therefore seen as a sign
+of weakness \cite{beim:2011}.
+
+We analyzed this collection, splitting xxx appellate court cases into
+xxx distinct opinions, written by judges representing the majority
+opinion, a concurrance in part (i.e., supporting the majority decision
+but with a different rationale for reaching that decision), or a
+dissenting opionion.  Our collection contained xxx distinct terms
+after pre-processing. We also scraped citations within this collection
+and found xxx citations.
+
+We then fit a 40-topic model to this collection to discover
+influential documents.  Consistent with the scientific corpora, we
+measured a Spearman rank-correlation coefficient between posterior
+influence scores and the logarithm of citation counts at $\rho=0.24$.
+We also briefly discuss the results anecdotally below.
+
+\paragraph{The Cardozo Topic.} Judge xxx Cardozo was one of the most
+well-known judges in American political history.  Cardozo is known for
+his and is considered to have had an outsize influence on judicial
+thought, writing thoughtful, deliberate opinions.  One of the more
+interesting topics discovered by our model in this collection
+identified language which was predominantly used by Judge xxx
+Cardozo.\footnote{A similar topic was discovered by a dynamic topic
+  model.}  This topic used phrases such as xxx, xxx, and xxx. The
+average ...

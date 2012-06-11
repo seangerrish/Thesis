@@ -5,11 +5,17 @@ The algorithm described in \mysec{inference} takes approximately 11
 hours on a modern desktop computer\footnote{This was a 2.2GHz, 1MB
   cache, Dual core AMD Opteron 275 processor}, for about 30,000
 documents.  For a larger dataset---such as all scientific articles in
-\emph{Nature}, \emph{Science}, and \emph{PNAS} combined---it takes
-considerably longer to complete.  In this section, we describe a
-parallel algorithm for this model.  As with the standard algorithm,
-this one optimizes the evidence lower bound by local coordinate
-ascent.  Here, however, many of these steps are made in parallel.
+\emph{Nature}, \emph{Science}, and \emph{PNAS} combined---this
+na\:{i}ve implementation takes considerably longer to complete, and it
+requires too much memory to fit on a traditional desktop
+computer.\footnote{Circa 2009.}
+
+In this section, we describe a parallel implementation for this model.
+As with the standard algorithm, this algorithm optimizes the evidence
+lower bound by local coordinate ascent.  Here, however, many of these
+steps are made in parallel.  While most of these steps are simply
+performing updates across many computers, we describe below how to
+handle an update that cannot be distributed without modification.
 
 \subsection*{Algorithm overview}
 With both the parallel implementation and the standard implementation,

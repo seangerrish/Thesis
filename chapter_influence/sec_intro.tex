@@ -1,16 +1,14 @@
 %\section{}
 
+- we begin our discussion with collections of text documents
+
 - Typically in text analysis, documents tell a story.  But this story
 is hard to detect without metadata.
 
-- One of the most natural questions we can ask about these documents
--- from the perspective of their historiography -- is which ones are
-most influential.
+- One of the most fundamental problems in research is that of finding
+which ideas in a field have been the most influential.
 
 - This happens in scientific research, for example.
-
-One of the most fundamental problems in research is that of finding
-which ideas in a field have been the most influential.
 
 This an important and common problem in many fields, including
 political science, history, and scientific research.
@@ -68,14 +66,24 @@ Though our algorithm aims to capture something different from
 citation, we will validate the inferred influence measurements by
 comparing them to citation counts.  However, we seek a model that is
 applicable to collections for which the notion of citation may not
-exist.  Therefore, predicting citations is an explicit non-goal.  For
-the reader interested in predicting citations, an appropriate solution
-might be to propose features and models for predicting future or
-heldout citation counts; Tang and Zhang \cite{tang:2009} and Lokker et
-al. \cite{lokker:2008} use methods like these; successful features
+exist.  Therefore, predicting citations is an explicit non-goal. 
+
+For the reader interested in predicting citations, an appropriate
+solution might be to propose features and models for predicting future
+or heldout citation counts; Tang and Zhang \cite{tang:2009} and Lokker
+et al. \cite{lokker:2008} use methods like these; successful features
 include the publishing journal's impact factor, previous citations to
 last author, key terms, and number of authors
-\cite{tang:2009,lokker:2008}.
+\cite{tang:2009,lokker:2008}.  Such research has had measured success:
+56\% explained variance \cite{lokker:2008}, and 91.5\% prediction
+accuracy \cite{ibanez:2009}.  However, works such as these have
+specialized classifiers and restrictive features for narrow
+application domains; Lokker et al. \cite{lokker:2008} even note that
+their results ``may not be readily transferable to... basic science
+articles or journals''. Indeed, Lokker et al.  further noted that
+earlier work in their field of predicting citations to medical
+journals had only achieved 14\% to 20\% explained variance
+\cite{lokker:2008}.
 
 \subsubsection*{Using text to measure influence}
 

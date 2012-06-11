@@ -1,25 +1,21 @@
 \chapter{Introduction}
 
-
 Information is all around us.  Society interacts with this information
 in a complicated dance: information affects what we do, and we create
 further information -- books, scientific papers, legislation, and
 tweets -- as a result.  Information influences everything we say,
 think, and do.
 
-The point of this thesis is not to prove this point; that information
-influences us in everything we do is self-evident.  This thesis will
-describe a number of quantitative methods for modeling the influence of text on society.
+The goal of this thesis is to describe several new statistical models
+for better understanding the interplay between text and society.
 
-We begin by ...
+\section{Social science data analysis}
 
-We also ...
+\subsection*{The availability of observational social science data on a massive scale}
+  - observational social science data is available on a massive scale. \cite{lazer:2009}
+  - 
 
-\section{Influence and decision making}
-
-\section{The availability of observational social science data on a massive scale}
-
-\subsection{Text}
+\subsection*{Text}
 Text data is the low-hanging fruit of most social science research
 questions.  Its ubiquity is due to the ease with which it
 can---must---be created, digitized, replicated, and stored.  The rate
@@ -36,19 +32,51 @@ extremely high-dimensional and interpretable space
 
 - often
 
-\subsection{Dyadic data: networks and interaction between entities}
+\subsection*{Time-series data}
 
-\subsection{Time-series data}
+\subsection*{Dyadic data: networks and interaction between entities}
 
-\subsection{The insufficiency of traditional methods}
+\subsection*{Dyadic data: networks and interaction between entities}
 
-\subsection{Causal inference in modern observational setting}
+\subsection*{The insufficiency of traditional methods}
 
-\section{The role of statistical machine learning}
+\subsection*{Causal inference in modern observational setting}
 
-\subsection{Probabilistic latent variable models}
+\section*{The role of statistical machine learning}
 
-\subsection{Tools and abstractions for probabilistic inference}
+\subsection*{Probabilistic latent variable models and graphical models}
+\cite{pearl:1985}
 
-\subsection{Ability to perform inference on large-scale datasets}
+\subsection*{Tools and abstractions for probabilistic inference}
 
+\subsection*{Ability to perform inference on complicated datasets}
+
+\section{Organization}
+
+By the end of this thesis, the reader should have a better
+understanding of several models available to social scientists.
+Perhaps more importantly, the reader will be prepared to design his or
+her own latent-variable model for similar applications. To this end,
+we will provide a lower level of detail about latent-variable models
+in the early chapters of this thesis when it is appropriate to help
+the reader understand the material.
+
+We begin by outlining preliminary material in Chapter 2, outlining the
+statistical ``primitives'' that we use as building blocks in later
+chapters, including tools for text analysis and time-series analysis.
+
+In chapter 3 we introduce a model for discovering important and
+influential documents in a time-series collection.
+
+In Chapter 4 we discuss legislative voting, a domain in which text
+additional data is present but the relationship between documents and
+lawmakers enables us to blah blah.
+
+In chapter 5 we will use the ideas developed in chapters 3 and 4 to
+discover a more sophisticated latent story among documents, by
+developing a model of the relationships between countries over time.
+
+We discuss details of a new variational inference algorithm in
+Appendix A, which can be treated as a stand-alone contribution of this
+thesis.  Further supplementary information for this thesis is provided
+in Appendix B.

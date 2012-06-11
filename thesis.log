@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.6.4)  8 JUN 2012 22:05
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2011.6.4)  11 JUN 2012 17:39
 entering extended mode
  %&-line parsing enabled.
 **thesis
@@ -197,7 +197,7 @@ LaTeX Info: Redefining \addtolength on input line 77.
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 ) (./thesis.aux
 
-LaTeX Warning: Label `section:inference' multiply defined.
+LaTeX Warning: Label `section:influence_parallel_inference' multiply defined.
 
 
 LaTeX Warning: Label `equation:variational_objective' multiply defined.
@@ -205,6 +205,12 @@ LaTeX Warning: Label `equation:variational_objective' multiply defined.
 
 LaTeX Warning: Label `equation:traditional_variational_objective' multiply defi
 ned.
+
+
+LaTeX Warning: Label `section:model' multiply defined.
+
+
+LaTeX Warning: Label `section:inference' multiply defined.
 
 )
 \openout1 = `thesis.aux'.
@@ -277,70 +283,44 @@ File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 
 ]
 Chapter 1.
-
-Package natbib Warning: Citation `googleblog:2008' on page 2 undefined on input
- line 27.
-
 [2
 
-]) (./chapter_introductory_material/introductory_material.tex [3]
+]) [3] (./chapter_introductory_material/introductory_material.tex [4]
 Chapter 2.
 
-LaTeX Warning: Reference `fig:table:notation' on page 4 undefined on input line
+LaTeX Warning: Reference `fig:table:notation' on page 5 undefined on input line
  30.
 
-[4
+[5
 
 ]
 
-LaTeX Warning: Reference `fig:data_analysis_pipeline' on page 5 undefined on in
+LaTeX Warning: Reference `fig:data_analysis_pipeline' on page 6 undefined on in
 put line 81.
 
-[5]
-
-Package natbib Warning: Citation `box:1980' on page 6 undefined on input line 1
-30.
-
-
-Package natbib Warning: Citation `gelman:1996' on page 6 undefined on input lin
-e 130.
-
-[6]
-
-Package natbib Warning: Citation `tufte:2001' on page 7 undefined on input line
- 157.
-
-
-Package natbib Warning: Citation `wilkinson:2005' on page 7 undefined on input 
-line 158.
-
-
-Package natbib Warning: Citation `chaney:2012' on page 7 undefined on input lin
-e 160.
-
-
-<chapter_introductory_material/figs/model_pipeline.pdf, id=60, 2336.73pt x 3870
+[6] [7]
+<chapter_introductory_material/figs/model_pipeline.pdf, id=63, 2336.73pt x 3870
 .46pt>
 File: chapter_introductory_material/figs/model_pipeline.pdf Graphic file (type 
 pdf)
- <use chapter_introductory_material/figs/model_pipeline.pdf> [7 <./chapter_intr
+ <use chapter_introductory_material/figs/model_pipeline.pdf> [8 <./chapter_intr
 oductory_material/figs/model_pipeline.pdf>]
 Overfull \hbox (5.49123pt too wide) in paragraph at lines 206--206
 []\OT1/cmr/bx/n/12 Undirected graph-i-cal mod-els for sum-ma-riz-ing dis-tri-bu
 -tional as-sump-
  []
 
-[8]
-<chapter_introductory_material/figs/bagofwords_gm.pdf, id=79, 231.26399pt x 132
+[9]
+<chapter_introductory_material/figs/bagofwords_gm.pdf, id=82, 231.26399pt x 132
 .495pt>
 File: chapter_introductory_material/figs/bagofwords_gm.pdf Graphic file (type p
 df)
  <use chapter_introductory_material/figs/bagofwords_gm.pdf>
-<chapter_introductory_material/figs/lda_gm.pdf, id=81, 505.087pt x 154.97899pt>
+<chapter_introductory_material/figs/lda_gm.pdf, id=84, 505.087pt x 154.97899pt>
 File: chapter_introductory_material/figs/lda_gm.pdf Graphic file (type pdf)
-<use chapter_introductory_material/figs/lda_gm.pdf> [9] [10 <./chapter_introduc
-tory_material/figs/bagofwords_gm.pdf> <./chapter_introductory_material/figs/lda
-_gm.pdf>]
+<use chapter_introductory_material/figs/lda_gm.pdf> [10] [11 <./chapter_introdu
+ctory_material/figs/bagofwords_gm.pdf> <./chapter_introductory_material/figs/ld
+a_gm.pdf>]
 
 LaTeX Font Warning: Command \large invalid in math mode on input line 361.
 
@@ -352,65 +332,65 @@ LaTeX Font Warning: Command \large invalid in math mode on input line 361.
 
 
 LaTeX Font Warning: Command \large invalid in math mode on input line 361.
-
-[11]
-
-LaTeX Warning: Reference `sec:variational_inference' on page 12 undefined on in
-put line 418.
 
 [12]
-<chapter_introductory_material/figs/irt_gm.pdf, id=115, 227.249pt x 219.219pt>
+
+LaTeX Warning: Reference `sec:variational_inference' on page 13 undefined on in
+put line 418.
+
+[13]
+<chapter_introductory_material/figs/irt_gm.pdf, id=118, 227.249pt x 219.219pt>
 File: chapter_introductory_material/figs/irt_gm.pdf Graphic file (type pdf)
 
 <use chapter_introductory_material/figs/irt_gm.pdf>
 
 Package natbib Warning: Author undefined for citation`wang:2011' 
-(natbib)                on page 13 on input line 481.
+(natbib)                on page 14 on input line 481.
 
 
-LaTeX Warning: Reference `fig:hmm_gm' on page 13 undefined on input line 498.
+LaTeX Warning: Reference `fig:hmm_gm' on page 14 undefined on input line 498.
 
 
-<chapter_introductory_material/figs/hmm_gm.pdf, id=117, 471.36101pt x 150.96399
+<chapter_introductory_material/figs/hmm_gm.pdf, id=120, 471.36101pt x 150.96399
 pt>
 File: chapter_introductory_material/figs/hmm_gm.pdf Graphic file (type pdf)
- <use chapter_introductory_material/figs/hmm_gm.pdf> [13 <./chapter_introductor
+ <use chapter_introductory_material/figs/hmm_gm.pdf> [14 <./chapter_introductor
 y_material/figs/irt_gm.pdf>]
 
-LaTeX Warning: Reference `sec:text_intro' on page 14 undefined on input line 52
+LaTeX Warning: Reference `sec:text_intro' on page 15 undefined on input line 52
 2.
 
 
-LaTeX Warning: Reference `sec:pipeline' on page 14 undefined on input line 543.
+LaTeX Warning: Reference `sec:pipeline' on page 15 undefined on input line 543.
 
 
-[14 <./chapter_introductory_material/figs/hmm_gm.pdf>] [15]
+[15 <./chapter_introductory_material/figs/hmm_gm.pdf>] [16]
 
 Package natbib Warning: Author undefined for citation`blei:2003' 
-(natbib)                on page 16 on input line 625.
+(natbib)                on page 17 on input line 625.
 
 
-LaTeX Warning: Reference `sec:data_analysis_pipeline' on page 16 undefined on i
+LaTeX Warning: Reference `sec:data_analysis_pipeline' on page 17 undefined on i
 nput line 659.
 
-[16]
+[17]
 Overfull \hbox (18.4078pt too wide) in paragraph at lines 703--708
 \OT1/cmr/m/n/10 data (nearly al-ways the case), the log-likelihood can be writ-
 ten $[][] [] \OML/cmm/m/it/10 p\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 Y[]\OMS/cmsy/m
 /n/10 j\OML/cmm/m/it/10 Y[]; [] ; Y[]\OT1/cmr/m/n/10 )$. 
  []
 
-) (./chapter_influence/chapter_influence.tex [17]
+) (./chapter_influence/chapter_influence.tex [18]
 Chapter 3.
-(./chapter_influence/sec_intro.tex [18
+(./chapter_influence/sec_intro.tex [19
 
-] [19])
+] [20])
 (./chapter_influence/sec_model.tex
 
 Package pdftex.def Warning: Option `bb' does not make sense,
 (pdftex.def)                using `viewport' instead on input line 33.
 
-<chapter_influence/figures/dtm_gm.pdf, id=159, 341.275pt x 892.33376pt>
+<chapter_influence/figures/dtm_gm.pdf, id=162, 341.275pt x 892.33376pt>
 File: chapter_influence/figures/dtm_gm.pdf Graphic file (type pdf)
 
 <use chapter_influence/figures/dtm_gm.pdf>
@@ -418,253 +398,96 @@ File: chapter_influence/figures/dtm_gm.pdf Graphic file (type pdf)
 Package pdftex.def Warning: Option `bb' does not make sense,
 (pdftex.def)                using `viewport' instead on input line 34.
 
-<chapter_influence/figures/docinf_gm.pdf, id=160, 341.275pt x 892.33376pt>
+<chapter_influence/figures/docinf_gm.pdf, id=163, 341.275pt x 892.33376pt>
 File: chapter_influence/figures/docinf_gm.pdf Graphic file (type pdf)
 
-<use chapter_influence/figures/docinf_gm.pdf>
-
-Package natbib Warning: Citation `deerwester:1990' on page 20 undefined on inpu
-t line 45.
-
-
-Package natbib Warning: Citation `hofman:1999' on page 20 undefined on input li
-ne 45.
-
-[20] [21 <./chapter_influence/figures/dtm_gm.pdf> <./chapter_influence/figures/
-docinf_gm.pdf>] [22]) (./chapter_influence/sec_inference.tex [23] [24] [25]
+<use chapter_influence/figures/docinf_gm.pdf> [21] [22 <./chapter_influence/fig
+ures/dtm_gm.pdf> <./chapter_influence/figures/docinf_gm.pdf>] [23])
+(./chapter_influence/sec_inference.tex [24] [25] [26] [27]
 
 LaTeX Font Warning: Command \small invalid in math mode on input line 192.
 
-[26]) (./chapter_influence/sec_experiments.tex [27]
-<chapter_influence/figures/results_correlation.pdf, id=193, 505.89pt x 180.675p
+) (./chapter_influence/sec_experiments.tex [28] [29]
+<chapter_influence/figures/results_correlation.pdf, id=200, 505.89pt x 180.675p
 t>
 File: chapter_influence/figures/results_correlation.pdf Graphic file (type pdf)
 
  <use chapter_influence/figures/results_correlation.pdf>
-<chapter_influence/figures/results_roc.pdf, id=194, 505.89pt x 180.675pt>
+<chapter_influence/figures/results_roc.pdf, id=201, 505.89pt x 180.675pt>
 File: chapter_influence/figures/results_roc.pdf Graphic file (type pdf)
 
-<use chapter_influence/figures/results_roc.pdf> [28] [29 <./chapter_influence/f
-igures/results_correlation.pdf> <./chapter_influence/figures/results_roc.pdf>]
-[30] <chapter_influence/figures/acl_brown.pdf, id=212, 505.89pt x 505.89pt>
+<use chapter_influence/figures/results_roc.pdf> [30 <./chapter_influence/figure
+s/results_correlation.pdf> <./chapter_influence/figures/results_roc.pdf>]
+[31] <chapter_influence/figures/acl_brown.pdf, id=215, 505.89pt x 505.89pt>
 File: chapter_influence/figures/acl_brown.pdf Graphic file (type pdf)
 
 <use chapter_influence/figures/acl_brown.pdf>
-<chapter_influence/figures/nature_cloning.pdf, id=213, 505.89pt x 505.89pt>
+<chapter_influence/figures/nature_cloning.pdf, id=216, 505.89pt x 505.89pt>
 File: chapter_influence/figures/nature_cloning.pdf Graphic file (type pdf)
 
 <use chapter_influence/figures/nature_cloning.pdf>
 
-LaTeX Warning: Float too large for page by 8.28719pt on input line 339.
+LaTeX Warning: Float too large for page by 8.28719pt on input line 342.
 
-) (./chapter_influence/sec_parallel.tex [31] [32 <./chapter_influence/figures/a
-cl_brown.pdf> <./chapter_influence/figures/nature_cloning.pdf>] [33])
-(./chapter_influence/sec_parallel.tex [34] [35])
-(./chapter_influence/sec_conclusion.tex
-
-Package natbib Warning: Citation `alvarez:2009' on page 36 undefined on input l
-ine 56.
-
-)) (./chapter_dissent/chapter_dissent.tex [36] [37]
-Chapter 4.
-
-Overfull \hbox (3.48286pt too wide) in paragraph at lines 3--3
-[]\OT1/cmr/bx/n/14.4 Introduction: De-ci-sions and in-flu-ence in the higher co
-urts 
- []
-
-) (./chapter_spatial_voting_with_text/chapter_spatial_voting_with_text.tex
-[38
-
-]
-Chapter 5.
-[39
-
-] [40]
-<chapter_spatial_voting_with_text/figures/134_senator_name_accuracy_by_ip_sampl
-e.pdf, id=253, 505.89pt x 505.89pt>
-File: chapter_spatial_voting_with_text/figures/134_senator_name_accuracy_by_ip_
-sample.pdf Graphic file (type pdf)
-
-<use chapter_spatial_voting_with_text/figures/134_senator_name_accuracy_by_ip_s
-ample.pdf> [41 <./chapter_spatial_voting_with_text/figures/134_senator_name_acc
-uracy_by_ip_sample.pdf>]
-<chapter_spatial_voting_with_text/figures/ideal-point-topic-model.pdf, id=267, 
-488.82625pt x 474.77374pt>
-File: chapter_spatial_voting_with_text/figures/ideal-point-topic-model.pdf Grap
-hic file (type pdf)
-
-<use chapter_spatial_voting_with_text/figures/ideal-point-topic-model.pdf>
-[42 <./chapter_spatial_voting_with_text/figures/ideal-point-topic-model.pdf>]
-[43]
-
-Package natbib Warning: Citation `Salakhutdinov:2008a' on page 44 undefined on 
-input line 336.
-
-[44] [45]
-<chapter_spatial_voting_with_text/figures/138_log_likelihood_by_session_topics.
-pdf, id=417, 353.32pt x 433.62pt>
-File: chapter_spatial_voting_with_text/figures/138_log_likelihood_by_session_to
-pics.pdf Graphic file (type pdf)
-
-<use chapter_spatial_voting_with_text/figures/138_log_likelihood_by_session_top
-ics.pdf> [46] [47 <./chapter_spatial_voting_with_text/figures/138_log_likelihoo
-d_by_session_topics.pdf>]
-<chapter_spatial_voting_with_text/figures/134_64_topic_plot.pdf, id=430, 373.39
-5pt x 160.6pt>
-File: chapter_spatial_voting_with_text/figures/134_64_topic_plot.pdf Graphic fi
-le (type pdf)
-
-<use chapter_spatial_voting_with_text/figures/134_64_topic_plot.pdf> [48 <./cha
-pter_spatial_voting_with_text/figures/134_64_topic_plot.pdf>] [49] [50]
-[51]
-<chapter_spatial_voting_with_text/figures/3393_example_ideal_points_final.pdf, 
-id=798, 517.13202pt x 54.604pt>
-File: chapter_spatial_voting_with_text/figures/3393_example_ideal_points_final.
-pdf Graphic file (type pdf)
-
-<use chapter_spatial_voting_with_text/figures/3393_example_ideal_points_final.p
-df>
-<chapter_spatial_voting_with_text/figures/3393_example_ideal_points_taxation.pd
-f, id=800, 657.65701pt x 182.281pt>
-File: chapter_spatial_voting_with_text/figures/3393_example_ideal_points_taxati
-on.pdf Graphic file (type pdf)
-
-<use chapter_spatial_voting_with_text/figures/3393_example_ideal_points_taxatio
-n.pdf>
-<chapter_spatial_voting_with_text/figures/3393_example_ideal_points_health.pdf,
- id=802, 660.06598pt x 180.675pt>
-File: chapter_spatial_voting_with_text/figures/3393_example_ideal_points_health
-.pdf Graphic file (type pdf)
-
-<use chapter_spatial_voting_with_text/figures/3393_example_ideal_points_health.
-pdf> [52 <./chapter_spatial_voting_with_text/figures/3393_example_ideal_points_
-final.pdf>]
-<chapter_spatial_voting_with_text/figures/legis_gm.pdf, id=1155, 468.14899pt x 
-341.275pt>
-File: chapter_spatial_voting_with_text/figures/legis_gm.pdf Graphic file (type 
-pdf)
- <use chapter_spatial_voting_with_text/figures/legis_gm.pdf>
-Overfull \hbox (19.69278pt too wide) in paragraph at lines 940--1012
- [] 
- []
-
-[53 <./chapter_spatial_voting_with_text/figures/3393_example_ideal_points_taxat
-ion.pdf> <./chapter_spatial_voting_with_text/figures/3393_example_ideal_points_
-health.pdf>] [54 <./chapter_spatial_voting_with_text/figures/legis_gm.pdf>]
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <8> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 1246.
-
-
-[55]
-Overfull \hbox (38.09315pt too wide) in paragraph at lines 1479--1489
-[]\OT1/cmr/m/n/10 Variational in-fer-ence usu-ally pro-ceeds by op-ti-miz-ing $
-\OMS/cmsy/m/n/10 L[] \OT1/cmr/m/n/10 = \U/msb/m/n/10 E[] [] \OMS/cmsy/m/n/10 ^^
-@ \U/msb/m/n/10 E[] []$\OT1/cmr/m/n/10 ,
- []
-
-[56] [57] [58] [59]
-<chapter_spatial_voting_with_text/figures/3393_example_ideal_points_finance.pdf
-, id=1898, 610.28pt x 203.159pt>
-File: chapter_spatial_voting_with_text/figures/3393_example_ideal_points_financ
-e.pdf Graphic file (type pdf)
-
-<use chapter_spatial_voting_with_text/figures/3393_example_ideal_points_finance
-.pdf>
-<chapter_spatial_voting_with_text/figures/3393_house_Ronald_Paul_400311.pdf, id
-=1900, 505.89pt x 505.89pt>
-File: chapter_spatial_voting_with_text/figures/3393_house_Ronald_Paul_400311.pd
-f Graphic file (type pdf)
-
-<use chapter_spatial_voting_with_text/figures/3393_house_Ronald_Paul_400311.pdf
->
-<chapter_spatial_voting_with_text/figures/3393_house_Donald_Young_400440.pdf, i
-d=1901, 505.89pt x 505.89pt>
-File: chapter_spatial_voting_with_text/figures/3393_house_Donald_Young_400440.p
-df Graphic file (type pdf)
-
-<use chapter_spatial_voting_with_text/figures/3393_house_Donald_Young_400440.pd
-f>
-
-LaTeX Warning: Float too large for page by 2.93167pt on input line 2010.
-
-
-LaTeX Warning: Reference `sec:performance' on page 60 undefined on input line 2
-165.
-
-[60 <./chapter_spatial_voting_with_text/figures/3393_example_ideal_points_finan
-ce.pdf>] [61 <./chapter_spatial_voting_with_text/figures/3393_house_Ronald_Paul
-_400311.pdf> <./chapter_spatial_voting_with_text/figures/3393_house_Donald_Youn
-g_400440.pdf>] [62]) (./chapter_dissent/chapter_dissent.tex [63]
-Chapter 6.
-
-Overfull \hbox (3.48286pt too wide) in paragraph at lines 3--3
-[]\OT1/cmr/bx/n/14.4 Introduction: De-ci-sions and in-flu-ence in the higher co
-urts 
- []
-
-) (./chapter_foreign_relations/chapter_foreign_relations.tex [64
-
-]
-Chapter 7.
-)
+[32] [33 <./chapter_influence/figures/acl_brown.pdf> <./chapter_influence/figur
+es/nature_cloning.pdf>] [34]) (./chapter_influence/sec_parallel.tex [35]
+[36]) (./chapter_influence/sec_parallel.tex [37] [38])
+(./chapter_influence/sec_conclusion.tex [39]))
 (./chapter_stochastic_variational_optimization/chapter_stochastic_variational_o
-ptimization.tex [65
-
-] [66]
-Chapter 8.
-[67
+ptimization.tex [40]
+Chapter 4.
+[41
 
 ]
 
-LaTeX Warning: Reference `eq:variational_objective' on page 68 undefined on inp
+LaTeX Warning: Reference `eq:variational_objective' on page 42 undefined on inp
 ut line 128.
 
-[68]
+[42]
 
-LaTeX Warning: Reference `eq:variational_objective' on page 69 undefined on inp
+LaTeX Warning: Reference `eq:variational_objective' on page 43 undefined on inp
 ut line 136.
 
 
 LaTeX Warning: Reference `eq:equation:traditional_variational_objective' on pag
-e 69 undefined on input line 207.
+e 43 undefined on input line 207.
 
-[69]
+[43]
 
-LaTeX Warning: Reference `eq:gradient-as-expectation' on page 70 undefined on i
+LaTeX Warning: Reference `eq:gradient-as-expectation' on page 44 undefined on i
 nput line 240.
 
 
-LaTeX Warning: Reference `sec:setting-c' on page 70 undefined on input line 243
+LaTeX Warning: Reference `sec:setting-c' on page 44 undefined on input line 243
 .
 
 
-LaTeX Warning: Reference `eq:svo_gradient' on page 70 undefined on input line 2
+LaTeX Warning: Reference `eq:svo_gradient' on page 44 undefined on input line 2
 70.
 
 
-LaTeX Warning: Reference `sec:gaussian' on page 70 undefined on input line 280.
+LaTeX Warning: Reference `sec:gaussian' on page 44 undefined on input line 280.
 
 
 
-LaTeX Warning: Reference `sec:complicated_posteriors' on page 70 undefined on i
+LaTeX Warning: Reference `sec:complicated_posteriors' on page 44 undefined on i
 nput line 280.
 
-[70]
+[44]
 <chapter_stochastic_variational_optimization/figures/laplace_approximation.pdf,
- id=2305, 505.89pt x 505.89pt>
+ id=267, 505.89pt x 505.89pt>
 File: chapter_stochastic_variational_optimization/figures/laplace_approximation
 .pdf Graphic file (type pdf)
 
 <use chapter_stochastic_variational_optimization/figures/laplace_approximation.
 pdf>
 <chapter_stochastic_variational_optimization/figures/mean_estimate_by_order_sam
-pling.pdf, id=2306, 326.821pt x 191.114pt>
+pling.pdf, id=268, 326.821pt x 191.114pt>
 File: chapter_stochastic_variational_optimization/figures/mean_estimate_by_orde
 r_sampling.pdf Graphic file (type pdf)
 
 <use chapter_stochastic_variational_optimization/figures/mean_estimate_by_order
-_sampling.pdf> [71 <./chapter_stochastic_variational_optimization/figures/lapla
+_sampling.pdf> [45 <./chapter_stochastic_variational_optimization/figures/lapla
 ce_approximation.pdf>]
 Overfull \hbox (3.41902pt too wide) in paragraph at lines 415--422
 \OT1/cmr/m/n/10 We per-formed these up-dates un-til the ex-po-nen-tial mov-ing 
@@ -673,73 +496,73 @@ av-er-age $^^A[] \OMS/cmsy/m/n/10   \OT1/cmr/m/n/10 0\OML/cmm/m/it/10 :\OT1/cmr
 
  []
 
-[72 <./chapter_stochastic_variational_optimization/figures/mean_estimate_by_ord
-er_sampling.pdf>] [73]
+[46 <./chapter_stochastic_variational_optimization/figures/mean_estimate_by_ord
+er_sampling.pdf>] [47]
 
 Package natbib Warning: Author undefined for citation`carbonetto:2009' 
-(natbib)                on page 74 on input line 522.
+(natbib)                on page 48 on input line 522.
 
 
 Package natbib Warning: Author undefined for citation`wei:1990' 
-(natbib)                on page 74 on input line 522.
+(natbib)                on page 48 on input line 522.
 
-[74]
+[48]
 
-LaTeX Warning: Reference `figure:first_order_algorithm' on page 75 undefined on
+LaTeX Warning: Reference `figure:first_order_algorithm' on page 49 undefined on
  input line 556.
 
-[75]
+[49]
 
 Package natbib Warning: Author undefined for citation`carbonetto:2009' 
-(natbib)                on page 76 on input line 608.
+(natbib)                on page 50 on input line 608.
 
 
 Package natbib Warning: Author undefined for citation`carbonetto:2009' 
-(natbib)                on page 76 on input line 623.
+(natbib)                on page 50 on input line 623.
 
 
 Package natbib Warning: Author undefined for citation`wei:1990' 
-(natbib)                on page 76 on input line 628.
+(natbib)                on page 50 on input line 628.
 
 
-LaTeX Warning: Reference `sec:stochastic_optimization_var_obj' on page 76 undef
+LaTeX Warning: Reference `sec:stochastic_optimization_var_obj' on page 50 undef
 ined on input line 645.
 
 
-LaTeX Warning: Reference `sec:stochastic_optimization_var_obj' on page 76 undef
+LaTeX Warning: Reference `sec:stochastic_optimization_var_obj' on page 50 undef
 ined on input line 659.
 
 
-LaTeX Warning: Reference `fig:univariate_comparison_approximation' on page 76 u
+LaTeX Warning: Reference `fig:univariate_comparison_approximation' on page 50 u
 ndefined on input line 664.
 
-[76]
+[50]
 
-LaTeX Warning: Reference `fig:second_order_algorithm' on page 77 undefined on i
+LaTeX Warning: Reference `fig:second_order_algorithm' on page 51 undefined on i
 nput line 668.
 
 
-LaTeX Warning: Reference `sec:stochastic_optimization_var_obj' on page 77 undef
+LaTeX Warning: Reference `sec:stochastic_optimization_var_obj' on page 51 undef
 ined on input line 670.
 
 
-LaTeX Warning: Reference `fig:univariate_comparison' on page 77 undefined on in
+LaTeX Warning: Reference `fig:univariate_comparison' on page 51 undefined on in
 put line 674.
 
 
-LaTeX Warning: Reference `fig:univariate_comparison' on page 77 undefined on in
+LaTeX Warning: Reference `fig:univariate_comparison' on page 51 undefined on in
 put line 680.
 
 
 <chapter_stochastic_variational_optimization/figures/posterior_mean_estimates_a
-ll.pdf, id=2777, 295.504pt x 189.508pt>
+ll.pdf, id=740, 295.504pt x 189.508pt>
 File: chapter_stochastic_variational_optimization/figures/posterior_mean_estima
 tes_all.pdf Graphic file (type pdf)
 
 <use chapter_stochastic_variational_optimization/figures/posterior_mean_estimat
 es_all.pdf>
 <chapter_stochastic_variational_optimization/figures/changepoint_analysis_examp
-le_time_series.pdf, id=2779, 650.43pt x 325.215pt>
+le_time_series.pdf, id=742, 650.43pt x 325.215pt>
 File: chapter_stochastic_variational_optimization/figures/changepoint_analysis_
 example_time_series.pdf Graphic file (type pdf)
 
@@ -749,53 +572,231 @@ Overfull \hbox (12.0pt too wide) in paragraph at lines 767--776
 [][] 
  []
 
-[77] [78 <./chapter_stochastic_variational_optimization/figures/posterior_mean_
+[51] [52 <./chapter_stochastic_variational_optimization/figures/posterior_mean_
 estimates_all.pdf> <./chapter_stochastic_variational_optimization/figures/chang
 epoint_analysis_example_time_series.pdf>]
 
-LaTeX Warning: Reference `fig:irt_results' on page 79 undefined on input line 8
+LaTeX Warning: Reference `fig:irt_results' on page 53 undefined on input line 8
 38.
 
-[79]
+[53]
 
-LaTeX Warning: Reference `fig:switching_kalman_filter' on page 80 undefined on 
+LaTeX Warning: Reference `fig:switching_kalman_filter' on page 54 undefined on 
 input line 896.
 
 
-LaTeX Warning: Reference `fig:changepoint_results' on page 80 undefined on inpu
+LaTeX Warning: Reference `fig:changepoint_results' on page 54 undefined on inpu
 t line 901.
 
 
-LaTeX Warning: Reference `fig:switching_kalman_filter' on page 80 undefined on 
+LaTeX Warning: Reference `fig:switching_kalman_filter' on page 54 undefined on 
 input line 901.
 
-[80]) (./chapter_appendix/chapter_appendix.tex [81]
-Chapter 9.
-) (./thesis.bbl [82
+[54]) (./chapter_foreign_relations/chapter_foreign_relations.tex [55]
+Chapter 5.
 
-] [83
+<chapter_foreign_relations/figures/countries_gm.pdf, id=776, 126.87401pt x 16.8
+63pt>
+File: chapter_foreign_relations/figures/countries_gm.pdf Graphic file (type pdf
+)
+ <use chapter_foreign_relations/figures/countries_gm.pdf> [56
 
-] [84] [85] [86]
-Underfull \hbox (badness 10000) in paragraph at lines 312--317
+ <./chapter_foreign_relations/figures/countries_gm.pdf>] [57] [58]
+<chapter_foreign_relations/figures/mturk_screenshot.png, id=859, 1076.02pt x 31
+4.17375pt>
+File: chapter_foreign_relations/figures/mturk_screenshot.png Graphic file (type
+ png)
+ <use chapter_foreign_relations/figures/mturk_screenshot.png>
+Overfull \hbox (1.0pt too wide) in paragraph at lines 215--219
+ [] 
+ []
+
+[59]
+<chapter_foreign_relations/figures/002_countries_by_ip_1987.pdf, id=864, 505.89
+pt x 505.89pt>
+File: chapter_foreign_relations/figures/002_countries_by_ip_1987.pdf Graphic fi
+le (type pdf)
+
+<use chapter_foreign_relations/figures/002_countries_by_ip_1987.pdf>
+<chapter_foreign_relations/figures/002_countries_by_ip_2007.pdf, id=865, 505.89
+pt x 505.89pt>
+File: chapter_foreign_relations/figures/002_countries_by_ip_2007.pdf Graphic fi
+le (type pdf)
+
+<use chapter_foreign_relations/figures/002_countries_by_ip_2007.pdf>
+<chapter_foreign_relations/figures/002_us_vs_everyone.pdf, id=866, 505.89pt x 5
+05.89pt>
+File: chapter_foreign_relations/figures/002_us_vs_everyone.pdf Graphic file (ty
+pe pdf)
+ <use chapter_foreign_relations/figures/002_us_vs_everyone.pdf>
+Overfull \hbox (31.66615pt too wide) in paragraph at lines 247--257
+[][] 
+ []
+
+[60 <./chapter_foreign_relations/figures/mturk_screenshot.png (PNG copy)>])
+(./chapter_spatial_voting_with_text/chapter_spatial_voting_with_text.tex
+[61 <./chapter_foreign_relations/figures/002_countries_by_ip_1987.pdf> <./chapt
+er_foreign_relations/figures/002_countries_by_ip_2007.pdf> <./chapter_foreign_r
+elations/figures/002_us_vs_everyone.pdf>] [62]
+Chapter 6.
+[63
+
+] [64]
+<chapter_spatial_voting_with_text/figures/134_senator_name_accuracy_by_ip_sampl
+e.pdf, id=908, 505.89pt x 505.89pt>
+File: chapter_spatial_voting_with_text/figures/134_senator_name_accuracy_by_ip_
+sample.pdf Graphic file (type pdf)
+
+<use chapter_spatial_voting_with_text/figures/134_senator_name_accuracy_by_ip_s
+ample.pdf> [65 <./chapter_spatial_voting_with_text/figures/134_senator_name_acc
+uracy_by_ip_sample.pdf>]
+<chapter_spatial_voting_with_text/figures/ideal-point-topic-model.pdf, id=921, 
+488.82625pt x 474.77374pt>
+File: chapter_spatial_voting_with_text/figures/ideal-point-topic-model.pdf Grap
+hic file (type pdf)
+
+<use chapter_spatial_voting_with_text/figures/ideal-point-topic-model.pdf>
+
+Package natbib Warning: Citation `Kogan:2009' on page 66 undefined on input lin
+e 177.
+
+[66 <./chapter_spatial_voting_with_text/figures/ideal-point-topic-model.pdf>]
+[67]
+
+Package natbib Warning: Citation `Salakhutdinov:2008a' on page 68 undefined on 
+input line 336.
+
+[68] [69]
+<chapter_spatial_voting_with_text/figures/138_log_likelihood_by_session_topics.
+pdf, id=1071, 353.32pt x 433.62pt>
+File: chapter_spatial_voting_with_text/figures/138_log_likelihood_by_session_to
+pics.pdf Graphic file (type pdf)
+
+<use chapter_spatial_voting_with_text/figures/138_log_likelihood_by_session_top
+ics.pdf> [70] [71 <./chapter_spatial_voting_with_text/figures/138_log_likelihoo
+d_by_session_topics.pdf>]
+<chapter_spatial_voting_with_text/figures/134_64_topic_plot.pdf, id=1083, 373.3
+95pt x 160.6pt>
+File: chapter_spatial_voting_with_text/figures/134_64_topic_plot.pdf Graphic fi
+le (type pdf)
+
+<use chapter_spatial_voting_with_text/figures/134_64_topic_plot.pdf> [72 <./cha
+pter_spatial_voting_with_text/figures/134_64_topic_plot.pdf>] [73] [74]
+[75]
+<chapter_spatial_voting_with_text/figures/3393_example_ideal_points_final.pdf, 
+id=1451, 517.13202pt x 54.604pt>
+File: chapter_spatial_voting_with_text/figures/3393_example_ideal_points_final.
+pdf Graphic file (type pdf)
+
+<use chapter_spatial_voting_with_text/figures/3393_example_ideal_points_final.p
+df>
+<chapter_spatial_voting_with_text/figures/3393_example_ideal_points_taxation.pd
+f, id=1453, 657.65701pt x 182.281pt>
+File: chapter_spatial_voting_with_text/figures/3393_example_ideal_points_taxati
+on.pdf Graphic file (type pdf)
+
+<use chapter_spatial_voting_with_text/figures/3393_example_ideal_points_taxatio
+n.pdf>
+<chapter_spatial_voting_with_text/figures/3393_example_ideal_points_health.pdf,
+ id=1455, 660.06598pt x 180.675pt>
+File: chapter_spatial_voting_with_text/figures/3393_example_ideal_points_health
+.pdf Graphic file (type pdf)
+
+<use chapter_spatial_voting_with_text/figures/3393_example_ideal_points_health.
+pdf> [76 <./chapter_spatial_voting_with_text/figures/3393_example_ideal_points_
+final.pdf>]
+<chapter_spatial_voting_with_text/figures/legis_gm.pdf, id=1808, 468.14899pt x 
+341.275pt>
+File: chapter_spatial_voting_with_text/figures/legis_gm.pdf Graphic file (type 
+pdf)
+ <use chapter_spatial_voting_with_text/figures/legis_gm.pdf>
+Overfull \hbox (19.69278pt too wide) in paragraph at lines 940--1012
+ [] 
+ []
+
+[77 <./chapter_spatial_voting_with_text/figures/3393_example_ideal_points_taxat
+ion.pdf> <./chapter_spatial_voting_with_text/figures/3393_example_ideal_points_
+health.pdf>] [78 <./chapter_spatial_voting_with_text/figures/legis_gm.pdf>]
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <8> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 1246.
+
+
+[79]
+Overfull \hbox (38.09315pt too wide) in paragraph at lines 1479--1489
+[]\OT1/cmr/m/n/10 Variational in-fer-ence usu-ally pro-ceeds by op-ti-miz-ing $
+\OMS/cmsy/m/n/10 L[] \OT1/cmr/m/n/10 = \U/msb/m/n/10 E[] [] \OMS/cmsy/m/n/10 ^^
+@ \U/msb/m/n/10 E[] []$\OT1/cmr/m/n/10 ,
+ []
+
+[80] [81] [82] [83]
+<chapter_spatial_voting_with_text/figures/3393_example_ideal_points_finance.pdf
+, id=2549, 610.28pt x 203.159pt>
+File: chapter_spatial_voting_with_text/figures/3393_example_ideal_points_financ
+e.pdf Graphic file (type pdf)
+
+<use chapter_spatial_voting_with_text/figures/3393_example_ideal_points_finance
+.pdf>
+<chapter_spatial_voting_with_text/figures/3393_house_Ronald_Paul_400311.pdf, id
+=2551, 505.89pt x 505.89pt>
+File: chapter_spatial_voting_with_text/figures/3393_house_Ronald_Paul_400311.pd
+f Graphic file (type pdf)
+
+<use chapter_spatial_voting_with_text/figures/3393_house_Ronald_Paul_400311.pdf
+>
+<chapter_spatial_voting_with_text/figures/3393_house_Donald_Young_400440.pdf, i
+d=2552, 505.89pt x 505.89pt>
+File: chapter_spatial_voting_with_text/figures/3393_house_Donald_Young_400440.p
+df Graphic file (type pdf)
+
+<use chapter_spatial_voting_with_text/figures/3393_house_Donald_Young_400440.pd
+f>
+
+LaTeX Warning: Float too large for page by 2.93167pt on input line 2010.
+
+
+LaTeX Warning: Reference `sec:performance' on page 84 undefined on input line 2
+165.
+
+[84 <./chapter_spatial_voting_with_text/figures/3393_example_ideal_points_finan
+ce.pdf>] [85 <./chapter_spatial_voting_with_text/figures/3393_house_Ronald_Paul
+_400311.pdf> <./chapter_spatial_voting_with_text/figures/3393_house_Donald_Youn
+g_400440.pdf>] [86]) (./chapter_dissent/chapter_dissent.tex [87]
+Chapter 7.
+
+Overfull \hbox (3.48286pt too wide) in paragraph at lines 3--3
+[]\OT1/cmr/bx/n/14.4 Introduction: De-ci-sions and in-flu-ence in the higher co
+urts 
+ []
+
+) (./chapter_appendix/chapter_appendix.tex [88
+
+]
+Chapter 8.
+) (./thesis.bbl [89
+
+] [90
+
+] [91] [92] [93] [94]
+Missing character: There is no â in font cmr10!
+Missing character: There is no € in font cmr10!
+Missing character: There is no ™ in font cmr10!
+ [95]
+Underfull \hbox (badness 10000) in paragraph at lines 484--489
 []\OT1/cmr/m/n/10 David M. Her-szen-horn.  Congress wraps up ses-sion early as 
 midterm races
  []
 
 
-Underfull \hbox (badness 1960) in paragraph at lines 312--317
+Underfull \hbox (badness 1960) in paragraph at lines 484--489
 \OT1/cmr/m/n/10 loom.  In \OT1/cmr/m/it/10 The New York Times\OT1/cmr/m/n/10 . 
 Septem-ber 29 2010.  Ac-cessed 17 Jan 2011 at
  []
 
-[87] [88]
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-)
+[96])
 
 Package natbib Warning: There were undefined citations.
 
-[89] (./thesis.aux)
+[97] (./thesis.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -804,13 +805,13 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 3587 strings out of 495061
- 52841 string characters out of 1182622
- 110137 words of memory out of 3000000
- 6618 multiletter control sequences out of 15000+50000
- 20458 words of font info for 74 fonts, out of 3000000 for 9000
+ 3667 strings out of 495061
+ 55215 string characters out of 1182622
+ 109480 words of memory out of 3000000
+ 6692 multiletter control sequences out of 15000+50000
+ 22318 words of font info for 81 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 30i,21n,37p,687b,515s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 30i,21n,37p,967b,578s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/sha
 re/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-te
 xlive/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/share/texmf-texlive/fonts/
@@ -840,9 +841,9 @@ y7.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr
 f-texlive/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/share/texmf-texlive/fo
 nts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texmf-texlive/fonts/type1/p
 ublic/amsfonts/symbols/msbm10.pfb>
-Output written on thesis.pdf (98 pages, 1884122 bytes).
+Output written on thesis.pdf (106 pages, 2161354 bytes).
 PDF statistics:
- 2934 PDF objects out of 2984 (max. 8388607)
+ 3063 PDF objects out of 3580 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 131 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 156 words of extra memory for PDF output out of 10000 (max. 10000000)
 
