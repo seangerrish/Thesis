@@ -17,12 +17,19 @@ steps are made in parallel.  While most of these steps are simply
 performing updates across many computers, we describe below how to
 handle an update that cannot be distributed without modification.
 
+In this section, we will refer to a single computer as a processor.
+We will differentiate between the roles a processor may take by
+referring to a ``master'', which coordinates the entire algorithm, and
+the ``workers'', which perform lower-level computing.  The master
+launches workers, checks when they are complete, and monitors
+model convergence.
+
 \subsection*{Algorithm overview}
 With both the parallel implementation and the standard implementation,
 we initialize the model with LDA topics.  The parallel implementation
-distributes the work of the E step among the many workers during each
-iteration.  The LDA M step for each iteration (which simply aggregates
-sufficient statistics) is then run on a single processor.
+of LDA distributes the work of the E step among the many workers
+during each iteration.  The LDA M step for each iteration---which
+simply aggregates sufficient statistics---is then run on the master.
 
 Following this initialization, the actual model is fit.  This is
 driven by a single master program which alternates between two steps:
@@ -34,8 +41,7 @@ topics $\bv_k | \vphi_k, \ellv_k, \w$ by adjusting their variational
 observations.  Topic chains $\bv_k$ are conditionally independent
 given the documents' variational parameters, so the parallel algorithm
 performs the same operations as the original algorithm, but in
-parallel.  We simply split the work among $W$ distinct processors, or
-workers.
+parallel.  We simply split the work among $W$ distinct workers.
 
 \subsection*{The parallel documents E-step}
 In the documents $E$-step of the algorithm, our goal is to re-fit each
@@ -76,7 +82,9 @@ Importantly, this process maintains the requirement that the
 variational lower bound never decrease.  In the first step, each of
 the ``local'' estimates has not decreased the variational bound.  The
 variational lower bound is concave in $\ellv_{k}$, so the average of
-these estimates does not decrease the variational bound.
+these estimates does not decrease the variational bound.  Therefore,
+both the first and second steps guarantee that the variational
+objective never decrease.
 
 Instead of taking the global average in a second stage, this can be
 implemented in each worker by taking the estimate of the optimal
@@ -90,6 +98,6 @@ or, equivalently,
  \ellv^{\mbox{\tiny new}}_{d,k} \gets \ellv^{\mbox{\tiny old}}_{d,k} + \frac{1}{W} (\ellv^{\mbox{\tiny worker}}_{d,k} - \ellv^{\mbox{\tiny old}}_{d,k}).
 \]
 
-Note that we can only guarantee that parallel update dampening
-increases the variational objective because the objective is concave
-in the parameter $\ellv$.
+We note again that we can only guarantee that parallel update
+dampening increases the variational objective because the objective is
+concave in the parameter $\ellv$.

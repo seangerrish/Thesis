@@ -589,13 +589,20 @@ indicates that there is an inefficiency in the inference pipeline.
 
 Variational methods address some of the shortcomings of MCMC by
 providing a fast, deterministic alternative to MCMC
-\cite{jordan:2003,jordan:1999}.  We review the key ideas here and will
-use use these methods as we develop models in later chapters.
+\cite{jordan:2003,jordan:1999}. These algorithms have been
+successfully applied to many kinds of topic models, where corpus size
+and vocabulary dimension are large.  We review the key ideas of
+variational inference here and will use use these methods as we
+develop models in later chapters.
 
-Variational methods posit a simplified family of
-distributions and select the member $q_\theta$ of this
-family that is closest in KL-divergence to the true posterior $p(x |
-y)$:
+\textit{variational parameters}, which are fit to minimize the KL
+divergence between the variational family and the true posterior.  The
+family is chosen to be simpler than the posterior, which allows for
+efficient optimization.
+
+Variational methods posit a simplified family of distributions and
+select the member $q_\theta$ of this family that is closest in
+KL-divergence to the true posterior $p(x | y)$:
 \begin{align}
   \arg \min_{\theta} \mbox{KL}(q_\theta || p) = \arg \min_{\theta} \int_x q_\theta(x) \log \frac{q_\theta(x)}{p(x | y)} dx.
   \label{equation:variational_objective}
@@ -611,12 +618,23 @@ the data likelihood
 where the slack of the bound is equal to the KL divergence from
 Equation~\ref{equation:variational_objective}.
 
-The family is chosen by the practitioner to make the
-resulting algorithm tractable and to capture the parameters of
-interest. A common assumption is that the posterior is
-fully-factorized into simple marginal distributions; such an
-assumption is known as \emph{naive mean-field variational inference}.
+The family is chosen by the practitioner to make the resulting
+algorithm tractable and to capture the parameters of interest. A
+common assumption is that the posterior is fully-factorized into
+simple marginal distributions; such an assumption is known as
+\emph{naive mean-field variational inference}. Though simpler, the
+fitted variational distributions are found to be good proxies for the
+true posterior~\cite{jordan:1999,gerrish:2011}.
 
+\begin{figure}
+  \center
+  \includegraphics[width=0.6\textwidth]{chapter_introductory_material/figs/variational_family.pdf}
+  \label{figure:variational_inference}
+  \caption{Illustration of variational inference.  Practitioners
+    define a variational family (illustrated in yellow) and find the
+    member of that familt $q_{\hat \eta}(x)$ which is closest (by KL
+    divergence) to the true posterior.}
+\end{figure}
 For example, a multivariate posterior $p(x | Y), x \in \mathcal{R}^D$
 might be represented by the product $q(x_{1:D}) = \prod_D \mathcal{N}(x_d | \mu_d,
 \sigma_d^2)$ of $D$ Gaussian distributions. and a Dirichlet

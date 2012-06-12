@@ -8,76 +8,196 @@ committees is complex, one of the most common characteristics of we
 focus on a patterns of legislation are typically pass a collective
 vote by these lawmakers
 
-Legislative behavior centers around the votes made by lawmakers.
-Capturing regularity in these votes, and characterizing patterns of
-legislative behavior, is one of the main goals of quantitative
-political science.  To a degree, voting behavior exhibits a lot of
-regularity, and simple statistical models, particularly \textit{ideal
-  point models}, easily capture the broad political structure of
-legislative bodies.  However, some lawmakers do not fit neatly into
-the assumptions made by such models.  In this paper, we develop a new
-model of legislative behavior that captures when and how lawmakers
-vote differently than expected.
+Legislative behavior centers around these votes.  Capturing regularity
+in these votes, and characterizing patterns of lawmakers' behavior, is
+one of the main goals of quantitative political science.  To a degree,
+voting behavior exhibits a lot of regularity, and simple statistical
+models, particularly \textit{ideal point models}, easily capture the
+broad political structure of legislative bodies.  However, these
+models fall short in at least two ways.  First, they are not
+\emph{predictive} models: they cannot be used to predict lawmakers' in
+the absense of votes lawmakers do not fit neatly into the assumptions
+made by such models.
 
-Loosely, ideal point models assume that lawmakers and bills are
-represented as points in a latent space.  A lawmaker's (stochastic)
-voting behavior is characterized by the relationship between her
-position in this space and the bill's position
-\cite{poole:1991,jackman:2001,clinton:2004}.  Given a table of how
-each lawmaker votes on each bill (known as a roll call), we can use
-ideal point models to infer the latent position of each lawmaker.  In
-U.S. politics, these inferred positions reveal the commonly-known
-political spectrum: right-wing lawmakers are at one extreme, and
-left-wing lawmakers are at the other.  \myfig{classic_ideal_points}
-illustrates example inferences from an ideal point model.
+In this chapter, we will develop two models of legislative behavior to
+address these two limitations.  lawmakers vote
+differently than expected.
 
-\section{The role of text in lawmaking bodies}
+\paragraph{The role of text in lawmaking bodies.}
 With increasing access to both public records and computing
 facilities, political scientists have carefully researched these votes
 using ideal points and other models.
 
-In the past decade, the text of these bills has become available to researchers as well.  applying models like the ideal point
-model to understand lawmakers' behavior.
+In the past decade, the text of these bills has also become available
+to researchers.  Websites like \url{www.govtrack.us}
+\cite{govtrack:2009} collect this information for researchers and the
+public to better understand both the content and behavior around
+legislative decisionmaking.
 
-addition to roll-call votes, the text of bills proposed by these bodies has also been recorded.  Websites like 
-
-\subsection{The Ideal Point Model}
-
+\section{The Ideal Point Model}
 \label{sec:model}
-In this section we develop models of both roll call data and
-legislative text.
 
-\textbf{The Bayesian ideal point model.}
-The ideal point model is a generative model of choices (votes) and
-issues (bills).  Each legislator $u$ is associated with an
-\textit{ideal point} $X_u$ (see \myfig{ideal_points}), and each bill
-is associated with a \textit{discrimination} $B_d$ and
-\textit{difficulty} $A_d$.  The vote $v_{ud}$ is assumed drawn from the
-linear model
+We first review ideal point models of legislative roll call data,
+which are widely used by political methodologists.  In next two
+sections we will discuss ways to extend these models both to predict
+how lawmakers will vote on unseen documents and to account for how
+legislators vote on specific issues.
+
+Ideal point models are based on item response theory, a statistical
+theory that models how members of a population judge a set of items.
+Loosely, ideal point model assumes that lawmakers and bills are
+represented as points in a latent space.  A lawmaker's (stochastic)
+voting behavior is characterized by the relationship between her
+position in this space and the bill's position
+\cite{poole:1985,poole:1991,jackman:2001,martin:2002,clinton:2004}.
+Given a table of how each lawmaker votes on each bill (known as a roll
+call), we can use ideal point models to infer the latent position of
+each lawmaker.
+
+In U.S. politics, these inferred positions correspond to the commonly-known
+political spectrum: right-wing lawmakers are at one extreme, and
+left-wing lawmakers are at the other. % \myfig{classic_ideal_points}
+%illustrates example inferences from an ideal point model. 
+% These models are widely used in quantitative political
+% science~\citep{clinton:2004,poole:1985,martin:2002}.
+
+% dmb: above, should we cite the NOMINATE work too?  others?
+% smg: added a few others.
+
+% dmb: below, mention the priors on a and b as well (usually
+% gaussian).
+% smg: done.
+One-dimensional ideal point models posit an \textit{ideal point} $x_u
+\in \mathbb{R}$ for each lawmaker $u$.  Each bill $d$ is characterized
+by its \textit{polarity} $a_d$ and its \textit{popularity} $b_d$.\footnote{These are sometimes called the \emph{discrimination} and \emph{difficulty}, respectively.}  The
+probability that lawmaker $u$ votes ``Yes'' on bill $d$ is given by
+the logistic regression
 \begin{equation}
-  \label{eq:ideal-point}
-  p(v_{ud} = \textrm{yea}) = \sigma(x_u b_d + a_d),
+  \label{eq:trad_ipm}
+  p(v_{ud} = \textrm{yes} \g x_u, a_d, b_d) =
+  \sigma(x_u a_d + b_d),
 \end{equation}
-where $\sigma(t) = \frac{\exp(t)}{1 + \exp(t)}$.  This is a logistic
-regression with random effects.\footnote{Some ideal point models use a
-probit model; we have found both approaches to ideal points to yield
-similar results}
+where $\sigma(s) = \frac{\exp(s)}{1 + \exp(s)}$ is the logistic
+function.\footnote{Many ideal point models use a probit function instead \cite{poole:1991,clinton:2004}.}
+%% , which stems
+%% from an assumed utility model.  In more detail, ideal point models
+%% assume that each lawmaker observes a noisy realization of the utility
+%% of a world with the status quo (bill not passed) or the bill passed.
+%% Gaussian noise leads to the probit model of votes; extreme value noise
+%% leads to the logistic model of votes.}
+When the popularity of a bill $b_d$ is high, nearly everyone votes
+``Yes'' on bill $d$; when the popularity is low, nearly everyone votes
+``No''.  When the popularity is near zero, the probability that a
+lawmaker votes ``Yes'' depends on how her ideal point $x_u$ interacts
+with bill polarity $a_d$.  We will make the common assumption that the
+latent variables $a_d$, $b_d$, and $x_u$ have standard normal priors
+\cite{clinton:2004}.
 
-Notice the roles of the per-legislator and per-bill latent variables
-in \myeq{ideal-point}.  The difficulty parameter $a_d$ explains bills
-that all legislators will vote for or against, e.g., ``A bill to
-congratulate the winner of the World Series.''  For the remaining
-bills, i.e., those with some political division, the discrimination
-parameter $b_d$ and ideal point interact.  When estimated from roll
-call data, these latent variables capture the political leanings of
-the legislators and the political tone of the legislation.
 
-We assume Gaussian priors for $X_u, A_d$, and $B_d$.  The prior for
-$X_u$ has mean zero; the means of $A_d, B_d$ are inferred from text.
-The ideal point variance is $\sigma_u^2$; the variance for both
-discrimination and difficulty is $\sigma_d^2$.
 
-\subsection{A model for predicting votes with the text of new bills}
+% We assume Gaussian priors for $X_u, A_d$, and $B_d$.  The prior for
+% $X_u$ has mean zero; the means of $A_d, B_d$ are inferred from text.
+% The ideal point variance is $\sigma_u^2$; the variance for both
+% discrimination and difficulty is $\sigma_d^2$.
+
+\begin{figure}
+  \center
+  \includegraphics[width=0.95\textwidth]{chapter_spatial_voting_with_text/figures/3393_example_ideal_points_final.pdf}
+  \caption{Example one-dimensional ideal points from the 111th House
+  of Representatives.  Ideal points represent lawmakers' voting
+  preferences. Democrats are blue and Republicans are red.}
+  \label{figure:example_ideal_points}
+\end{figure}
+Given a matrix of votes, we can infer the ideal point of each
+lawmaker.  We illustrate ideal points fit to votes in the U.S. House
+of Representatives from 2009-2010 in
+Figure~\ref{figure:issue_improvements_ideals}.  The model has clearly
+separated lawmakers by their political party (colour) and provides an
+intuitive measure of their political leanings.
+
+% dmb: i liked the section below about the utility model.  its
+% interesting, but i propose we remove it or describe it in a
+% paragraph somewhere else.  my reasoning is that its not essential to
+% our story of ideal point-limitations-new model and, while elegant,
+% its also complicated (i.e., introduces notation etc).  i want the
+% reader to quickly understand ideal points and then start thinking
+% about their limitations.  that said, i put a footnote about the
+% utility model above.
+% smg: got it.
+
+% --- utility model begin ---
+
+% If we interpret these positions using a model of behavioral choice
+% like the one outlined below, these positions represent each lawmaker's
+% ideal ``state of the world'' (where passage of a bill moves this state
+% of the world).  For this reason these positions $X_u$ are often called
+% \emph{ideal points}.
+
+
+% Any proposed item of legislation $d$ would, if passed, move the
+% current state of the world from the status quo $\bm \zetA_d \in
+% \mathbb{R}^p$ to a new location $\bm \psi_d \in \mathbb{R}^p$.
+% Lawmaker $u$ observes the utility of each of these positions based on
+% her ideal point $\bm X_u \in \mathbb{R}^p$ with noisy quadratic loss
+% $|| \bm \zetA_d - \bm X_u ||^2 + \varepsilon_1$ and $|| \bm \psi_d -
+% \bm X_u ||^2 + \varepsilon_2$, where $\varepsilon_1, \varepsilon_2$ follow an extreme value distribution.  She will cast a
+% vote toward whichever outcome maximizes her (observed) utility.
+
+% Reparameterizing, we can write the probability $p(V_{ud} | \bm X_u, \bm \zetA_d,
+%  \bm \psi_d)$ of an affirmative vote
+%  \cite{clinton:2004}.  Setting $\bm B_d = 2 (\bm \zetA_d
+%  - \bm \psi_d )$ and $A_d = (\bm \psi_d^T \bm \psi_d - \bm \zetA_d^T
+%  \bm \zetA_d )$, we have
+% \begin{equation}
+%   p(V_{ud} = 1 | \bm A_d, B_d, \bm X_u) = \sigma ( \bm X_u^T \bm A_d + B_d ),
+%   \label{equation:classic_ipm}
+% \end{equation}
+% where $\sigma(s)$ is the logistic function $\frac{\exp(s)}{1 +
+%   \exp(s)}$ \footnote{The probability $\sigma$ is sometimes taken to
+%   be probit; this amounts to $\varepsilon_1, \varepsilon_2$ taking on
+%   the Normal distribution.}.  Legislation $d$ can therefor be fully
+% characterized by specifying both its \emph{polarity} $\bm A_d$ and its
+% \emph{popularity} $B_d$ \footnote{Popularity is also called
+%   \emph{difficulty}, and polarity is called \emph{discrimination}, in
+%   the context of educational testing applications of this model
+%   \cite{clinton:2004}, but we move away from these terms in favor of
+%   more appropriate terms for this application.}.  Not surprisingly,
+% ideal points fit to a set of roll-call votes model lawmakers'
+% political preferences intuitively.
+% Figure~\ref{figure:example_ideal_points} illustrates that ideal points
+% fit to the U.S. House of Representatives from 2009-2010 clearly
+% separate lawmakers by their political party.
+
+% --- end utility section ---
+
+
+% \textbf{The Bayesian ideal point model.}
+% The ideal point model is a generative model of choices (votes) and
+% issues (bills).  Each legislator $u$ is associated with an
+% \textit{ideal point} $X_u$ (see \myfig{ideal_points}), and each bill
+% is associated with a \textit{discrimination} $B_d$ and
+% \textit{difficulty} $A_d$.  The vote $v_{ud}$ is assumed drawn from the
+% linear model
+% \begin{equation}
+%   \label{eq:ideal-point}
+%   p(v_{ud} = \textrm{yea}) = \sigma(x_u b_d + a_d),
+% \end{equation}
+% where $\sigma(t) = \frac{\exp(t)}{1 + \exp(t)}$.  This is a logistic
+% regression with random effects.\footnote{Some ideal point models use a
+% probit model; we have found both approaches to ideal points to yield
+% similar results}
+
+% Notice the roles of the per-legislator and per-bill latent variables
+% in \myeq{ideal-point}.  The difficulty parameter $a_d$ explains bills
+% that all legislators will vote for or against, e.g., ``A bill to
+% congratulate the winner of the World Series.''  For the remaining
+% bills, i.e., those with some political division, the discrimination
+% parameter $b_d$ and ideal point interact.  When estimated from roll
+% call data, these latent variables capture the political leanings of
+% the legislators and the political tone of the legislation.
+
+
+\section{A model for predicting votes with the text of new bills}
 Roll call data is essential for understanding government because it
 represents atomic and concrete actions of its members.  But this data
 is only one part of a richer record which includes bill texts,
@@ -109,16 +229,16 @@ introduction.}  With these assumptions, we can use observed roll call
 data to infer ideal points and bills' locations.  \myfig{ideal_points}
 illustrates ideal points from the 111th Senate.
 
-\begin{figure}[t]
-  \includegraphics[width=0.45\textwidth]
-  {chapter_spatial_voting_with_text/figures/134_senator_name_accuracy_by_ip_sample.pdf}
-  \caption{Sample Senator ideal points in the 111th Congress.  Ideal
-    points tend to separate the U.S. political parties: Democrat are blue,
-    and Republicans are red. A plot of all legislators is included in
-    the supplementary materials.}
-\label{fig:ideal_points}
-%\vspace{-22pt}
-\end{figure}
+% \begin{figure}[t]
+%   \includegraphics[width=0.45\textwidth]
+%   {chapter_spatial_voting_with_text/figures/134_senator_name_accuracy_by_ip_sample.pdf}
+%   \caption{Sample Senator ideal points in the 111th Congress.  Ideal
+%     points tend to separate the U.S. political parties: Democrat are blue,
+%     and Republicans are red. A plot of all legislators is included in
+%     the supplementary materials.}
+% \label{fig:ideal_points}
+% %\vspace{-22pt}
+% \end{figure}
 
 Political scientists examine ideal points to understand legislators'
 preferences.
@@ -160,7 +280,8 @@ political landscape of a government body based both on the voting
 patterns of its members and the language of its issues.
 
 \begin{figure}[t]
-\includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/ideal-point-topic-model.pdf}
+\center
+\includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/ideal-point-topic-model.pdf}
 \caption{The ideal point topic model.  Priors over the multinomials
 $\theta_d$ and $\beta$ are both symmetric Dirichlet distributions.}
 \label{fig:legis_gm}
@@ -227,7 +348,7 @@ represented as a graphical model in \myfig{legis_gm}.
 The only observed variables in the model are the bill texts and votes.
 Our goal in fitting this model is to uncover the posterior
 \begin{equation}
-  p(A_d, B_d, X_u, \bm \eta, \beta, z, \theta | \bm W, \bm V), \label{eq:posterior}
+  p(a_d, b_d, x_u, \bm \eta, \beta, z, \theta | \bm W, \bm V), \label{eq:posterior}
 \end{equation}
 which can then be used in exploratory or predictive tasks.
 Conditioned on these variables, our analysis proceeds with the
@@ -244,19 +365,18 @@ describe this in further detail in \mysec{inference}.
 % you can even mention that here too and forward point to the section
 % on computation.)
 
-% DMB-2011: outline the process of prediction above
-% SMG: Prediction details were originally explained in the variational
-% inference section.  I think it makes sense to leave them there,
-% since we don't have 
-% variational parameters defined yet.
+% DMB-2011: outline the process of prediction above SMG: Prediction
+% details were originally explained in the variational inference
+% section.  I think it makes sense to leave them there, since we don't
+% have variational parameters defined yet.
 This posterior allows us to explore the connection between language
 and political tone.  For example, the coefficients $\bm \eta$ are a
 direct connection between bills' topics and the political tone of
 these bills. Examples of this are provided in \mysec{experiments}.
 The topics $\beta$, learned from both text and votes, provide a
 lexical window into legislative issues.  The parameters $\bm \eta,
-\beta$ together also allow us to predict votes using the text of
-new bills; \mysec{inference} provides detail about this.
+\beta$ together also allow us to predict votes using the text of new
+bills; \mysec{inference} provides detail about this.
 
 % DMB-2011: finish above too.  the idea is that the coefficients &
 % topics together tell us how the model has associated language with
@@ -279,13 +399,13 @@ new bills; \mysec{inference} provides detail about this.
 
 %  B. Supervised topics C. Full Likelihood function
 
-\textbf{Anchoring legislators.}  Note that a fit of the ideal point
-model has multiple modes.  In one mode, Democrats tend to have
-positive ideal points, while Republicans are negative; in another,
-Republicans are positive, while Democrats are negative.  To keep fits
-of the different models identifiable, several researchers have applied
-nonzero priors over specific legislators to encourage the model to
-prefer one of these modes
+\subsubsection*{Multimodal solutions and identification}
+Note that a fit of the ideal point model has multiple modes.  In one
+mode, Democrats tend to have positive ideal points, while Republicans
+are negative; in another, Republicans are positive, while Democrats
+are negative.  To keep fits of the different models identifiable,
+several researchers have applied nonzero priors over specific
+legislators to encourage the model to prefer one of these modes
 \cite{jackman:2001,clinton:2004,martin:2002}.
 
 In the study in \mysec{experiments}, we anchor four legislators with
@@ -302,7 +422,7 @@ political parties but may converge on ``opposite'' modes in different
 fits.  With the priors, we obtain consistent ideal points at the
 expense of predictive performance.
 
-\subsection{Related work}
+\subsection*{Related work}
 
 % Spatial voting models begin with a strong assumption about what
 % causes individuals (often voting citizens) to vote as they
@@ -409,31 +529,20 @@ conditioned on words' topics.
 %%% TeX-master: "icml2011"
 %%% End:
 
-\subsection{Posterior estimation for the ideal point topic model}
+\subsection*{Posterior estimation for the ideal point topic model}
 \label{sec:inference}
 Computing the posterior in \myeq{posterior} is intractable.  Posterior
 inference for traditional Bayesian ideal point models is traditionally
 implemented with MCMC methods such as Gibbs sampling
-\cite{johnson:1999ch6,jackman:2001,martin:2002,clinton:2004}.  We
-introduce an alternative algorithm -- which can be applied to both the
-standard ideal point model and the ideal point topic model -- which
-uses variational methods \cite{jordan:1999}.  Variational methods
-provide a deterministic alternative to Gibbs sampling that is amenable
-to optimization in large-scale datasets.  They have been successfully
-applied to many kinds of topic models, where corpus size and
-vocabulary dimension are large.  Furthermore, in the ideal point topic
-model, fast Gibbs samplers are unavailable because the conditionals
-needed are not analytically computable.  An MCMC strategy would
-require a more complicated sampling scheme.
+\cite{johnson:1999ch6,jackman:2001,martin:2002,clinton:2004}.
+However, in the ideal point topic model, fast Gibbs samplers are
+unavailable because the conditionals needed are not analytically
+computable; an MCMC strategy would require a more complicated sampling
+scheme. We therefore use an alternative algorithm -- which can be applied
+to both the standard ideal point model and the ideal point topic model
+-- which uses variational methods \cite{jordan:1999}.
 
-Variational methods posit a family of distributions over the latent
-variables.  That family is indexed by free parameters, called
-\textit{variational parameters}, which are fit to minimize the KL
-divergence between the variational family and the true posterior.  The
-family is chosen to be simpler than the posterior, which allows for
-efficient optimization.  Though simpler, the fitted variational
-distributions are found to be good proxies for the true
-posterior~\cite{jordan:1999}.
+Recall from Chapters 2 and 3 that 
 
 % dmb: make it clear that we use a fully-factorized variational
 % distribution.
@@ -443,15 +552,15 @@ We begin by specifying a fully-factorized variational distribution for
 the model posterior.  First, word assignments $z_{dn}$ and topic
 proportions are governed by multinomial parameters $\phi_d$ and
 Dirichlet parameters $\gamma_d$, as in LDA~\cite{blei:2003}.  The
-variational distribution for legislators' ideal points $X_u$;
-bills' parameters $A_d, B_d$; and coefficients $\bm \eta$ are Gaussian
+variational distribution for legislators' ideal points $x_u$;
+bills' parameters $a_d, b_d$; and coefficients $\bm \eta$ are Gaussian
 with respective means $\tau_u$, $\kappa_d$, $\ev$ and variances
 $\sigma_\tau^2$, $\sigma_\kappa^2$, $\sigma_\eta^2$. The variational
 distribution is
 \begin{align}
 \label{eq:var_post}
 q(\tau, & \sigma_\tau, \kappa, \sigma_\kappa, \phi, \theta) = \\
-& \prod_u q(X_u | \tau_u, \sigma_\tau^2 ) \times \prod_D q(A_d, B_d |
+& \prod_u q(x_u | \tau_u, \sigma_\tau^2 ) \times \prod_D q(a_d, b_d |
 \kappa_d, \sigma_\kappa^2 ) & \nonumber \\
 \textstyle & \times \prod_D q(\theta_d | \gamma_d) \prod_{N_d} p(z_n |
 \phi_n) \times q(\bm \eta | \ev, \sigma_{\ev}). \nonumber
@@ -472,7 +581,7 @@ $d$, the per-word parameters $\phi_n$ of $d$ are estimated using the
 topics $\beta$. Once $\phi$ has been estimated, the probability of a
 \verb!yea! vote is given by $p(v_{ud} = \verb!yea!)  = \sigma(\tau_u
 (\bar{\phi_d} \ev_b) + \bar{\phi_d} \ev_a)$
-\footnote{The estimate $\expectq{\sigma(X_u (\bar{z_d} \eta_b) +
+\footnote{The estimate $\expectq{\sigma(x_u (\bar{z_d} \eta_b) +
     \bar{z_d} \eta_a)}$ can be more theoretically justified, but
   results from the two estimates are (in practice) identical.}, where
 $\bar{\phi_d}$ is $\frac{1}{N_d} \sum_{N_d} \phi_n$.  In practice, we
@@ -480,7 +589,7 @@ fit $\ev$ with no regularization after the model has converged.  This
 gives slightly better results which are more robust to parameter
 selection.
 
-\subsection{An empirical analysis}
+\subsection*{An empirical analysis}
 
 \begin{figure}
 \label{fig:log_likelihood}
@@ -498,7 +607,7 @@ selection.
   with less variance across its regularization parameter. }
 \vspace{-3pt}
 \end{figure}
-\section{Analyzing the U.S. House and Senate}
+\subsubsection*{Analyzing the U.S. House and Senate}
 \label{sec:experiments}
 
 We studied the performance of these models on 12 years of data from
@@ -531,7 +640,7 @@ We used the anchor legislators described in \mysec{model}.  We ran
 variational inference until the change in increase in the objective
 function was less than 0.01\%.
 
-\subsection{Exploring topics and bills}
+\subsubsection*{Exploring topics and bills}
 
 In this section, we examine a fit of the ideal point topic model for
 all the bills and votes of a session.  This demonstrates the model's
@@ -600,7 +709,7 @@ government-owned rocket" \cite{herszenhorn:2010}.  In the house vote
 Because this bill had mixed but nonpartisan support, the model could
 not represent it well, with only 72\% of votes correctly predicted.
 
-\subsection{Checking the ideal points}
+\subsubsection*{Checking the ideal points}
 We can also use the in-sample fit to assess the quality of the ideal
 points of the legislators.  In classical ideal point modeling, this is
 done via in-sample accuracy: How well does the model explain the
@@ -622,7 +731,7 @@ parties, instead of a limitation of the supervised prediction: fitting
 votes to the classical ideal point model (ignoring bill text), Paul's
 in-sample accuracy was consistently poor across sessions.
 
-\subsection{Predicting votes from text}
+\subsubsection*{Predicting votes from text}
 
 \textbf{Prediction on heldout bills.}  We measured predictive accuracy
 and log likelihood for these models under a variety of regularization
@@ -729,120 +838,6 @@ exploratory tool for analyzing legislative behavior.
 %\pagecolor{yellow}
 \label{section:exceptional_model}
 
-We first review ideal point models of legislative roll call data and discuss
-their limitations.  We then present a model that accounts for how
-legislators vote on specific issues.
-
-\subsubsection{Modeling politics with ideal points.}
-
-Ideal point models are based on item response theory, a statistical
-theory that models how members of a population judge a set of items.
-Applied to voting records, one-dimensional ideal point models place
-lawmakers on an interpretable political spectrum.  These models are
-widely used in quantitative political
-science~\citep{clinton:2004,poole:1985,martin:2002}.
-
-% dmb: above, should we cite the NOMINATE work too?  others?
-% smg: added a few others.
-
-% dmb: below, mention the priors on a and b as well (usually
-% gaussian).
-% smg: done.
-One-dimensional ideal point models posit an \textit{ideal point} $x_u
-\in \mathbb{R}$ for each lawmaker $u$.  Each bill $d$ is characterized
-by its \textit{polarity} $a_d$ and its \textit{popularity} $b_d$.\footnote{These are sometimes called the \emph{discrimination} and \emph{difficulty}, respectively.}  The
-probability that lawmaker $u$ votes ``Yes'' on bill $d$ is given by
-the logistic regression
-\begin{equation}
-  \label{eq:trad_ipm}
-  p(v_{ud} = \textrm{yes} \g x_u, a_d, b_d) =
-  \sigma(x_u a_d + b_d),
-\end{equation}
-where $\sigma(s) = \frac{\exp(s)}{1 + \exp(s)}$ is the logistic
-function.\footnote{Many ideal point models use a probit function instead \cite{poole:1991,clinton:2004}.}
-%% , which stems
-%% from an assumed utility model.  In more detail, ideal point models
-%% assume that each lawmaker observes a noisy realization of the utility
-%% of a world with the status quo (bill not passed) or the bill passed.
-%% Gaussian noise leads to the probit model of votes; extreme value noise
-%% leads to the logistic model of votes.}
-When the popularity of a bill $b_d$ is high, nearly everyone votes
-``Yes''; when the popularity is low, nearly everyone votes ``No''.
-When the popularity is near zero, the probability that a lawmaker
-votes ``Yes'' depends on how her ideal point $x_u$ interacts
-with bill polarity $a_d$.  The variables $a_d$, $b_d$, and $x_u$ are
-usually assigned standard normal priors \cite{clinton:2004}.
-
-%% \begin{figure}
-%%   \center
-%%   \includegraphics[width=0.45\textwidth]{figs/3393_example_ideal_points_final.pdf}
-%%   \caption{Example one-dimensional ideal points from the 111th House
-%%   of Representatives.  Ideal points represent lawmakers' voting
-%%   preferences. Democrats are blue and Republicans are red.}
-%%   \label{figure:example_ideal_points}
-%% \end{figure}
-Given a matrix of votes, we can infer the ideal point of each
-lawmaker.  We illustrate ideal points fit to votes in the U.S. House
-of Representatives from 2009-2010 in
-Figure~\ref{figure:issue_improvements_ideals}.  The model has clearly
-separated lawmakers by their political party (colour) and provides an
-intuitive measure of their political leanings.
-
-% dmb: i liked the section below about the utility model.  its
-% interesting, but i propose we remove it or describe it in a
-% paragraph somewhere else.  my reasoning is that its not essential to
-% our story of ideal point-limitations-new model and, while elegant,
-% its also complicated (i.e., introduces notation etc).  i want the
-% reader to quickly understand ideal points and then start thinking
-% about their limitations.  that said, i put a footnote about the
-% utility model above.
-% smg: got it.
-
-% --- utility model begin ---
-
-% If we interpret these positions using a model of behavioral choice
-% like the one outlined below, these positions represent each lawmaker's
-% ideal ``state of the world'' (where passage of a bill moves this state
-% of the world).  For this reason these positions $X_u$ are often called
-% \emph{ideal points}.
-
-
-% Any proposed item of legislation $d$ would, if passed, move the
-% current state of the world from the status quo $\bm \zetA_d \in
-% \mathbb{R}^p$ to a new location $\bm \psi_d \in \mathbb{R}^p$.
-% Lawmaker $u$ observes the utility of each of these positions based on
-% her ideal point $\bm X_u \in \mathbb{R}^p$ with noisy quadratic loss
-% $|| \bm \zetA_d - \bm X_u ||^2 + \varepsilon_1$ and $|| \bm \psi_d -
-% \bm X_u ||^2 + \varepsilon_2$, where $\varepsilon_1, \varepsilon_2$ follow an extreme value distribution.  She will cast a
-% vote toward whichever outcome maximizes her (observed) utility.
-
-% Reparameterizing, we can write the probability $p(V_{ud} | \bm X_u, \bm \zetA_d,
-%  \bm \psi_d)$ of an affirmative vote
-%  \cite{clinton:2004}.  Setting $\bm B_d = 2 (\bm \zetA_d
-%  - \bm \psi_d )$ and $A_d = (\bm \psi_d^T \bm \psi_d - \bm \zetA_d^T
-%  \bm \zetA_d )$, we have
-% \begin{equation}
-%   p(V_{ud} = 1 | \bm A_d, B_d, \bm X_u) = \sigma ( \bm X_u^T \bm A_d + B_d ),
-%   \label{equation:classic_ipm}
-% \end{equation}
-% where $\sigma(s)$ is the logistic function $\frac{\exp(s)}{1 +
-%   \exp(s)}$ \footnote{The probability $\sigma$ is sometimes taken to
-%   be probit; this amounts to $\varepsilon_1, \varepsilon_2$ taking on
-%   the Normal distribution.}.  Legislation $d$ can therefor be fully
-% characterized by specifying both its \emph{polarity} $\bm A_d$ and its
-% \emph{popularity} $B_d$ \footnote{Popularity is also called
-%   \emph{difficulty}, and polarity is called \emph{discrimination}, in
-%   the context of educational testing applications of this model
-%   \cite{clinton:2004}, but we move away from these terms in favor of
-%   more appropriate terms for this application.}.  Not surprisingly,
-% ideal points fit to a set of roll-call votes model lawmakers'
-% political preferences intuitively.
-% Figure~\ref{figure:example_ideal_points} illustrates that ideal points
-% fit to the U.S. House of Representatives from 2009-2010 clearly
-% separate lawmakers by their political party.
-
-% --- end utility section ---
-
 \subsubsection{Limitations of ideal point models.}
 
 A one-dimensional ideal point model fit to the House of
@@ -857,16 +852,16 @@ lawmakers to the other side are likely to reject it.  For lawmakers
 like Paul and Hill, this assumption is too strong because
 their voting behavior does not fit neatly into a single ordering.
 Their location among the other lawmakers changes with different bills.
-\begin{figure}
-  \begin{center}
-    \vspace{-10pt}
-    \includegraphics[width=0.8\textwidth,height=0.1\textwidth]{chapter_spatial_voting_with_text/figures/3393_example_ideal_points_final.pdf}
-    \vspace{-10pt}
-  \end{center}
-  \caption{Traditional ideal points separate Republicans (red) from Democrats (blue).}
-  \label{fig:classic_ideal_points}
-  \vspace{-5pt}
-\end{figure}
+% \begin{figure}
+%   \begin{center}
+%     \vspace{-10pt}
+%     \includegraphics[width=0.8\textwidth,height=0.1\textwidth]{chapter_spatial_voting_with_text/figures/3393_example_ideal_points_final.pdf}
+%     \vspace{-10pt}
+%   \end{center}
+%   \caption{Traditional ideal points separate Republicans (red) from Democrats (blue).}
+%   \label{fig:classic_ideal_points}
+%   \vspace{-5pt}
+% \end{figure}
 
 \begin{figure}
   \center
@@ -1421,8 +1416,8 @@ the posterior distribution $p(x, \bm z, a, b | v, \bm \theta).$
 Bayesian ideal point models are usually fit with Gibbs sampling
 \cite{johnson:1999ch6,jackman:2001,martin:2002,clinton:2004}. However,
 fast Gibbs samplers are unavailable for our model because the
-conditionals needed are not analytically computable.  We estimate the
-posterior with variational Bayes.
+conditionals needed are not analytically computable.  We therefore
+estimated the posterior with variational Bayes.
 
 %\subsection{Overview of variational methods}
 
@@ -1442,15 +1437,15 @@ posterior with variational Bayes.
 %%   \vspace{100pt}
 %% %\end{wrapfigure}
 %% \end{figure*}
-In variational Bayes, we posit a family of distributions $\{ q_{\bm
-  \eta} \}$ over the latent variables that is likely to contain a
-distribution similar to the true posterior \cite{jordan:1999}.  This
-variational family is indexed by parameters $\bm \eta$, which are fit
-to minimize the KL divergence between the variational and true
-posteriors.
+Recall that in variational Bayes, we posit a family of distributions
+$\{ q_{\bm \eta} \}$ over the latent variables that is likely to
+contain a distribution similar to the true posterior
+\cite{jordan:1999} and select $\eta$ to minimize the KL divergence between the
+variational and true posteriors.
 %  We illustrate this in
 %Figure~\ref{figure:variational_diagram}.
-Specifically, we let $\{ q_{\bm \eta} \}$ be the family of fully factorized distributions
+In the ideal point topic model, we let $\{ q_{\bm \eta} \}$ be the
+family of fully factorized distributions
 \begin{align}
   \label{equation:variational_posterior}
 q(x, \bm z, a, b | \bm \eta ) = 
@@ -1790,7 +1785,7 @@ summarize these results in Table~\ref{table:performance_comparison}.
 issue-adjusted model to the 109th Congress (1999-2000) of the House
 and Senate for a range $\lambda=0.0001, \ldots, 1000$ of
 regularizations.  We fixed variance $\sigma_X^2, \sigma_Z^2,
-\sigma_A^2, \sigma_B^2=\exp({-}5)$. The variational implementation
+\sigma_a^2, \sigma_b^2=\exp({-}5)$. The variational implementation
 generalized well for the entire range, with heldout log likelihood
 highest for $1 \le \lambda \le 10$.
 
