@@ -1,62 +1,164 @@
 \chapter{Models of Spatial Voting and text}
 
-\section*{Introduction: Legislative voting in Western Democracies}
-
 In the United States, as in many Western democracies, laws are made by
-committees of lawmakers.  Although the \emph{modus operandi} of these
-committees is complex, one of the most common characteristics of we
-focus on a patterns of legislation are typically pass a collective
-vote by these lawmakers
+committees of lawmakers.  A defining characteristic of these
+committees is that each member casts a vote indicating whether she
+supports or rejects the proposed legislation.
 
-Legislative behavior centers around these votes.  Capturing regularity
-in these votes, and characterizing patterns of lawmakers' behavior, is
-one of the main goals of quantitative political science.  To a degree,
-voting behavior exhibits a lot of regularity, and simple statistical
-models, particularly \textit{ideal point models}, easily capture the
-broad political structure of legislative bodies.  However, these
-models fall short in at least two ways.  First, they are not
-\emph{predictive} models: they cannot be used to predict lawmakers' in
-the absense of votes lawmakers do not fit neatly into the assumptions
-made by such models.
+Legislative behavior centers around these votes, and capturing
+regularity in these votes to characterize patterns of lawmakers'
+behavior is one of the main goals of quantitative political science.
+Voting behavior exhibits enough regularity that simple statistical
+models easily capture the broad political structure of legislative
+bodies.
 
-In this chapter, we will develop two models of legislative behavior to
-address these two limitations.  lawmakers vote
-differently than expected.
+One of these models is the \emph{ideal point model}, a mainstay in
+quantitative political science for analyzing
+votes~\cite{clinton:2004}.  It posits a latent ``political space''
+along the real line and assumes each legislator has a position in that
+space.
+%% The legislator's position is
+%% called an \textit{ideal point} because it represents the state of the
+%% world that maximizes her utility. The model assumes that whether a
+%% legislator votes \verb!yea! on a bill depends on parameters of that
+%% bill that describe how close it moves the world to her ideal
+%% point.\footnote{These assumptions stem from a particular utility
+%%   model, and this methodology is an instance of the
+%%   \textit{item-response} model from psychometrics and educational
+%%   testing \cite{lord:1980}.  Each bill also has another variable, the
+%%   \textit{difficulty}, which is described below but omitted in the
+%% introduction.}
+A lawmaker's probability of voting \verb!Yes! on
+pending legislation is then characterized by her position on this real
+line and parameters specific to that legislation.  With these
+assumptions (which we outline in more detail below), political
+scientists use observed roll call data to infer lawmakers' political
+preferences.
 
-\paragraph{The role of text in lawmaking bodies.}
-With increasing access to both public records and computing
-facilities, political scientists have carefully researched these votes
-using ideal points and other models.
+\section*{Text and voting}
+However, ideal point models fall short in at least two ways, for
+reasons we will outline in the next section.  First, these models are
+not \emph{predictive} models: while they can be used to model bills
+that have been voted on, they cannot be used to predict lawmakers'
+votes on new bills.  Second, lawmakers do not fit neatly into the
+assumptions made by such models.  These models summarize lawmakers
+with broad strokes, and their unique positions on individual issues
+cannot be easily recovered.
 
-In the past decade, the text of these bills has also become available
-to researchers.  Websites like \url{www.govtrack.us}
-\cite{govtrack:2009} collect this information for researchers and the
-public to better understand both the content and behavior around
+These limitations dovetail with increasing access to both public
+records and tools for algorithmic text analysis.  In the past decade,
+the text of congressional bills and other government records has become
+readily available to the broad public and research scientists.
+Websites like \url{www.govtrack.us} \cite{govtrack:2009} collect this
+information, synthesize it, and make it available for researchers and
+the public to better understand both the content and behavior around
 legislative decisionmaking.
 
+Just as text has become more available in this field in digitized
+formats, tools for text analysis have matured.  Tools which were once
+available only to computational linguistics are becoming more familiar
+to political methodologists \cite{zimmer:2012}.  Topic models have
+evolved from vector-space models such as latent semantic analysis
+\cite{deerwester:1990} into probabilistic topic models
+\cite{hofmann:1999,blei:2003}, which can be used as modules in more
+sophisticated statistical models.
+
+In the following sections, we will take advantage of this this broader
+availability of political text and tools for text analysis to address
+the above shortcomings of ideal point models.  We begin by reviewing
+ideal point models and outline their limitations
+\cite{poole:1985,poole:1991,jackman:2001,martin:2002,clinton:2004}.
+After describing ideal point models, we will describe how to combine
+ideal point models with more more recent models of text, such as topic
+models \cite{blei:2003} and text regression \cite{kogan:2009}, to
+enable us to predict votes on previously-unseen bills. We then extend
+the ideal point model using topic models which have been explicitly
+designed to be interpretable \cite{ramage:2009} to describe each
+lawmaker's preferences about a variety of political issues.
+Throughout, the abstraction of latent variable models will enable us to
+combine these ideas seemlessly.
+
+In the latter section of this chapter, we will also motivate an
+alternative algorithm for variational inference that will allow
+practitioners to iterate more quickly with their modeling assumptions.
+
+% \section*{Legislative voting in Western Democracies}
 \section{The Ideal Point Model}
 \label{sec:model}
 
-We first review ideal point models of legislative roll call data,
-which are widely used by political methodologists.  In next two
-sections we will discuss ways to extend these models both to predict
-how lawmakers will vote on unseen documents and to account for how
-legislators vote on specific issues.
+\paragraph{Ideal points}
+
+%% We first review ideal point models of legislative roll call data,
+%% which are widely used by political methodologists.  In the subsequent
+%% two sections we will discuss ways to extend these models both to
+%% predict how lawmakers will vote on unseen documents and to account for
+%% how legislators vote on specific issues.
 
 Ideal point models are based on item response theory, a statistical
 theory that models how members of a population judge a set of items.
-Loosely, ideal point model assumes that lawmakers and bills are
-represented as points in a latent space.  A lawmaker's (stochastic)
-voting behavior is characterized by the relationship between her
-position in this space and the bill's position
+Loosely, an ideal point model assumes that each lawmaker $u$ is
+described by a latent position $x_u \in \mathbb{R}$ summarizing her
+political preferences.  A lawmaker's (stochastic) voting behavior is
+characterized by the relationship between her position in this space
+and the bill's position
 \cite{poole:1985,poole:1991,jackman:2001,martin:2002,clinton:2004}.
 Given a table of how each lawmaker votes on each bill (known as a roll
 call), we can use ideal point models to infer the latent position of
 each lawmaker.
 
-In U.S. politics, these inferred positions correspond to the commonly-known
-political spectrum: right-wing lawmakers are at one extreme, and
-left-wing lawmakers are at the other. % \myfig{classic_ideal_points}
+Any proposed item of legislation $d$ would, if passed, move the
+current state of the world from the status quo $\bm \zeta_d \in
+\mathbb{R}^p$ to a new location $\bm \psi_d \in \mathbb{R}^p$.
+Lawmaker $u$ observes the utility of each of these positions based on
+her ideal point $\bm x_u \in \mathbb{R}^p$ with noisy quadratic loss
+$|| \bm \zeta_d - \bm x_u ||^2 + \varepsilon_1$ and $|| \bm \psi_d -
+\bm x_u ||^2 + \varepsilon_2$, where $\varepsilon_1, \varepsilon_2$
+follow an extreme value distribution.  She will cast a vote toward
+whichever outcome maximizes her utility.  These positions
+therefore represent each lawmaker's ideal ``state of the world''
+(where passage of a bill moves this state of the world).  For this
+reason, lawmakers' positions $x_u$ are often called their \emph{ideal
+  points}.
+
+Reparameterizing, we can write the probability $p(v_{ud} | \bm X_u, \bm \zeta_d,
+ \bm \psi_d)$ of an affirmative vote
+ \cite{clinton:2004}.  Setting $\bm b+d = 2 (\bm \zeta_d
+ - \bm \psi_d )$ and $a_d = (\bm \psi_d^T \bm \psi_d - \bm \zeta_d^T
+ \bm \zeta_d )$, we have
+\begin{equation}
+  p(v_{ud} = \textbf{Yes} | \bm a_d, b_d, \bm x_u) = \sigma ( \bm x_u^T \bm a_d + b_d ),
+  \label{equation:trad_ipm}
+\end{equation}
+where $\sigma(s)$ is the logistic function $\frac{\exp(s)}{1 +
+  \exp(s)}$ \footnote{The probability $\sigma$ is sometimes taken to
+  be probit; this amounts to $\varepsilon_1, \varepsilon_2$ taking on
+  the Normal distribution.}.  Legislation $d$ can therefore be fully
+characterized by specifying its \emph{polarity} $\bm a_d$ and its
+\emph{popularity} $b_d$. \footnote{Popularity is also called
+  \emph{difficulty}, and polarity is called \emph{polarity}, in the
+  context of educational testing applications of this model
+  \cite{clinton:2004}.  We move away from these terms in favor of more
+  appropriate terms for this application.}  When the popularity of a
+bill $b_d$ is high, nearly everyone votes ``Yes'' on bill $d$; when
+the popularity is low, nearly everyone votes ``No''.  When the
+popularity is near zero, the probability that a lawmaker votes ``Yes''
+depends on how her ideal point $x_u$ interacts with bill polarity
+$a_d$.  We will make the common assumption that the latent variables
+$a_d$, $b_d$, and $x_u$ have standard normal priors
+\cite{clinton:2004}.
+
+TODO(sgerrish): introduce the idea of roll-call votes.
+
+Given a matrix of votes, we can infer the ideal point of each
+lawmaker.  Not surprisingly, ideal points fit to a set of roll-call
+votes model lawmakers' political preferences intuitively.  
+Figure~\ref{figure:example_ideal_points} illustrates that ideal points
+fit to the U.S. House of Representatives from 2009-2010 clearly
+separate lawmakers by their political party.  In U.S. politics, these
+inferred positions correspond to the commonly-known political
+spectrum: right-wing lawmakers are at one extreme, and left-wing
+lawmakers are at the other. % \myfig{classic_ideal_point}
+
 %illustrates example inferences from an ideal point model. 
 % These models are widely used in quantitative political
 % science~\citep{clinton:2004,poole:1985,martin:2002}.
@@ -67,33 +169,24 @@ left-wing lawmakers are at the other. % \myfig{classic_ideal_points}
 % dmb: below, mention the priors on a and b as well (usually
 % gaussian).
 % smg: done.
-One-dimensional ideal point models posit an \textit{ideal point} $x_u
-\in \mathbb{R}$ for each lawmaker $u$.  Each bill $d$ is characterized
-by its \textit{polarity} $a_d$ and its \textit{popularity} $b_d$.\footnote{These are sometimes called the \emph{discrimination} and \emph{difficulty}, respectively.}  The
-probability that lawmaker $u$ votes ``Yes'' on bill $d$ is given by
-the logistic regression
-\begin{equation}
-  \label{eq:trad_ipm}
-  p(v_{ud} = \textrm{yes} \g x_u, a_d, b_d) =
-  \sigma(x_u a_d + b_d),
-\end{equation}
-where $\sigma(s) = \frac{\exp(s)}{1 + \exp(s)}$ is the logistic
-function.\footnote{Many ideal point models use a probit function instead \cite{poole:1991,clinton:2004}.}
-%% , which stems
-%% from an assumed utility model.  In more detail, ideal point models
-%% assume that each lawmaker observes a noisy realization of the utility
-%% of a world with the status quo (bill not passed) or the bill passed.
-%% Gaussian noise leads to the probit model of votes; extreme value noise
-%% leads to the logistic model of votes.}
-When the popularity of a bill $b_d$ is high, nearly everyone votes
-``Yes'' on bill $d$; when the popularity is low, nearly everyone votes
-``No''.  When the popularity is near zero, the probability that a
-lawmaker votes ``Yes'' depends on how her ideal point $x_u$ interacts
-with bill polarity $a_d$.  We will make the common assumption that the
-latent variables $a_d$, $b_d$, and $x_u$ have standard normal priors
-\cite{clinton:2004}.
-
-
+%% One-dimensional ideal point models posit an \textit{ideal point} $x_u
+%% \in \mathbb{R}$ for each lawmaker $u$.  Each bill $d$ is characterized
+%% by its \textit{polarity} $a_d$ and its \textit{popularity} $b_d$.\footnote{These are sometimes called the \emph{discrimination} and \emph{difficulty}, respectively.}  The
+%% probability that lawmaker $u$ votes ``Yes'' on bill $d$ is given by
+%% the logistic regression
+%% \begin{equation}
+%%   \label{eq:trad_ipm}
+%%   p(v_{ud} = \textrm{yes} \g x_u, a_d, b_d) =
+%%   \sigma(x_u a_d + b_d),
+%% \end{equation}
+%% where $\sigma(s) = \frac{\exp(s)}{1 + \exp(s)}$ is the logistic
+%% function.\footnote{Many ideal point models use a probit function instead \cite{poole:1991,clinton:2004}.}
+%% %% , which stems
+%% %% from an assumed utility model.  In more detail, ideal point models
+%% %% assume that each lawmaker observes a noisy realization of the utility
+%% %% of a world with the status quo (bill not passed) or the bill passed.
+%% %% Gaussian noise leads to the probit model of votes; extreme value noise
+%% %% leads to the logistic model of votes.}
 
 % We assume Gaussian priors for $X_u, A_d$, and $B_d$.  The prior for
 % $X_u$ has mean zero; the means of $A_d, B_d$ are inferred from text.
@@ -108,12 +201,6 @@ latent variables $a_d$, $b_d$, and $x_u$ have standard normal priors
   preferences. Democrats are blue and Republicans are red.}
   \label{figure:example_ideal_points}
 \end{figure}
-Given a matrix of votes, we can infer the ideal point of each
-lawmaker.  We illustrate ideal points fit to votes in the U.S. House
-of Representatives from 2009-2010 in
-Figure~\ref{figure:issue_improvements_ideals}.  The model has clearly
-separated lawmakers by their political party (colour) and provides an
-intuitive measure of their political leanings.
 
 % dmb: i liked the section below about the utility model.  its
 % interesting, but i propose we remove it or describe it in a
@@ -127,48 +214,6 @@ intuitive measure of their political leanings.
 
 % --- utility model begin ---
 
-% If we interpret these positions using a model of behavioral choice
-% like the one outlined below, these positions represent each lawmaker's
-% ideal ``state of the world'' (where passage of a bill moves this state
-% of the world).  For this reason these positions $X_u$ are often called
-% \emph{ideal points}.
-
-
-% Any proposed item of legislation $d$ would, if passed, move the
-% current state of the world from the status quo $\bm \zetA_d \in
-% \mathbb{R}^p$ to a new location $\bm \psi_d \in \mathbb{R}^p$.
-% Lawmaker $u$ observes the utility of each of these positions based on
-% her ideal point $\bm X_u \in \mathbb{R}^p$ with noisy quadratic loss
-% $|| \bm \zetA_d - \bm X_u ||^2 + \varepsilon_1$ and $|| \bm \psi_d -
-% \bm X_u ||^2 + \varepsilon_2$, where $\varepsilon_1, \varepsilon_2$ follow an extreme value distribution.  She will cast a
-% vote toward whichever outcome maximizes her (observed) utility.
-
-% Reparameterizing, we can write the probability $p(V_{ud} | \bm X_u, \bm \zetA_d,
-%  \bm \psi_d)$ of an affirmative vote
-%  \cite{clinton:2004}.  Setting $\bm B_d = 2 (\bm \zetA_d
-%  - \bm \psi_d )$ and $A_d = (\bm \psi_d^T \bm \psi_d - \bm \zetA_d^T
-%  \bm \zetA_d )$, we have
-% \begin{equation}
-%   p(V_{ud} = 1 | \bm A_d, B_d, \bm X_u) = \sigma ( \bm X_u^T \bm A_d + B_d ),
-%   \label{equation:classic_ipm}
-% \end{equation}
-% where $\sigma(s)$ is the logistic function $\frac{\exp(s)}{1 +
-%   \exp(s)}$ \footnote{The probability $\sigma$ is sometimes taken to
-%   be probit; this amounts to $\varepsilon_1, \varepsilon_2$ taking on
-%   the Normal distribution.}.  Legislation $d$ can therefor be fully
-% characterized by specifying both its \emph{polarity} $\bm A_d$ and its
-% \emph{popularity} $B_d$ \footnote{Popularity is also called
-%   \emph{difficulty}, and polarity is called \emph{discrimination}, in
-%   the context of educational testing applications of this model
-%   \cite{clinton:2004}, but we move away from these terms in favor of
-%   more appropriate terms for this application.}.  Not surprisingly,
-% ideal points fit to a set of roll-call votes model lawmakers'
-% political preferences intuitively.
-% Figure~\ref{figure:example_ideal_points} illustrates that ideal points
-% fit to the U.S. House of Representatives from 2009-2010 clearly
-% separate lawmakers by their political party.
-
-% --- end utility section ---
 
 
 % \textbf{The Bayesian ideal point model.}
@@ -198,36 +243,20 @@ intuitive measure of their political leanings.
 
 
 \section{A model for predicting votes with the text of new bills}
-Roll call data is essential for understanding government because it
-represents atomic and concrete actions of its members.  But this data
-is only one part of a richer record which includes bill texts,
-speeches, press releases, public plans, and other items.  In this
-work, we extend methods for roll call data to include other
-information.  Specifically, we integrate bill texts into contemporary
-models of roll call data.  This gives a new way of exploring and
-analyzing the government record and, further, gives a useful predictor
-of government.  While traditional methods can only fill in missing
-votes, we develop tools that can predict how legislators will vote on
-a new bill. This is the first work to study predictive accuracy of
-votes on new bills, where we use a spatial voting model as a ``cold''
-prediction mechanism.
-
-We will extend the \textit{ideal point model}.  The ideal point model
-is a mainstay in quantitative political science for analyzing roll
-call data~\cite{clinton:2004}.  It posits a latent ``political space''
-along the real line and places each legislator and bill in that
-space. The legislator's position is called an \textit{ideal point},
-because a bill at this position maximizes her utility.  The model
-assumes that whether a legislator votes \verb!yea! on a bill depends
-on a function of the ideal point and the bill's
-location.\footnote{These assumptions stem from a particular utility
-model, and this methodology is an instance of the
-\textit{item-response} model from psychometrics and educational
-testing \cite{lord:1980}.  Each bill also has another variable, the
-\textit{difficulty}, which is described below but omitted in the
-introduction.}  With these assumptions, we can use observed roll call
-data to infer ideal points and bills' locations.  \myfig{ideal_points}
-illustrates ideal points from the 111th Senate.
+%% Roll call data is essential for understanding government because it
+%% represents atomic and concrete actions of its members.  But this data
+%% is only one part of a richer record which includes bill texts,
+%% speeches, press releases, public plans, and other items.  
+ 
+In this section, we extend ideal point models to include other
+information.  Specifically, we will use the text of bills to estimate
+a bill's polarity and popularity.  This gives a new way of exploring
+and analyzing the government record and, further, gives a useful
+predictor of government.  While traditional methods can only fill in
+missing votes, we develop tools that can predict how legislators will
+vote on a new bill. This is the first work to study predictive
+accuracy of votes on new bills, where we use a spatial voting model as
+a ``cold'' prediction mechanism.
 
 % \begin{figure}[t]
 %   \includegraphics[width=0.45\textwidth]
@@ -240,8 +269,6 @@ illustrates ideal points from the 111th Senate.
 % %\vspace{-22pt}
 % \end{figure}
 
-Political scientists examine ideal points to understand legislators'
-preferences.
 % DMB-2011: sean, above, can you make a more readable figure of ideal
 % points?  For example, you can just show the senators or show a
 % subset of the representatives.  Give specifics in the paragraph (and
@@ -249,7 +276,7 @@ preferences.
 % SMG: I've gone from Senators-only to a subset of ~20 Senators.
 % DMB-2011: above, we need a citation for the psychometrics model.
 % SMG: Done.
-But as predictive models, ideal point models suffer from a
+As predictive models, ideal point models suffer from a
 fundamental limitation: they are models of the votes alone.
 Consequently, they can be used to fill in missing votes but cannot
 predict how legislators will vote on future legislation.  Further,
@@ -257,10 +284,10 @@ they provide no insight into what drives voting patterns---the
 political activity of the legislature is summarized with two columns
 of real numbers.
 
-To these ends, we describe several models that connect the voting
+To these ends, we will describe several models that connect the voting
 patterns of legislators to the original text of bills.  One of these
 models embeds the statistical assumptions of \textit{supervised topic
-modeling}~\cite{blei:2008} into the ideal point model, where the
+  modeling}~\cite{blei:2008} into the ideal point model, where the
 locations of the bills are predicted from the latent topics in their
 texts. This model---the ideal point topic model---can predict complete
 votes on pending bills and provides a new way of exploring how
@@ -352,7 +379,7 @@ Our goal in fitting this model is to uncover the posterior
 \end{equation}
 which can then be used in exploratory or predictive tasks.
 Conditioned on these variables, our analysis proceeds with the
-posterior distribution of the ideal points, discriminations and
+posterior distribution of the ideal points, polarities and
 difficuties, topics, and coefficients. Computing the posterior exactly
 is intractable, so we use variational inference to approximate it.  We
 describe this in further detail in \mysec{inference}.
@@ -542,21 +569,19 @@ scheme. We therefore use an alternative algorithm -- which can be applied
 to both the standard ideal point model and the ideal point topic model
 -- which uses variational methods \cite{jordan:1999}.
 
-Recall from Chapters 2 and 3 that 
-
+Recall from Chapters 2 and 3 that to variational inference requires
+specification of a variational distribution which will serve as a
+proxy for the true posterior.
 % dmb: make it clear that we use a fully-factorized variational
 % distribution.
-% smg: added a note below.
-
-We begin by specifying a fully-factorized variational distribution for
-the model posterior.  First, word assignments $z_{dn}$ and topic
-proportions are governed by multinomial parameters $\phi_d$ and
-Dirichlet parameters $\gamma_d$, as in LDA~\cite{blei:2003}.  The
-variational distribution for legislators' ideal points $x_u$;
-bills' parameters $a_d, b_d$; and coefficients $\bm \eta$ are Gaussian
-with respective means $\tau_u$, $\kappa_d$, $\ev$ and variances
-$\sigma_\tau^2$, $\sigma_\kappa^2$, $\sigma_\eta^2$. The variational
-distribution is
+% smg: added a note below.  We use a fully-factorized variational
+distribution.  Word assignments $z_{dn}$ and topic proportions
+are governed by multinomial parameters $\phi_d$ and Dirichlet
+parameters $\gamma_d$, as in LDA~\cite{blei:2003}.  The variational
+distribution for legislators' ideal points $x_u$; bills' parameters
+$a_d, b_d$; and coefficients $\bm \eta$ are Gaussian with respective
+means $\tau_u$, $\kappa_d$, $\ev$ and variances $\sigma_\tau^2$,
+$\sigma_\kappa^2$, $\sigma_\eta^2$. The variational distribution is
 \begin{align}
 \label{eq:var_post}
 q(\tau, & \sigma_\tau, \kappa, \sigma_\kappa, \phi, \theta) = \\
@@ -569,9 +594,10 @@ q(\tau, & \sigma_\tau, \kappa, \sigma_\kappa, \phi, \theta) = \\
 Inference proceeds by minimizing the KL between \myeq{var_post} and
 the true posterior \ref{eq:posterior}, which is equivalent to
 maximizing a lower bound on the marginal probability of the
-observations.  We use coordinate and gradient ascent to maximize this
-bound.  The supplementary materials give further details of the
-variational inference algorithm.
+observations.  Coordinate ascent only works for some of the random
+variables, but we must use gradient ascent on $a_d, b_d,$ and $x_u$.
+The supplementary materials give further details of the variational
+inference algorithm.
 
 \textbf{Prediction} After they are fit to legislators' votes and bill
 text, the variational parameters $\tau$, $\ev$, and $\beta$ can be
@@ -650,7 +676,7 @@ on the $111^{th}$ session (January 2009 to January 2011).
 
 \textbf{Exploring topics with $\ev$.} As noted in \mysec{model}, the
 coefficients $\ev$ relate each topic's weight in a bill with the
-bill's difficulty and discrimination parameters. \myfig{topics} shows
+bill's difficulty and polarity parameters. \myfig{topics} shows
 some example topics and their corresponding coefficients $\ev$.  Below
 we describe some of these topics in more detail and connect them to
 the data.
@@ -663,7 +689,7 @@ the data.
     coefficients $\ev$, for a 64-topic model ($\ev$s are normalized by
     mean and variance).  Two topics (\emph{people, month, recognize, ...}
     and \emph{clause, motion, chair, ...}) with difficulty 4.68 and
-    discrimination 7.4 (respectively) are not shown.}
+    polarity 7.4 (respectively) are not shown.}
   \label{fig:topics}
 \end{figure}
 
@@ -781,7 +807,9 @@ With these models, one could predict 31,000 to 55,000 votes
 above the baseline, \emph{based only on the text of the bills}.  The
 simpler of the two models, \verb!L2!, performs better at prediction.
 
-\section{A study of lawmakers' voting on specific issues}
+\section{Lawmakers' issue preferences in the U.S. Congress}
+
+We now move on to  TODO(sgerrish): finish.
 
 But there are some votes that ideal point models fail to capture.  For
 example, Ronald Paul, Republican representative from Texas, and Dennis
@@ -1521,145 +1549,425 @@ with decreasing step size; further details are provided in
 %% by approximating a gradient of the with samples and performing
 %% second-order updates to the variational parameters, iterating through the
 %% parameters and repeating until convergence. Further details are provided in the supplementary materials.
+        
 
 
-\subsection{An empirical analysis of voting patterns}
 \label{section:empirical_analysis}
 
-With the methods described in the last section, we now explore
-posterior estimates of issue adjustments $\bm \tilde z_k$.
-%% The issue-adjusted
-%% ideal point model (Equation~\ref{equation:exploratory_ipm_old}) is
-%% more general than classic ideal point models, but is this greater
-%% expressiveness useful for finding meaningful patterns in the data?  
-We begin this investigation by providing a closer look at the
-collection of lawmakers, bills, and roll-call votes.  We compare
-a posterior fit to this model with traditional ideal points and
-%%  idea
-%% there is a meaningful relationship between lawmakers, issues, and
-%% votes, and that the issue voting model is capturing these
-%% patterns.
-explore several interesting results of the model.
+In this section we will summarize the data on which we fit the
+issue-adjusted ideal point model and the methods we used to fit the
+model. In the subsequent sections we will fit models to this data to
+evaluate these models' performance on votes from this period and
+provide a qualitative look at U.S. lawmakers' issue preferences. We
+begin this section with a closer look at votes in the U.S. Congress
+from 1999-2010.
 
-%% Finally, in Section~\ref{section:exceptional_lawmakers}, we
-%% tie lawmakers' issue voting with lawmaker misbehavior and excessive
-%% (i.e., pork-barrel) spending.
-
-% \begin{wrapfigure}{r}{0.5\textwidth}
-%   \includegraphics[width=0.5\textwidth]{figs/3100_heldout_vote_summary.pdf}
-%    \caption{Predictive accuracy on heldout votes, using 6-fold
-%      cross-validation.}
-%    \label{figure:heldout_accuracy}
-%  \end{wrapfigure}
-%% The issue voting model is designed to discover how individual lawmakers vote on different issue
-%% areas.  In this section, we evaluate its performance in several ways.
-%% We first evaluate its performance on standard metrics, including
-%% classification accuracy on training data and held out test data.
-
-\subsubsection{Data and Experiment Setup}
-
+\subsection{The United States Congress from 1999-2010}
 We studied U.S. Senate and House of Representative roll-call votes
-from 1999 to 2010.  This period spanned Congresses 106 to 111 and
-covered an historic period in recent U.S. politics, the majority of
-which Republican President George W. Bush held office.  Bush's
-inauguration and the attacks of September 11th, 2001 marked the first
-quarter of this period, followed by the wars in Iraq and Afghanistan.
-Congress became more partisan over this period, and Democratic
-President Obama was inaugurated in January 2009.
+from 1999 to 2010.  This period spanned Congresses 106 to 111, the
+majority of which Republican President George W. Bush held office.
+Bush's inauguration and the attacks of September 11th, 2001 marked the
+first quarter of this period, followed by the wars in Iraq and
+Afghanistan.  Democrats gained a significant share of seats from 2007
+to 2010, taking the majority from Republicans in both the House and
+the Senate. Democratic President Barack Obama was inaugurated in
+January 2009.
 
-We provide a more complete summary of statistics for our datasets in
-\S A.3. For context, the median session we considered had $540$
-lawmakers, $507$ bills, and $201,061$ votes in both the House and
-Senate.  Altogether, there were $865$ unique lawmakers, $3,113$ bills,
-and $1,208,709$ votes.
+%\label{section:corpus_details}
+% \subsection{Turning bills into statistics}
 
-\textbf{Corpus preparation.}
-\label{section:corpus_details}
-For each congress, we considered only bills for which votes were
-explicitly recorded in a roll-call.  We ignored votes on bills for
-which text was unavailable.  To fit the labeled topic model to each
-bill, we removed stop words and grouped common phrases as $n$-grams.
-All bills were downloaded from \verb!www.govtrack.us!
-\cite{{govtrack:2009}}, a nonpartisan website which provides records
-of U.S. Congressional voting. We fit the Senate and House separately
-for each two-year Congress because lawmakers' strategies change
-at each session boundary.
-%% The House and Senate have a different mix of Democrats and
-%% Republicans. Their strategies change every two years (in periods
-%% called Congresses), and they do not consider all of the same bills, so
+Not all votes in the U.S. Congress are recorded during roll-calls.
+Some bills are simply passed when no lawmaker objects to an anonymous
+vote and a voice vote is unambiguous.  We ignored votes on such bills.
+Bills with roll-call votes, which are explicitly recorded, are more
+interesting, because some lawmaker wanted an explicit record of votes
+on the bill. Such records are useful for demonstrating lawmakers' (and
+lawmakers' opponents') positions on issues.  Roll calls serve as an
+incontrovertible record for any lawmaker who wants such a record.
 
-\subsubsection{Comparison of classic and exploratory ideal points}
+We downloaded both roll-call tables and bills from
+\verb!www.govtrack.us!  \citep{{govtrack:2009}}, a nonpartisan website
+which provides records of U.S. Congressional voting.  Not all bills
+were available in text form, but we had over one hundred for each
+Congress.  Votes on bills without text were discarded.  We provide a
+summary of statistics for our datasets in these Congresses in
+Table~\ref{table:data_stats}.
 
-%% \label{section:jackman_vs_exploratory}
-%% \begin{figure}
-%%   \center
-%%   \includegraphics[width=0.5\textwidth]{figs/3393_issue_vs_ideal.pdf}
-%%   \label{figure:jackman_vs_offset}
-%%   \caption{Classic ideal points vs. issue-adjusted ideal points fit with
-%%   Variational Bayes in the 111th House of Representatives.
-%%   Republicans are the red cluster in the first quadrant, and Democrats
-%%   are the blue cluster in the third quadrant.}
-%% \end{figure}
-
-How do classic ideal points compare with issue-adjusted ideal points?
-We fit classic ideal points to the 111th House (2009 to 2010) to
-compare them with issue-adjusted ideal points $\tilde x_u$ from the
-same period, using regularization $\lambda=1$.
-%% using the variational algorithm described in the
-%% last section.  Classic ideal points are very similar to those in the
-%% issue-adjusted voting model.
-% using the MCMC implementation in Jackman
-%et al.'s \verb!pscl!  R package \cite{pscl:2010}.\footnote{Note that
-%Jackman et al. use a probit link function, while we use logistic.} 
-%We also fit the issue-adjusted ideal point model to the same set of votes
-%along with the documents' issue mixtures.
-%Figure~\ref{figure:jackman_vs_offset} compares the ideal points
-%inferred from each model. 
-The models' ideal points $\tilde x_u$ were very similar, correlated at 0.998.
-The biggest difference between the two is that traditional ideal points
-cleanly separate Democrats and Republicans in this period, while
-issue-adjusted ideal points had a less clean break. This is not
-surprising, because the issue-adjusted model is able to use other
-parameters---lawmakers' adjustments $\bm \tilde z_u$---to explain differences
-between the lawmakers.
-
-\subsubsection{Evaluation and significance}
-
-%% \begin{wrapfigure}{r}{0.5\textwidth}
-%%   \includegraphics[width=0.5\textwidth]{figs/3280_training_by_regularization.pdf}
-%%   \caption{The issue voting model is more expressive than ideal points.}
-%% \end{wrapfigure}
-We first evaluate the issue-adjusted model by measuring how it can
-predict held out votes.  (This is a measure of model fitness.)  We
-used six fold cross-validation.  For each fold, we computed the
-average predictive log-likelihood $\log p(v_{{ud} \mbox{\tiny Test}} |
-v_{{ud} \mbox{\tiny Train}}) = \log p(v_{{ud} \mbox{\tiny Test}} |
-\tilde x_u, \bm \tilde z_{u}, \tilde a_d, \tilde b_d, \expectq{\bm
-  \theta_d | \bm w})$ of the test votes and averaged this across
-folds.  We compared these with the ideal point model, evaluating the
-latter in the same way. Implementation details of the model fit are
-given in \S A.1.
-
-Note that we cannot evaluate how well this model predicts votes on a
-heldout bill $d$.  As with the ideal point model, our model cannot
-predict $\tilde a_d, \tilde b_d$ without votes on $d$.  Gerrish and Blei
-\cite{gerrish:2011} accomplished this by predicting $\tilde a_d$ and
-$\tilde b_d$ using the document's text. (Combining these two models is
-straightforward.)
-% The issue voting model contains the ideal point model as a special
-% case. Does this greater expressivity model meaningful patterns?
-% We answer this question by comparing the issue-adapted ideal point
-% model with two alternatives.
-
-%\subsubsection{Heldout log likelihood}
-\label{section:performance}
 \begin{table}
-  \caption{Average log-likelihood of heldout votes using six-fold cross validation. These results cover Congresses 106 to 111
-    (1999-2010) with regularization $\lambda=1$.  The issue-adjusted model yields higher heldout log-likelihood for all congresses in
-    both chambers than a standard ideal point model. Perm. Issue illustrates the issue model fit when bills' issue labels were randomly permuted. \emph{Perm. Issue} is results for the issue model fit using permuted document labels.}
- \small
- \center
- \begin{tabular}{|c|cccccc|}
+  \center
+  \caption{Roll-call data sets used in the experiments.  These counts
+    include votes in both the House and Senate.  Congress 107 had
+    fewer fewer votes than the remaining congresses in part because
+    this period included large shifts in party power, in addition to
+    the attacks on September 11th, 2001.}
+  \begin{small}
+  \begin{tabular}{|cc|ccc|}
+    \hline
+    \hspace{-8pt} \textbf{Congress} \hspace{-8pt} & \hspace{-8pt} {\textbf{Years}} \hspace{-8pt} & \textbf{Lawmakers} \hspace{-8pt} & \hspace{-4pt} \textbf{Bills} \hspace{-4pt} & \hspace{-4pt} \textbf{Votes} (Senate) \\
+    \hline
+    106 & 1999-2000 & 516 & 391 & 149,035 (7,612) \\
+    107 & 2001-2002 & 391 & 137 & 23,996 (5,547) \\
+    108 & 2003-2004 & 539 & 527 & 207,984 (7,830) \\
+    109 & 2005-2006 & 540 & 487 & 194,138 (7,071) \\
+    110 & 2007-2008 & 549 & 745 & 296,664 (9,019) \\
+    111 & 2009-2010 & 552 & 826 & 336,892 (5,936) \\
+    \hline
+  \end{tabular}
+  \end{small}
+  \label{table:data_stats}
+\end{table}
+
+%% The House and Senate typically have a different mix of Democrats and
+%% Republicans, and the lawmakers in each chamber have fundamentally
+%% different strategies. In addition, House members may be voted out
+%% every two years; this changes the strategy in both chambers every two
+%% years. For this reason, 
+
+We fit both models to two year periods in the House and (separately)
+to two-year periods in the Senate.  Some bills received votes in both
+the House and Senate; in those cases, the issue-adjusted model's
+treatment of the bill in the House was completely independent of its
+treatment by the model in the Senate.
+
+\subsection{Vocabulary}
+To fit the labeled topic model to each bill, we represented each bill
+as a vector of phrase counts (the \emph{vocabulary}).  This ``bag of
+phrases'' is similar to the ``bag of words'' assumption commonly used
+in natural language processing.  This vocabulary omitted content-free
+phrases such as ``and'', ``when'', and ``the'' (known as stop words)
+and awkard, non-informative phrases such as ``and the''.  The full
+vocabulary consisted of 5,000 $n$-grams. We provide further details of
+vocabulary selection in the supplementary materials.  We used these
+words to algorithmically define topics and assign issue weights to
+bills as described in \mysec{lda}.
+
+\subsection{Identification}
+The issue-adjusted ideal point model is under-specified in
+several ways.  It is well known that the signs of ideal points $x_u$
+and bill polarities $a_d$ are arbitrary, for example, because $x_u a_d
+= (-x_u)(-a_d)$. This leads to a multimodal posterior
+\citep{jackman:2001}.  We address this by flipping ideal points (and
+bill polarities) if necessary to make Republicans positive and
+Democrats negative.
+
+\subsection{Traditional ideal points vs. issue-adjusted ideal points}
+
+\label{section:jackman_vs_exploratory}
+The issue-adjusted ideal point model in
+Equation~\ref{equation:exploratory_ipm_old} is a generalization of the
+classic ideal point model (they are the same when $z_{uk}=0$ for all
+$u,k$). The goal of this section is to empirically justify this
+increased complexity with a comparison of issue-adjusted ideal points
+and traditional ideal points.  We first give a qualitative discussion
+of these differences and follow this with quantitative validation of
+the issue-adjusted model.
+
+\subsubsection{Examples: adjusting for issues.}
+We give a side-by-side comparison of traditional ideal points $x_u$
+and issue-adjusted ideal points $(x_u + \bm z_u^T \bm \theta)$ for the
+ten most-improved bills of Congress 111 (2009-2010) in
+\mytab{issue_adjustments}.  For each bill, the top row shows the
+ideal points of lawmakers who voted ``Yes'' on the bill and the bottom
+row shows lawmakers who voted ``No''.  The top and bottom rows are a
+partition of votes rather than separate treatments of the same votes.
+On these bills, ``Yes'' and ``No'' votes fall to the correct sides of
+the split more often when lawmakers' issue-adjusted ideal points are
+used instead of their traditional ideal points.
+
+\begin{table} 
+  \caption{Issue-adjusted ideal points can explain votes better than
+  standard ideal points.  The x-axis of each small plot shows ideal
+  point or issue-adjusted ideal point for a lawmaker. Each bill's
+  indifference point $-\frac{b_d}{a_d}$ is shown as a vertical
+  line. Positive votes (orange) and negative votes (purple) are
+  better-divided by issue-adjusted ideal points.}
+  \label{table:issue_adjustments}
+  %\begin{center}
+  \rowcolors{1}{gray!30}{}
+  \setlength{\extrarowheight}{1.5pt}
+  \renewcommand{\arraystretch}{1.5}
+  \hspace{-40pt} \begin{tabular}{|p{4.3cm}|c|c|}
+\hline
+\textbf{Bill description}
+& \textbf{Votes by ideal point}
+& \textbf{Votes by adjusted point} \\
+\hline
+%To prevent mail, telemarketing, and Internet fraud targeting seniors
+%in the United States... and for other purposes
+H. Res 806 (amending an education/environment trust fund)
+ & \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_ideal_point_10.pdf}
+ & \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_adjusted_ideal_point_10.pdf} \\
+
+%To restore sums to the Highway Trust Fund, and for other purposes
+Providing for conditional adjournment/recess of Congress
+%% NEWBORN Act \vspace{7pt}
+%% Recess of the Houses \vspace{7pt}
+%% Emergency Unemployment Compensation Continuation
+%% Highway trust fund \vspace{7pt}
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_ideal_point_9.pdf}
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_adjusted_ideal_point_9.pdf} \\
+
+Establish R\&D program for gas turbines 
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_ideal_point_8.pdf}
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_adjusted_ideal_point_8.pdf} \\
+
+%Providing for an adjournment or recess of the two Houses
+Recognizing AmeriCorps and community service
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_ideal_point_7.pdf}
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_adjusted_ideal_point_7.pdf} \\
+
+%Emergency Unemployment Compensation Continuation Act
+Providing for conditional adjournment of Congress
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_ideal_point_6.pdf}
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_adjusted_ideal_point_6.pdf} \\
+
+%Providing for a conditional adjournment of the House of Representatives & & \\
+%and a conditional recess or adjournment of the Senate
+Providing for the sine die adjournment of Congress
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_ideal_point_5.pdf}
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_adjusted_ideal_point_5.pdf} \\
+
+%Recognizing the significant accomplishments of AmeriCorps and
+%encouraging... community service
+Providing for an adjournment / recess of Congress
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_ideal_point_4.pdf}
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_adjusted_ideal_point_4.pdf} \\
+
+%Providing for the sine die adjournment of & & \\
+%the first session of the One Hundred Eleventh Congress
+Preventing child marriage in developing countries
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_ideal_point_3.pdf}
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_adjusted_ideal_point_3.pdf} \\
+
+%A bill to protect girls in developing countries through the
+%prevention of child marriage, and for other purposes
+Providing for a conditional House adjournment
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_ideal_point_2.pdf}
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_adjusted_ideal_point_2.pdf} \\
+
+%Congratulating the 2009-2010 University of Maryland Men's
+%Basketball Team, Greivis Vasquez, and Coach Gary Williams on an outstanding season
+Congratulating UMD Men's basketball
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_ideal_point_1.pdf}
+& \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3397_adjusted_ideal_point_1.pdf} \\
+\hline
+  \end{tabular}
+%  \end{center}
+\end{table}
+
+\subsubsection{A comparison of issue-adjusted ideal points $x_u$ and traditional ideal points.}
+The traditional ideal point model (\myeq{trad_ipm}) uses one parameter
+per lawmaker---$x_u$---to explain all of her voting behavior.  In
+contrast, the issue-adjusted model (\myeq{exploratory_ipm_old}) uses
+$x_u$ along with seventy-four other parameters to describe each
+lawmaker.  How does does $x_u$ under these two models differ?  We fit
+ideal points to the 111th House (2009 to 2010) and issue-adjusted
+ideal points $\tilde x_u$ to the same period ($\lambda=1$) and compare
+these ideal points in \myfig{jackman_vs_offset}
+
+In this figure we use an alternative to a scatterplot called a
+\emph{parallel plot}.  In a parallel plot (which we will use several
+more times in this article), we plot the two variables we wish to
+compare along parallel axes and draw line segments connecting two
+points when they represent the same variable under different
+treatments.  In \myfig{jackman_vs_offset}, the top axis axis
+represents a lawmaker's ideal point $x_u$ under traditional IRT, and
+the bottom ``treatment'' axis represents his ideal point $x_u$ under
+the issue-adjusted model.  Here and later we will use the convention
+that the bottom row represents a special treatment. When it is
+helpful, we use darker line segments for those items which change
+the most under treatment.\footnote{Specifically, we fit a linear model
+  to predict the bottom row from the top row and color line segments
+  with opacity proportional to the squared residual of this pair. We
+  specified opacity in \emph{ggplot} for \emph{R} with the alpha
+  parameter.}
+
+In the parallel plot in \myfig{jackman_vs_offset}, the traditional
+ideal point model's $\tilde x_u$ and the issue-adjusted model's un-adjusted ideal
+points $\tilde x_u$ are similar -- their correlation coefficient is
+0.998. The most noteworthy change is that lawmakers appear more
+partisan under the traditional ideal point model --- enough that
+Democrats are completely separated from Republicans --- while
+issue-adjusted ideal points provide a softer split.  This is not
+surprising, because the issue-adjusted model is able to use lawmakers'
+adjustments $\bm z_u$ to more than make up for this difference.  For
+the same reason, issue-adjusted ideal points are slightly less extreme
+than classic ideal points.
+
+\begin{figure}
+  \center
+  \includegraphics[width=0.8\textwidth]{chapter_spatial_voting_with_text/figures/3393_issue_vs_ideal_sxs.pdf}
+  \label{figure:jackman_vs_offset}
+  \caption{Classic issue-adjusted ideal points $x_u$ (top row) separate lawmakers by party better than un-adjusted ideal points $x_u$ from the
+    issue-adjusted model (bottom row).  Republicans are colored red,
+    and Democrats are blue.  These ideal points were estimated in
+    the 111th House of Representatives.  The line connecting ideal points from
+    each model has opacity proportional to the squared residuals in a linear
+    model fit to predict issue-adjusted ideal points from ideal
+    points. }
+\end{figure}
+
+%\subsection{Evaluation of the predictive distribution $p(v_{ud} | x_u, \bm z_u, a_u, b_u)$}
+\subsubsection{Evaluation of the predictive distribution.}
+
+The issue-adjusted model contains the ideal point model as the
+special case $z_{uk}=0, \forall u, k$. Does this greater
+expressivity---74 extra random variables per lawmaker---model
+meaningful patterns?  We answer this question by comparing the
+issue-adjusted ideal point model with two alternatives:
+
+\begin{enumerate}
+\item A variational ideal point model (\myeq{trad_ipm}), which treats
+  lawmakers with the single variate $x_u$.
+
+\item A permutation test.  The goal of this test is to attribute any
+  improvement over traditional ideal points to the issues assigned to
+  bills.  In this test, we randomly permute topic vectors' document
+  labels: $(\bm \theta_1, \ldots, \bm \theta_D) \mapsto (\bm
+  \theta_{\pi_i(1)} \ldots \bm \theta_{\pi_i(D)})$, for five random
+  permutations $\pi_1, \ldots, \pi_{5}$.  This permutation test
+  removes information contained in the matching from bills and topic
+  mixtures.  At the same time, the empirical distribution over topic
+  mixtures $\bm \theta_{dk}$ stays the same, and each bill is still
+  matched to a topic mixture with $\sum_k \bm \theta_{dk} = 1$.  This
+  is important because it any improvement we see over traditional
+  ideal points is due to the bills' topics, not due to spurious
+  factors (such as the change in dimension).
+\end{enumerate}
+
+\label{section:performance}
+\paragraph{Sensitivity to $\lambda$.}
+The main parameter in the issue-adjusted model is the regularization
+$\lambda$, which is shared for all issue adjustments. We report the
+effect of different $\lambda$ by fitting the issue-adjusted model to
+the 109th Congress (1999-2000) of the House and Senate for a range
+$\lambda=0.0001, \ldots, 1000$ of regularizations.  We performed
+$6$-fold cross-validation, holding out one sixth of votes in each
+fold, and calculated average log-likelihood $\sum_{v_{ud} \in
+  V_{\mbox{\tiny heldout}}} \log p(v_{ud} | \tilde x_u, \bm \tilde
+z_u, \tilde a_d, \tilde b_d)$ for votes $V_{\mbox{\tiny heldout}}$ in
+the heldout set. Following the algorithm described in
+\mysec{inference}, we began with $M=21$ samples to estimate the
+approximate gradient (\myeq{taylor_approximation}) and scaled it by
+1.2 each time the Elbo dropped below a threshold, until it was 500. We
+also fixed variance $\sigma_x^2, \sigma_z^2, \sigma_a^2,
+\sigma_b^2=\exp({-}5)$.  We summarize these results in
+\mytab{lambda_comparison}.
+
+The variational implementation generalized well for the entire range,
+representing votes best in the range $1 \le \lambda \le 10$.
+Log-likelihood dropped modestly for $\lambda < 1$.  In the worst case,
+log-likelihood was -0.159 in the House (this corresponds with 96\%
+heldout accuracy) and -0.242 in the Senate (93\% heldout accuracy).
+
+\begin{table}
+  \caption{Average log-likelihood of heldout votes by regularization
+    $\lambda$. Log-likelihood was averaged across folds using six-fold
+    cross validation for Congress 109 (2005-2006).  The variational
+    distribution represented votes with higher heldout log-likelihood
+    than traditional ideal points for $1 \le \lambda \le 10$. In a
+    model fit with permuted issue labels (Perm. Issue), heldout
+    likelihood of votes was worse than traditional ideal points for
+    all regularizations $\lambda$.
+  } \center \small
+  \begin{tabular}{|c|cccccccc|}
+    \hline
+    \textbf{Model} & \multicolumn{8}{|c|}{\textbf{Senate}} \\
+    \hline
+    \textbf{$\lambda$}
+    & 1e-4
+    &  1e-3 
+    &  1e-2 
+    &  1e-1 
+    &  1 
+    &  10 
+    &  100
+    &  1000  \\
+    \hline
+    Ideal
+    &  -0.188 % 1e-4
+    &  -0.189 
+    &  -0.189 % 1e-2
+    &  -0.189
+    &  -0.189 % 1
+    &  -0.190 % 10
+    &  -0.189
+    &  -0.189  \\ % 1000
+    Issue (LDA)
+    & -0.191 % 1e-4
+    & -0.191
+    & -0.188 % 1e-2
+    & -0.186 % 0.1
+    & -0.188 % 1
+    & -0.189
+    & -0.189 % 100
+    & 0.198 \\ 
+     Perm. Issue 
+    &  -0.242 
+    &  -0.245 
+    &  -0.231 
+    &  -0.221 
+    &  -0.204 
+    &  -0.208 
+    &  -0.208 
+    &  -0.208  \\
+    \hline
+    \hline
+    \textbf{Model} & \multicolumn{8}{|c|}{\textbf{House}} \\
+    \hline
+    \textbf{$\lambda$}
+    & 1e-4
+    &  1e-3 
+    &  1e-2 
+    &  1e-1 
+    &  1 
+    &  10 
+    &  100
+    &  1000  \\
+    \hline
+    Ideal
+    &  -0.119 % 1e-4
+    &  -0.119 
+    &  -0.119 % 1e-2
+    &  -0.119
+    &  -0.120 % 1
+    &  -0.119 % 10
+    &  -0.119
+    &  -0.119  \\ % 1000
+    Issue (LDA)
+    & -0.159 % 1e-4
+    & -0.159
+    & -0.158 % 1e-2
+    & -0.139 % 0.1
+    & -0.118 % 1
+    & -0.119
+    & -0.119 % 100
+    & 0.119 \\ 
+     Perm. Issue 
+    &  -0.191 
+    &  -0.192 
+    &  -0.189 
+    &  -0.161 
+    &  -0.122 
+    &  -0.120 
+    &  -0.120 
+    &  -0.120  \\
+    \hline
+  \end{tabular}
+  \normalsize
+  \label{table:lambda_comparison}
+\end{table}
+
+\paragraph{Performance across all sessions.}
+
+\begin{table}
+  \caption{Average log-likelihood of heldout votes across all sessions
+    for the House and Senate.  Log-likelihood was averaged across
+    folds using six-fold cross validation for Congresses 106 to 111
+    (1999-2010) with regularization $\lambda=1$.  The variational
+    distribution had higher heldout log-likelihood for all congresses
+    in both chambers than either } \center \small
+  \begin{tabular}{|c|cccccc|}
     \hline
     \textbf{Model} & \multicolumn{6}{|c|}{\textbf{Senate}} \\
     \hline
@@ -1677,13 +1985,20 @@ straightforward.)
     & \hspace{-4pt} -0.189 \hspace{-5pt}
     & \hspace{-4pt} -0.206 \hspace{-5pt}
     & \hspace{-4pt} -0.182 \hspace{-4pt} \\
-    Issue
+    Issue (LDA)
     & \hspace{-4pt} \textbf{-0.208} \hspace{-5pt}
     & \hspace{-4pt} \textbf{-0.209} \hspace{-5pt}
     & \hspace{-4pt} \textbf{-0.181} \hspace{-5pt}
     & \hspace{-4pt} \textbf{-0.188} \hspace{-5pt}
     & \hspace{-4pt} \textbf{-0.205} \hspace{-5pt}
     & \hspace{-4pt} \textbf{-0.180} \hspace{-4pt} \\
+    Issue (label)
+    & \hspace{-4pt} \textbf{-0.208} \hspace{-5pt}
+    & \hspace{-4pt} \textbf{-0.209} \hspace{-5pt}
+    & \hspace{-4pt} -0.182 \hspace{-5pt}
+    & \hspace{-4pt} -0.189 \hspace{-5pt}
+    & \hspace{-4pt} -0.206 \hspace{-5pt}
+   & \hspace{-4pt} -0.181 \hspace{-4pt} \\
     \hspace{-5pt} Perm. Issue \hspace{-5pt}
     & \hspace{-4pt} -0.210 \hspace{-5pt}
     & \hspace{-4pt} -0.210 \hspace{-5pt}
@@ -1701,313 +2016,400 @@ straightforward.)
     & \hspace{-4pt} -0.096 \hspace{-5pt}
     & \hspace{-4pt} -0.120 \hspace{-5pt}
     & \hspace{-4pt} -0.090 \hspace{-5pt}
-    & \hspace{-4pt} -0.182 \hspace{-4pt} \\
-    Issue
-    & \hspace{-4pt} \textbf{-0.166} \hspace{-5pt}
-    & \hspace{-4pt} \textbf{-0.147} \hspace{-5pt}
-    & \hspace{-4pt} \textbf{-0.093} \hspace{-5pt}
-    & \hspace{-4pt} \textbf{-0.116} \hspace{-5pt}
-    & \hspace{-4pt} \textbf{-0.087} \hspace{-5pt}
-    & \hspace{-4pt} \textbf{-0.180} \hspace{-4pt} \\
+    & \hspace{-4pt} -0.077 \hspace{-4pt} \\
+    Issue (LDA)
+    & \hspace{-4pt} \textbf{-0.167} \hspace{-5pt}
+    & \hspace{-4pt} \textbf{-0.151} \hspace{-5pt}
+    & \hspace{-4pt} -0.095 \hspace{-5pt}
+    & \hspace{-4pt} -0.118 \hspace{-5pt}
+    & \hspace{-4pt} -0.089 \hspace{-5pt}
+    & \hspace{-4pt} -0.076 \hspace{-4pt} \\
+    Issue (label)
+    & \hspace{-4pt} \textbf{-0.167} \hspace{-5pt}
+    & \hspace{-4pt} \textbf{-0.151} \hspace{-5pt}
+    & \hspace{-4pt} \textbf{-0.094} \hspace{-5pt}
+    & \hspace{-4pt} \textbf{-0.117} \hspace{-5pt}
+    & \hspace{-4pt} \textbf{-0.088} \hspace{-5pt}
+    & \hspace{-4pt} \textbf{-0.075} \hspace{-4pt} \\
     \hspace{-5pt} Perm. Issue \hspace{-5pt}
-    & \hspace{-4pt} -0.210 \hspace{-5pt}
-    & \hspace{-4pt} -0.211 \hspace{-5pt}
-    & \hspace{-4pt} -0.100 \hspace{-5pt}
-    & \hspace{-4pt} -0.123 \hspace{-5pt}
-    & \hspace{-4pt} -0.098 \hspace{-5pt}
-    & \hspace{-4pt} -0.187 \hspace{-4pt} \\
+    & \hspace{-4pt} -0.167 \hspace{-5pt}
+    & \hspace{-4pt} -0.155 \hspace{-5pt}
+    & \hspace{-4pt} -0.096 \hspace{-5pt}
+    & \hspace{-4pt} -0.122 \hspace{-5pt}
+    & \hspace{-4pt} -0.090 \hspace{-5pt}
+    & \hspace{-4pt} -0.077 \hspace{-4pt} \\
     \hline
   \end{tabular}
   \normalsize
-  \label{table:performance_comparison}
+  \label{table:session_comparison}
 \end{table}
 
-%%We first demonstrate that a relationship exists between documents'
-%%issues $\bm \theta_d$ and lawmakers' votes $V_{ud}$.
-%%   The issue voting
-%% can be simplified to a slightly simpler version of
-%% Equation~\ref{equation:exploratory_ipm_old} via the two-stage model
-%% \begin{enumerate}
-%%   \label{equation:two_stage_model}
-%% \item Fit an ideal point model $X_u, A_d, B_d | V_{ud}$
-%% \item For each lawmaker $u$:
-%%   \begin{itemize}
-%%   \item Fit $W_u | X_u, A_d, B_d, V_{ud}, \bm \theta_d$ with
-%%     $L_1$-regularized logistic regression.
-%%   \end{itemize}
-%% \end{enumerate}
-%% (The difference between this version and the issue model is that we
-%% would repeat these steps until convergence in the issue model,
-%% conditioning step 1 on $W_u$ and $\bm \theta_d$.)  Per this exercise,
-%% we fit a Bayesian ideal point model using the algorithm described in
-%% Section~\ref{section:inference} and followed this with logistic
-%% regression using the $R$ package \verb!glmnet!  \cite{friedman:2010}.
-%% We fit this to the votes $V_{ud}$ and bills' topics $\bm \theta_1,
-%% \ldots, \bm \theta_D$ in Congress 109\footnote{Congress 109 was a
-%% reasonably representative sample by size.} with $\lambda=0.001$.  We
-%% then measured average log likelihood and accuracy of these votes under
-%% the model. % Training accuracy peaked at nearly 100\%.
-
-%\begin{wrapfigure}{r}{0.5\textwidth}
-%% \begin{figure}
-%%   \includegraphics[width=0.5\textwidth]{figs/3390_training_by_regularization.pdf}
-%%   \caption{The issue voting model is more expressive than a
-%%     traditional ideal point model. Blue is the issue-adjusted model,
-%%     black is the ideal point model, and red is the issue-adjusted
-%%     model applied when bills' topic labels were randomly permuted.
-%%     Each point shows the training accuracy of an experiment.  The red
-%%     points show heldout likelihood when bills' issue labels were
-%%     permuted.}
-%%   \label{figure:training_accuracy_shuffle}
-%% \end{figure}
-%% %\begin{wrapfigure}{r}{0.5\textwidth}
-%% \begin{figure}
-%%   %\includegraphics[width=0.5\textwidth]{figs/3292_adhoc_model_shuffle.pdf}
-%%   \includegraphics[width=0.5\textwidth]{figs/3292_adhoc_model_meanloglikelihood_shuffle.pdf}
-%%   \caption{The issue voting model predicts slightly better than an
-%%     ideal point model on heldout votes. Blue is the issue-adjusted
-%%     model, black is the ideal point model, and .  Each point shows the
-%%     heldout likelihood of an experiment; each point is the average
-%%     heldout likelihood across 6 folds.  The red points show heldout
-%%     likelihood when bills' issue labels were permuted.}
-%%   \label{figure:training_likelihood_shuffle}
-%% \end{figure}
-
-\textbf{Performance.}
 We fit the issue-adjusted model to both the House and Senate for
 Congresses 106 to 110 (1999-2010) with $\lambda=1$. For comparison we
-also fit an ideal point model to each of these congresses. In all
-Congresses and both chambers, the issue-adjusted model represents
-heldout votes with higher log-likelihood than an ideal point model. We
-summarize these results in Table~\ref{table:performance_comparison}.
+also fit an ideal point model to each of these congresses and fit an
+issue-adjusted model to each congress with topics' document labels
+permuted ($\bm \theta_{\pi(1)}, \ldots, \bm \theta_{\pi(1)}$). We
+summarize these results in Table~\ref{table:session_comparison}. In
+all chambers in both Congresses, the issue-adjusted model represents
+heldout votes with higher log-likelihood than an ideal point model.
+Further, every permutation represented votes with lower log-likelihood
+than the issue-adjusted model.  In most cases they were also lower
+than an ideal point model.
 
-\textbf{Sensitivity to regularization.}  We fit the
-issue-adjusted model to the 109th Congress (1999-2000) of the House
-and Senate for a range $\lambda=0.0001, \ldots, 1000$ of
-regularizations.  We fixed variance $\sigma_X^2, \sigma_Z^2,
-\sigma_a^2, \sigma_b^2=\exp({-}5)$. The variational implementation
-generalized well for the entire range, with heldout log likelihood
-highest for $1 \le \lambda \le 10$.
+% \subsection{Generalization}
+% The variational implementation generalizes well for the entire range
+% $\lambda = 0.0001, \ldots, 1000$, with classification accuracy peaking
+% near $\lambda=1$.  Even in the worst case, accuracy remains above 96\%
+% in the House.  This is striking, given the huge increase in parameter
+% size for this model, and it contrasts sharply with the MAP estimate,
+% which quickly overfit. With $\lambda < 10$, MAP training accuracy
+% approached 100\% while its test accuracy quickly dropped. For
+% $\lambda=10$, MAP issue adjustments $Z_{uk}$ were sometimes greater
+% than $15$.  We believe the difference between these posterior
+% estimates can be explained by the MAP implementation reaching poor
+% local optima.
 
-\textbf{Permutation test.} We used a permutation test to understand
-how the issue-adjusted model improves upon ideal point models.  This
-test strengthens the argument that \emph{issues} (and not some other
-model change, such as the increase in dimension) help to
-improve predictive performance. To do this test, we randomly
-permuted topic vectors' document labels to completely remove the
-relationship between topics and bills: $(\bm \theta_1,
-\ldots, \bm \theta_D) \mapsto (\bm
-  \theta_{\pi_i(1)} \ldots \bm \theta_{\pi_i(D)})$, for
-five permutations $\pi_1, \ldots, \pi_{5}$.  We then fit the issue
-model using these permuted document labels.  As shown in
-Table~\ref{table:performance_comparison}, models fit with the
-original, unpermuted issues always formed better predictions than
-models fit with the permuted issues. From this, we draw the conclusion
-that \emph{issues} indeed help the model to represent votes.
+\paragraph{Human labels vs. inferred text-based labels.}
+The issue-adjusted model assumes a fixed issue vector $\bm \theta_d$
+for each bill.  We described a method in \mysec{lda} for inferring
+this issue vector based on the text of bills using labeled LDA; this
+method uses the original Congressional Research Service (CRS) labels.
+What happens if we skip this preprocessing step and just use the
+original CRS labels? We checked this by converting the original CRS
+issue labels into a $K$-vector of issues.  For each document $d$
+having issue labels $J \subset K$, each issue $\bm \theta_{dk}$ was
+assigned a weight of $1 / |J|$ if $k \in J$ and zero if $k \not \in
+J$. We fit an issue-adjusted model using these with CRS labels and
+performed six-fold cross validation as described above and illustrate
+predictive performance in \mytab{session_comparison} in the ``Issue
+(label)'' row.
 
-%% \begin{figure}
-%%   % \includegraphics[width=0.5\textwidth]{figs/3292_adhoc_model_shuffle.pdf}
-%%   \center
-%%   \includegraphics[width=0.5\textwidth]{figs/3390_validation_by_regularization.pdf}
-%%   \caption{The issue voting model is more expressive when topics are
-%%   attached to the correct bills.  Black (dotted) is the ideal point
-%%   model; blue (solid) is the issue model; red dots is the issue model
-%%   with permuted topics; and orange (dashed) is MAP.  Each red circle
-%%   represents a random permutation of topic labels.}
-%%   \label{figure:validation_likelihood_shuffle}
-%% \end{figure}
+Across Congresses, the predictive benefit in using text-based issue
+vectors over labels provided by the CRS is negligible.  However, we
+see at least two benefits in using text-based labels.  First, they
+provide a defensible way to distribute weight to each issue: an issue
+should receive less than $1 / |J|$ weight if it is mentioned only in
+passing in a bill.  Second, this method allows us to fit issue vectors
+to the 107 bills which were missing CRS labels.
 
+\paragraph{Changes in bills' parameters.}
+Bills' polarity $a_d$ and popularity $b_d$ are similar under both the
+traditional ideal point model and the issue-adjusted model. We
+illustrate bills' parameters in these two models in
+\myfig{bills_parameter_changes} and note two exceptions.  First,
+procedural bills stand out from other bills in becoming more popular
+overall.  In \myfig{bills_parameter_changes}, procedural bills have
+been separated from traditional ideal points.  We attribute the
+difference in procedural bills' parameters to \emph{procedural cartel
+  theory}, which we describe further in
+\mysec{procural_cartel_theory}.  Second, the remaining bills have
+become less popular but more polarized under the issue-adjusted model.
+This is because the model depends more on lawmakers' positions to
+explain votes, because it has many more dimensions with which it can
+describe each lawmaker.
+\begin{figure}
+  \begin{tabular}{|m{0.85in}|m{2.54in}|m{2.54in}|}
+%    \Large \textbf{Polarity $a_d$} & \Large \textbf{Popularity $b_d$} \\
+    \hline
+    & Popularity & Polarity \\
+    \hline
+    Not procedural &
+    \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3398_noprocedural_popularity.pdf} &
+    \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3398_noprocedural_polarity.pdf} \\
+    Procedural &
+    \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3398_procedural_popularity.pdf} &
+    \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3398_procedural_polarity.pdf} \\
+    \hline
+  \end{tabular}
+  \caption{Procedural bills are more popular under the issue-adjusted
+    voting model. Top: popularity $b_d$ of procedural bills under the
+    issue-adjusted voting model is greater than with traditional ideal
+    points.  Bottom: consistent with \citet{cox:2002} and
+    \emph{procedural cartel theory}, the polarity of procedural bills
+    is generally more extreme than that of non-procedural bills.
+    However, issue adjustments lead to increased polarity (i.e.,
+    certainty) among non-procedural votes as well.  The procedural
+    issues include \emph{Congressional reporting requirements},
+    \emph{Government operations and politics}, \emph{House of
+      Representatives}, \emph{House rules and procedure},
+    \emph{Legislative rules and procedure}, and \emph{Congress}.}
+  \label{figure:bills_parameter_changes}
+\end{figure}
 
-%%   This is striking, given the huge increase in parameter
-%% size for this model, and it contrasts sharply with the MAP estimate,
-%% which quickly overfit. With $\lambda < 10$, MAP training accuracy
-%% approached 100\% while its test accuracy quickly dropped. For
-%% $\lambda=10$, MAP issue adjustments $Z_{uk}$ were sometimes greater
-%% than $15$.  We believe the difference between these posterior
-%% estimates can be explained by the MAP implementation reaching poor
-%% local optima.
+\paragraph{Sparsity of $\tilde z_{uk}$.}
+The variational estimates $\tilde z_{uk}$ of issue adjustments were
+not sparse, although a high mass of thse issue adjustments was
+concentrated around zero: twenty-nine percent of issue adjustments
+were within $[-0.01, 0.01]$, and eighty-seven percent of issue
+adjustments were within $[-0.1, 0.1]$.  We illustrate the distribution
+of lawmakers' offsets for selected issues in
+\myfig{issue_adjustment_distribution} and describe them further in
+\mysec{lawmakers}.
 
-% \subsection{Model evaluation}
+% \section{Bills}
 
-%% \subsubsection{In-sample analysis}
+% Issue-adjusted ideal points are not not used in a vacuum, of course:
+% the very fact that a bill is about an issue provides us with
+% information on how lawmakers feel about the issue.  The goal of the
+% next three sections is to provide a closer perspective on the way
+% issues improve the way we represent votes on bills, lawmakers, and
+% specific issues.
 
-%% To compare models, we evaluate predictive accuracy, the number of
-%% votes correctly predicted by a model divided by the total number of
-%% votes.
+\subsection{Issues and Lawmakers}
 
-%% \begin{figure*}
-%%   \center
-%% %  \includegraphics[width=0.6\textwidth]{figs/3200_training_by_session.pdf} \\
-%%   \includegraphics[width=0.6\textwidth]{figs/3200_validation_by_session.pdf} \\
-%%   \caption{Training accuracy by Congress (top) and validation accuracy
-%%   by Congress (bottom).  Green is Jackman's ideal points, violet is
-%%   variational, and brown is MAP.}
-%%   \label{figure:accuracy_by_session}
-%% \end{figure*}
-%% Figure~\ref{figure:accuracy_by_session}
+\label{section:lawmakers}
+\label{section:issues}
 
-%% We also considered performance of
-%% Model~\ref{equation:exploratory_ipm_old}, which holds the global
-%% offset $\bm Y = \bm 0$.  There was no discernible difference in
-%% performance for this variant: the utility of
-%% Model~\ref{equation:exploratory_ipm} over
-%% \ref{equation:exploratory_ipm_old} appears to lie in its ability to
-%% provide more descriptive interpretations of lawmakers' deviations.
+We illustrate Representatives' issue adjustments for the issues
+\emph{Finance} and the procedural issue \emph{Congressional sessions}
+in \myfig{issue_improvements_ideals} for the 111th House.  These
+adjustments illustrate the way in which the issue-adjusted voting
+model allows us to better understand how lawmakers feel about specific
+issues, but they do not tell us which issues were well-fit by the
+model, or whether these issue adjustments were systemic (i.e.,
+predictable using lawmakers' ideal points) or even statistically
+significant.
 
-%% \subsubsection{Accuracy of model on training data}
-%% A first check we make is the training accuracy of the models.
-%% Training accuracy is an important test of the flexibility of the
-%% model: it demonstrates that the model has the capacity to learn
-%% lawmakers' more-complicated voting behavior, provided that enough data
-%% is available.
+The goal of this section is to address these concerns by providing a
+qualitative look at lawmakers' issue preferences such as those in
+\myfig{issue_improvements_ideals}.  We begin by identifying those
+issues which were best- and worst-represented by the issue-adjusted
+model.  We then look at when lawmakers' issue adjustments can be
+explained by party affiliation and discuss how to control for these
+systemic biases to identify lawmakers who trascend party lines.  We
+finally describe a theory explaining why certain lawmakers have such
+different preferences on procedural issues like \emph{Congressional
+  sessions} than substantive issues like as \emph{Finance}.
 
-%% Figure~\ref{figure:accuracy_by_session} shows training accuracy for
-%% Congresses 106 to 110 and $\lambda=10$.  An important thing to note
-%% about this model is that the ideal point model has limited training
-%% accuracy; even for $\lambda=0.01$, test accuracy remains above 90\%.
-%% As expected, training accuracy increases as $\lambda \rightarrow 0$
-%% and decreases as $\lambda$ approaches its maximum of $1000$.  The MAP
-%% implementation has considerably higher training accuracy than the
-%% variational implementation; we believe this is because the variational
-%% implementation models the variance of each random variable, which
-%% regularized them further.
-
-%% \subsubsection{Accuracy of model on held-out votes}
-% \label{section:validation_discussion}
-
-\subsubsection{Checking issue affinity}
-Most political scientists are more interested in inspecting lawmakers'
-past voting behavior than predicting new votes.  We now demonstrate
-how the issue-adjusted ideal point model can be used for this purpose.
-We focus on an issue-adjusted model fit to all votes in the 111th
-House of Representatives (2009-2010). We begin with a look at several
-specific cases and then describe when the lawmakers' individual
-affinities are extreme enough to warrant inspection.
-
-\subsubsection{Issues improved by issue adjustment}
-%% Those issues which tended to be adjusted the most (by standard
-%% deviation of $\hat Z_k$) also tended to give issue-adjusted ideal
-%% points an edge over traditional ideal points.  
-We measure the performance improvement for any issue by comparing the
-training likelihoods of votes in the issue-adjusted and traditional
-ideal point models.  The issue-adjusted training log-likelihood of
-each vote is
+\subsubsection{Issues improved by issue adjustment.}
+Those issues which tended to move lawmakers the most (by standard
+deviation of $\hat z_k$) also tended to give issue-adjusted ideal
+points an edge over traditional ideal points.  We measure the
+performance improvement for any issue by first taking the
+issue-adjusted log likelihood of each vote
 \begin{equation}
-  J_{ud} = 1_{\{v_{ud} = \mbox{\tiny Yes \normalsize}\}} p - \log(1 + \exp(p)),
+  J_{ud} = 1_{\{v_{ud} = \mbox{yes}\}} p - \log(1 + \exp(p)),
 \end{equation}
-where $p = (\tilde x_u + \bm \tilde z_{u}^T \expectq{\bm \theta_d | \bm w} ) \tilde a_d
-+ \tilde b_d$ is the log-odds of a vote under the issue adjusted
-voting model.  The corresponding log-likelihood
-$I_{ud}$ under the ideal point model is $p=\tilde x_u \tilde a_d +
-\tilde b_d$. The improvement of issue $k$ is then the sum of the
-improvement in log-likelihood weighted by each issue:
+where $p = (x_u + \bm z_{u}^T \bm \theta_d ) a_d + b_d$ is the
+log-odds of a vote under the issue adjusted voting model.  We also
+measure the corresponding log-likelihood $I_{ud}$ under the ideal
+point model, using $p=x_u a_d + b_d$ with an ideal point model. The
+improvement of issue $k$ is then the sum of the improvement in
+log-likelihood, weighted by issue $k$:
 \begin{equation}
   \label{equation:likelihood_improvement}
-  \mbox{Imp}_k = \frac{\sum_{V_{ud}} \expectq{\bm \theta_{d_v k} | \bm w} (J_{ud} - I_{ud}) }
-       { \sum_{V_{ud}} \expectq{\bm \theta_{d_v k} | \bm w} }.
+  \mbox{Imp}_k = \frac{\sum_{v_{ud}} \bm \theta_{d_v k} (J_{ud} - I_{ud}) }
+       { \sum_{v_{ud}} \bm \theta_{d_v k} }.
 \end{equation}
 A high value of $\mbox{Imp}_k$ indicates that issue $k$ is associated
-with an increase in log-likelihood, while a low value indicates that
-the issue saw a decrease in log-likelihood.
+with an increase in log-likelihood, while a low value is associated
+with a decrease in log-likelihood.
 
-%% \begin{figure}[t]
-%%   \includegraphics[width=0.5\textwidth]{figs/3393_interesting_offsets.pdf}
-%%   \caption{Log-likelihood increases when using adjusted ideal points
-%%   most for procedural and strategic votes and less for issues
-%%   frequently discussed during elections.  $\mbox{Imp}_k$ is shown on
-%%   the x-axis, while issues are spread on the y-axis for display.
-%%   The size of each issue $k$ shows the logarithm of the
-%%   weighted sum $\sum_{V_{ud}} \bm \theta_{dk}$ of votes about the
-%%   issue.}
-%%   \label{figure:issue_improvements}
-%% \end{figure}
+\begin{figure}
+  \center
+  \includegraphics[width=0.6\textwidth]{chapter_spatial_voting_with_text/figures/3393_interesting_offsets.pdf}
+  \caption{Log-likelihood increases when using adjusted ideal points
+  most for procedural and strategic votes and less for issues
+  frequently discussed during elections.  $\mbox{Imp}_k$ is shown on
+  the x-axis, while issues are spread on the y-axis for display.
+  The size of each issue $k$ is proportional to the logarithm of the
+  weighted sum $\sum_{v_{ud}} \bm \theta_{dk}$ of votes about the
+  issue.}
+  \label{figure:issue_improvements}
+\end{figure}
+We illustrate $\mbox{Imp}_k$ for a selection of issues in
+Figure~\ref{figure:issue_improvements}.  All issues increased
+log-likelihood; those associated with the greatest increase tended to
+be related to procedural votes.  For example, \emph{Women},
+\emph{Religion}, and \emph{Military personnel} issues are nearly
+unaffected by lawmakers' offsets.  These improvements $\mbox{Imp}_k$
+were correlated with the standard deviation of residual offsets $\hat
+z_k$ ($\sigma_{\mbox{cor}}=0.68$), but not with coefficients $\beta_k$
+($\sigma_{\mbox{cor}}=0.05$), indicating that issue offsets, and not
+ideal points, explain most of the improvement.
 
-All issues increased log-likelihood; procedural issues such as
-\emph{Congressional sessions} (in contrast to substantive issues) were
-among the ``most-better'' predicted issues; they were also much more
-polarized.  This is a result predicted by \emph{procedural cartel
-  theory} \cite{fenno:1965,cox:1993,cox:2002,cox:2005}, which posits
-that lawmakers will be more polarized in procedural votes (which
-describe how Congress will be run) than substantive votes (which are
-the issues discussed during elections).  A substantive issue which was
-better-predicted was \emph{Finance}; we illustrate lawmakers'
-adjustments for this issue in
-Figure~\ref{figure:issue_improvements_ideals}.  The issues
-\emph{Women}, \emph{Religion}, and \emph{Military personnel} were
-nearly unaffected by lawmakers' offsets. In \S A.4, we illustrate
-$\mbox{Imp}_k$ for a larger selection of issues.
+\paragraph{Issues associated with worse predictions.}
+We also note several poorly-fit issues.  We evaluated issues by taking
+the number of incorrectly-fit votes under the issue-adjusted model
+\emph{minus} the number of incorrectly-fit votes under a traditional ideal
+point model.  We call this the number of ``new mis-predicted votes''
+for each issue.  Those issues which had the most ``new mis-predicted
+votes'' also had the most ``new correctly-predicted votes'', which is
+largely because votes on these issues are simply hard to predict.  For
+example, \emph{Athletics} was one of the issues which saw the most
+most newly-mispredicted votes.  \emph{Postal Facilities} and
+\emph{Military Personnel} were other examples.
 
+Bills which expressed many issues were also less-well fit.  The bill
+which decreased the most by log-likelihood of its votes from the ideal
+point model in the 111th House was the \emph{Consolidated Land,
+  Energy, and Aquatic Resources Act of 2010} (H.R. 3534).  This bill
+had substantial weight in five issues, with most in \emph{Public lands
+  and natural resources}, \emph{Energy}, and \emph{Land transfers},
+but its placement in many issues appears to have harmed its
+performance.  This effect was common, and it suggests that methods
+which represent bills with fewer issues (such as unsupervised topics)
+may perform better, at the expense of interpretability.
+
+\subsubsection{Understanding legislators' voting amidst party bias.}
+\label{section:party_bias}
+Many lawmakers' issue adjustments can be explained by party
+affiliation (hence, their ideal point).  We illustrate the
+distribution across lawmakers of $\tilde z_{uk}$ for selected issues
+$k$ in \myfig{issue_adjustment_distribution}.  This figure shows this
+distribution for the four issues with the greatest variance in $\tilde
+z_{uk}$ across lawmakers and the four issues with the least variance
+across lawmakers. Note the systematic bias in Democrats' and
+Republicans' issue preferences: they become \emph{more partisan} on
+certain issues, particularly procedural ones.
+
+\begin{figure}
+  \center
+  \begin{tabular}{cc}
+    \Large \textbf{Democrat} & \Large \textbf{Republican} \normalsize \\
+  \includegraphics[width=0.45\textwidth]{chapter_spatial_voting_with_text/figures/3393_issue_adjustment_density_democrats.pdf} &
+  \includegraphics[width=0.45\textwidth]{chapter_spatial_voting_with_text/figures/3393_issue_adjustment_density_republicans.pdf} \\
+  \end{tabular}
+  \caption{Histogram of issue adjustments for selected
+    issues. Democrats are in the left column, and Republicans are in
+    the right column. Both Democrats and Republicans tend to have
+    small issue adjustments for traditional issues.  Their issue
+    adjustments differ substantially for procedural issues. A
+    more-dispersed distribution of issue adjustments does not mean
+    that these lawmakers tend to feel differently from one another
+    about these issues.  Instead, it means that lawmakers deviate from
+    their ideal points more.  }
+  \label{figure:issue_adjustment_distribution}
+\end{figure}
+
+%\subsection{Checking issue affinity}
+\label{section:conditional_offets}
+
+\paragraph{Controlling for ideal points.}
+
+A typical Republican tends to have a Republican offset on taxation,
+but this surprises nobody.  Instead, we are more interested in
+understanding when this Republican lawmaker \emph{deviates} from
+behavior suggested by her ideal point.  We can shed light on this
+systemic issue bias by explicitly controlling for it.  To do this, we
+fit a regression for each issue $k$ to explain away the effect of a
+lawmaker's ideal point $\bm x_u$ on her offset $\bm z_{uk}$:
+\[
+  \bm z_{k} = \beta_k \bm X + \bm \varepsilon,
+\]
+where $\beta_k \in \mathbb{R}$.  Instead of evaluating a lawmaker's
+observed offsets, we use her residual $\hat z_{uk} = \bm z_{uk} -
+\beta_k \bm x_u$, which we call the corrected issue adjustment.  By
+doing this, we can evaluate lawmakers in the context of other
+lawmakers who share the same ideal points: a positive offset $\hat
+z_{uk}$ for a Democrat means she tends to vote more liberally about
+issue $k$ than others with the same ideal point (most of whom are
+Democrats).\footnote{We also fit a model with this regression
+  explicitly encoded.  That model performed slightly worse in
+  experiments on heldout data.}
+
+% \paragraph{Distribution of issue adjustments}
+Most issues had only a moderate relationship to ideal points.
+\emph{House rules and procedure} was the most-correlated with ideal
+points, moving the adjusted ideal point $\beta_k=0.26$ right for every
+unit increase in ideal point. \emph{Public land and natural resources} and
+\emph{Taxation} followed at a distance, moving an ideal point $0.04$
+and $0.025$ respectively with each unit increase in ideal point.
+\emph{Health}, on the other hand, moved lawmakers $\beta_k=0.04$ left
+for every unit increase in ideal point.
 \begin{figure*}[t]
- \center \includegraphics[width=0.84\textwidth,height=0.25\textwidth]{chapter_spatial_voting_with_text/figures/3393_example_ideal_points_finance.pdf}
- \vspace{-10pt}
-%  \includegraphics[width=0.5\textwidth]{figs/3393_example_ideal_points_congressional_sessions.pdf}
- \small
- \caption{Ideal points $x_u$ and issue-adjusted ideal points $x_u +
-   z_{uk}$ from the 111th House. Votes about Finance were better fit
-   with this model.  Republicans (red) saw more adjustment than
-   Democrats (blue). }
- \normalsize
+  \center
+  \includegraphics[width=0.77\textwidth]{chapter_spatial_voting_with_text/figures/3393_example_ideal_points_finance.pdf}
+  \vspace{-10pt}
+  \includegraphics[width=0.85\textwidth]{chapter_spatial_voting_with_text/figures/3393_example_ideal_points_congressional_sessions.pdf}
+  \caption{Ideal points $x_u$ and issue-adjusted ideal points $x_u +
+    z_{uk}$ from the 111th House for the substantive issue
+    \emph{Finance} and the procedural issue \emph{Congressional
+      Sessions}. Democrats are blue and Republicans are red.  Votes
+    about \emph{Finance} and \emph{Congressional Sessions} were better
+    fit using issue-adjusted ideal points.  For procedural votes such
+    as \emph{Congressional sessions}, lawmakers becoming more
+    polarized by political party, behavior predicted by procedural
+    cartel theory \citep{cox:1993}. }
   \label{figure:issue_improvements_ideals}
   \vspace{-5pt}
 \end{figure*}
-%% These
-%% improvements $\mbox{Imp}_k$ were correlated with the standard
-%% deviation of residual offsets $\hat Z_k$ ($\sigma_{\mbox{cor}}=0.68$),
-%% but not with coefficients $\beta_k$ ($\sigma_{\mbox{cor}}=0.05$),
-%% indicating that issue offsets, and not ideal points, explain most of
-%% the improvement.
+The issues \emph{Women}, \emph{Religion}, and \emph{Military
+personnel} were nearly unaffected by lawmakers' offsets.
 %% We will take a closer look at this metric when we discuss specific
 %% lawmakers in the next section.
 
-\subsubsection{Analyzing lawmakers}
+\paragraph{Finding exceptional issue-adjustments.}
 
-%% The issues which saw the most overall adjustment, aside from
-%% procedural issues, were \emph{Appropriations} (spending) and
-%% \emph{Public land and natural resources}.
+%% The issue-adjusted ideal point model usually fit votes better than the
+%% ideal point model, but there were some exceptions.  In the 111th
+%% House, lawmakers were almost invariably improved with issue-adjusted
+%% ideal points.  Only Representative Steve Kagan (Democrat from Ohio),
+%% had lower training log likelihood with the issue-adjusted model than
+%% with an ideal point model.  This decrease was negligible, and Kagan's
+%% votes were very-well represented with both traditional and adjusted
+%% ideal points.
+
+% \section{Issues}
+%% A handful of lawmakers stood out with the most exceptional issue
+%% adjustments.  Any reference in this section to lawmakers' issue
+%% adjustments refers to lawmakers' residuals $\hat z_{uk}$ fit from
+%% their variational parameters $\bm \tilde z_{uk}$.
+
+We next use these corrected issue adjustments to identify lawmakers'
+exceptional issue preferences. To identify adjustments which are
+significant, we turn again to the same nonparametric check described
+in the last section: permute issue vectors' document labels,
+i.e. $(\bm \theta_1, \ldots, \bm \theta_D) \mapsto (\bm \theta_{\pi_i(1)} \ldots \bm \theta_{\pi_i(D)})$, and refit lawmakers'
+adjustments using both the original issue vectors and permuted issue
+vectors, for permutations $\pi_1, \ldots, \pi_{20}$.  We then compare
+a corrected issue adjustment $\hat z_{uk}$'s absolute value with
+corrected issue adjustments estimated with permuted issue vectors $\bm
+\theta_{\pi_i(d) k}$.
+
+This provides a nonparametric method for finding issue adjustments
+which are more extreme than expected by chance: an extreme issue
+adjustment has a greater absolute value than all of its permuted
+counterparts.  We use these to discuss several unique lawmakers.
+% (those with four or more significant offsets (p < 0.006).
+%% # 0 significant: 0.471
+%% # 1 significant: 0.357
+%% # 2 significant: 0.133  // cdf: 0.961
+%% # 3 significant: 0.033  // cdf:  0.994 one in two hundred.
 
 \begin{figure*}
-  %  \includegraphics[width=0.5\textwidth]{figs/3293_Russell_Feingold_300042.pdf}
-  %  \includegraphics[width=0.5\textwidth]{figs/3293_Evan_Bayh_300006.pdf} \\
-%    \includegraphics[width=0.5\textwidth]{figs/3293_Thomas_Tom_Carper_300019.pdf} &
+  %  \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3293_Russell_Feingold_300042.pdf}
+  %  \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3293_Evan_Bayh_300006.pdf} \\
+%    \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3293_Thomas_Tom_Carper_300019.pdf} &
     %Ken Salazar & Robert Casey \\
-    %\includegraphics[width=0.5\textwidth]{figs/3293_Ken_Salazar_400619.pdf} &
-%    \includegraphics[width=0.5\textwidth]{figs/3293_house_Dennis_Kucinich_400227.pdf} \\
-%    \includegraphics[width=0.5\textwidth]{figs/3293_house_James_McDermott_400262.pdf} \\
+    %\includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3293_Ken_Salazar_400619.pdf} &
+%    \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3293_house_Dennis_Kucinich_400227.pdf} \\
+%    \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3293_house_James_McDermott_400262.pdf} \\
   \center
+  \begin{tabular}{cc}
 %     Bob Casey
-    %\includegraphics[width=0.3\textwidth]{figs/3293_Robert_Casey_412246.pdf} &
-%%     \begin{tabular}{c}
-%%       \includegraphics[width=0.24\textwidth]{figs/3393_Russell_Feingold_300042.pdf} \\
-%%       Russell Feingold \\
-%%     \end{tabular}
-%%       &
-%%     \begin{tabular}{c}
-%%       \includegraphics[width=0.24\textwidth]{figs/3393_George_Voinovich_300098.pdf} \\
-%%       George Voinovich \\
-%%     \end{tabular} \\
+    %\includegraphics[width=0.3\textwidth]{chapter_spatial_voting_with_text/figures/3293_Robert_Casey_412246.pdf} &
+%    \includegraphics[width=0.24\textwidth]{chapter_spatial_voting_with_text/figures/3393_Russell_Feingold_300042.pdf} &
+%    \includegraphics[width=0.24\textwidth]{chapter_spatial_voting_with_text/figures/3393_George_Voinovich_300098.pdf} &
 %    Ronald Paul & Mark Critz \\
-  \vspace{-10pt}
-    \begin{tabular}{c}
-      \includegraphics[width=0.9\textwidth,height=0.7\textwidth]{chapter_spatial_voting_with_text/figures/3393_house_Ronald_Paul_400311.pdf} \\ \Large Ron Paul \\
-%      \includegraphics[width=0.4\textwidth]{figs/3393_house_Mark_Critz_412386.pdf} \\
-%      \includegraphics[width=0.45\textwidth]{figs/3393_house_Donald_Young_400440.pdf} \\
-      \includegraphics[width=0.9\textwidth,height=0.7\textwidth]{chapter_spatial_voting_with_text/figures/3393_house_Donald_Young_400440.pdf} \\ \Large Donald Young \\
-    \end{tabular}
-%%  \includegraphics[width=0.45\textwidth]{figs/3393_house_Ronald_Paul_400311.pdf}
-%    \includegraphics[width=0.24\textwidth]{figs/3393_house_Baron_Hill_400177.pdf} \\
+    \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3393_house_Ronald_Paul_400311.pdf} &
+    \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3393_house_Donald_Young_400440.pdf} \\
+    Ronald Paul (House Republican) & Donald Young (House Republican) \\
+%    \includegraphics[width=0.24\textwidth]{chapter_spatial_voting_with_text/figures/3393_house_Mark_Critz_412386.pdf} \\
+%    \includegraphics[width=0.24\textwidth]{chapter_spatial_voting_with_text/figures/3393_house_Baron_Hill_400177.pdf} \\
 %    Russell Feingold (Senate Democrat) & George Voinovich (Senate Republican) & Ronald Paul (House Republican) & Baron Hill (House Democrat) \\
-    % Russell Feingold (Senate Democrat) & George Voinovich (Senate Republican) & Ronald Paul (House Republican) & Mark Critz (House Democrat) \\
-  \vspace{-5pt}
-  \caption{Significant issue adjustments for exceptional senators in
-  Congress 111.  Statistically significant issue adjustments are shown with each $\times$.}
+%    Russell Feingold (Senate Democrat) & George Voinovich (Senate Republican) & Ronald Paul (House Republican) & Mark Critz (House Democrat) \\
+  \end{tabular}
+    \caption{Significant issue adjustments for exceptional senators in
+  Congress 111.  Each illustrated issue is significant to $p <
+  0.05$ by a permutation test.}
   \label{figure:significant_offsets}
-  \vspace{-5pt}
 \end{figure*}
 
 %% \subsubsection{Posterior Predictive Checks}
 
 %% Posterior predictive checks provide a way to check certain assumptions
-%% made by a statistical model \cite{gelman:1996}. A posterior predictive
+%% made by a statistical model \citep{gelman:1996}. A posterior predictive
 %% check compares the observed data set of votes $V^{\mbox{obs}}$ (earlier
 %% we called this $V$) with replicated draws $V^{\mbox{rep}}$ from the
 %% posterior:
@@ -2039,8 +2441,8 @@ $\mbox{Imp}_k$ for a larger selection of issues.
 
 %% \begin{figure}
 %%   \center
-%%   \includegraphics[height=0.4\textheight]{figs/3250_training_ppc.pdf} \\
-%%   \includegraphics[height=0.4\textheight]{figs/3250_test_ppc.pdf} \\
+%%   \includegraphics[height=0.4\textheight]{chapter_spatial_voting_with_text/figures/3250_training_ppc.pdf} \\
+%%   \includegraphics[height=0.4\textheight]{chapter_spatial_voting_with_text/figures/3250_test_ppc.pdf} \\
 %%   \caption{The likelihood of votes sampled from the variational
 %%   posterior $q(x)$ (blue lines) against the likelihood of observed
 %%   votes (black lines).  On top is training samples, while on bottom
@@ -2128,13 +2530,13 @@ $\mbox{Imp}_k$ for a larger selection of issues.
 
 %% \begin{figure*}
 %%   \center
-%%   \includegraphics[width=0.9\textwidth]{figs/3240_example_lawmaker_ips.pdf}
+%%   \includegraphics[width=0.9\textwidth]{chapter_spatial_voting_with_text/figures/3240_example_lawmaker_ips.pdf}
 %%   \caption{Sum-of-squared lawmaker offset $\bm \tilde z^T \bm \tilde z$ vs. Ideal Point.  Selected lawmakers are labeled.}
 %%   \label{figure:sso_by_ip}
 %% \end{figure*}
 
 %% \begin{figure*}
-%%   \includegraphics[width=1.0\textwidth]{figs/3240_legislator_subset_topics.pdf}
+%%   \includegraphics[width=1.0\textwidth]{chapter_spatial_voting_with_text/figures/3240_legislator_subset_topics.pdf}
 %%   \caption{Legislator topic intercepts for selected lawmakers and
 %%     topics.  Ideal point offsets $[0, X_u]$ are grey; the interval $[
 %%     X_u, X_u + X_u y_k ]$ is light and colored, and the interval $[X_u
@@ -2145,19 +2547,18 @@ $\mbox{Imp}_k$ for a larger selection of issues.
 %%     topics and $\lambda=10$.}
 %%   \label{figure:lawmaker_subset_ideal_points}
 %% \end{figure*}
+\paragraph{Extreme lawmakers.}
 
-We now look at specific lawmakers' voting patterns.  We focused this
-analysis again on the 111th House using $\lambda=1$. We fit
-issue-adjusted ideal points to all votes in the House and computed
-lawmakers' issue adjustments $\hat z_{uk}$, corrected for the
-lawmaker's political leaning (see supplementary section \S A.5 for how
-we obtain $\hat z_{uk}$ from $z_{uk}$).
-Figure~\ref{figure:significant_offsets} illustrates statistically
-significant issue preferences for several lawmakers from this Congress
-compared with twenty permutation replications.\footnote{We performed
-  permutation tests as in \mysec{performance} to assess 95\%
-  significance levels.  Details of these tests are provided in \S
-  A.5.}
+Using corrected issue adjustments, we identified several of the
+most-unique lawmakers.  We focused this analysis on votes from
+2009-2010, the most recent full session of Congress, using
+$\lambda=1$.  We fit the variational model to all votes in the House
+and computed lawmakers' corrected issue adjustments $\hat z_{uk}$, which are
+conditioned on their ideal points as described in
+Section~\ref{section:conditional_offets}.
+Figure~\ref{figure:significant_offsets} illustrates those issue
+preferences for several lawmakers from this Congress which significant
+under 20 permutation replications ($p < 0.05$).
 
 %\paragraph{Thomas Carper.} Senator Tom Carper, Democrat from 
 %\paragraph{Judd Gregg.} Judd Gregg, former Republican Senator of New Hampshire, was one of the most unique Senators of the 111th Congress.  Gregg is known for holding positions.  The issue-adjusted model found that Gregg leans conservatively regarding Race and Ethnicities, 
@@ -2175,7 +2576,7 @@ compared with twenty permutation replications.\footnote{We performed
 %% in the Health Care Bill were supported by \begin{quote} the Catholic
 %%   Health Association; many of the leading evangelical pastors in
 %%   America, Evangelicals for Social Action... as well as dozens of
-%%   other pro-life and faith leaders \cite{casey:2012}.
+%%   other pro-life and faith leaders \citep{casey:2012}.
 %% \end{quote}
 %% %These provisions were included in the health care reform bill, which
 %% %was overwhelmingly percieved as a Democratic bill.
@@ -2187,7 +2588,7 @@ compared with twenty permutation replications.\footnote{We performed
 %% Casey also falls on the Conservative side of education; again, his
 %% Website notes ``Washington must stop its gross under-funding of No
 %% Child Left Behind and give states more flexibility in meeting their
-%% goals.'' \cite{casey:2012}
+%% goals.'' \citep{casey:2012}
 
 %% \paragraph{George Voinovich.}
 %% George Voinovich, a Republican from Ohio, was one of the most unique
@@ -2208,26 +2609,26 @@ compared with twenty permutation replications.\footnote{We performed
 %% Voinovich also voted with Democrats for passage of the Small Business
 %% Jobs and Credit Act of 2010 (H.R. 5297).
 
-%This showed up in his vote in favor of the FDA Food Safety
-%Modernization Act, an overhaul of the nation's food safety system,
-% and a vote to repeal the Don't Ask Don't Tell
-%(S. 281). 
-%% Voinovich's strategic voting often agreed with Democrats on
-%% procedural votes (such as cloture motions and motions to proceed to
-%% consider certain bills).
-% 281 Don't Ask Don't tell.  
+%% %This showed up in his vote in favor of the FDA Food Safety
+%% %Modernization Act, an overhaul of the nation's food safety system,
+%% % and a vote to repeal the Don't Ask Don't Tell
+%% %(S. 281). 
+%% %% Voinovich's strategic voting often agreed with Democrats on
+%% %% procedural votes (such as cloture motions and motions to proceed to
+%% %% consider certain bills).
+%% % 281 Don't Ask Don't tell.  
 
 %% Voinovich was more right-wing on issues such as \emph{Health}; he
 %% voted with Republicans against the \emph{Patient Protection and
 %% Affordable Care Act} (i.e., the Health Care Reform Bill) (H.R. 3590).
 
-%% \paragraph{Russel Feingold.}
-%% Russell Feingold, a Democrat from Wisconsin, was one of the most unique
-%% Democratic Senators.  He 
+%% %% \paragraph{Russel Feingold.}
+%% %% Russell Feingold, a Democrat from Wisconsin, was one of the most unique
+%% %% Democratic Senators.  He 
 
-%% \paragraph{Baron Hill.}
-%% Baron Hill was a Democrat Representative for Indiana's 9th district.
-%% Hill tended to support
+%% %% \paragraph{Baron Hill.}
+%% %% Baron Hill was a Democrat Representative for Indiana's 9th district.
+%% %% Hill tended to support
 
 %% \paragraph{Mark Critz.}
 %% Mark Critz stood out as one of the most distinctive House Democrats by
@@ -2243,39 +2644,47 @@ compared with twenty permutation replications.\footnote{We performed
 %% Consumer Protection Act of 2009} (H.R. 4173).  Despite this, Critz
 %% sided with Democrats on many general issues.
 
-
-%% The reader may have noticed some peculiar issue preferences in
-%% Figure~\ref{figure:significant_offsets}.  For example, Mark Critz, the
-%% Democrat who leans right on business and finance, exhibits a
-%% left-leaning position on women.  This contrasts with public criticisms
-%% of Critz by groups such as Planned Parenthood, which is known
-%% to be left-leaning on women's issues [cite].
-
-%% Critz's few votes in the 111th House about women-related issues were
-%% all Democratic.  All bills on which he had voted, and which had at
-%% least 5\% weight in the \emph{Women} topic, were very popular
-%% bipartisan bills.
-
-\textbf{Ron Paul.}
-We return to Ron Paul, one of the most unique House Republicans, and
-who first motivated this analysis.  Paul's offsets were extreme; he
-voted more conservatively than expected on \emph{Health},
-\emph{Human rights} and \emph{International affairs}.  He voted more
-liberally on social issues such as \emph{Racial and ethnic relations}.
+\begin{itemize}
+  \item \textbf{Ron Paul.}
+We return to Ron Paul, one of the most unique House Republicans, and a
+lawmaker who first motivated this analysis.  Paul's offsets were very
+extreme; he tended to vote more conservatively than expected on
+\emph{Health}, \emph{Human rights} and \emph{International affairs}.
+He voted more liberally on social issues such as \emph{Ratial and
+  ethnic relations}, and broke with behavior expected under a
+procedural cartel (congressional sessions).
 The issue-adjusted training accuracy of Paul's votes increased from
 83.8\% to 87.9\% with issue offsets, placing him among the two
-most-improved lawmakers with this model.
+most-improved lawmakers with this model. %
 
 The issue-adjusted improvement $\mbox{Imp}_K$
-(Equation~\ref{equation:likelihood_improvement}), when restricted to
-Paul's votes, indicate significant improvement in \emph{International
-  affairs} and \emph{East Asia} (he tends to vote against
+(Equation~\ref{equation:likelihood_improvement}) when restricted to
+Paul's votes indicate significant improvement in \emph{International
+  affairs} and \emph{East Asia} (he tends votes against
 U.S. involvement in foreign countries); \emph{Congressional sessions};
 \emph{Human rights}; and \emph{Special months} (he tends to vote
-against recognition of special months and holidays).  The model hurt
-performance related to \emph{Law}, \emph{Racial and ethnic relations},
-and \emph{Business}, none of which were statistically significant
-issues for Paul.
+against recognition of months as special holidays).  The model
+actually hurt performance related to \emph{Law}, \emph{Racial and
+  ethnic relations}, and \emph{Business}.
+\item \textbf{Donald Young.}
+One of the most exceptional legislators in the 111th
+House was Donald Young, Alaska Republican.  Young stood out most in a
+topic used frequently in House bills about naming local landmarks. In
+many cases, Young voted against the majority of his party (and the
+House in general) on a series of largely symbolic bills and
+resolutions.  For example, in an \emph{agriculture} topic, Young voted
+(with only two other Republicans and against the majority of the
+House) \emph{not to} commend ``the members of the Agri-business
+Development Teams of the National Guard and the National Guard Bureau
+for their efforts... to modernize agriculture practices and increase
+food production in war-torn countries.'' %
+
+Young's divergent symbolic voting was also evident in a series of
+votes against naming various landmarks -- such as post offices -- in a
+topic about such symbolic votes.  Notice that Young's ideal point is
+not particularly distinctive: using the ideal point alone, we might
+not recognize his unique voting behavior.
+\end{itemize}
 
 % He seems to have an anti-women position in the media, e.g.
 % http://www.womenarewatching.org/candidate/mark-critz
@@ -2322,22 +2731,23 @@ issues for Paul.
 %% surprising.  Yet not all lawmakers with exceptional votes have
 %% outlying ideal points.
 
-\textbf{Donald Young.} One of the most exceptional legislators in the
-111th House was Alaska Republican Donald Young.  Young stood out most
-in a topic used frequently in House bills about naming local
-landmarks. In many cases, Young voted against the majority of his
-party (and the House in general) on a series of largely symbolic bills
-and resolutions.  For example, in an \emph{Agriculture} topic, Young
-voted (with only two other Republicans and against the majority of the
-House) \emph{not to} commend ``the members of the Agri-business
-Development Teams of the National Guard [to] increase food production
-in war-torn countries.''
+%% \paragraph{Donald Young.} The forteenth-most exceptional legislator in the 111th
+%% Congress was Donald Young (R-AK).  Young stood out most in a topic
+%% used frequently in House bills about naming local landmarks. In a
+%% number of cases, Young voted against the majority of his party (and
+%% the House in general) on a series of largely symbolic bills and
+%% resolutions.  For example, in an \emph{agriculture} topic, Young voted
+%% (with only two other Republicans and against the majority of the
+%% House) \emph{not to} commend ``the members of the Agri-business
+%% Development Teams of the National Guard and the National Guard Bureau
+%% for their efforts... to modernize agriculture practices and increase
+%% food production in war-torn countries.''
 
-Young's divergent voting was also evident in a series of
-votes against naming various landmarks--such as post offices--in a
-topic about such symbolic votes.  Notice that Young's ideal point is
-not particularly distinctive: using the ideal point alone, we would
-not recognize his unique voting behavior.
+%% Young's divergent symbolic voting was also evident in a series of
+%% votes against naming various landmarks -- such as post offices -- in a
+%% topic about such symbolic votes.  Notice that Young's
+%% ideal point is not particularly distinctive: using the ideal point
+%% alone, we might not recognize his unique voting behavior.
 
 % \paragraph{Heath Shuler}.  Another
 
@@ -2357,7 +2767,7 @@ not recognize his unique voting behavior.
 %%   more than 6,300 earmarks worth about \$23 billion. "It's sort of like
 %%   building highways by ransom," says Stephen Slivinski, a budget analyst
 %%   at the libertarian Cato Institute. "They divide the spoils in exchange
-%%   for a vote on the bill.''...  \cite{schulte:2005}.
+%%   for a vote on the bill.''...  \citep{schulte:2005}.
 %% \end{quote}
 %% An ideal point model cannot necessarily pull apart votes in cases like
 %% this.  However, an issue adjusted ideal point model can find
@@ -2380,210 +2790,1185 @@ not recognize his unique voting behavior.
 %% absolute adjustment) included \emph{Special weeks} (commemoration),
 %% \emph{Congressional Tributes}, and \emph{Sports and Recreation}.
 
-% Yet not all lawmakers oppose the bill:
+%% % Yet not all lawmakers oppose the bill:
+%% %% \begin{quote}
+%% %%   While the congressional largesse brings a rare moment of
+%% %%   bipartisanship on Capitol Hill, it has been condemned by deficit hawks
+%% %%   and the White House.
+%% %%   \citep{schulte:2005}
+%% %% \end{quote}
+
+%% %% Young has been described as one of the most corrupt Congresspersons by
+%% %% \emph{Citizens for Responsibility and Ethics in Washington (CREW)}
+%% %% \footnote{CREW is a non-partisan, non-profit organization which
+%% %%   monitors government integrity and manages lists of corrupt American
+%% %%   politicians}, an honor reserved for 5\% of the representatives in
+%% %%   this session of the House.  Young is widely known for his support of
+%% %%   the ``Bridge to Nowhere'':
+
+%% %% \begin{quote}The proposed bridge would be nearly as long as the Golden Gate
+%% %% Bridge and high enough for cruise ships to pass underneath. It's being
+%% %% paid for in part by \$223 million worth of designated funds, so-called
+%% %% earmarks, included in the \$286.4 billion federal highway and mass
+%% %% transit bill getting wrapped up by Congress last week. Critics call it
+%% %% the Bridge to Nowhere, and cite it as a prime example of congressional
+%% %% pork. "It is an abomination," says Steve Ellis of Taxpayers for Common
+%% %% Sense, a fiscal watchdog group. But Alaska Rep. Don Young, chair of
+%% %% the Committee on Transportation and Infrastructure, earmarked the
+%% %% project as "high priority." \citep{schulte:2005} \end{quote}
+
+%% %Yet Young is not alone in such spending.  As Schulte of US News
+%% %continues:
+
+%% %% With congressional pork and corruption as a motivation, and twenty-two
+%% %% of the 457 Representatives from Congress 111 considered corrupt by
+%% %% CREW, we formalize a test of legislative misbehavior with a
+%% %% significance test.  To do this, We first select a random 75\% training
+%% %% set of lawmakers and use univariate screening to select the four topic
+%% %% offsets most-highly correlated with corruption.  We then fit a
+%% %% logistic regression using these offsets as covariates to predict
+%% %% whether a lawmaker was corrupt.  This process of sampling, selection,
+%% %% model fit, and evaluation was repeated 500 times to estimate noise in
+%% %% the sampling process.
+
+
+\paragraph{Procedural Cartels.}
+\label{section:procural_cartel_theory}
+Above we briefly noted that Democrats and Republicans become
+\emph{more partisan} on procedural issues.  Lawmakers' more partisan
+voting on procedural issues can be explained by theories about
+partisan strategy in the House.  In this section we summarize a theory
+underlying this behavior and note several ways in which it is
+supported by issue adjustments.
+
+The sharp contrast in voting patterns between procedural votes and
+substantive votes has been noted and studied over the past century
+\citep{fenno:1965,jones:1964,cox:1993,cox:2002}.
+%%   \citet{jones:1964}
+%% summarizes a classic post-war perspective:
 %% \begin{quote}
-%%   While the congressional largesse brings a rare moment of
-%%   bipartisanship on Capitol Hill, it has been condemned by deficit hawks
-%%   and the White House.
-%%   \cite{schulte:2005}
+%%   Two types of majorities in the House are of interest
+%%   here--procedural and substantive. Procedural majorities are those
+%%   necessary to organize the House for business and maintain that
+%%   organization...  Leaders are selected and provided with a number of
+%%   bargaining advantages so that the House may perform its functions in
+%%   the political system.  Normally, membership of procedural majorities
+%%   and minorities coincides with that of the two political parties... \\
+%%   Whereas procedural majorities are relatively stable in
+%%   membership, the make-up of substantive majorities may well differ
+%%   issue to issue, since many substantive measures cut across party
+%%   lines.  Leaders are expected to build substantive majorities --
+%%   employing the many bargaining advantages provided by their
+%%   procedural majorities.  They are not expected, nor do they normally
+%%   have the power, to force members into substantive majorities.
+%%   \citet{jones:1964}
 %% \end{quote}
+\citet{cox:1993} provide a summary of this behavior:
+``parties in the House -- especially the majority party -- are a
+species of 'legislative cartel' [ which usurp the power ] to make
+rules governing the structure and process of legislation.''
+A defining assumption made by \citep{cox:2005} is that
+the majority party delegates an agenda-setting monopoly to senior
+partners in the party, who set the procedural agenda in the House
+\citep{cox:2005}.  As a result, the cartel ensures that senior members
+hold agenda-setting seats (such as committee chairs) while
+rank-and-file members of the party support agenda-setting decisions.
 
-%% Young has been described as one of the most corrupt Congresspersons by
-%% \emph{Citizens for Responsibility and Ethics in Washington (CREW)}
-%% \footnote{CREW is a non-partisan, non-profit organization which
-%%   monitors government integrity and manages lists of corrupt American
-%%   politicians}, an honor reserved for 5\% of the representatives in
-%%   this session of the House.  Young is widely known for his support of
-%%   the ``Bridge to Nowhere'':
+This \emph{procedural cartel theory} has withstood tests in which
+metrics of polarity were found to be \emph{greater} on procedural
+votes than substantive votes \citet{cox:1993,cox:2002,cox:2005}. We
+note that issue adjustments support this theory in several ways.
+First, lawmakers' systematic bias for procedural issues was
+illustrated and discussed in \mysec{party_bias} (see \myfig{issue_adjustment_distribution}):
+Democrats systematically lean left on procedural issues, while
+Republicans systematically lean right.  Importantly, this discrepancy
+is more pronounced among procedural issues than substantive ones.
+Second, lawmakers' positions on procedural issues are more partisan
+than expected under the underlying un-adjusted ideal points (see \mysec{conditional_offsets} and \myfig{issue_improvements_ideals}).  Finally, more extreme polarity
+and improved prediction on procedural votes (see \mysec{performance} and
+\myfig{bills_parameter_changes}) indicate that that issue adjustments
+for procedural votes are associated with \emph{more extreme} party
+affiliation -- also observed by \citet{cox:2002}.
 
-%% \begin{quote}The proposed bridge would be nearly as long as the Golden Gate
-%% Bridge and high enough for cruise ships to pass underneath. It's being
-%% paid for in part by \$223 million worth of designated funds, so-called
-%% earmarks, included in the \$286.4 billion federal highway and mass
-%% transit bill getting wrapped up by Congress last week. Critics call it
-%% the Bridge to Nowhere, and cite it as a prime example of congressional
-%% pork. "It is an abomination," says Steve Ellis of Taxpayers for Common
-%% Sense, a fiscal watchdog group. But Alaska Rep. Don Young, chair of
-%% the Committee on Transportation and Infrastructure, earmarked the
-%% project as "high priority." \cite{schulte:2005} \end{quote}
 
-%Yet Young is not alone in such spending.  As Schulte of US News
-%continues:
 
-%% With congressional pork and corruption as a motivation, and twenty-two
-%% of the 457 Representatives from Congress 111 considered corrupt by
-%% CREW, we formalize a test of legislative misbehavior with a
-%% significance test.  To do this, We first select a random 75\% training
-%% set of lawmakers and use univariate screening to select the four topic
-%% offsets most-highly correlated with corruption.  We then fit a
-%% logistic regression using these offsets as covariates to predict
-%% whether a lawmaker was corrupt.  This process of sampling, selection,
-%% model fit, and evaluation was repeated 500 times to estimate noise in
-%% the sampling process.
 
-%% \begin{figure}
-%%   \center
-%%   \begin{tabular}{cc}
-%%     \includegraphics[width=0.5\textwidth]{figs/3210_likelihood_corrupt_lawmakers.pdf}
-%%     & \includegraphics[width=0.5\textwidth]{figs/3210_discrepant_lawmakers.pdf} \\
-%%     (a) & (b) \\
+
+%% \subsection{An empirical analysis of voting patterns}
+%% \label{section:empirical_analysis}
+
+%% With the methods described in the last section, we now explore
+%% posterior estimates of issue adjustments $\bm \tilde z_k$.
+%% %% The issue-adjusted
+%% %% ideal point model (Equation~\ref{equation:exploratory_ipm_old}) is
+%% %% more general than classic ideal point models, but is this greater
+%% %% expressiveness useful for finding meaningful patterns in the data?  
+%% We begin this investigation by providing a closer look at the
+%% collection of lawmakers, bills, and roll-call votes.  We compare
+%% a posterior fit to this model with traditional ideal points and
+%% %%  idea
+%% %% there is a meaningful relationship between lawmakers, issues, and
+%% %% votes, and that the issue voting model is capturing these
+%% %% patterns.
+%% explore several interesting results of the model.
+
+%% %% Finally, in Section~\ref{section:exceptional_lawmakers}, we
+%% %% tie lawmakers' issue voting with lawmaker misbehavior and excessive
+%% %% (i.e., pork-barrel) spending.
+
+%% % \begin{wrapfigure}{r}{0.5\textwidth}
+%% %   \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3100_heldout_vote_summary.pdf}
+%% %    \caption{Predictive accuracy on heldout votes, using 6-fold
+%% %      cross-validation.}
+%% %    \label{figure:heldout_accuracy}
+%% %  \end{wrapfigure}
+%% %% The issue voting model is designed to discover how individual lawmakers vote on different issue
+%% %% areas.  In this section, we evaluate its performance in several ways.
+%% %% We first evaluate its performance on standard metrics, including
+%% %% classification accuracy on training data and held out test data.
+
+%% \subsubsection{Data and Experiment Setup}
+
+%% We studied U.S. Senate and House of Representative roll-call votes
+%% from 1999 to 2010.  This period spanned Congresses 106 to 111 and
+%% covered an historic period in recent U.S. politics, the majority of
+%% which Republican President George W. Bush held office.  Bush's
+%% inauguration and the attacks of September 11th, 2001 marked the first
+%% quarter of this period, followed by the wars in Iraq and Afghanistan.
+%% Congress became more partisan over this period, and Democratic
+%% President Obama was inaugurated in January 2009.
+
+%% We provide a more complete summary of statistics for our datasets in
+%% \S A.3. For context, the median session we considered had $540$
+%% lawmakers, $507$ bills, and $201,061$ votes in both the House and
+%% Senate.  Altogether, there were $865$ unique lawmakers, $3,113$ bills,
+%% and $1,208,709$ votes.
+
+%% \textbf{Corpus preparation.}
+%% \label{section:corpus_details}
+%% For each congress, we considered only bills for which votes were
+%% explicitly recorded in a roll-call.  We ignored votes on bills for
+%% which text was unavailable.  To fit the labeled topic model to each
+%% bill, we removed stop words and grouped common phrases as $n$-grams.
+%% All bills were downloaded from \verb!www.govtrack.us!
+%% \cite{{govtrack:2009}}, a nonpartisan website which provides records
+%% of U.S. Congressional voting. We fit the Senate and House separately
+%% for each two-year Congress because lawmakers' strategies change
+%% at each session boundary.
+%% %% The House and Senate have a different mix of Democrats and
+%% %% Republicans. Their strategies change every two years (in periods
+%% %% called Congresses), and they do not consider all of the same bills, so
+
+%% \subsubsection{Comparison of classic and exploratory ideal points}
+
+%% %% \label{section:jackman_vs_exploratory}
+%% %% \begin{figure}
+%% %%   \center
+%% %%   \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3393_issue_vs_ideal.pdf}
+%% %%   \label{figure:jackman_vs_offset}
+%% %%   \caption{Classic ideal points vs. issue-adjusted ideal points fit with
+%% %%   Variational Bayes in the 111th House of Representatives.
+%% %%   Republicans are the red cluster in the first quadrant, and Democrats
+%% %%   are the blue cluster in the third quadrant.}
+%% %% \end{figure}
+
+%% How do classic ideal points compare with issue-adjusted ideal points?
+%% We fit classic ideal points to the 111th House (2009 to 2010) to
+%% compare them with issue-adjusted ideal points $\tilde x_u$ from the
+%% same period, using regularization $\lambda=1$.
+%% %% using the variational algorithm described in the
+%% %% last section.  Classic ideal points are very similar to those in the
+%% %% issue-adjusted voting model.
+%% % using the MCMC implementation in Jackman
+%% %et al.'s \verb!pscl!  R package \cite{pscl:2010}.\footnote{Note that
+%% %Jackman et al. use a probit link function, while we use logistic.} 
+%% %We also fit the issue-adjusted ideal point model to the same set of votes
+%% %along with the documents' issue mixtures.
+%% %Figure~\ref{figure:jackman_vs_offset} compares the ideal points
+%% %inferred from each model. 
+%% The models' ideal points $\tilde x_u$ were very similar, correlated at 0.998.
+%% The biggest difference between the two is that traditional ideal points
+%% cleanly separate Democrats and Republicans in this period, while
+%% issue-adjusted ideal points had a less clean break. This is not
+%% surprising, because the issue-adjusted model is able to use other
+%% parameters---lawmakers' adjustments $\bm \tilde z_u$---to explain differences
+%% between the lawmakers.
+
+%% \subsubsection{Evaluation and significance}
+
+%% %% \begin{wrapfigure}{r}{0.5\textwidth}
+%% %%   \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3280_training_by_regularization.pdf}
+%% %%   \caption{The issue voting model is more expressive than ideal points.}
+%% %% \end{wrapfigure}
+%% We first evaluate the issue-adjusted model by measuring how it can
+%% predict held out votes.  (This is a measure of model fitness.)  We
+%% used six fold cross-validation.  For each fold, we computed the
+%% average predictive log-likelihood $\log p(v_{{ud} \mbox{\tiny Test}} |
+%% v_{{ud} \mbox{\tiny Train}}) = \log p(v_{{ud} \mbox{\tiny Test}} |
+%% \tilde x_u, \bm \tilde z_{u}, \tilde a_d, \tilde b_d, \expectq{\bm
+%%   \theta_d | \bm w})$ of the test votes and averaged this across
+%% folds.  We compared these with the ideal point model, evaluating the
+%% latter in the same way. Implementation details of the model fit are
+%% given in \S A.1.
+
+%% Note that we cannot evaluate how well this model predicts votes on a
+%% heldout bill $d$.  As with the ideal point model, our model cannot
+%% predict $\tilde a_d, \tilde b_d$ without votes on $d$.  Gerrish and Blei
+%% \cite{gerrish:2011} accomplished this by predicting $\tilde a_d$ and
+%% $\tilde b_d$ using the document's text. (Combining these two models is
+%% straightforward.)
+%% % The issue voting model contains the ideal point model as a special
+%% % case. Does this greater expressivity model meaningful patterns?
+%% % We answer this question by comparing the issue-adapted ideal point
+%% % model with two alternatives.
+
+%% %\subsubsection{Heldout log likelihood}
+%% \label{section:performance}
+%% \begin{table}
+%%   \caption{Average log-likelihood of heldout votes using six-fold cross validation. These results cover Congresses 106 to 111
+%%     (1999-2010) with regularization $\lambda=1$.  The issue-adjusted model yields higher heldout log-likelihood for all congresses in
+%%     both chambers than a standard ideal point model. Perm. Issue illustrates the issue model fit when bills' issue labels were randomly permuted. \emph{Perm. Issue} is results for the issue model fit using permuted document labels.}
+%%  \small
+%%  \center
+%%  \begin{tabular}{|c|cccccc|}
+%%     \hline
+%%     \textbf{Model} & \multicolumn{6}{|c|}{\textbf{Senate}} \\
+%%     \hline
+%%     \textbf{Congress} & \hspace{-4pt} 106 \hspace{-5pt}
+%%     & \hspace{-4pt} 107 \hspace{-5pt}
+%%     & \hspace{-4pt} 108 \hspace{-5pt}
+%%     & \hspace{-4pt} 109 \hspace{-5pt}
+%%     & \hspace{-4pt} 110 \hspace{-5pt}
+%%     & \hspace{-4pt} 111 \hspace{-4pt} \\
+%%     \hline
+%%     Ideal
+%%     & \hspace{-4pt} -0.209 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.209 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.182 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.189 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.206 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.182 \hspace{-4pt} \\
+%%     Issue
+%%     & \hspace{-4pt} \textbf{-0.208} \hspace{-5pt}
+%%     & \hspace{-4pt} \textbf{-0.209} \hspace{-5pt}
+%%     & \hspace{-4pt} \textbf{-0.181} \hspace{-5pt}
+%%     & \hspace{-4pt} \textbf{-0.188} \hspace{-5pt}
+%%     & \hspace{-4pt} \textbf{-0.205} \hspace{-5pt}
+%%     & \hspace{-4pt} \textbf{-0.180} \hspace{-4pt} \\
+%%     \hspace{-5pt} Perm. Issue \hspace{-5pt}
+%%     & \hspace{-4pt} -0.210 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.210 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.183 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.203 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.211 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.186 \hspace{-4pt} \\
+%%     % Permuted Issue & & & & & & \\
+%%     \hline
+%%     \hline
+%%     & \multicolumn{6}{|c|}{\textbf{House}} \\
+%%     \hline
+%%     Ideal & \hspace{-4pt} -0.168 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.154 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.096 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.120 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.090 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.182 \hspace{-4pt} \\
+%%     Issue
+%%     & \hspace{-4pt} \textbf{-0.166} \hspace{-5pt}
+%%     & \hspace{-4pt} \textbf{-0.147} \hspace{-5pt}
+%%     & \hspace{-4pt} \textbf{-0.093} \hspace{-5pt}
+%%     & \hspace{-4pt} \textbf{-0.116} \hspace{-5pt}
+%%     & \hspace{-4pt} \textbf{-0.087} \hspace{-5pt}
+%%     & \hspace{-4pt} \textbf{-0.180} \hspace{-4pt} \\
+%%     \hspace{-5pt} Perm. Issue \hspace{-5pt}
+%%     & \hspace{-4pt} -0.210 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.211 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.100 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.123 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.098 \hspace{-5pt}
+%%     & \hspace{-4pt} -0.187 \hspace{-4pt} \\
+%%     \hline
 %%   \end{tabular}
-%%   \caption{(a) Correlation between predicted probability of corruption
-%%     and corruption indicator.  Each histogram shows 500 random
-%%     training/test splits of 75\% and 25\%.  The right mode (in blue)
-%%     describes 500 estimates of correlation from this experiment.  The
-%%     left mode (in red) is a permutation test, in which lawmakers'
-%%     corruption estimates were shuffled randomly.  (b) Distribution of
-%%     lawmakers' sum-of-squared deviations from typical voting.}
-%%   \label{figure:corrupt_prediction}
-%% \end{figure}
+%%   \normalsize
+%%   \label{table:performance_comparison}
+%% \end{table}
 
-%% These samples are shown in Figure~\ref{figure:corrupt_prediction} (a).
-%% Correlation between the model's predictions and the true corrupt
-%% lawmakers was 0.27 on average; this mean was significantly higher than
-%% the shuffled baseline mean of 0.004 ($z$-score 61; $p<<10^{-10}$).
+%% %%We first demonstrate that a relationship exists between documents'
+%% %%issues $\bm \theta_d$ and lawmakers' votes $V_{ud}$.
+%% %%   The issue voting
+%% %% can be simplified to a slightly simpler version of
+%% %% Equation~\ref{equation:exploratory_ipm_old} via the two-stage model
+%% %% \begin{enumerate}
+%% %%   \label{equation:two_stage_model}
+%% %% \item Fit an ideal point model $X_u, A_d, B_d | V_{ud}$
+%% %% \item For each lawmaker $u$:
+%% %%   \begin{itemize}
+%% %%   \item Fit $W_u | X_u, A_d, B_d, V_{ud}, \bm \theta_d$ with
+%% %%     $L_1$-regularized logistic regression.
+%% %%   \end{itemize}
+%% %% \end{enumerate}
+%% %% (The difference between this version and the issue model is that we
+%% %% would repeat these steps until convergence in the issue model,
+%% %% conditioning step 1 on $W_u$ and $\bm \theta_d$.)  Per this exercise,
+%% %% we fit a Bayesian ideal point model using the algorithm described in
+%% %% Section~\ref{section:inference} and followed this with logistic
+%% %% regression using the $R$ package \verb!glmnet!  \cite{friedman:2010}.
+%% %% We fit this to the votes $V_{ud}$ and bills' topics $\bm \theta_1,
+%% %% \ldots, \bm \theta_D$ in Congress 109\footnote{Congress 109 was a
+%% %% reasonably representative sample by size.} with $\lambda=0.001$.  We
+%% %% then measured average log likelihood and accuracy of these votes under
+%% %% the model. % Training accuracy peaked at nearly 100\%.
 
-%% We can bolster this result by observing that lawmakers' sum-of-squared
-%% residuals are very highly related to corrupt behavior: corrupt
-%% lawmakers are 20\% more likely to have their sum-of-squared offsets
-%% greater than 1 than the remaining lawmakers is ($p < 10^{-4}$).
-%% Histograms of these values are illustrated in
-%% Figure~\ref{figure:corrupt_prediction} (b).
+%% %\begin{wrapfigure}{r}{0.5\textwidth}
+%% %% \begin{figure}
+%% %%   \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3390_training_by_regularization.pdf}
+%% %%   \caption{The issue voting model is more expressive than a
+%% %%     traditional ideal point model. Blue is the issue-adjusted model,
+%% %%     black is the ideal point model, and red is the issue-adjusted
+%% %%     model applied when bills' topic labels were randomly permuted.
+%% %%     Each point shows the training accuracy of an experiment.  The red
+%% %%     points show heldout likelihood when bills' issue labels were
+%% %%     permuted.}
+%% %%   \label{figure:training_accuracy_shuffle}
+%% %% \end{figure}
+%% %% %\begin{wrapfigure}{r}{0.5\textwidth}
+%% %% \begin{figure}
+%% %%   %\includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3292_adhoc_model_shuffle.pdf}
+%% %%   \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3292_adhoc_model_meanloglikelihood_shuffle.pdf}
+%% %%   \caption{The issue voting model predicts slightly better than an
+%% %%     ideal point model on heldout votes. Blue is the issue-adjusted
+%% %%     model, black is the ideal point model, and .  Each point shows the
+%% %%     heldout likelihood of an experiment; each point is the average
+%% %%     heldout likelihood across 6 folds.  The red points show heldout
+%% %%     likelihood when bills' issue labels were permuted.}
+%% %%   \label{figure:training_likelihood_shuffle}
+%% %% \end{figure}
 
-%% One of the most corrupt offsets was a topic about federal health
-%% assistance programs (average coefficient -0.13, \emph{veteran,
-%% veterans, medicare, hospital, medicaid, disability, care, ssa,
-%% medical}).  Corrupt lawmakers were over twice as likely to vote
-%% exceptionally in this topic, representing five of the 38 lawmakers
-%% ($p<0.028$ by the negative binomial distribution, not exceptional
-%% given the number of covariates considered).  In a related topic about
-%% healthcare (\emph{coverage, care, hospital, drug, health care, health
-%% insurance, social security act, provider}), Donald Young alone skewed
-%% the coefficient, voting far to the left ($Z_i=-5.5$) of his expected
-%% position.
+%% \textbf{Performance.}
+%% We fit the issue-adjusted model to both the House and Senate for
+%% Congresses 106 to 110 (1999-2010) with $\lambda=1$. For comparison we
+%% also fit an ideal point model to each of these congresses. In all
+%% Congresses and both chambers, the issue-adjusted model represents
+%% heldout votes with higher log-likelihood than an ideal point model. We
+%% summarize these results in Table~\ref{table:performance_comparison}.
 
-\subsubsection{Issue model misfit}
+%% \textbf{Sensitivity to regularization.}  We fit the
+%% issue-adjusted model to the 109th Congress (1999-2000) of the House
+%% and Senate for a range $\lambda=0.0001, \ldots, 1000$ of
+%% regularizations.  We fixed variance $\sigma_X^2, \sigma_Z^2,
+%% \sigma_a^2, \sigma_b^2=\exp({-}5)$. The variational implementation
+%% generalized well for the entire range, with heldout log likelihood
+%% highest for $1 \le \lambda \le 10$.
 
-Overall, the issue-adjusted ideal point model better fits legislative
-data than the traditional ideal point model
-(Table~\ref{table:performance_comparison}). In the 111th House, for
-example, the per-lawmaker improvement $\mbox{Imp}_u = \sum_D (J_{ud} - I_{ud})$ was
-invariably positive or negligible.  This is not surprising, as each
-lawmaker has many more parameters in the issue-adjusted model.
-In this section, we examine where it misfits the data to suggest further improvements.
-%% only one representative (Steve Kagan) had lower training log
-%% likelihood with the issue-adjusted model than with an ideal point
-%% model, but this effect was very small, and he was already very-well
-%% represented by ideal points.
+%% \textbf{Permutation test.} We used a permutation test to understand
+%% how the issue-adjusted model improves upon ideal point models.  This
+%% test strengthens the argument that \emph{issues} (and not some other
+%% model change, such as the increase in dimension) help to
+%% improve predictive performance. To do this test, we randomly
+%% permuted topic vectors' document labels to completely remove the
+%% relationship between topics and bills: $(\bm \theta_1,
+%% \ldots, \bm \theta_D) \mapsto (\bm
+%%   \theta_{\pi_i(1)} \ldots \bm \theta_{\pi_i(D)})$, for
+%% five permutations $\pi_1, \ldots, \pi_{5}$.  We then fit the issue
+%% model using these permuted document labels.  As shown in
+%% Table~\ref{table:performance_comparison}, models fit with the
+%% original, unpermuted issues always formed better predictions than
+%% models fit with the permuted issues. From this, we draw the conclusion
+%% that \emph{issues} indeed help the model to represent votes.
 
-Per-bill improvement $\mbox{Imp}_d = \sum_U (J_{ud} - I_{ud})$ gives us more insight
-into misfit because some bills were less-well fit under issue
-adjustments.  The bill which decreased the most from the ideal point
-model in the 111th House was the \emph{Consolidated Land, Energy, and
-  Aquatic Resources Act of 2010} (H.R. 3534).  This bill had
-substantial weight in five issues, with most in \emph{Public lands and
-  natural resources}, \emph{Energy}, and \emph{Land transfers}, but
-its placement in many issues harmed our predictions.  This
-effect---worse performance on bills about many issues---suggests that
-methods which represent bills more sparsely may perform better than
-the current model (at the expense of interpretability).
+%% %% \begin{figure}
+%% %%   % \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3292_adhoc_model_shuffle.pdf}
+%% %%   \center
+%% %%   \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3390_validation_by_regularization.pdf}
+%% %%   \caption{The issue voting model is more expressive when topics are
+%% %%   attached to the correct bills.  Black (dotted) is the ideal point
+%% %%   model; blue (solid) is the issue model; red dots is the issue model
+%% %%   with permuted topics; and orange (dashed) is MAP.  Each red circle
+%% %%   represents a random permutation of topic labels.}
+%% %%   \label{figure:validation_likelihood_shuffle}
+%% %% \end{figure}
 
-%% Where the model
-%% fit them with lower predictive accuracy, each lawmaker was still
-%% invariably fit with higher average vote log likelihood.
-%% Figure~\ref{figure:vote_improvement} illustrates typical changes in
-%% log-likelihood and predictive accuracy for members of the 111th House.
-%% \begin{figure}
+
+%% %%   This is striking, given the huge increase in parameter
+%% %% size for this model, and it contrasts sharply with the MAP estimate,
+%% %% which quickly overfit. With $\lambda < 10$, MAP training accuracy
+%% %% approached 100\% while its test accuracy quickly dropped. For
+%% %% $\lambda=10$, MAP issue adjustments $Z_{uk}$ were sometimes greater
+%% %% than $15$.  We believe the difference between these posterior
+%% %% estimates can be explained by the MAP implementation reaching poor
+%% %% local optima.
+
+%% % \subsection{Model evaluation}
+
+%% %% \subsubsection{In-sample analysis}
+
+%% %% To compare models, we evaluate predictive accuracy, the number of
+%% %% votes correctly predicted by a model divided by the total number of
+%% %% votes.
+
+%% %% \begin{figure*}
+%% %%   \center
+%% %% %  \includegraphics[width=0.6\textwidth]{chapter_spatial_voting_with_text/figures/3200_training_by_session.pdf} \\
+%% %%   \includegraphics[width=0.6\textwidth]{chapter_spatial_voting_with_text/figures/3200_validation_by_session.pdf} \\
+%% %%   \caption{Training accuracy by Congress (top) and validation accuracy
+%% %%   by Congress (bottom).  Green is Jackman's ideal points, violet is
+%% %%   variational, and brown is MAP.}
+%% %%   \label{figure:accuracy_by_session}
+%% %% \end{figure*}
+%% %% Figure~\ref{figure:accuracy_by_session}
+
+%% %% We also considered performance of
+%% %% Model~\ref{equation:exploratory_ipm_old}, which holds the global
+%% %% offset $\bm Y = \bm 0$.  There was no discernible difference in
+%% %% performance for this variant: the utility of
+%% %% Model~\ref{equation:exploratory_ipm} over
+%% %% \ref{equation:exploratory_ipm_old} appears to lie in its ability to
+%% %% provide more descriptive interpretations of lawmakers' deviations.
+
+%% %% \subsubsection{Accuracy of model on training data}
+%% %% A first check we make is the training accuracy of the models.
+%% %% Training accuracy is an important test of the flexibility of the
+%% %% model: it demonstrates that the model has the capacity to learn
+%% %% lawmakers' more-complicated voting behavior, provided that enough data
+%% %% is available.
+
+%% %% Figure~\ref{figure:accuracy_by_session} shows training accuracy for
+%% %% Congresses 106 to 110 and $\lambda=10$.  An important thing to note
+%% %% about this model is that the ideal point model has limited training
+%% %% accuracy; even for $\lambda=0.01$, test accuracy remains above 90\%.
+%% %% As expected, training accuracy increases as $\lambda \rightarrow 0$
+%% %% and decreases as $\lambda$ approaches its maximum of $1000$.  The MAP
+%% %% implementation has considerably higher training accuracy than the
+%% %% variational implementation; we believe this is because the variational
+%% %% implementation models the variance of each random variable, which
+%% %% regularized them further.
+
+%% %% \subsubsection{Accuracy of model on held-out votes}
+%% % \label{section:validation_discussion}
+
+%% \subsubsection{Checking issue affinity}
+%% Most political scientists are more interested in inspecting lawmakers'
+%% past voting behavior than predicting new votes.  We now demonstrate
+%% how the issue-adjusted ideal point model can be used for this purpose.
+%% We focus on an issue-adjusted model fit to all votes in the 111th
+%% House of Representatives (2009-2010). We begin with a look at several
+%% specific cases and then describe when the lawmakers' individual
+%% affinities are extreme enough to warrant inspection.
+
+%% \subsubsection{Issues improved by issue adjustment}
+%% %% Those issues which tended to be adjusted the most (by standard
+%% %% deviation of $\hat Z_k$) also tended to give issue-adjusted ideal
+%% %% points an edge over traditional ideal points.  
+%% We measure the performance improvement for any issue by comparing the
+%% training likelihoods of votes in the issue-adjusted and traditional
+%% ideal point models.  The issue-adjusted training log-likelihood of
+%% each vote is
+%% \begin{equation}
+%%   J_{ud} = 1_{\{v_{ud} = \mbox{\tiny Yes \normalsize}\}} p - \log(1 + \exp(p)),
+%% \end{equation}
+%% where $p = (\tilde x_u + \bm \tilde z_{u}^T \expectq{\bm \theta_d | \bm w} ) \tilde a_d
+%% + \tilde b_d$ is the log-odds of a vote under the issue adjusted
+%% voting model.  The corresponding log-likelihood
+%% $I_{ud}$ under the ideal point model is $p=\tilde x_u \tilde a_d +
+%% \tilde b_d$. The improvement of issue $k$ is then the sum of the
+%% improvement in log-likelihood weighted by each issue:
+%% \begin{equation}
+%%   \label{equation:likelihood_improvement}
+%%   \mbox{Imp}_k = \frac{\sum_{V_{ud}} \expectq{\bm \theta_{d_v k} | \bm w} (J_{ud} - I_{ud}) }
+%%        { \sum_{V_{ud}} \expectq{\bm \theta_{d_v k} | \bm w} }.
+%% \end{equation}
+%% A high value of $\mbox{Imp}_k$ indicates that issue $k$ is associated
+%% with an increase in log-likelihood, while a low value indicates that
+%% the issue saw a decrease in log-likelihood.
+
+%% %% \begin{figure}[t]
+%% %%   \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3393_interesting_offsets.pdf}
+%% %%   \caption{Log-likelihood increases when using adjusted ideal points
+%% %%   most for procedural and strategic votes and less for issues
+%% %%   frequently discussed during elections.  $\mbox{Imp}_k$ is shown on
+%% %%   the x-axis, while issues are spread on the y-axis for display.
+%% %%   The size of each issue $k$ shows the logarithm of the
+%% %%   weighted sum $\sum_{V_{ud}} \bm \theta_{dk}$ of votes about the
+%% %%   issue.}
+%% %%   \label{figure:issue_improvements}
+%% %% \end{figure}
+
+%% All issues increased log-likelihood; procedural issues such as
+%% \emph{Congressional sessions} (in contrast to substantive issues) were
+%% among the ``most-better'' predicted issues; they were also much more
+%% polarized.  This is a result predicted by \emph{procedural cartel
+%%   theory} \cite{fenno:1965,cox:1993,cox:2002,cox:2005}, which posits
+%% that lawmakers will be more polarized in procedural votes (which
+%% describe how Congress will be run) than substantive votes (which are
+%% the issues discussed during elections).  A substantive issue which was
+%% better-predicted was \emph{Finance}; we illustrate lawmakers'
+%% adjustments for this issue in
+%% Figure~\ref{figure:issue_improvements_ideals}.  The issues
+%% \emph{Women}, \emph{Religion}, and \emph{Military personnel} were
+%% nearly unaffected by lawmakers' offsets. In \S A.4, we illustrate
+%% $\mbox{Imp}_k$ for a larger selection of issues.
+
+%% \begin{figure*}[t]
+%%  \center \includegraphics[width=0.84\textwidth,height=0.25\textwidth]{chapter_spatial_voting_with_text/figures/3393_example_ideal_points_finance.pdf}
+%%  \vspace{-10pt}
+%% %  \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3393_example_ideal_points_congressional_sessions.pdf}
+%%  \small
+%%  \caption{Ideal points $x_u$ and issue-adjusted ideal points $x_u +
+%%    z_{uk}$ from the 111th House. Votes about Finance were better fit
+%%    with this model.  Republicans (red) saw more adjustment than
+%%    Democrats (blue). }
+%%  \normalsize
+%%   \label{figure:issue_improvements_ideals}
+%%   \vspace{-5pt}
+%% \end{figure*}
+%% %% These
+%% %% improvements $\mbox{Imp}_k$ were correlated with the standard
+%% %% deviation of residual offsets $\hat Z_k$ ($\sigma_{\mbox{cor}}=0.68$),
+%% %% but not with coefficients $\beta_k$ ($\sigma_{\mbox{cor}}=0.05$),
+%% %% indicating that issue offsets, and not ideal points, explain most of
+%% %% the improvement.
+%% %% We will take a closer look at this metric when we discuss specific
+%% %% lawmakers in the next section.
+
+%% \subsubsection{Analyzing lawmakers}
+
+%% %% The issues which saw the most overall adjustment, aside from
+%% %% procedural issues, were \emph{Appropriations} (spending) and
+%% %% \emph{Public land and natural resources}.
+
+%% \begin{figure*}
+%%   %  \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3293_Russell_Feingold_300042.pdf}
+%%   %  \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3293_Evan_Bayh_300006.pdf} \\
+%% %    \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3293_Thomas_Tom_Carper_300019.pdf} &
+%%     %Ken Salazar & Robert Casey \\
+%%     %\includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3293_Ken_Salazar_400619.pdf} &
+%% %    \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3293_house_Dennis_Kucinich_400227.pdf} \\
+%% %    \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3293_house_James_McDermott_400262.pdf} \\
 %%   \center
-%%   \includegraphics[width=0.5\textwidth]{figs/3294_accuracy_by_user_change.pdf}
-%%   \includegraphics[width=0.5\textwidth]{figs/3294_likelihood_by_user_change.pdf} \\
-%%   \caption{Average per-lawmaker training accuracy (left) and training
-%%   vote log likelihood (right).  Points above the diagonal are better
-%%   represented with the issue voting model.}
-%%   \label{figure:vote_improvement}
-%% \end{figure}
+%% %     Bob Casey
+%%     %\includegraphics[width=0.3\textwidth]{chapter_spatial_voting_with_text/figures/3293_Robert_Casey_412246.pdf} &
+%% %%     \begin{tabular}{c}
+%% %%       \includegraphics[width=0.24\textwidth]{chapter_spatial_voting_with_text/figures/3393_Russell_Feingold_300042.pdf} \\
+%% %%       Russell Feingold \\
+%% %%     \end{tabular}
+%% %%       &
+%% %%     \begin{tabular}{c}
+%% %%       \includegraphics[width=0.24\textwidth]{chapter_spatial_voting_with_text/figures/3393_George_Voinovich_300098.pdf} \\
+%% %%       George Voinovich \\
+%% %%     \end{tabular} \\
+%% %    Ronald Paul & Mark Critz \\
+%%   \vspace{-10pt}
+%%     \begin{tabular}{c}
+%%       \includegraphics[width=0.9\textwidth,height=0.7\textwidth]{chapter_spatial_voting_with_text/figures/3393_house_Ronald_Paul_400311.pdf} \\ \Large Ron Paul \\
+%% %      \includegraphics[width=0.4\textwidth]{chapter_spatial_voting_with_text/figures/3393_house_Mark_Critz_412386.pdf} \\
+%% %      \includegraphics[width=0.45\textwidth]{chapter_spatial_voting_with_text/figures/3393_house_Donald_Young_400440.pdf} \\
+%%       \includegraphics[width=0.9\textwidth,height=0.7\textwidth]{chapter_spatial_voting_with_text/figures/3393_house_Donald_Young_400440.pdf} \\ \Large Donald Young \\
+%%     \end{tabular}
+%% %%  \includegraphics[width=0.45\textwidth]{chapter_spatial_voting_with_text/figures/3393_house_Ronald_Paul_400311.pdf}
+%% %    \includegraphics[width=0.24\textwidth]{chapter_spatial_voting_with_text/figures/3393_house_Baron_Hill_400177.pdf} \\
+%% %    Russell Feingold (Senate Democrat) & George Voinovich (Senate Republican) & Ronald Paul (House Republican) & Baron Hill (House Democrat) \\
+%%     % Russell Feingold (Senate Democrat) & George Voinovich (Senate Republican) & Ronald Paul (House Republican) & Mark Critz (House Democrat) \\
+%%   \caption{Significant issue adjustments for exceptional senators in
+%%     Congress 111.  Statistically significant issue adjustments are
+%%     shown with each $\times$.}
+%%   \label{figure:significant_offsets}
+%% \end{figure*}
 
-%% \paragraph{Bill fit}
+%% %% \subsubsection{Posterior Predictive Checks}
 
-%% \begin{figure}
-%%   \center
-%%   \includegraphics[width=0.5\textwidth]{figs/3294_likelihood_by_doc_change.pdf}
-%%   \includegraphics[width=0.5\textwidth]{figs/3294_111_s3454_vote_predictions.pdf} \\
-%%   \caption{Average per-document training likelihood (left) and
-%%   training per-vote log likelihood for a poorly-fit single bill (S. 3454)
-%%   (right).  Points above the diagonal are better represented with the
-%%   issue voting model.}
-%%   \label{figure:vote_improvement}
-%% \end{figure}
-%% We can get a better sense of how the issue-adjusted model misfit by
-%% inspecting bills instead of lawmakers.  The \emph{National Defense
-%% Authorization Act} (S. 3454) was one of the bills which decreased the
-%% most in average vote log-likelihood -- when compared with the ideal
-%% point model.  Not surprisingly, this bill naturally expressed weight
-%% in the issues \emph{Armed forces and national security},
-%% \emph{Congressional oversight}, and \emph{Defense policy}.
+%% %% Posterior predictive checks provide a way to check certain assumptions
+%% %% made by a statistical model \cite{gelman:1996}. A posterior predictive
+%% %% check compares the observed data set of votes $V^{\mbox{obs}}$ (earlier
+%% %% we called this $V$) with replicated draws $V^{\mbox{rep}}$ from the
+%% %% posterior:
+%% %% \begin{equation}
+%% %%   V^{\mbox{rep}}_1, \ldots, V^{\mbox{rep}}_N \sim p(V | V^{\mbox{obs}})
+%% %%   \label{equation:sampled_votes}
+%% %% \end{equation}
+%% %% These samples are compared by defining a real-valued function $T$
+%% %% (called a \mbox{discrepancy}) of a data set, sampled or not, and using
+%% %% standard $p$-values to determine whether the observed data set is
+%% %% significantly different than the replicated data sets.
 
-%% \paragraph{Issue fit}
-%% We can also better understand model misfit by inspecting specific
-%% issues which were misfit.  We evaluated issues by taking the number of
-%% incorrectly-fit votes under the issue-adjusted model \emph{minus} the
-%% number of incorrect votes under a traditional ideal point model; this
-%% is the number of newly mis-predicted votes for each issue.  Those
-%% issues which had the most newly mis-predicted votes also had the most
-%% newly correctly-predicted votes, which is largely because they are
-%% simply hard to predict.  For example, \emph{Athletics} was one of the
-%% issues which saw the most most newly-mispredicted votes.  \emph{Postal
-%% Facilities} and \emph{Military Personnel} were other examples.
+%% %% The choice of discrepancy $T$ is important because it determines what
+%% %% conclusions we can draw about the model.  It therefore must be
+%% %% selected to inform model criticism. Note that these checks are
+%% %% flexible: we can incorporate external constants into it, and we can
+%% %% apply any check to individual lawmakers.
 
-%% \begin{figure}
-%%   \center
-%%   \includegraphics[width=0.5\textwidth]{figs/3280_new_unaffected_topics_are_previously_unaffected_topics.pdf}
-%%   \caption{The most mis-predicted issues}.
-%%   \label{figure:issue_misfit}
-%% \end{figure}
+%% %% We first describe a check which can help to diagnose posterior
+%% %% over-fitting.  For this check, we sample 250 sets of votes from the
+%% %% \emph{variational} posterior $q_{\bm \eta}(X, \bm Y, \bm Z, A, B)$ as
+%% %% in Equation~\ref{equation:sampled_votes}. For a discrepancy function,
+%% %% we define the discrepancy $T$ to be the average log-likelihood of the
+%% %% set of votes \emph{given the variational point-estimate}: $T(V) :=
+%% %% \expectp{ \log p(V | X = \tilde X, \ldots, B = \tilde B)}$.  Ideally,
+%% %% $T(V)$ will be high for both observed and sampled votes, and
+%% %% $T(V^{\mbox{obs}})$ will not be significantly different from
+%% %% $T(V^{\mbox{obs}})$.
 
-%% \subsection{Numerical stability and hyperparameter sensitivity}
-%% \label{section:numerical_stability}
+%% %% \begin{figure}
+%% %%   \center
+%% %%   \includegraphics[height=0.4\textheight]{chapter_spatial_voting_with_text/figures/3250_training_ppc.pdf} \\
+%% %%   \includegraphics[height=0.4\textheight]{chapter_spatial_voting_with_text/figures/3250_test_ppc.pdf} \\
+%% %%   \caption{The likelihood of votes sampled from the variational
+%% %%   posterior $q(x)$ (blue lines) against the likelihood of observed
+%% %%   votes (black lines).  On top is training samples, while on bottom
+%% %%   are test samples.}
+%% %%   \label{figure:ppc_lawmakers}
+%% %% \end{figure}
 
-%% \subsubsection{Hyperparameter settings}
-%% The main parameter in the issue voting model is the regularization
-%% term $\lambda$. The Bayesian treatment described in
-%% Section~\ref{section:inference} was robust to overfitting at the
-%% expense of precision.  With $\lambda=0.001$, for example, issue
-%% adjustments $\tilde Z_{uk}$ remained on the order of single digits. % , while
+%% %% Figure~\ref{figure:ppc_lawmakers} (top) shows this discrepancy for a
+%% %% selection of lawmakers discussed in
+%% %% Section~\ref{section:exceptional_lawmakers}. Here we compare votes
+%% %% sampled from the variational posterior with votes observed in a
+%% %% $\frac{5}{6}$ training fold of the $111$th House.\footnote{For
+%% %% reference, a log-likelihood of -0.5 is about the same as guessing 80\%
+%% %% of votes correctly, and a log-likelihood of -0.3 is the same as
+%% %% predicting 91\% of votes correctly.} In both cases, the discrepancy
+%% %% above was used.  In most cases, the likelihood of the observed votes is
+%% %% significantly higher than the likelihood of sampled votes.
 
-%% We recommend a value of $1 < \theta < 10$.  At this value, the model
-%% outperforms ideal points in validation experiments on both the House
-%% and Senate while maintaining stability in the two-stage model.
+%% %% This is not surprising, because we are using the data twice: first to
+%% %% fit the posterior, and second to define the discrepancy.  The
+%% %% variational point estimate is, further, defined to be the mode of the
+%% %% distribution.  We therefore repeat this exercise for votes in a
+%% %% held out fold, shown in Figure~\ref{figure:ppc_lawmakers}
+%% %% (bottom).  In the latter case, the log-likelihood of samples is
+%% %% evaluated using held out votes.  The spread of sampled likelihoods is
+%% %% larger in the test set than in the training set because these pairs
+%% %% were unobserved during training. At the same time, a significant
+%% %% number of lawmakers stand out as being very-well predicted and being
+%% %% very-poorly predicted.
 
-%% \subsubsection{Implementation.}
-%% %% %% This was not a problem in more recent runs.
-%% %% In rare circumstances, the variational and MAP estimates
-%% %% resulted in degenerate solutions, in which the model performed no
-%% %% better than assuming lawmakers vote \verb!yea!.  When we reran these
-%% %% experiments, the solution was no longer degenerate (this did not
-%% %% affect the reported median accuracy in
-%% %% Table~\ref{table:median_accuracy}).
+%% %% \paragraph{Misplaced confidence in votes.}
+%% %% The model tends to over-predict the likelihood of votes by lawmakers
+%% %% like Donald Young and Ron Paul: for both, the simulated votes had
+%% %% higher likelihood than held out votes.  This can be explained by either
+%% %% bias in the estimates or under-predicting variance.  In a scatter plot
+%% %% plot of lawmakers' variance, neither lawmaker stood out as
+%% %% exceptional.
 
-%% When performing the second-order updates described in
-%% Section~\ref{section:inference}, we skipped variable updates when the
-%% estimated Hessian was not positive definite (this disappeared when
-%% sample sizes grew large enough).  We also limited step sizes to 0.1
-%% (another possible reason for smaller coefficients).
+%% %% At the opposite extreme, the model tends to under-predict the
+%% %% log-likelihood of lawmakers such as Duncan Hunter and John Murtha.
+%% %% This can be explained by high variance in the prediction: the model
+%% %% places highest probability on the observed votes and lower probability
+%% %% on a typical, sampled vote.  In a scatter plot, both lawmakers had
+%% %% moderately high variance.
+
+%% %% Note that we cannot draw these conclusions from this check on the
+%% %% training folds alone: we would nearly always infer that the model
+%% %% should have lower variance if that were the case.
+
+%% %\subsection{Voting by issue affinity}
+
+%% %% \label{section:exceptional_lawmakers}
+%% %% One of the more interesting questions we can inspect is, ``which
+%% %% lawmakers make exceptional votes, and how are these votes
+%% %% exceptional?'' The parameters $\bm Z_u$ provide an indication of this:
+%% %% they capture lawmakers' exceptional voting patterns.
+
+%% %% We consider this question in a fit of the House of Representatives in
+%% %% the 111th Congress. This period was the first term of Barack Obama's
+%% %% presidency, a period during which Democrats held a majority in both
+%% %% the Senate (by a modest margin) and the House (by a large margin).
+%% %% With gasoline and health care prices soaring and the Great Recession
+%% %% taking hold as housing markets collapsed, significant legislation
+%% %% passed or considered during this time included the Patient Protection
+%% %% and Affordable Care Act (i.e., the ``Health Care Bill'') and
+%% %% legislation aimed at regulating Wall Street.  We used MAP estimates
+%% %% because they were accessible at the time this section was written.
+
+%% %% \subsubsection{Identifying exceptional issue voting}
+
+%% %% We can create a one-dimensional description of each lawmaker's
+%% %% uniqueness by using their sum-of-squared offsets $\bm \tilde Z_u^T \bm
+%% %% \tilde Z_u$. Lawmakers whose votes are typical will have relatively
+%% %% small residual sum-of-squares, while those whose votes stand out will
+%% %% have a much larger squared residual.
+
+%% %% We considered these offsets in a fit of a labeled topic model with 74
+%% %% labeled topics (see Section~\ref{section:lda} for a description of how
+%% %% these topics were obtained). Selected lawmakers' \emph{effective ideal
+%% %% points} $X_u + (X_u \bm Y + \bm Z_u)^T \bm \theta_d$ on a sample of
+%% %% topics are provided in
+%% %% Figure~\ref{figure:lawmaker_subset_ideal_points}.
+%% %% %Figure~\ref{figure:lawmaker_ideal_points} shows a random sample of
+%% %% %lawmakers (most of whom have a fairly low offset).
+
+%% %% \begin{figure*}
+%% %%   \center
+%% %%   \includegraphics[width=0.9\textwidth]{chapter_spatial_voting_with_text/figures/3240_example_lawmaker_ips.pdf}
+%% %%   \caption{Sum-of-squared lawmaker offset $\bm \tilde z^T \bm \tilde z$ vs. Ideal Point.  Selected lawmakers are labeled.}
+%% %%   \label{figure:sso_by_ip}
+%% %% \end{figure*}
+
+%% %% \begin{figure*}
+%% %%   \includegraphics[width=1.0\textwidth]{chapter_spatial_voting_with_text/figures/3240_legislator_subset_topics.pdf}
+%% %%   \caption{Legislator topic intercepts for selected lawmakers and
+%% %%     topics.  Ideal point offsets $[0, X_u]$ are grey; the interval $[
+%% %%     X_u, X_u + X_u y_k ]$ is light and colored, and the interval $[X_u
+%% %%     + X_u y_k, X_u + X_u y_k + Z_{uk}]$ (which is each lawmaker's
+%% %%     distinctive style) is given by a dark bar.  A lawmaker's
+%% %%     \emph{effective ideal point} $X_u + X_u y_k + Z_{uk}$ for each
+%% %%     topic is given by the crosshairs.  This figure used 74 labeled
+%% %%     topics and $\lambda=10$.}
+%% %%   \label{figure:lawmaker_subset_ideal_points}
+%% %% \end{figure*}
+
+%% We now look at specific lawmakers' voting patterns.  We focused this
+%% analysis again on the 111th House using $\lambda=1$. We fit
+%% issue-adjusted ideal points to all votes in the House and computed
+%% lawmakers' issue adjustments $\hat z_{uk}$, corrected for the
+%% lawmaker's political leaning (see supplementary section \S A.5 for how
+%% we obtain $\hat z_{uk}$ from $z_{uk}$).
+%% Figure~\ref{figure:significant_offsets} illustrates statistically
+%% significant issue preferences for several lawmakers from this Congress
+%% compared with twenty permutation replications.\footnote{We performed
+%%   permutation tests as in \mysec{performance} to assess 95\%
+%%   significance levels.  Details of these tests are provided in \S
+%%   A.5.}
+
+%% %\paragraph{Thomas Carper.} Senator Tom Carper, Democrat from 
+%% %\paragraph{Judd Gregg.} Judd Gregg, former Republican Senator of New Hampshire, was one of the most unique Senators of the 111th Congress.  Gregg is known for holding positions.  The issue-adjusted model found that Gregg leans conservatively regarding Race and Ethnicities, 
+
+%% %% \paragraph{Robert Casey.} Senator Casey, a Democrat from Pennsylvania,
+%% %% was one of the most unique Democratic Senators, having voted with his
+%% %% party 93\% of the time.  As a member of the Senate Committee on
+%% %% Health, Education, Labor and Pensions, Casey held strong positions on
+%% %% several of these areas. Casey's position on health was one of the few
+%% %% positions that belied his ideal point; his vote on the health care
+%% %% reform bill illustrates this.
+
+%% %% Yet Casey is more conservative than many Democrats on civil rights;
+%% %% his Website proudly notes that some of the provisions authored by him
+%% %% in the Health Care Bill were supported by \begin{quote} the Catholic
+%% %%   Health Association; many of the leading evangelical pastors in
+%% %%   America, Evangelicals for Social Action... as well as dozens of
+%% %%   other pro-life and faith leaders \cite{casey:2012}.
+%% %% \end{quote}
+%% %% %These provisions were included in the health care reform bill, which
+%% %% %was overwhelmingly percieved as a Democratic bill.
+%% %% Casey's votes reflected this position in, e.g., his support for an
+%% %% amendment allowing patients and healthcare providers to ``serve
+%% %% patients without violating their moral and religious convictions.''
+%% %% (SC Res. 13).
+
+%% %% Casey also falls on the Conservative side of education; again, his
+%% %% Website notes ``Washington must stop its gross under-funding of No
+%% %% Child Left Behind and give states more flexibility in meeting their
+%% %% goals.'' \cite{casey:2012}
+
+%% %% \paragraph{George Voinovich.}
+%% %% George Voinovich, a Republican from Ohio, was one of the most unique
+%% %% Senate Republicans by the issue voting model.  With an ideal point of
+%% %% 0.10, for example, he was one of only a handful of moderate
+%% %% Republicans.  Voting with his party only 69\% of the time, Voinovich
+%% %% fell into the bottom 6\% of Senators by this metric.
+%% %% % Maybe cite the Washington Post US Congress Votes Database, e.g.
+%% %% % http://projects.washingtonpost.com/congress/members/V000126/key-votes/
+
+%% %% By the model, Voinovich was more left-wing than expected on the issues
+%% %% \emph{Appropriations}, \emph{Business}, and \emph{House of
+%% %% Representatives}.  He voted with Democrats and against Republicans for
+%% %% a state Appropriations Act (H.R. 3081), for example, and voted with
+%% %% Democrats on a number of votes related to give House voting rights to
+%% %% Washington D.C. (e.g., S. 160).
+%% %% % As Amended; District of Columbia House Voting Rights Act of 2009 
+%% %% Voinovich also voted with Democrats for passage of the Small Business
+%% %% Jobs and Credit Act of 2010 (H.R. 5297).
+
+%% %This showed up in his vote in favor of the FDA Food Safety
+%% %Modernization Act, an overhaul of the nation's food safety system,
+%% % and a vote to repeal the Don't Ask Don't Tell
+%% %(S. 281). 
+%% %% Voinovich's strategic voting often agreed with Democrats on
+%% %% procedural votes (such as cloture motions and motions to proceed to
+%% %% consider certain bills).
+%% % 281 Don't Ask Don't tell.  
+
+%% %% Voinovich was more right-wing on issues such as \emph{Health}; he
+%% %% voted with Republicans against the \emph{Patient Protection and
+%% %% Affordable Care Act} (i.e., the Health Care Reform Bill) (H.R. 3590).
+
+%% %% \paragraph{Russel Feingold.}
+%% %% Russell Feingold, a Democrat from Wisconsin, was one of the most unique
+%% %% Democratic Senators.  He 
+
+%% %% \paragraph{Baron Hill.}
+%% %% Baron Hill was a Democrat Representative for Indiana's 9th district.
+%% %% Hill tended to support
+
+%% %% \paragraph{Mark Critz.}
+%% %% Mark Critz stood out as one of the most distinctive House Democrats by
+%% %% the issue voting model.  Critz only voted with his party 76\% of the
+%% %% time in the 111th Congress.
+
+%% %% Critz was more conservative than many Democrats on the issues of
+%% %% \emph{Business}, \emph{Finance}, \emph{Labor}, and \emph{Defense}.  On
+%% %% bills such as the \emph{Small Business Jobs Tax Relief Act of 2010}
+%% %% (H.R. 5486), his ideal point was almost 0.3 more conservative than
+%% %% usual, and he sided with Republicans on such votes. Likewise, he sided
+%% %% with Republicans in voting against the \emph{Wall Street Reform and
+%% %% Consumer Protection Act of 2009} (H.R. 4173).  Despite this, Critz
+%% %% sided with Democrats on many general issues.
+
+
+%% %% The reader may have noticed some peculiar issue preferences in
+%% %% Figure~\ref{figure:significant_offsets}.  For example, Mark Critz, the
+%% %% Democrat who leans right on business and finance, exhibits a
+%% %% left-leaning position on women.  This contrasts with public criticisms
+%% %% of Critz by groups such as Planned Parenthood, which is known
+%% %% to be left-leaning on women's issues [cite].
+
+%% %% Critz's few votes in the 111th House about women-related issues were
+%% %% all Democratic.  All bills on which he had voted, and which had at
+%% %% least 5\% weight in the \emph{Women} topic, were very popular
+%% %% bipartisan bills.
+
+%% \textbf{Ron Paul.}
+%% We return to Ron Paul, one of the most unique House Republicans, and
+%% who first motivated this analysis.  Paul's offsets were extreme; he
+%% voted more conservatively than expected on \emph{Health},
+%% \emph{Human rights} and \emph{International affairs}.  He voted more
+%% liberally on social issues such as \emph{Racial and ethnic relations}.
+%% The issue-adjusted training accuracy of Paul's votes increased from
+%% 83.8\% to 87.9\% with issue offsets, placing him among the two
+%% most-improved lawmakers with this model.
+
+%% The issue-adjusted improvement $\mbox{Imp}_K$
+%% (Equation~\ref{equation:likelihood_improvement}), when restricted to
+%% Paul's votes, indicate significant improvement in \emph{International
+%%   affairs} and \emph{East Asia} (he tends to vote against
+%% U.S. involvement in foreign countries); \emph{Congressional sessions};
+%% \emph{Human rights}; and \emph{Special months} (he tends to vote
+%% against recognition of special months and holidays).  The model hurt
+%% performance related to \emph{Law}, \emph{Racial and ethnic relations},
+%% and \emph{Business}, none of which were statistically significant
+%% issues for Paul.
+
+%% % He seems to have an anti-women position in the media, e.g.
+%% % http://www.womenarewatching.org/candidate/mark-critz
+%% % But our model says he leans left re. women.  Need to look into this more.
+%% % Why is this?
+
+%% %In favor of (with Reps): \emph{National Defense Authorization Act for
+%% %Fiscal Year 2011} (H.R. 5136) H RES 1556
+
+%% % Voted against \emph{Providing for Consideration of the Concurrent Resolution (H.Con.Res. 301) Directing the President, Pursuant to Section 5(C) of the War Powers Resolution, to Remove the United States Armed Forces From Pakistan} (H.RES. 1556)
+
+%% %% \paragraph{Dennis Kucinich.}
+%% %% One of the more left-wing members of the House of Representatives is
+%% %% Dennis Kucinich (D-OH): in many ways he is the complete opposite of
+%% %% very conservative members of Congress such as Ron Paul.  However,
+%% %% their sharp domestic differences stop at the border: the two
+%% %% Representatives agree on a very specific set of issues regarding
+%% %% foreign policy.
+
+%% %% Kucinich was exceptional in several foreign policy topics, well out of
+%% %% the ordinary given his voting patterns overall.  Kucinich's per-topic
+%% %% deviations are illustrated for several foreign policy topics in
+%% %% Figure~\ref{figure:significant_offsets}.
+
+%% %% Kucinich consistently voted against foreign policy decisions in which
+%% %% the United States played an outsize or contentious role in
+%% %% international affairs or conflicts.  For example, he voted against
+%% %% resolutions supporting missile defense collaboration between the
+%% %% United States and Israel, condemning Iran, supporting South Koreans
+%% %% injured by North Korean naval attacks, and.  In all of these cases,
+%% %% Kucinich voted in lockstep with Ronald Paul against the vast majority
+%% %% of representatives; in just one of these cases, the two were alone.
+
+%% %% \paragraph{Ron Paul.} Ron Paul stood out as the most exceptional
+%% %% Representative. Paul is widely known as a libertarian Republican,
+%% %% voting against the grain on many issues (as noted in the above with
+%% %% Kucinich).  Although Paul was not himself as exceptional in the
+%% %% foreign policy topic above, he was considerably more so in a topic
+%% %% about human rights, becoming twice as conservative as he normally is
+%% %% for this issue.
+
+%% %% Paul's exceptional voting behavior should not surprise those familiar
+%% %% with his Libertarian leanings; his extreme ideal point is likewise not
+%% %% surprising.  Yet not all lawmakers with exceptional votes have
+%% %% outlying ideal points.
+
+%% \textbf{Donald Young.} One of the most exceptional legislators in the
+%% 111th House was Alaska Republican Donald Young.  Young stood out most
+%% in a topic used frequently in House bills about naming local
+%% landmarks. In many cases, Young voted against the majority of his
+%% party (and the House in general) on a series of largely symbolic bills
+%% and resolutions.  For example, in an \emph{Agriculture} topic, Young
+%% voted (with only two other Republicans and against the majority of the
+%% House) \emph{not to} commend ``the members of the Agri-business
+%% Development Teams of the National Guard [to] increase food production
+%% in war-torn countries.''
+
+%% Young's divergent voting was also evident in a series of
+%% votes against naming various landmarks--such as post offices--in a
+%% topic about such symbolic votes.  Notice that Young's ideal point is
+%% not particularly distinctive: using the ideal point alone, we would
+%% not recognize his unique voting behavior.
+
+%% % \paragraph{Heath Shuler}.  Another
+
+%% %% \subsubsection{Exceptional voting and corrupt politics}
+%% %% \label{section:exceptional_lawmakers}
+
+%% %% With these lawmakers' exceptional votes in mind, we briefly return to
+%% %% typical votes in the U.S. Congress.  Many votes either have unanimous
+%% %% support or fall along party lines. Ninety-three percent of roll-call
+%% %% votes in the Senate can be correctly predicted with one-dimensional
+%% %% ideal points; this number is much higher in the House.  Yet
+%% %% traditional ideal point models can be muddled by votes on large
+%% %% spending projects, which can have support from both parties. As US
+%% %% News reports about the Bridge to Nowhere:
+%% %% \begin{quote}
+%% %%   Members of Congress stuffed the [ transportation legislation ] with
+%% %%   more than 6,300 earmarks worth about \$23 billion. "It's sort of like
+%% %%   building highways by ransom," says Stephen Slivinski, a budget analyst
+%% %%   at the libertarian Cato Institute. "They divide the spoils in exchange
+%% %%   for a vote on the bill.''...  \cite{schulte:2005}.
+%% %% \end{quote}
+%% %% An ideal point model cannot necessarily pull apart votes in cases like
+%% %% this.  However, an issue adjusted ideal point model can find
+%% %% nonpartisan patterns in such votes.
+
+%% %% Take Donald Young, for example, who proposed the Bridge to Nowhere.
+%% %% Young stood out as strongly atypical regarding \emph{Land transfers},
+%% %% with his ideal point moving him from a moderate Republican to a less
+%% %% moderate Democrat in these matters. Young has been described as one of
+%% %% the most corrupt Congresspersons by \emph{Citizens for Responsibility
+%% %%   and Ethics in Washington (CREW)} \footnote{CREW is a non-partisan,
+%% %%   non-profit organization which monitors government integrity and
+%% %%   manages lists of corrupt American politicians}, an honor reserved
+%% %% for 5\% of the representatives in this session of the House.  Not
+%% %% surprisingly, the issues most correlated with corruption were
+%% %% \emph{Health} (when leaning more left than expected),
+%% %% \emph{Minorities} (when leaning more left than expected), and
+%% %% \emph{Postal Facilities} (when leaning more right than expected).  In
+%% %% contrast, the issues least-correlated with corrupt politics (by
+%% %% absolute adjustment) included \emph{Special weeks} (commemoration),
+%% %% \emph{Congressional Tributes}, and \emph{Sports and Recreation}.
+
+%% % Yet not all lawmakers oppose the bill:
+%% %% \begin{quote}
+%% %%   While the congressional largesse brings a rare moment of
+%% %%   bipartisanship on Capitol Hill, it has been condemned by deficit hawks
+%% %%   and the White House.
+%% %%   \cite{schulte:2005}
+%% %% \end{quote}
+
+%% %% Young has been described as one of the most corrupt Congresspersons by
+%% %% \emph{Citizens for Responsibility and Ethics in Washington (CREW)}
+%% %% \footnote{CREW is a non-partisan, non-profit organization which
+%% %%   monitors government integrity and manages lists of corrupt American
+%% %%   politicians}, an honor reserved for 5\% of the representatives in
+%% %%   this session of the House.  Young is widely known for his support of
+%% %%   the ``Bridge to Nowhere'':
+
+%% %% \begin{quote}The proposed bridge would be nearly as long as the Golden Gate
+%% %% Bridge and high enough for cruise ships to pass underneath. It's being
+%% %% paid for in part by \$223 million worth of designated funds, so-called
+%% %% earmarks, included in the \$286.4 billion federal highway and mass
+%% %% transit bill getting wrapped up by Congress last week. Critics call it
+%% %% the Bridge to Nowhere, and cite it as a prime example of congressional
+%% %% pork. "It is an abomination," says Steve Ellis of Taxpayers for Common
+%% %% Sense, a fiscal watchdog group. But Alaska Rep. Don Young, chair of
+%% %% the Committee on Transportation and Infrastructure, earmarked the
+%% %% project as "high priority." \cite{schulte:2005} \end{quote}
+
+%% %Yet Young is not alone in such spending.  As Schulte of US News
+%% %continues:
+
+%% %% With congressional pork and corruption as a motivation, and twenty-two
+%% %% of the 457 Representatives from Congress 111 considered corrupt by
+%% %% CREW, we formalize a test of legislative misbehavior with a
+%% %% significance test.  To do this, We first select a random 75\% training
+%% %% set of lawmakers and use univariate screening to select the four topic
+%% %% offsets most-highly correlated with corruption.  We then fit a
+%% %% logistic regression using these offsets as covariates to predict
+%% %% whether a lawmaker was corrupt.  This process of sampling, selection,
+%% %% model fit, and evaluation was repeated 500 times to estimate noise in
+%% %% the sampling process.
+
+%% %% \begin{figure}
+%% %%   \center
+%% %%   \begin{tabular}{cc}
+%% %%     \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3210_likelihood_corrupt_lawmakers.pdf}
+%% %%     & \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3210_discrepant_lawmakers.pdf} \\
+%% %%     (a) & (b) \\
+%% %%   \end{tabular}
+%% %%   \caption{(a) Correlation between predicted probability of corruption
+%% %%     and corruption indicator.  Each histogram shows 500 random
+%% %%     training/test splits of 75\% and 25\%.  The right mode (in blue)
+%% %%     describes 500 estimates of correlation from this experiment.  The
+%% %%     left mode (in red) is a permutation test, in which lawmakers'
+%% %%     corruption estimates were shuffled randomly.  (b) Distribution of
+%% %%     lawmakers' sum-of-squared deviations from typical voting.}
+%% %%   \label{figure:corrupt_prediction}
+%% %% \end{figure}
+
+%% %% These samples are shown in Figure~\ref{figure:corrupt_prediction} (a).
+%% %% Correlation between the model's predictions and the true corrupt
+%% %% lawmakers was 0.27 on average; this mean was significantly higher than
+%% %% the shuffled baseline mean of 0.004 ($z$-score 61; $p<<10^{-10}$).
+
+%% %% We can bolster this result by observing that lawmakers' sum-of-squared
+%% %% residuals are very highly related to corrupt behavior: corrupt
+%% %% lawmakers are 20\% more likely to have their sum-of-squared offsets
+%% %% greater than 1 than the remaining lawmakers is ($p < 10^{-4}$).
+%% %% Histograms of these values are illustrated in
+%% %% Figure~\ref{figure:corrupt_prediction} (b).
+
+%% %% One of the most corrupt offsets was a topic about federal health
+%% %% assistance programs (average coefficient -0.13, \emph{veteran,
+%% %% veterans, medicare, hospital, medicaid, disability, care, ssa,
+%% %% medical}).  Corrupt lawmakers were over twice as likely to vote
+%% %% exceptionally in this topic, representing five of the 38 lawmakers
+%% %% ($p<0.028$ by the negative binomial distribution, not exceptional
+%% %% given the number of covariates considered).  In a related topic about
+%% %% healthcare (\emph{coverage, care, hospital, drug, health care, health
+%% %% insurance, social security act, provider}), Donald Young alone skewed
+%% %% the coefficient, voting far to the left ($Z_i=-5.5$) of his expected
+%% %% position.
+
+%% \subsubsection{Issue model misfit}
+
+%% Overall, the issue-adjusted ideal point model better fits legislative
+%% data than the traditional ideal point model
+%% (Table~\ref{table:performance_comparison}). In the 111th House, for
+%% example, the per-lawmaker improvement $\mbox{Imp}_u = \sum_D (J_{ud} - I_{ud})$ was
+%% invariably positive or negligible.  This is not surprising, as each
+%% lawmaker has many more parameters in the issue-adjusted model.
+%% In this section, we examine where it misfits the data to suggest further improvements.
+%% %% only one representative (Steve Kagan) had lower training log
+%% %% likelihood with the issue-adjusted model than with an ideal point
+%% %% model, but this effect was very small, and he was already very-well
+%% %% represented by ideal points.
+
+%% Per-bill improvement $\mbox{Imp}_d = \sum_U (J_{ud} - I_{ud})$ gives us more insight
+%% into misfit because some bills were less-well fit under issue
+%% adjustments.  The bill which decreased the most from the ideal point
+%% model in the 111th House was the \emph{Consolidated Land, Energy, and
+%%   Aquatic Resources Act of 2010} (H.R. 3534).  This bill had
+%% substantial weight in five issues, with most in \emph{Public lands and
+%%   natural resources}, \emph{Energy}, and \emph{Land transfers}, but
+%% its placement in many issues harmed our predictions.  This
+%% effect---worse performance on bills about many issues---suggests that
+%% methods which represent bills more sparsely may perform better than
+%% the current model (at the expense of interpretability).
+
+%% %% Where the model
+%% %% fit them with lower predictive accuracy, each lawmaker was still
+%% %% invariably fit with higher average vote log likelihood.
+%% %% Figure~\ref{figure:vote_improvement} illustrates typical changes in
+%% %% log-likelihood and predictive accuracy for members of the 111th House.
+%% %% \begin{figure}
+%% %%   \center
+%% %%   \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3294_accuracy_by_user_change.pdf}
+%% %%   \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3294_likelihood_by_user_change.pdf} \\
+%% %%   \caption{Average per-lawmaker training accuracy (left) and training
+%% %%   vote log likelihood (right).  Points above the diagonal are better
+%% %%   represented with the issue voting model.}
+%% %%   \label{figure:vote_improvement}
+%% %% \end{figure}
+
+%% %% \paragraph{Bill fit}
+
+%% %% \begin{figure}
+%% %%   \center
+%% %%   \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3294_likelihood_by_doc_change.pdf}
+%% %%   \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3294_111_s3454_vote_predictions.pdf} \\
+%% %%   \caption{Average per-document training likelihood (left) and
+%% %%   training per-vote log likelihood for a poorly-fit single bill (S. 3454)
+%% %%   (right).  Points above the diagonal are better represented with the
+%% %%   issue voting model.}
+%% %%   \label{figure:vote_improvement}
+%% %% \end{figure}
+%% %% We can get a better sense of how the issue-adjusted model misfit by
+%% %% inspecting bills instead of lawmakers.  The \emph{National Defense
+%% %% Authorization Act} (S. 3454) was one of the bills which decreased the
+%% %% most in average vote log-likelihood -- when compared with the ideal
+%% %% point model.  Not surprisingly, this bill naturally expressed weight
+%% %% in the issues \emph{Armed forces and national security},
+%% %% \emph{Congressional oversight}, and \emph{Defense policy}.
+
+%% %% \paragraph{Issue fit}
+%% %% We can also better understand model misfit by inspecting specific
+%% %% issues which were misfit.  We evaluated issues by taking the number of
+%% %% incorrectly-fit votes under the issue-adjusted model \emph{minus} the
+%% %% number of incorrect votes under a traditional ideal point model; this
+%% %% is the number of newly mis-predicted votes for each issue.  Those
+%% %% issues which had the most newly mis-predicted votes also had the most
+%% %% newly correctly-predicted votes, which is largely because they are
+%% %% simply hard to predict.  For example, \emph{Athletics} was one of the
+%% %% issues which saw the most most newly-mispredicted votes.  \emph{Postal
+%% %% Facilities} and \emph{Military Personnel} were other examples.
+
+%% %% \begin{figure}
+%% %%   \center
+%% %%   \includegraphics[width=0.5\textwidth]{chapter_spatial_voting_with_text/figures/3280_new_unaffected_topics_are_previously_unaffected_topics.pdf}
+%% %%   \caption{The most mis-predicted issues}.
+%% %%   \label{figure:issue_misfit}
+%% %% \end{figure}
+
+%% %% \subsection{Numerical stability and hyperparameter sensitivity}
+%% %% \label{section:numerical_stability}
+
+%% %% \subsubsection{Hyperparameter settings}
+%% %% The main parameter in the issue voting model is the regularization
+%% %% term $\lambda$. The Bayesian treatment described in
+%% %% Section~\ref{section:inference} was robust to overfitting at the
+%% %% expense of precision.  With $\lambda=0.001$, for example, issue
+%% %% adjustments $\tilde Z_{uk}$ remained on the order of single digits. % , while
+
+%% %% We recommend a value of $1 < \theta < 10$.  At this value, the model
+%% %% outperforms ideal points in validation experiments on both the House
+%% %% and Senate while maintaining stability in the two-stage model.
+
+%% %% \subsubsection{Implementation.}
+%% %% %% %% This was not a problem in more recent runs.
+%% %% %% In rare circumstances, the variational and MAP estimates
+%% %% %% resulted in degenerate solutions, in which the model performed no
+%% %% %% better than assuming lawmakers vote \verb!yea!.  When we reran these
+%% %% %% experiments, the solution was no longer degenerate (this did not
+%% %% %% affect the reported median accuracy in
+%% %% %% Table~\ref{table:median_accuracy}).
+
+%% %% When performing the second-order updates described in
+%% %% Section~\ref{section:inference}, we skipped variable updates when the
+%% %% estimated Hessian was not positive definite (this disappeared when
+%% %% sample sizes grew large enough).  We also limited step sizes to 0.1
+%% %% (another possible reason for smaller coefficients).
 
 \section*{Conclusions}
 
+Traditional models of roll call votes are limited in their ability to
+describe lawmakers or bills with meaningful labels.  In this chapter we 
 
-Traditional models of roll call data cannot capture how individual
-lawmakers deviate from their latent position on the political
-spectrum.  In this paper, we developed a model that captures how
-lawmakers vary, issue by issue, and used the text of the bills to
-attach specific votes to specific issues.  We demonstrated, across 12
-years of legislative data, that this model better captures lawmaker
-behavior.  We also illustrated how to use the model as an exploratory tool of legislative data.
+Traditional models of
+roll call data cannot capture how individual lawmakers deviate from
+their latent position on the political spectrum. In this chapter, we
+developed a model that captures how lawmakers vary, issue by issue,
+and used the text of the bills to attach specific votes to specific
+issues.  We demonstrated, across 12 years of legislative data, that
+this model better captures lawmaker behavior.  We also illustrated how
+to use these models as exploratory tools of legislative data.
+
+In the last chapter we described a latent-variable model for
+discovering ``influential'' documents in a time-series corpus.  We saw
+in particular that latent-variable models can be powerful because they
+enable us to allocate variables for the express purpose of inferring
+unknown quantities, even when there is relatively little explicit
+structure in the data.  Indeed, these models enable us to discover the
+structure.
+
+In the present chapter we demonstrated that latent variable models can provide
 
 Future areas of work include incorporating external behavior by
 lawmakers.  For example, lawmakers make some (but not all) issue
 positions public.  Many raise campaign funds from interest
 groups. Matching these data to votes would help us to understand what
 drives lawmakers' positions.
+
+In the next chapter we will demonstrate that 
