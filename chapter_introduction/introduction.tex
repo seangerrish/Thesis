@@ -1,55 +1,151 @@
-\chapter{Introduction}
+\chapter{Quantitative methods for social research in the digital age}
 
-Information is all around us.  Society interacts with this information
-in a complicated dance: information affects what we do, and we create
-further information -- books, scientific papers, legislation, and
-tweets -- as a result.  Information influences everything we say,
-think, and do.
+Quantitative social scientists often attempt to understand the
+behavior of political entities.  The digital age has brought to these
+researchers a deluge of digital records---particularly in the form of
+text---.  This avalanche of data provides more information to these
+scientists than they have had in the history of mankind.  Researchers
+are now able to pore over digital copies of all legally binding
+opinions written by United States Supreme Court Justices, or the text
+of thousands of bills voted on by members of Congress.  Even these
+numbers are dwarfed by the hundreds of thousands of newspaper articles
+written about the very bills written about international relations.
+Unfortunately, this flood of information obscures the very insights
+these researchers aim to discover.  Researchers trying to make sense
+of these collections are subject to the high costs of time spent
+poring over these collections in search of the few key insights.
 
+ % example questions: how to find phenomena in collections of text
+ % how to 
+% The goal of this thesis is to demonstrate that complex, meaningful patterns of
+% information can be gleaned
+% Society interacts with this information in
+% a complicated dance: information affects what we do, and we create
+% further information -- books, scientific papers, legislation, and
+% tweets -- as a result.  Information influences everything we say,
+% think, and do.
 The goal of this thesis is to describe several new statistical models
-for better understanding the interplay between text and society.
+to illustrate this -- and at the same time to provide tools for data
+consumers, practitioners, and researchers\footnote{Throughout this
+  work, I will refer to (data) consumers, practitioners, and
+  researchers.  Consumers are those who use processed results from
+  data analysis in some form but do not interact directly with the
+  data itself (for example, consumers may be directors in governments
+  or companies who make decisions based on these data).  Practitioners
+  are those who apply existing methods for data analysis, possibly
+  tweaking or combining these methods to answer specific questions
+  (such as database engineers or lab assistants). Researchers are
+  those who research entirely new methods for data analysis.  Note
+  that a social scientist may be a researcher in his or her field but
+  a practitioner in the field of data analysis.} to better
+understanding society through collections of text documents.  I will
+focus on three high-level research questions that dovetail off one
+another to illustrate the flexibility and interpretability of latent
+variable models in large-scale settings.
 
-\section{Social science data analysis}
+A central premise of this thesis is that these complex but
+interpretable patterns exist in nearly every collection of text
+documents, and that these patterns be discovered automatically to
+describe decisions and behavior of actors in the collection.  I will
+ground this discussion with the development of several specific models
+but take the position throughout this thesis that these methods draw
+from a suite of common tools which can be used again to construct
+models to address alternative questions.  I will use one of these
+projects as a running example through this chapter.
 
-\subsection*{The availability of observational social science data on a massive scale}
-  - observational social science data is available on a massive scale. \cite{lazer:2009}
-  - 
+\section*{Tools for analysis in social science}
 
-\subsection*{Text}
-Text data is the low-hanging fruit of most social science research
-questions.  Its ubiquity is due to the ease with which it
-can---must---be created, digitized, replicated, and stored.  The rate
-is staggering.  In 2008, the Internet was growing at a rate of several
-billion webpages per day \cite{googleblog:2008}.
+Political scientists and historians study world history with a
+magnifying glass.  Existing methods require painstaking study of
+individual documents.   make it challenging for them to I now discuss one of these
+models and the problem it solves to be concrete through the rest of
 
-Because of the ubiquity of text data, it provides most practitioners
-with an extremely rich source of data: documents, one of the basic
-units of information in text analysis, are an observation in an
-extremely high-dimensional and interpretable space
-\cite{changrtl:2009}.
+In a later chapter I will outline the method for inferring these relationships.
 
-- one of the central themes of this thesis is that text data serve as an observation of an underlying story underlying decisions and politics.
+the introduction.
 
-- often
+It also serves as a ``model of central
+tendancy'', in that it captures the intuition behind the other models
+we will discuss.
+
+
+But first, we turn to some of the challenges in analyzing collections like this.
+
+\subsection*{Digital text collections and the deluge of information}
+% The availability of observational social science data on a massive scale
+Observational social science data is available on a massive scale
+\cite{lazer:2009}. The National Archives, which collects information
+from over 500 federal agencies, is digitizing its collection of twelve
+\emph{billion} documents
+\cite{national_archives:2012a,national_archives:2012b}.
+
+This thesis will focus largely on text data.  Text data is the
+low-hanging fruit of most social science research questions.  It is
+ubiquitous because it can---indeed, it must---be easily created,
+digitized, and stored.  Just as text data is invaluable, the rate of
+growth of these text collections is staggering.  A single newspaper
+like the \emph{New York Times} publishes hundreds of thousands of
+articles each decade.  Of the National Archive's collection, billions
+of its documents are text
+\cite{national_archives:2012a,national_archives:2012b}.  The rate of
+growth for the World Wide Web is even more staggering.  As far back as
+2008, the Internet was already growing at a rate of several billion
+webpages per \emph{day} \cite{googleblog:2008}.
+
+%Because of this ubiquity and
+%richness of text data, it is an invaluable resource to researchers.
+
+\subsection*{The Curse of Dimensionality and the Blessing of Big Data}
+
+%  One of the most interesting 
+% - information in digital age -- this is the first time we have had so much data.  This flood is unmanageable in two senses:
+%   - first, data is high-p.  We can solve this by using statistical methods to summarize these observations.  
+%   - second, data is large-N.  We can solve this with computers.  However, note that only when N is large enough can we say anything useful about consistent patterns.
+One of the primary goals
+
+%   - one of the primary goals of the social scientist is to distill
+%   meaningful patterns from these collections of data.  With this flood
+%   of information, this can only be done in two ways:
+
+%   - by sampling this information -- in which case he may choose exemplary cases.
+%   - by distilling consistent patterns in the data which are useful.
+%   - A quantitative treatment will allow us to precisely describe these patterns.  The interpretation of these results is handled by the researcher.
+%     - Along these lines, this thesis will take
+
 
 \subsection*{Time-series data}
+One of the most basic questions in any collection of text documents
+is, ``which documents are the most important or influential''?
+
+In this research we do not address the question of causality.  Causal
+analysis is a rich field with
 
 \subsection*{Dyadic data: networks and interaction between entities}
-
-\subsection*{Dyadic data: networks and interaction between entities}
-
-\subsection*{The insufficiency of traditional methods}
-
-\subsection*{Causal inference in modern observational setting}
-
-\section*{The role of statistical machine learning}
+This question
 
 \subsection*{Probabilistic latent variable models and graphical models}
+
+\subsection*{The role of statistical machine learning}
+
+The basic unit of text analysis---a document---is an observation in an extremely
+high-dimensional space.%  \cite{changrtl:2009}.
+One of the central themes of this thesis is that text data serve as
+an observation of an underlying story underlying decisions and
+politics.
+
+- a computer-based treatment is \emph{necessary} if we want to handle
+large collections of data.  - a quantitative treatment is convenient
+because it is the language of and because it offers an explicit way to
+formalize our assumptions.
+
+Traditional methods cannot work because there are simply too many documents.  This means that researchers necessarily ignore huge swaths of data.
+
+% - A need to  perform inference on complicated datasets
+
+We will address these in the  next chapter.
 \cite{pearl:1985}
 
-\subsection*{Tools and abstractions for probabilistic inference}
-
-\subsection*{Ability to perform inference on complicated datasets}
+% - Tools and abstractions for probabilistic inference
 
 \section{Organization}
 
@@ -61,22 +157,67 @@ we will provide a lower level of detail about latent-variable models
 in the early chapters of this thesis when it is appropriate to help
 the reader understand the material.
 
-We begin by outlining preliminary material in Chapter 2, outlining the
-statistical ``primitives'' that we use as building blocks in later
-chapters, including tools for text analysis and time-series analysis.
+I provide preliminary material in Chapter 2, outlining the statistical
+``primitives'' that I will use as building blocks in later chapters.
+These primitives include statistical tools for working with text data,
+time-series data, and dyadic data.
 
-In chapter 3 we introduce a model for discovering important and
-influential documents in a time-series collection.
+\paragraph{Identifying influential documents.} In Chapter 3 I
+introduce a model for discovering important and influential documents
+in a collection of documents which has grown over time.  In
+collections of legal opinions, one of the most common questions posed
+by jurists\footnote{In political science, the word ``jurist'' often
+  refers to a judge, as opposed to a member of the public who votes on
+  the outcome of a trial.} is, ``which legal opinions have set the
+most precedent?''  This question plays a central role among
+researchers and archivists in fields outside of law and even motivated
+the algorithm behind Larry Page and Sergey Brin's PageRank algorithm,
+which recursively measures the influence of Webpages, as measured by
+the hyperlinks between Webpages
+\cite{garfield:1992,brin:1998,garfield:2002}.  In many real-world
+scenarios, however, explicit citations or hyperlinks are missing, and
+researchers only see the most basic metadata: documents' timestamps.
+I will validate this model on a set of several datasets, including several collections
+of academic articles and a set of opinions written by judges in the
+New York Appellate Courts system.
 
-In Chapter 4 we discuss legislative voting, a domain in which text
-additional data is present but the relationship between documents and
-lawmakers enables us to blah blah.
+\paragraph{Inferring history from a collection of newspaper articles.}
+In Chapter 4 I outline a model to address the question posed above, to
+better understand the relationships between countries over time and
+fit this to a collection of New York Times articles.  I demonstrate
+that this method discovers a more sophisticated latent story among
+documents, by developing a model of the relationships between
+countries over time.  As with the method in Chapter 3, this collection
+has only the text of these articles, which I augment with external
+information.  In this chapter I also incorporate important ideas from
+the field of dyadic spatial models, which can play a role in modeling
+various social science phenomena.
 
-In chapter 5 we will use the ideas developed in chapters 3 and 4 to
-discover a more sophisticated latent story among documents, by
-developing a model of the relationships between countries over time.
+% I will describe a method to discover
+% which documents are influential on the development of a collection of
+% text documents \emph{without} the use of metadata such as
+% citations---where by an ``influential'' document I mean one that uses
+% language which is adopted by others in the collection.
 
-We discuss details of a new variational inference algorithm in
-Appendix A, which can be treated as a stand-alone contribution of this
-thesis.  Further supplementary information for this thesis is provided
-in Appendix B.
+\paragraph{Inferring lawmakers' preferences.}
+In some cases, documents are labeled with some indication of
+lawmakers' preferences.  This happens when jurists vote in favor
+of---or against---opinions In the United States Congress, Senators and
+Representatives publicly state their opinions about bills passing
+through Congress.  While traditional methods provide some sense of
+this I will describe a method which uses the text of each bill to
+predict how lawmakers will vote on information attached to text
+documents, such as information about peoples' opinions of them?  I
+After this
+
+
+In Chapter 5 I will extend existing spatial models to better
+understand how Congressmen feel about different issues.  I begin with a
+model which is able to predict how lawmakers will vote on previously-unseen
+bills. I also describe a method for learning lawmakers' issue preferences 
+from their votes on different issues.
+
+I discuss details of a new variational inference algorithm -- which
+was used in Chpter 5--in Appendix A; this Appendix can be treated as a
+stand-alone contribution of this thesis.  I provide additional
+supplementary information for this thesis in Appendix B.

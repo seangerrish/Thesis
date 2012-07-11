@@ -30,11 +30,11 @@
   \else\thesubyear\fi}
 \def\@submittedmonth{\ifnum\month>10 January\else\ifnum\month>8 November
   \else\ifnum\month>6 September\else May\fi\fi\fi}
-\def\adviser#1{\gdef\@adviser{#1}}
+\def\advisor#1{\gdef\@advisor{#1}}
 \long\def\@abstract{\@latex@error{No \noexpand\abstract given}\@ehc}
 \newcommand*{\frontmatter}{
   \pagenumbering{roman}
-  }
+}
 \newcommand*{\mainmatter}{\pagenumbering{arabic}}
 \newcommand*{\makelot}{}
 \newcommand*{\makelof}{}
@@ -76,7 +76,7 @@
     Recommended for Acceptance \\
     by the \@deptpref \\
     \@dept \\
-    Adviser: \@adviser
+    Advisor: \@advisor
   \end{center}
   \vspace{.3in}
   \begin{center}
