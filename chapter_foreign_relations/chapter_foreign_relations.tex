@@ -312,13 +312,13 @@ paragraphs' words.  We trained and fit the model with the following procedure:
  \begin{table}[t]
    \caption{Average error predicting sentiment $s_d$ between heldout nation pairs for Correlates of War.}
    \begin{center}
-   \begin{tabular}{|c|c|c|}
+   \begin{tabular}{|c|c|c|c|}
      \hline
-     Dimension & Mean Squared Error & Mean Absolute Error \\
+     Dimension & & Mean Squared Error & Mean Absolute Error \\
      \hline
-     Text regression & 3.37 & 1.12 \\
+     Text regression & & 3.37 & 1.12 \\
      \hline
-     Mean & 3.68 & 1.19 \\
+     Mean & & 3.68 & 1.19 \\
      \hline
      \hline
      Dimension & Reversion variance & Mean Squared Error & Mean Absolute Error \\
@@ -370,7 +370,6 @@ of these nations' mentions had mean 0.12 and standard deviation
 appear to have a rocky relationship.
 
 % > a = read.csv("../../data/v4/v4-doc-training_samples.csv", as.is=TRUE, header=FALSE)
-
 
 
   %  We then evaluate perplexity

@@ -1,27 +1,25 @@
 
 % \section{Discussion}
 
-Traditional bibliometrics like citations are widely used for a wide
-variety of purposes. 
+\section{Conclusions}
 
-More importantly, past work focuses on predicting citations for
-corpora which have citations, while the DIM is developed for
+Traditional bibliometrics like citations are widely used for
+understanding collections of text documents.  Much of the past work
+for identifying influential documents focuses on predicting citations
+for corpora which have citations, while the DIM is developed for
 time-series corpora without bibliometrics.  We have demonstrated
 measured consistency with citations with the model, but the
 information provided by the model transcends this: the influence score
-has anecdotally been demonstrated to provide qualitatively
-different information than citations.
+has anecdotally been demonstrated to provide qualitatively different
+information than citations.
 
-\section{Conclusions and future work}
-
-We presented a time-series topic model for finding influential
-documents in long running sequential corpora.  Based only on the
-changing statistics of the language in a corpus, we computed a measure
-of influence that is significantly related to observed citation
-counts. It would be useful to better understand how this metric is
-qualitatively different from citations and other bibliometrics: expert
-judgment or usage information obtained from digital libraries might be
-some avenues.  We leave this for future work.
+Based only on the changing statistics of the language in a corpus, we
+computed a measure of influence that is significantly related to
+observed citation counts. That said, it would be useful to better
+understand how this metric is qualitatively different from citations
+and other bibliometrics: expert judgment or usage information obtained
+from digital libraries might be some avenues.  We leave this for
+future work.
 
 We considered several documents evaluated by the model:
 \cite{brown:1993} and \cite{toole:1984}, which both had high citations
@@ -38,21 +36,27 @@ These results demonstrate not just that the model is correlated with
 citations; it also suggests that the model provides qualitatively
 \emph{different} information than citations.
 
-The DIM could be made more realistic and more powerful in many
-ways.  In one variant, individual documents might have their own
-``windows'' of influence.  Other improvements may change the way ideas
-themselves are represented, e.g. as atomic units, or \emph{memes}
+The DIM could be made more realistic and more powerful in many ways.
+In one variant, individual documents might have their own ``windows''
+of influence.  Other improvements may change the way ideas themselves
+are represented, e.g. as atomic units, or \emph{memes}
 \cite{leskovec:2009}.  Further variants might differently model the
 flow of ideas, by modeling topics as birth and death processes, using
 latent force models \cite{alvarez:2009}, or by tracking influence
-\emph{between} documents, building on the ideas
-of~\cite{shaparenko:2007} or~\cite{dietz:2007}. % citet
+\emph{between} documents, building on the ideas of Shaparenko and
+Joachims~\cite{shaparenko:2007} or Dietz et
+al~\cite{dietz:2007}. % citet
 
-We hope to better understand the DIM in the context of traditional
-metrics of influence, such as academic citations, and other metrics of
-influence, such as usage data.  Understanding when this model and
+I also believe that it would be usefl to better understand models like
+the DIM in the context of traditional metrics of influence, such as
+academic citations, and other metrics of influence, such as usage
+data.  Having a better understanding of when this model and
 established metrics differ will uncover where our metric may provide
 new information that is not yet captured by existing statistics.
+
+In the next chapter I consider the problem of understanding the actual
+story within a collection of text documents.  This approach will use
+some of the same ideas from
 
 %\section{Acknowledgements}
 %The author would like to thank XXXX XXX, XXX XXX, and XXX XXX for

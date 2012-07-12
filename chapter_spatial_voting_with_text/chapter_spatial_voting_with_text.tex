@@ -374,9 +374,9 @@ represented as a graphical model in \myfig{legis_gm}.
 
 The only observed variables in the model are the bill texts and votes.
 Our goal in fitting this model is to uncover the posterior
-\begin{equation}
+\begin{align}
   p(a_d, b_d, x_u, \bm \eta, \beta, z, \theta | \bm W, \bm V), \label{eq:posterior}
-\end{equation}
+\end{align}
 which can then be used in exploratory or predictive tasks.
 Conditioned on these variables, our analysis proceeds with the
 posterior distribution of the ideal points, polarities and
@@ -584,11 +584,11 @@ means $\tau_u$, $\kappa_d$, $\ev$ and variances $\sigma_\tau^2$,
 $\sigma_\kappa^2$, $\sigma_\eta^2$. The variational distribution is
 \begin{align}
 \label{eq:var_post}
-q(\tau, & \sigma_\tau, \kappa, \sigma_\kappa, \phi, \theta) = \\
-& \prod_u q(x_u | \tau_u, \sigma_\tau^2 ) \times \prod_D q(a_d, b_d |
-\kappa_d, \sigma_\kappa^2 ) & \nonumber \\
-\textstyle & \times \prod_D q(\theta_d | \gamma_d) \prod_{N_d} p(z_n |
-\phi_n) \times q(\bm \eta | \ev, \sigma_{\ev}). \nonumber
+q(\tau, & \sigma_\tau, \kappa, \sigma_\kappa, \phi, \theta) =
+  \prod_u q(x_u | \tau_u, \sigma_\tau^2 ) \prod_D q(a_d, b_d |
+\kappa_d, \sigma_\kappa^2 )
+  \prod_D q(\theta_d | \gamma_d)
+  \prod_{N_d} p(z_n | \phi_n) q(\bm \eta | \ev, \sigma_{\ev}).
 \end{align}
 
 Inference proceeds by minimizing the KL between \myeq{var_post} and

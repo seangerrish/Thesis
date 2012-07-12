@@ -325,6 +325,7 @@ discover this kind of influence.
 % dmb: below, remind us 1st out of how many articles?
 % smg: Added 34,418.
 \begin{figure*}
+  \center
 \normalsize
 \begin{tabular}{c}
 \includegraphics[width=0.7\textwidth]{chapter_influence/figures/acl_brown.pdf}
@@ -380,13 +381,12 @@ Figure~\ref{fig:words} (right).  The plot shows some of the
 document's key words -- ``expression'', ``primer'', ``blot'' -- become
 prominent words in the topic.
 
-\section{New York Appellate Courts.}
+\subsection{An application to the New York Appellate Courts.}
 
-We finally apply this method to the New York Appellate Court
-system. The New York Appellate Court system hears appeals cases within
-the state of New York.  This court ``was established to articulate
+The New York Appellate Court system hears appeals cases within the
+state of New York.  This court ``was established to articulate
 statewide principles of law in the context of deciding particular
-lawsuits.'' \cite{foo}, acting as a form of ``Supreme Court'' for the
+lawsuits.''  \cite{foo}, acting as a form of ``Supreme Court'' for the
 state of New York.  Judges who hear these cases make decisions about
 the cases and write opinions summarizing their reasoning for these
 decisions.  These decisions and opinions are extremely important
@@ -420,14 +420,26 @@ We then fit a 40-topic model to this collection to discover
 influential documents.  Consistent with the scientific corpora, we
 measured a Spearman rank-correlation coefficient between posterior
 influence scores and the logarithm of citation counts at $\rho=0.24$.
-We also briefly discuss the results anecdotally below.
+We illustrate the fraction of citations explained by documents above
+different influence thresholds in
+\myfig{figure:nyca_citations_explained}.  We also briefly discuss the
+results anecdotally below.
 
-\paragraph{The Cardozo Topic.} Judge xxx Cardozo was one of the most
-well-known judges in American political history.  Cardozo is known for
-his and is considered to have had an outsize influence on judicial
-thought, writing thoughtful, deliberate opinions.  One of the more
-interesting topics discovered by our model in this collection
-identified language which was predominantly used by Judge xxx
-Cardozo.\footnote{A similar topic was discovered by a dynamic topic
-  model.}  This topic used phrases such as xxx, xxx, and xxx. The
-average ...
+\begin{figure}
+  \center
+  \includegraphics[width=0.4\textwidth]{chapter_influence/figures/fraction_docs_vs_fraction_citations.pdf}
+  \caption{Citations explained by influence score in the New York Appellate Courts.  Each point on the curve represents a different threshold of the influence score.  The x-axis describes threshold on the influence score, and the y-axis describes the fraction of citations for all documents which fall below this threshold.}
+  \label{figure:nyca_citations_explained}
+\end{figure}
+
+
+
+\paragraph{The Cardozo Topic.} Judge Benjamin Cardozo (later Justice
+Cardozo) was one of the most well-known judges in American political
+history.  Cardozo is known for his thoughtful, deliberate opinions and
+is considered to have had an outsize influence on judicial thought.
+One of the more interesting topics discovered by our model in this
+collection identified language which was predominantjuly used by Judge
+Benjamin Cardozo.\footnote{A similar topic was discovered by a dynamic
+  topic model.}  This topic used phrases such as xxx, xxx, and
+xxx. The average ...

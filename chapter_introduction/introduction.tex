@@ -3,7 +3,7 @@
 Quantitative social scientists often attempt to understand the
 behavior of political entities.  The digital age has brought to these
 researchers a deluge of digital records---particularly in the form of
-text---.  This avalanche of data provides more information to these
+text.  This avalanche of data provides more information to these
 scientists than they have had in the history of mankind.  Researchers
 are now able to pore over digital copies of all legally binding
 opinions written by United States Supreme Court Justices, or the text
@@ -43,7 +43,7 @@ focus on three high-level research questions that dovetail off one
 another to illustrate the flexibility and interpretability of latent
 variable models in large-scale settings.
 
-A central premise of this thesis is that these complex but
+An implicit premise of this thesis is that these complex but
 interpretable patterns exist in nearly every collection of text
 documents, and that these patterns be discovered automatically to
 describe decisions and behavior of actors in the collection.  I will
@@ -52,58 +52,29 @@ but take the position throughout this thesis that these methods draw
 from a suite of common tools which can be used again and again to
 construct models to address alternative questions.
 
-I will use one of these projects as a running example through this
-introduction.
+\section*{The deluge of information and some statistical tools
+  available to us}
 
-\section*{Tools for analysis in social science}
-
-Political scientists and historians study world history with a
-magnifying glass.  Existing methods require painstaking study of
-individual documents.   make it challenging for them to I now discuss one of these
-models and the problem it solves to be concrete through the rest of
-
-In a later chapter I will outline the method for inferring these relationships.
-
-the introduction.
-
-It also serves as a ``model of central
-tendancy'', in that it captures the intuition behind the other models
-we will discuss.
-
-
-But first, we turn to some of the challenges in analyzing collections like this.
-
-\subsection*{Digital text collections and the deluge of information}
 % The availability of observational social science data on a massive scale
-Observational social science data is available on a massive scale
-\cite{lazer:2009}. The National Archives, which collects information
-from over 500 federal agencies, is digitizing its collection of twelve
-\emph{billion} documents
-\cite{national_archives:2012a,national_archives:2012b}.
-
-This thesis will focus largely on text data.  Text data is the
-low-hanging fruit of most social science research questions.  It is
-ubiquitous because it can---indeed, it must---be easily created,
-digitized, and stored.  Just as text data is invaluable, the rate of
-growth of these text collections is staggering.  A single newspaper
-like the \emph{New York Times} publishes hundreds of thousands of
-articles each decade.  Of the National Archive's collection, billions
-of its documents are text
-\cite{national_archives:2012a,national_archives:2012b}.  The rate of
-growth for the World Wide Web is even more staggering.  As far back as
-2008, the Internet was already growing at a rate of several billion
-webpages per \emph{day} \cite{googleblog:2008}.
+Observational social science data -- including data about how
+organizations and the Government work -- is available on a massive
+scale \cite{lazer:2009}. The National Archives, which collects
+information from over 500 federal agencies, has been digitizing its
+collection of twelve \emph{billion} documents
+\cite{national_archives:2012a,national_archives:2012b}.  In the next
+few chapters, I will discuss several primitives that are useful for
+analyzing large collections of text data.  These themes include text
+data, dyadic relationships, and time-series collections.
 
 %Because of this ubiquity and
 %richness of text data, it is an invaluable resource to researchers.
 
-\subsection*{The Curse of Dimensionality and the Blessing of Big Data}
+% \subsection*{The Curse of Dimensionality and the Blessing of Big Data}
 
 %  One of the most interesting 
 % - information in digital age -- this is the first time we have had so much data.  This flood is unmanageable in two senses:
 %   - first, data is high-p.  We can solve this by using statistical methods to summarize these observations.  
 %   - second, data is large-N.  We can solve this with computers.  However, note that only when N is large enough can we say anything useful about consistent patterns.
-One of the primary goals
 
 %   - one of the primary goals of the social scientist is to distill
 %   meaningful patterns from these collections of data.  With this flood
@@ -114,55 +85,112 @@ One of the primary goals
 %   - A quantitative treatment will allow us to precisely describe these patterns.  The interpretation of these results is handled by the researcher.
 %     - Along these lines, this thesis will take
 
+\paragraph{Text data.} This thesis will focus largely on text data.
+Text data is the low-hanging fruit of most social science research
+questions.  It is ubiquitous because it can---indeed, it must---be
+easily created, digitized, and stored. One of the central themes of
+this thesis is that text data serve as an observation of an underlying
+story underlying decisions and politics.
 
-\subsection*{Time-series data}
-One of the most basic questions in any collection of text documents
-is, ``which documents are the most important or influential''?
+Just as text data is
+invaluable to researchers, the rate of growth of these text
+collections is staggering.  A single newspaper like the \emph{New York
+  Times} publishes hundreds of thousands of articles each decade.  Of
+the National Archive's collection, billions of its documents are text
+\cite{national_archives:2012a,national_archives:2012b}.  The rate of
+growth for the World Wide Web is even more staggering.  As far back as
+2008, the Internet was already growing at a rate of several billion
+webpages per \emph{day} \cite{googleblog:2008}.
 
-In this research we do not address the question of causality.  Causal
-analysis is a rich field with
+\paragraph{Time-series collections.}  Many datasets represent
+time-series observations.  This is one of the simplest types of
+metadata to attach to digital collections because it is described by a
+single scalar and because it is widely available.  In addition, the
+dimension of time is especially interesting to researchers because it
+is helpful in framing ideas such as temporal changes, and the
+prediction of future events.
 
-\subsection*{Dyadic data: networks and interaction between entities}
-This question
-
-\subsection*{Probabilistic latent variable models and graphical models}
+\paragraph{Dyadic observations.}  Dyadic relationships are one of the
+simplest ways to represent more complicated phenomena in a collection
+of data. In later chapters we will use spatial models to represent
+interactions of lawmakers-bill pairs (i.e., how congresspersons voted
+on bills) and country-country interactions (countries' sentiment
+toward one another).  As we will show, the underlying representation
+for these cases is very similar.
 
 \subsection*{The role of statistical machine learning}
 
-The basic unit of text analysis---a document---is an observation in an extremely
-high-dimensional space.%  \cite{changrtl:2009}.
-One of the central themes of this thesis is that text data serve as
-an observation of an underlying story underlying decisions and
-politics.
+The deluge of information available to researchers means that
+researchers cannot spend long looking over any document.  For example,
+a researcher drawing conclusions about patterns governing the
+relationships between pairs of countries, based on mentions of pairs
+of countries in the \emph{New York Times}, would need to spend every
+day of an entire year, twenty-four hours per day, two minutes per
+mention, to code the 300,200 interactions per pair of countries.  A
+\emph{computational} treatment is therefore necessary if researchers
+intend to handle large collections of data.
 
-- a computer-based treatment is \emph{necessary} if we want to handle
-large collections of data.  - a quantitative treatment is convenient
-because it is the language of and because it offers an explicit way to
-formalize our assumptions.
+In each of the models we will consider, the basic unit of analysis
+lives in an extremely high-dimensional space.  For example, treating
+text documents as bags of words still leaves the researcher with
+thousands of dimensions, and lawmakers described by their votes are
+still described by these thousands of
+dimensions.% \cite{changrtl:2009}.
+In addition to text, another recurring theme in this thesis is that
+these high-dimensional observations can be described by much
+lower-dimensional summaries without losing much of the relevant
+information.
 
-Traditional methods cannot work because there are simply too many documents.  This means that researchers necessarily ignore huge swaths of data.
+Computational approaches lend themselves to \emph{statistical}
+representations of these data because they provide an explicit way to
+formalize our assumptions.  Statistical representations are also
+convenient because computers can be programmed to speak in this
+language. Specifically, I will use probabilistic models to encode
+these statistical assumptions.  I will frequently use the paradigm of
+graphical models \cite{pearl:1985} to encode and describe our
+assumptions.  Because these statistical methods provide directed
+summaries, they can serve as optical lenses for researchers to analyze
+entire collections of documents.  I illustrate this with a cartoon in
+\myfig{person_data_lens}.  Statistical methods enable researchers to
+describe arbitrarily complex transformations of data with arbitrarily
+complex lenses, but I will demonstrate that a wide array of models can
+be created by nesting and re-using modules across different
+applications.
 
-% - A need to  perform inference on complicated datasets
-
-We will address these in the  next chapter.
-\cite{pearl:1985}
+\begin{figure}
+  \center
+  \begin{tabular}{ccc}
+    \includegraphics[width=0.3\textwidth,height=0.3\textwidth]{chapter_introduction/figures/person_data.pdf} &
+    \includegraphics[width=0.3\textwidth,height=0.3\textwidth]{chapter_introduction/figures/person_data_lens.pdf} &
+    \includegraphics[width=0.3\textwidth,height=0.3\textwidth]{chapter_introduction/figures/person_data_lens2.pdf} \\
+  \end{tabular}
+  \caption{A cartoon illustration of the role of statistical models in
+    large-scale data analysis.  Left: large data collections are too
+    large to handle without special tools. Center, Right: statistical
+    models serve as lenses which can be nested, adjusted, and
+    custom-designed to glean latent structure from large or complex
+    datasets.  Our statistical assumptions define the shape and
+    optical characteristics of these lenses.}
+  \label{figure:person_data_lens}
+\end{figure}
 
 % - Tools and abstractions for probabilistic inference
 
-\section{Organization}
+\section*{Organization}
 
 By the end of this thesis, the reader should have a better
-understanding of several models available to social scientists.
+understanding of several new models available to social scientists.
 Perhaps more importantly, the reader will be prepared to design his or
-her own latent-variable model for similar applications. To this end,
-we will provide a lower level of detail about latent-variable models
-in the early chapters of this thesis when it is appropriate to help
-the reader understand the material.
+her own latent-variable model for similar applications.
 
-I provide preliminary material in Chapter 2, outlining the statistical
+To this end, I will provide a lower level of detail about
+latent-variable models in the early chapters of this thesis when it is
+appropriate to help the reader understand the material.  I provide
+preliminary material in Chapter 2, outlining the statistical
 ``primitives'' that I will use as building blocks in later chapters.
-These primitives include statistical tools for working with text data,
-time-series data, and dyadic data.
+These primitives include the basic statistical tools for working with
+text data, time-series data, and dyadic data as well as details about
+Bayesian inference.
 
 \paragraph{Identifying influential documents.} In Chapter 3 I
 introduce a model for discovering important and influential documents
@@ -179,21 +207,21 @@ the hyperlinks between Webpages
 \cite{garfield:1992,brin:1998,garfield:2002}.  In many real-world
 scenarios, however, explicit citations or hyperlinks are missing, and
 researchers only see the most basic metadata: documents' timestamps.
-I will validate this model on a set of several datasets, including several collections
-of academic articles and a set of opinions written by judges in the
-New York Appellate Courts system.
+I will validate this model on a set of several datasets, including
+several collections of academic articles and a set of opinions written
+by judges in the New York Appellate Courts system.
 
 \paragraph{Inferring history from a collection of newspaper articles.}
 In Chapter 4 I outline a model to address the question posed above, to
-better understand the relationships between countries over time and
-fit this to a collection of New York Times articles.  I demonstrate
-that this method discovers a more sophisticated latent story among
-documents, by developing a model of the relationships between
-countries over time.  As with the method in Chapter 3, this collection
-has only the text of these articles, which I augment with external
-information.  In this chapter I also incorporate important ideas from
-the field of dyadic spatial models, which can play a role in modeling
-various social science phenomena.
+better understand the relationships between countries over time.  I
+will fit this to a collection of New York Times articles and
+demonstrate that this method discovers a more sophisticated latent
+story among documents, by developing a model of the relationships
+between countries over time.  As with the method in Chapter 3, this
+collection has only the text of these articles, which I augment with
+external information.  In this chapter I also incorporate important
+ideas from the field of dyadic spatial models, which can play a role
+in modeling various social science phenomena.
 
 % I will describe a method to discover
 % which documents are influential on the development of a collection of
@@ -202,24 +230,17 @@ various social science phenomena.
 % language which is adopted by others in the collection.
 
 \paragraph{Inferring lawmakers' preferences.}
-In some cases, documents are labeled with some indication of
-lawmakers' preferences.  This happens when jurists vote in favor
-of---or against---opinions In the United States Congress, Senators and
-Representatives publicly state their opinions about bills passing
-through Congress.  While traditional methods provide some sense of
-this I will describe a method which uses the text of each bill to
-predict how lawmakers will vote on information attached to text
-documents, such as information about peoples' opinions of them?  I
-After this
-
 
 In Chapter 5 I will extend existing spatial models to better
-understand how Congressmen feel about different issues.  I begin with a
-model which is able to predict how lawmakers will vote on previously-unseen
-bills. I also describe a method for learning lawmakers' issue preferences 
-from their votes on different issues.
+understand how Congressmen feel about different issues.  I begin with
+a model which is able to predict how lawmakers will vote on
+previously-unseen bills. I also describe a method for learning
+lawmakers' issue preferences from their votes on different issues.
+These models contrast with those in chapters 3 and 4 in that I ignore
+documents' timestamps but assume that dyadic pairs are explicitly
+labeled, and that each pair is attached to a separate text document.
 
-I discuss details of a new variational inference algorithm -- which
-was used in Chpter 5--in Appendix A; this Appendix can be treated as a
+In Appendix A I discuss details of a new variational inference algorithm -- which
+will be used in Chapter 5.  This Appendix can be treated as a
 stand-alone contribution of this thesis.  I provide additional
 supplementary information for this thesis in Appendix B.
