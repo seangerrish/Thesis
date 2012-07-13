@@ -189,10 +189,11 @@ appropriate to help the reader understand the material.  I provide
 preliminary material in Chapter 2, outlining the statistical
 ``primitives'' that I will use as building blocks in later chapters.
 These primitives include the basic statistical tools for working with
-text data, time-series data, and dyadic data as well as details about
+text data, time-series data, and dyadic data.  This chapter also
+provides a high-level introduction to the tools we will use for
 Bayesian inference.
 
-\paragraph{Identifying influential documents.} In Chapter 3 I
+\paragraph{Identifying influential documents.} In \mychap{influence} I
 introduce a model for discovering important and influential documents
 in a collection of documents which has grown over time.  In
 collections of legal opinions, one of the most common questions posed
@@ -212,10 +213,10 @@ several collections of academic articles and a set of opinions written
 by judges in the New York Appellate Courts system.
 
 \paragraph{Inferring history from a collection of newspaper articles.}
-In Chapter 4 I outline a model to address the question posed above, to
-better understand the relationships between countries over time.  I
-will fit this to a collection of New York Times articles and
-demonstrate that this method discovers a more sophisticated latent
+In \mychap{foreign_relations} I outline a model to address the question
+posed above, to better understand the relationships between countries
+over time.  I will fit this to a collection of New York Times articles
+and demonstrate that this method discovers a more sophisticated latent
 story among documents, by developing a model of the relationships
 between countries over time.  As with the method in Chapter 3, this
 collection has only the text of these articles, which I augment with
@@ -231,7 +232,7 @@ in modeling various social science phenomena.
 
 \paragraph{Inferring lawmakers' preferences.}
 
-In Chapter 5 I will extend existing spatial models to better
+In \mychap{spatial_voting} I will extend existing spatial models to better
 understand how Congressmen feel about different issues.  I begin with
 a model which is able to predict how lawmakers will vote on
 previously-unseen bills. I also describe a method for learning
@@ -240,7 +241,12 @@ These models contrast with those in chapters 3 and 4 in that I ignore
 documents' timestamps but assume that dyadic pairs are explicitly
 labeled, and that each pair is attached to a separate text document.
 
-In Appendix A I discuss details of a new variational inference algorithm -- which
-will be used in Chapter 5.  This Appendix can be treated as a
-stand-alone contribution of this thesis.  I provide additional
-supplementary information for this thesis in Appendix B.
+\paragraph{Additional materials.}
+In Appendix~\ref{chapter:stochastic_variational_optimization} I
+discuss details of a new variational inference algorithm which is used
+in \mychap{spatial_voting}.  This Appendix can be treated as a
+stand-alone contribution of this thesis, making a quantitative rather
+than a substantive contribution.  I provide additional supplementary
+information for these chapters in
+Appendix~\ref{chapter:supplementary_materials} as well as notes on
+analysis of text datasets in Appendix~\ref{chapter:notes_text}.

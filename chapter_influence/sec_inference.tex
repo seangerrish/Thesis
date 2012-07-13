@@ -53,15 +53,19 @@ In full, the variational distribution is
 % dmb: in general, clean up this equation.  i'm not sure you need the
 % first integral.  it suffices to go right to the terms.  and, i think
 % that multiple sums will look better than parentheses.
-Using this variational family, our goal is to maximize the Evidence Lower Bound (Elbo) $\mathcal{L}$ on the model evidence of the observed words $\W$:
+Using this variational family, our goal is to maximize the Evidence Lower Bound (ELBO) $\mathcal{L}$ on the model evidence of the observed words $\W$:
 \begin{align}
   \label{eq:elbo}
-  \ln p(\W) \geq & \mathcal{L}(\bv, \phi, \gamma) \\ \nonumber
+  \ln p(\W) \geq & \mathcal{L}(\bv, \vphi, \gamma) \\
   = & \sum_T \expectq{\ln p(\beta_{t} | \beta_{t-1})} 
-  + \sum_{T} \sum_{D_t} \expectq{\ln p(\ell_{d})} + \expectq{\ln p(\theta_{d} | \alpha)} \\ \nonumber
+  + \sum_{T} \sum_{D_t} \expectq{\ln p(\ell_{d})} + \expectq{\ln p(\theta_{d} | \alpha)} \label{eq:elbo_line2} \\
   & + \sum_{T} \sum_{D_t} \sum_{N_d} \expectq{\ln p( z_n | \theta_d)} + \expectq{\ln p(w_n | z_n, \beta_t)}
-  + H(q). \nonumber
+  + H(q). \label{eq:elbo_line3}
 \end{align}
+Note also that the variational parameters $\bv, \vphi,$ and $\gamma$
+are present in lines~\ref{eq:elbo_line2} and~\ref{eq:elbo_line3} of
+the above equation because they parameterize the variational
+distribution $q$.
 
 \subsection*{Optimizing the variational bound}
 This bound is optimized by variational EM, with an update schedule similar to that in Blei and Lafferty \cite{blei:2006}:
@@ -73,7 +77,7 @@ This bound is optimized by variational EM, with an update schedule similar to th
 \item For time $t = 1, \ldots, T$:
   \begin{enumerate}
   \item For document $d_{1,t}, \ldots, d_{{D_t}, t}$:
-  \item Update parameters $\ellv_d, \vphi_d$, and $\gamma_d$.
+  \item Update parameters $\ellv_d, \vphi_d$, and $\gamma_d$,
     \end{enumerate}
   \end{enumerate}    
 where the variational parameters are optimized sequentially in
