@@ -20,6 +20,7 @@
 \newcommand{\mysec}[1]{Section~\ref{sec:#1}}
 \newcommand{\myfig}[1]{Figure~\ref{fig:#1}}
 \newcommand{\mytab}[1]{Table~\ref{fig:#1}}
+\newcommand{\mychap}[1]{Chapter~\ref{chapter:#1}}
 
 \newcommand{\g}{\, | \,}
 \newcommand{\w}{\textbf{w}}
@@ -28,7 +29,7 @@
 \newcommand{\mv}{\tilde{m}} 
 \newcommand{\vv}[0]{\tilde{V}}
 \newcommand{\ellv}{\tilde{\ell}}
-\newcommand{\vlv}{\sigma^2_{\ell}}
+\newcommand{\vlv}{{\sigma^2_{\ell}}}
 \newcommand{\vphi}{\phi}
 \newcommand{\expect}[1]{\mathbb{E}\left[#1\right]}
 \newcommand{\expectq}[1]{\mathbb{E}_q\left[#1\right]}
@@ -68,10 +69,27 @@
 %\addcontentsline{toc}{chapter}{Title Page}
 
 \section*{Previous Publications}
-The work here represents expanded versions of the following publications:
+The work here represents expanded versions of the following publications and presentations:
 \begin{itemize}
-	\item b
+\item Sean Gerrish and David Blei. \emph{Predicting legislative roll
+    calls from text.} Proceedings of the 28th International Conference
+  on Machine Learning (ICML), 2011.
+\item Sean Gerrish and David Blei. \emph{A language-based approach to
+    measuring scholarly impact.}  Proceedings of the 27th
+  International Conference on Machine Learning (ICML), 2010.
+\item Sean Gerrish and David Blei. \emph{Stochastic Optimization of
+    the Variational Lower Bound.} Proceedings of the Proceedings of
+  the Twenty Fifth Annual Conference on International Conference on
+  Neural Information Processing Systems (NIPS) 2012 (under review).
+\item Sean Gerrish and David Blei. \emph{How they voted: A model of
+    Issue Voting in the United States Congress.}  Proceedings of the
+  Twenty Fifth Annual Conference on Neural Information Processing
+  Systems (NIPS) 2012 (under review).
+\item Sean Gerrish and David Blei. \emph{A text-based HMM of
+    foreign-affairs sentiment.} Second Annual Computational Social
+  Science and the Wisdom of Crowds (NIPS Workshop).  December 2011.
 \end{itemize}
+
 The current presentation attempts to provide deeper and broader
 understanding to the reader of the above work.
 
@@ -90,6 +108,7 @@ understanding to the reader of the above work.
 \input{chapter_conclusions/chapter_conclusions.tex}
 %\input{chapter_tweets/chapter_tweets.tex}
 
+\appendix{Optimizing the variational bound stochastically}
 \input{chapter_stochastic_variational_optimization/chapter_stochastic_variational_optimization.tex}
 
 \input{chapter_appendix/chapter_appendix.tex}

@@ -13,16 +13,18 @@ computer.\footnote{Circa 2009.}
 In this section, we describe a parallel implementation for this model.
 As with the standard algorithm, this algorithm optimizes the evidence
 lower bound by local coordinate ascent.  Here, however, many of these
-steps are made in parallel.  While most of these steps are simply
-performing updates across many computers, we describe below how to
-handle an update that cannot be distributed without modification.
+steps are made in parallel.  While most of this algorithm involves
+simply scheduling these updates across many computers, we also
+describe below how to handle an update that cannot be distributed
+without modification.
 
 In this section, we will refer to a single computer as a processor.
 We will differentiate between the roles a processor may take by
 referring to a ``master'', which coordinates the entire algorithm, and
 the ``workers'', which perform lower-level computing.  The master
-launches workers, checks when they are complete, and monitors
-model convergence.
+launches workers, checks when they are complete, and monitors model
+convergence.  Each worker performs updates for a partition of the
+entire collection.
 
 \subsection*{Algorithm overview}
 With both the parallel implementation and the standard implementation,
@@ -45,13 +47,21 @@ parallel.  We simply split the work among $W$ distinct workers.
 
 \subsection*{The parallel documents E-step}
 In the documents $E$-step of the algorithm, our goal is to re-fit each
-document's parameters $\ellv | \vphi, \bv, \w $ and $\gamma, \vphi |
-\ellv, \bv, \w$ using the topics estimated in the $M$-step.  As with
-the $M$ step, the parallel algorithm performs the same operations as
-the original algorithm in parallel because $\gamma$ and $\vphi$ are
+document's parameters $\gamma, \vphi | \ellv, \bv, \w$ and $\ellv |
+\vphi, \bv, \w $ using the topics estimated in the $M$-step.  In this
+step the master partitions the entire collection of documents into
+time-contiguous chunks and assigns each chunk to a worker. The
+algorithm can update $\gamma$ and $\vphi$ using the same operations as
+the original algorithm because the Markov blanket of $\gamma$ contains
+variables from a single timestamp and because each $\vphi$ is
 conditionally independent given the remaining variational parameters.
-We fit these using alternating updates of $\phi_{d}$ and $\gamma_d$ as
-in LDA.
+Therefore we fit these using alternating updates of $\vphi_{d}$ and
+$\gamma_d$ as in LDA.
+
+The update for $\ellv | \vphi, \bv, \w$ is a bit trickier because each
+$\ellv$ is not conditionally independent of the other random
+variables.
+
 
 \subsubsection*{Parallel update dampening}
 

@@ -1,4 +1,5 @@
 \chapter{Models of Spatial Voting and text}
+\label{chapter:spatial_voting}
 
 In the United States, as in many Western democracies, laws are made by
 committees of lawmakers.  A defining characteristic of these
@@ -16,7 +17,8 @@ One of these models is the \emph{ideal point model}, a mainstay in
 quantitative political science for analyzing
 votes~\cite{clinton:2004}.  It posits a latent ``political space''
 along the real line and assumes each legislator has a position in that
-space.
+space -- an assumption very similar to the latent space model
+described in the last chapter.
 %% The legislator's position is
 %% called an \textit{ideal point} because it represents the state of the
 %% world that maximizes her utility. The model assumes that whether a
@@ -37,13 +39,13 @@ preferences.
 
 \section*{Text and voting}
 However, ideal point models fall short in at least two ways, for
-reasons we will outline in the next section.  First, these models are
-not \emph{predictive} models: while they can be used to model bills
-that have been voted on, they cannot be used to predict lawmakers'
-votes on new bills.  Second, lawmakers do not fit neatly into the
-assumptions made by such models.  These models summarize lawmakers
-with broad strokes, and their unique positions on individual issues
-cannot be easily recovered.
+reasons we will outline in the next section.  First, these methods do
+not provide not \emph{predictive} models: while they can be used to
+model the bills that have been voted on, they cannot be used to
+predict lawmakers' votes on new bills.  Second, lawmakers do not fit
+neatly into the assumptions made by such models.  These models
+summarize lawmakers with broad strokes, and their unique positions on
+individual issues cannot be easily recovered.
 
 These limitations dovetail with increasing access to both public
 records and tools for algorithmic text analysis.  In the past decade,
@@ -276,8 +278,9 @@ a ``cold'' prediction mechanism.
 % SMG: I've gone from Senators-only to a subset of ~20 Senators.
 % DMB-2011: above, we need a citation for the psychometrics model.
 % SMG: Done.
-As predictive models, ideal point models suffer from a
-fundamental limitation: they are models of the votes alone.
+As predictive models, ideal point models suffer from a fundamental
+limitation: they are dyadic models in which models of the votes alone.
+
 Consequently, they can be used to fill in missing votes but cannot
 predict how legislators will vote on future legislation.  Further,
 they provide no insight into what drives voting patterns---the
@@ -322,7 +325,7 @@ becomes associated with political sentiment.
 
 \textbf{Modeling ideal points with text regression.} We developed two
 predictive ideal-point models which use text
-regression~\cite{Kogan:2009}.  For these, we first fit an ideal-point
+regression~\cite{kogan:2009}.  For these, we first fit an ideal-point
 model to a training set of bills and all legislators using the
 variational algorithm described in \mysec{model}.  We then fit ridge
 regression\footnote{Implemented in the ``penalized'' package for R}
@@ -374,9 +377,9 @@ represented as a graphical model in \myfig{legis_gm}.
 
 The only observed variables in the model are the bill texts and votes.
 Our goal in fitting this model is to uncover the posterior
-\begin{equation}
+\begin{align}
   p(a_d, b_d, x_u, \bm \eta, \beta, z, \theta | \bm W, \bm V), \label{eq:posterior}
-\end{equation}
+\end{align}
 which can then be used in exploratory or predictive tasks.
 Conditioned on these variables, our analysis proceeds with the
 posterior distribution of the ideal points, polarities and
@@ -480,7 +483,7 @@ discussed in the field of sentiment analysis; see Pang and Lee
 % SMG: Clarified.
 
 The ideal point topic model relates closely to user-recommendation
-models based on matrix factorization~\cite{Salakhutdinov:2008a}.
+models based on matrix factorization~\cite{salakhutdinov:2008a}.
 Matrix factorization methods for recommendation are akin to
 large-scale spatial behavior models (though usually with no
 ``difficulty'' term, which acts as an intercept).  Many of these
@@ -580,15 +583,15 @@ are governed by multinomial parameters $\phi_d$ and Dirichlet
 parameters $\gamma_d$, as in LDA~\cite{blei:2003}.  The variational
 distribution for legislators' ideal points $x_u$; bills' parameters
 $a_d, b_d$; and coefficients $\bm \eta$ are Gaussian with respective
-means $\tau_u$, $\kappa_d$, $\ev$ and variances $\sigma_\tau^2$,
-$\sigma_\kappa^2$, $\sigma_\eta^2$. The variational distribution is
+means $\tau_u$, ${\tilde a}_d$, $\ev$ and variances $\sigma_\tau^2$,
+$\sigma_{\tilde a}^2$, $\sigma_\eta^2$. The variational distribution is
 \begin{align}
 \label{eq:var_post}
-q(\tau, & \sigma_\tau, \kappa, \sigma_\kappa, \phi, \theta) = \\
-& \prod_u q(x_u | \tau_u, \sigma_\tau^2 ) \times \prod_D q(a_d, b_d |
-\kappa_d, \sigma_\kappa^2 ) & \nonumber \\
-\textstyle & \times \prod_D q(\theta_d | \gamma_d) \prod_{N_d} p(z_n |
-\phi_n) \times q(\bm \eta | \ev, \sigma_{\ev}). \nonumber
+q(\tau, & \sigma_\tau, {\tilde a}, \sigma_{\tilde a}, \phi, \theta) =
+  \prod_u q(x_u | \tau_u, \sigma_\tau^2 ) \prod_D q(a_d, b_d |
+{\tilde a}_d, \sigma_{\tilde a}^2 )
+  \prod_D q(\theta_d | \gamma_d)
+  \prod_{N_d} p(z_n | \phi_n) q(\bm \eta | \ev, \sigma_{\ev}).
 \end{align}
 
 Inference proceeds by minimizing the KL between \myeq{var_post} and
@@ -977,7 +980,6 @@ each lawmaker's ideal point can be adjusted for each issue.
 %%     terrorist attack & percent & guard & nation \\
 %%     hezbolah & community & coast guard & child \\ 
 %%     national guard & family & substitute & college \\    
-    \small
  \begin{tabular}{c}
  \begin{tabular}{|cc|cc|}
     \hline
@@ -1265,8 +1267,7 @@ the issue-adjusted ideal point model
 (Equation~\ref{equation:exploratory_ipm_old}), $\expect{\bm \theta_d}$
 was treated as observed when estimating the posterior distribution
 $p(x_u, a_d, b_d, \bm z_d | \expect{\bm \theta_d | \bm w_d},
-v_{ud})$. We summarize all 74 issue labels in \S A.2.\footnote{We refer
-  to specific sections in the supplementary materials (appendix) as \S A.\#.}
+v_{ud})$. We summarize all 74 issue labels in \S \ref{section:issue_labels}
 
 % We now turn to estimating documents' thematic labels $\bm \theta_d$.
 % For this we use topic models, which treat documents as bags of words
@@ -1639,7 +1640,8 @@ and awkard, non-informative phrases such as ``and the''.  The full
 vocabulary consisted of 5,000 $n$-grams. We provide further details of
 vocabulary selection in the supplementary materials.  We used these
 words to algorithmically define topics and assign issue weights to
-bills as described in \mysec{lda}.
+bills as described in \mysec{lda}.  Further details on vocabulary
+selection are provided in \mysec{issue_corpus_preparation}.
 
 \subsection{Identification}
 The issue-adjusted ideal point model is under-specified in
@@ -1849,9 +1851,9 @@ z_u, \tilde a_d, \tilde b_d)$ for votes $V_{\mbox{\tiny heldout}}$ in
 the heldout set. Following the algorithm described in
 \mysec{inference}, we began with $M=21$ samples to estimate the
 approximate gradient (\myeq{taylor_approximation}) and scaled it by
-1.2 each time the Elbo dropped below a threshold, until it was 500. We
-also fixed variance $\sigma_x^2, \sigma_z^2, \sigma_a^2,
-\sigma_b^2=\exp({-}5)$.  We summarize these results in
+1.2 each time the ELBO $\mathcal{L}$ dropped below a threshold, until
+it was 500. We also fixed variance $\sigma_x^2, \sigma_z^2,
+\sigma_a^2, \sigma_b^2=\exp({-}5)$.  We summarize these results in
 \mytab{lambda_comparison}.
 
 The variational implementation generalized well for the entire range,
@@ -1869,7 +1871,7 @@ heldout accuracy) and -0.242 in the Senate (93\% heldout accuracy).
     model fit with permuted issue labels (Perm. Issue), heldout
     likelihood of votes was worse than traditional ideal points for
     all regularizations $\lambda$.
-  } \center \small
+  } \center
   \begin{tabular}{|c|cccccccc|}
     \hline
     \textbf{Model} & \multicolumn{8}{|c|}{\textbf{Senate}} \\
@@ -1966,7 +1968,7 @@ heldout accuracy) and -0.242 in the Senate (93\% heldout accuracy).
     folds using six-fold cross validation for Congresses 106 to 111
     (1999-2010) with regularization $\lambda=1$.  The variational
     distribution had higher heldout log-likelihood for all congresses
-    in both chambers than either } \center \small
+    in both chambers than either } \center
   \begin{tabular}{|c|cccccc|}
     \hline
     \textbf{Model} & \multicolumn{6}{|c|}{\textbf{Senate}} \\
@@ -2360,7 +2362,8 @@ We next use these corrected issue adjustments to identify lawmakers'
 exceptional issue preferences. To identify adjustments which are
 significant, we turn again to the same nonparametric check described
 in the last section: permute issue vectors' document labels,
-i.e. $(\bm \theta_1, \ldots, \bm \theta_D) \mapsto (\bm \theta_{\pi_i(1)} \ldots \bm \theta_{\pi_i(D)})$, and refit lawmakers'
+i.e. $(\bm \theta_1, \ldots, \bm \theta_D) \mapsto (\bm
+\theta_{\pi_i(1)} \ldots \bm \theta_{\pi_i(D)})$, and refit lawmakers'
 adjustments using both the original issue vectors and permuted issue
 vectors, for permutations $\pi_1, \ldots, \pi_{20}$.  We then compare
 a corrected issue adjustment $\hat z_{uk}$'s absolute value with
@@ -2843,7 +2846,7 @@ supported by issue adjustments.
 
 The sharp contrast in voting patterns between procedural votes and
 substantive votes has been noted and studied over the past century
-\citep{fenno:1965,jones:1964,cox:1993,cox:2002}.
+\citep{fenno:1965,cox:1993,cox:2002}.
 %%   \citet{jones:1964}
 %% summarizes a classic post-war perspective:
 %% \begin{quote}

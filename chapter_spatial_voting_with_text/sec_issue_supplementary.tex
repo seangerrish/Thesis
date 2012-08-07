@@ -1,0 +1,213 @@
+\subsection*{Sparsity.}
+Issue adjustments $\bm z_u$ ranged widely, moving some lawmakers
+significantly. The variational estimates were not sparse, although a
+high mass was concentrated around 0. Twenty-nine percent of issue
+adjustments were within $[-0.01, 0.01]$, and eighty-seven percent of
+issue adjustments were within $[-0.1, 0.1]$.
+
+\subsection*{Hyperparameter settings}
+The most obvious parameter in the issue voting model is the
+regularization term $\lambda$. The Bayesian treatment described in
+the Inference section of \emph{How they Vote} demonstrated considerable robustness
+to overfitting at the expense of precision.  With $\lambda=0.001$,
+for example, issue adjustments $z_{uk}$ remained on the order of single digits,
+while the MAP estimate yielded adjustment estimates over 100.
+
+We recommend a modest value of $1 < \theta < 10$.  At this value, the model
+outperforms ideal points in validation experiments on both the House
+and Senate while maintaining stability in the two-stage model.
+
+\subsection*{Implementation.}
+%% %% This was not a problem in more recent runs.
+%% In rare circumstances, the variational and MAP estimates
+%% resulted in degenerate solutions, in which the model performed no
+%% better than assuming lawmakers vote \verb!yea!.  When we reran these
+%% experiments, the solution was no longer degenerate (this did not
+%% affect the reported median accuracy in
+%% Table~\ref{table:median_accuracy}).
+
+When performing the second-order updates described in
+the Inference section, we skipped variable updates when the
+estimated Hessian was not positive definite (this disappeared when
+sample sizes grew large enough).  We also limited step sizes to 0.1
+(another possible reason for smaller coefficients).
+
+\subsection*{Issue labels}
+\label{section:issue_issue_labels}
+
+In the empirical analysis, we used issue labels obtained from the
+Congressional Research Service.  There were $5,861$ labels, ranging
+from \emph{World Wide Web} to \emph{Age}.  We only used issue labels
+which were applied to at least twenty five bills in the 12 years under
+consideration.  This filter resulted in seventy-four labels which
+correspond fairly well to political issues.  These issues, and the
+number of documents each label was applied to, is given in
+Table~\ref{table:issues}.
+
+\begin{table*}[htdp]
+  \caption{Issue labels and the number of documents with each label
+  (as assigned by the Congressional Research Service) for Congresses 106 to 111 (1999 to
+  2010).}
+  \small
+  \begin{center}
+  \begin{tabular}{cc}
+    \rowcolors{1}{gray!30}{}
+  \begin{tabular}{|p{5.8cm}|p{.7cm}|}
+    \hline
+    \textcolor{black} {} \textbf{Issue label} & \textcolor{black} {}\textbf{Bills} \\ 
+    \hline
+\textcolor{black} {}    Women & \textcolor{black}{}25  \\ \textcolor{black} {}
+    Military history & \textcolor{black}{}25  \\ \textcolor{black} {}
+    Civil rights & \textcolor{black}{}25  \\ \textcolor{black} {}
+    Government buildings; facilities; and property & \textcolor{black}{}26  \\ \textcolor{black} {}
+    Terrorism & \textcolor{black}{}26  \\ \textcolor{black} {}
+    Energy & \textcolor{black}{}26  \\ \textcolor{black} {}
+    Crime and law enforcement & \textcolor{black}{}27  \\ \textcolor{black} {}
+    Congressional sessions & \textcolor{black}{}27  \\ \textcolor{black} {}
+    East Asia & \textcolor{black}{}28  \\ \textcolor{black} {}
+    Appropriations & \textcolor{black}{}28  \\ \textcolor{black} {}
+    Business & \textcolor{black}{}29  \\ \textcolor{black} {}
+    Congressional reporting requirements & \textcolor{black}{}30  \\ \textcolor{black} {}
+    Congressional oversight & \textcolor{black}{}30  \\ \textcolor{black} {}
+    Special weeks & \textcolor{black}{}31  \\ \textcolor{black} {}
+    Social services & \textcolor{black}{}31  \\ \textcolor{black} {}
+    Health & \textcolor{black}{}33  \\ \textcolor{black} {}
+    Special days & \textcolor{black}{}33  \\ \textcolor{black} {}
+    California & \textcolor{black}{}33  \\ \textcolor{black} {}
+    Social work; volunteer service; charitable organizations & \textcolor{black}{}33  \\ \textcolor{black} {}
+    State and local government & \textcolor{black}{}34  \\ \textcolor{black} {}
+    Civil liberties & \textcolor{black}{}35  \\ \textcolor{black} {}
+    Government information and archives & \textcolor{black}{}35  \\ \textcolor{black} {}
+    Presidents & \textcolor{black}{}35  \\ \textcolor{black} {}
+    Government employees & \textcolor{black}{}35  \\ \textcolor{black} {}
+    Executive departments & \textcolor{black}{}35  \\ \textcolor{black} {}
+    Racial and ethnic relations & \textcolor{black}{}36  \\ \textcolor{black} {}
+    Sports and recreation & \textcolor{black}{}36  \\ \textcolor{black} {}
+    Labor & \textcolor{black}{}36  \\ \textcolor{black} {}
+    Special months & \textcolor{black}{}39  \\ \textcolor{black} {}
+    Children & \textcolor{black}{}40  \\ \textcolor{black} {}
+    Veterans & \textcolor{black}{}40  \\ \textcolor{black} {}
+    Human rights & \textcolor{black}{}41  \\ \textcolor{black} {}
+    Finance & \textcolor{black}{}41  \\ \textcolor{black} {}
+    Religion & \textcolor{black}{}42  \\ \textcolor{black} {}
+    Politics and government & \textcolor{black}{}43  \\ \textcolor{black} {}
+    Minorities & \textcolor{black}{}44  \\ \textcolor{black} {}
+    Public lands and natural resources & \textcolor{black}{}44  \\
+    \hline
+  \end{tabular}
+   &
+    \rowcolors{1}{gray!30}{}
+  \begin{tabular}{|p{5.8cm}|p{.7cm}|}
+    \hline
+    \textcolor{black} {} \textbf{Issue label} & \textcolor{black}{}\textcolor{black} {} \textbf{Bills} \\
+    \hline
+    Europe & \textcolor{black}{}44  \\ \textcolor{black} {}
+    Military personnel and dependents & \textcolor{black}{}44  \\ \textcolor{black} {}
+    Taxation & \textcolor{black}{}47  \\ \textcolor{black} {}
+    Government operations and politics & \textcolor{black}{}47  \\ \textcolor{black} {}
+    Postal facilities & \textcolor{black}{}47  \\ \textcolor{black} {}
+    Medicine & \textcolor{black}{}48  \\ \textcolor{black} {}
+    Transportation & \textcolor{black}{}48  \\ \textcolor{black} {}
+    Emergency management & \textcolor{black}{}48  \\ \textcolor{black} {}
+    Sports & \textcolor{black}{}52  \\ \textcolor{black} {}
+    Families & \textcolor{black}{}53  \\ \textcolor{black} {}
+    Medical care & \textcolor{black}{}54  \\ \textcolor{black} {}
+    Athletes & \textcolor{black}{}56  \\ \textcolor{black} {}
+    Land transfers & \textcolor{black}{}56  \\ \textcolor{black} {}
+    Armed forces and national security & \textcolor{black}{}56  \\ \textcolor{black} {}
+    Natural resources & \textcolor{black}{}58  \\ \textcolor{black} {}
+    Law & \textcolor{black}{}60  \\ \textcolor{black} {}
+    History & \textcolor{black}{}61  \\ \textcolor{black} {}
+    Names & \textcolor{black}{}62  \\ \textcolor{black} {}
+    Criminal justice & \textcolor{black}{}62  \\ \textcolor{black} {}
+    Communications & \textcolor{black}{}65  \\ \textcolor{black} {}
+    Public lands & \textcolor{black}{}68  \\ \textcolor{black} {}
+    Legislative rules and procedure & \textcolor{black}{}69  \\ \textcolor{black} {}
+    Elementary and secondary education & \textcolor{black}{}74  \\ \textcolor{black} {}
+    Anniversaries & \textcolor{black}{}82  \\ \textcolor{black} {}
+    Armed forces & \textcolor{black}{}83  \\ \textcolor{black} {}
+    Defense policy & \textcolor{black}{}92  \\ \textcolor{black} {}
+    Higher education & \textcolor{black}{}103  \\ \textcolor{black} {}
+    Foreign policy & \textcolor{black}{}104  \\ \textcolor{black} {}
+    International affairs & \textcolor{black}{}105  \\ \textcolor{black} {}
+    Budgets & \textcolor{black}{}112  \\ \textcolor{black} {}
+    Education & \textcolor{black}{}122  \\ \textcolor{black} {}
+    House of Representatives & \textcolor{black}{}142  \\ \textcolor{black} {}
+    Commemorative events and holidays & \textcolor{black}{}195  \\ \textcolor{black} {}
+    House rules and procedure & \textcolor{black}{}329  \\ \textcolor{black} {}
+    Commemorations & \textcolor{black}{}400  \\ \textcolor{black} {}
+    Congressional tributes & \textcolor{black}{}541  \\ \textcolor{black} {}
+    Congress & \textcolor{black}{}693  \\
+    \hline
+  \end{tabular}
+  \end{tabular}
+  \end{center}
+  \label{table:issues}
+\end{table*}
+
+\subsection*{Corpus preparation}
+\label{section:issue_corpus_preparation}
+In this section we provide further details of vocabulary selection.
+We began by considering all phrases with one to five words.  From
+these, we immediately ignored phrases which occurred in more than
+$10\%$ of bills and fewer than $4$ bills, or which occurred as fewer
+than $0.001\%$ of all phrases.  This resulted in a list of 40603
+phrases.
+
+We then used a set of features characterizing each word to classify
+whether it was good or bad to use in the vocabulary.  Some of these
+features were based on corpus statistics, such as the number of bills
+in which a word appeared.  Other features used external data sources,
+including whether, and how frequently, a word appeared as link text in
+a Wikipedia article. For training data, we used a manually curated
+list of 458 ``bad'' phrases which were semantically awkward or
+meaningles (such as \emph{the follow bill}, \emph{and sec ammend},
+\emph{to a study}, and \emph{pr}) as negative examples in a
+$L_2$-penalized logistic regression to select a list of 5,000 ``good''
+words.
+
+\begin{table*}
+  \caption{Features and coefficients used for predicting ``good''
+  phrases.  Below, $\mbox{test}$ is a test statistic which measures
+  deviation from a model assuming that words appear independently;
+  large values indicate that they occur more often than expected by
+  chance.  We define it as $\mbox{test}=\frac{\mbox{Observed count} -
+  \mbox{Expected count}}{\sqrt{\mbox{Expected count under a language
+  model assuming independence}}}$.} \rowcolors{1}{gray!30}{}
+\begin{center}
+  \begin{tabular}{|p{6.0cm}|p{6.7cm}|p{1.0cm}|}
+      \hline
+  \textcolor{black} {} 
+      \textbf{Coefficient} &   \textcolor{black} {} \textbf{Summary} &   \textcolor{black} {} \textbf{Weight} \\
+      \hline
+      \textcolor{black} {}
+      log(count + 1) & \textcolor{black}{}Frequency of phrase in corpus & \textcolor{black}{}-0.018 \\ \textcolor{black} {}
+      log(number.docs + 1) & \textcolor{black}{}Number of bills containing phrase & \textcolor{black}{}0.793 \\ \textcolor{black} {}
+      anchortext.presentTRUE & \textcolor{black}{}Occurs as anchortext in Wikipedia & \textcolor{black}{}1.730 \\ \textcolor{black} {}
+      anchortext & \textcolor{black}{}Frequency of appearing as anchortext in Wikipedia & \textcolor{black}{}1.752 \\ \textcolor{black} {}
+      frequency.sum.div.number.docs & \textcolor{black}{}Frequency divided by number of bills & \textcolor{black}{}-0.007 \\ \textcolor{black} {}
+      doc.sq & \textcolor{black}{}Number of bills containing phrase, squared & \textcolor{black}{}-0.294 \\ \textcolor{black} {}
+      has.secTRUE & \textcolor{black}{}Contains the phrase \emph{sec} & \textcolor{black}{}-0.469 \\ \textcolor{black} {}
+      has.parTRUE & \textcolor{black}{}Contains the phrase \emph{paragra} & \textcolor{black}{}-0.375 \\ \textcolor{black} {}
+      has.strikTRUE & \textcolor{black}{}Contains the phrase \emph{strik} & \textcolor{black}{}-0.937 \\ \textcolor{black} {}
+      has.amendTRUE & \textcolor{black}{}Contains the phrase \emph{amend} & \textcolor{black}{}-0.484 \\ \textcolor{black} {}
+      has.insTRUE & \textcolor{black}{}Contains the phrase \emph{insert} & \textcolor{black}{}-0.727 \\ \textcolor{black} {}
+      has.clauseTRUE & \textcolor{black}{}Contains the phrase \emph{clause} & \textcolor{black}{}-0.268 \\ \textcolor{black} {}
+      has.provisionTRUE & \textcolor{black}{}Contains the phrase \emph{provision} & \textcolor{black}{}-0.432 \\ \textcolor{black} {}
+      has.titleTRUE & \textcolor{black}{}Contains the phrase \emph{title} & \textcolor{black}{}-0.841 \\ \textcolor{black} {}
+      test.pos & \textcolor{black}{}$\ln(max(-\mbox{test}, 0) + 1)$ & \textcolor{black}{}0.091 \\ \textcolor{black} {}
+      test.zeroTRUE & \textcolor{black}{}$1$ if $\mbox{test} = 0$ & \textcolor{black}{}-1.623 \\ \textcolor{black} {}
+      test.neg & \textcolor{black}{}$\ln(max(\mbox{test}, 0) + 1)$ & \textcolor{black}{}0.060 \\ \textcolor{black} {}
+      number.terms1 & \textcolor{black}{}Number of terms in phrase is 1 & \textcolor{black}{}-1.623 \\ \textcolor{black} {}
+      number.terms2 & \textcolor{black}{}Number of terms in phrase is 2 & \textcolor{black}{}2.241 \\ \textcolor{black} {}
+      number.terms3 & \textcolor{black}{}Number of terms in phrase is 3 & \textcolor{black}{}0.315 \\ \textcolor{black} {}
+      number.terms4 & \textcolor{black}{}Number of terms in phrase is 4 & \textcolor{black}{}-0.478 \\ \textcolor{black} {}
+      number.terms5 & \textcolor{black}{}Number of terms in phrase is 5 & \textcolor{black}{}-0.454 \\ \textcolor{black} {}
+      log(number.docs + 1) * anchortext & \textcolor{black}{}$\ln(\mbox{Number of bills containing phrase})$
+      $\times 1_{\{ \mbox{Appears in Wikipedia anchortext} \}}$ & \textcolor{black}{}-0.118 \\ \textcolor{black} {}
+      log(count + 1) * log(number.docs + 1) & \textcolor{black}{}$\ln(\mbox{Number of bills containing phrase} + 1)$
+      $\times \ln(\mbox{Frequency of phrase in corpus} + 1)$ & \textcolor{black}{} 0.246 \\
+      \hline
+    \end{tabular}
+    \end{center}
+\end{table*}

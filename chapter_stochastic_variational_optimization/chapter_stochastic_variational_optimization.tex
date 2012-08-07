@@ -1,6 +1,5 @@
-\chapter{Appendix}
-
-\section{A.1. Optimizing the variational bound stochastically}
+\chapter{Optimizing the variational bound stochastically}
+\label{chapter:stochastic_variational_optimization}
 
 Estimating an arbitrary probability distribution $p(x)$ is a
 fundamental problem in statistical modeling.  This problem arises in
@@ -106,7 +105,7 @@ $p(x | y)$,
 \begin{align}
   \arg \min_{\theta} \mbox{KL}(q_\theta || p) = \arg \min_{\theta}
   \int q_\theta(x) \log \frac{q_\theta(x)}{p(x | y)} dx.
-  \label{equation:variational_objective}
+  \label{equation:stochastic_variational_objective}
 \end{align}
 We select the family to make this optimization problem tractable.  A
 commonly chosen family is the mean-field family, where the variational
@@ -125,15 +124,15 @@ distribution might be a product $\prod_K \mathcal{N}(\mu_k,
 %distributions; such an assumption is known as \emph{naive mean-field
 %  variational inference}.
 
-Optimizing \myeq{variational_objective} is equivalent to optimizing
-the ``evidence lower bound'' (ELBO)
+Optimizing \myeq{stochastic_variational_objective} is equivalent to optimizing
+the ``evidence lower bound'' (ELBO) $\mathcal{L}_\theta$:
 \begin{eqnarray}
   \log p(y) \ge \expectq{\log p(x, y) - \log q_\theta(x)}
   =: \mathcal{L}_\theta,
-  \label{equation:traditional_variational_objective}
+  \label{equation:stochastic_traditional_variational_objective}
 \end{eqnarray}
 where the slack of the bound is equal to the KL divergence from
-\myeq{variational_objective}.  Typical variational inference
+\myeq{stochastic_variational_objective}.  Typical variational inference
 algorithms optimize this bound by coordinate ascent.  This requires
 evaluating $\expectq{ \log p(x, y) - \log q_\theta(x)}$ and its
 gradient with respect to $\theta$. If the variational distribution is
@@ -179,12 +178,12 @@ development.
 
 \subsection{Stochastic optimization of the variational objective}
 
-We now describe an alternative method for optimizing the ELBO. We form
-a noisy estimate of the gradient using Monte-Carlo integration
-\cite{graves:2011,wei:1990,carbonetto:2009}, and follow it with
-stochastic optimization~\cite{robbins:1951}.  This avoids difficult
-derivations; we need only evaluate $\log p(x, y)$, $q_\theta(x)$, and
-$\nabla \log q_\theta(x)$.
+We now describe an alternative method for optimizing the ELBO
+$\mathcal{L}$. We form a noisy estimate of the gradient using
+Monte-Carlo integration \cite{graves:2011,wei:1990,carbonetto:2009},
+and follow it with stochastic optimization~\cite{robbins:1951}.  This
+avoids difficult derivations; we need only evaluate $\log p(x, y)$,
+$q_\theta(x)$, and $\nabla \log q_\theta(x)$.
 
 % \subsubsection{Stochastic optimization.}
 % Stochastic optimization is used to optimize an objective function with
@@ -204,7 +203,7 @@ $\nabla \log q_\theta(x)$.
 %$\partlapprox{\mathcal{L}_\theta}{\theta}$ of our objective.  To this
 
 We now show that the gradient of
-\myeq{equation:traditional_variational_objective} can be written as an
+\myeq{equation:stochastic_traditional_variational_objective} can be written as an
 expectation.  We first exchange integration and
 differentiation\footnote{This assumes the support of $q_\theta$ is not
   a function of $\theta$, and that $\log q_\theta(x)$ and $\nabla \log
@@ -357,7 +356,7 @@ using the Gaussian density $q_{\mu_1, \sigma_1^2}$.  We
 estimate a gradient of the objective by combining these samples
 (Equation~\ref{equation:svo_gradient})
 \begin{align}
-  \partlapprox{\mbox{Elbo}_{\mu, \sigma_1^2}}{\mu} \Bigr|_{\mu_{1}} &
+  \partlapprox{\mathcal{L}_{\mu, \sigma_1^2}}{\mu} \Bigr|_{\mu_{1}} &
   %    & \hspace{-65pt}
   \hspace{-5pt} = \hspace{-2pt} \frac{1}{M} \sum_M \hspace{-1pt}\frac{x_m\hspace{-1pt}-\mu_1}{\sigma^2_1}
   \hspace{-2pt} \left( \log p(x_m, y)-\hspace{-1pt} \log q_{\mu_1, \sigma_2^2}(x_m) \right) \\ \nonumber
@@ -386,7 +385,7 @@ and finally update the mean $\mu$ (Equation~\ref{equation:svo_update}):
   \label{equation:gaussian_mean}
   \mu_2 \gets \mu_{1}
     + \frac{\eta_\mu}{1^k}
-    \partlapprox{ \mbox{Elbo}_{\mu, \sigma_1^2} }{\mu} \Bigr|_{\mu_{1}}.
+    \partlapprox{ \mathcal{L}_{\mu, \sigma_1^2} }{\mu} \Bigr|_{\mu_{1}}.
 \end{align}
 The update for variance is similar, but we optimize $\nu = \log
 \sigma^2$ instead of $\sigma^2$:\footnote{$\sigma^2$ must be strictly
@@ -395,12 +394,12 @@ positive, so $\nu$ is a more natural choice for stochastic updates).}
   \label{equation:gaussian_variance_gradient}
 %  \partl{\log q_{\mu, \nu_1}(x)}{\nu} \Bigr|_{\nu_{1}}
 %  & = \frac{ (x_{m} - \mu_{1})^2 }{ \exp(\nu_{1}) } - 1 \\ \nonumber
-  \partlapprox{ \mbox{Elbo}_{\mu_1, \nu} }{\nu} \Bigr|_{\nu_{1}} & \approx
+  \partlapprox{ \mathcal{L}_{\mu_1, \nu} }{\nu} \Bigr|_{\nu_{1}} & \approx
   \frac{1}{M} \sum_{m=1}^M \bigg[ \left( \frac{ (x_{m} - \mu_{1})^2 }{ \exp(\nu_{1}) } - 1 \right) \\ \nonumber
   & \hspace{-30pt} \times \left( \log p(x_m, y) - \log q_{\mu_1, \nu_1}(x_m) \right) \bigg]. \\ \nonumber
 \end{align}
 The variance is then updated with Equation~\ref{equation:svo_update}:
-$ \nu_2~\gets \nu_{1} + \frac{\eta_\nu}{1^k} \partlapprox{ \mbox{Elbo}_{\mu_1, \nu} }{\nu} \bigr|_{\nu_{1}}$ .
+$ \nu_2~\gets \nu_{1} + \frac{\eta_\nu}{1^k} \partlapprox{ \mathcal{L}_{\mu_1, \nu} }{\nu} \bigr|_{\nu_{1}}$ .
 
 
 \paragraph{Testing convergence.}
@@ -410,12 +409,12 @@ samples is shown in Figure~\ref{figure:comparision_order_sampling}
 (top-left corner).  To test convergence, we estimated the evidence
 lower bound at each iteration,
 \[
-  \mbox{Elbo}_n = \frac{1}{M} \sum_M \left( \log p(x_{nm}, y) - \log
+  \mathcal{L}_n = \frac{1}{M} \sum_M \left( \log p(x_{nm}, y) - \log
 q_{\theta_n}(x_{nm}) \right).
 \]
 We performed these updates until the exponential moving average
 $\Delta_{\mbox{est},n} \gets 0.8 \Delta_{\mbox{est},{n-1}} + 0.2
-(\mbox{Elbo}_n - \mbox{Elbo}_{n-1})$ of the Elbo dropped below one.
+(\mathcal{L}_n - \mathcal{L}_{n-1})$ of the ELBO dropped below one.
 Any time this happened, we scaled the number $M$ of samples by a
 factor of 1.2. When the moving average dropped below one and $M >
 500$, we stopped the algorithm.
@@ -452,7 +451,7 @@ samples because we have perfect knowledge of $q_\theta$.  This
 contrasts with many stochastic optimization methods, in which samples
 may be drawn \emph{iid} from an unknown distribution $\mathcal{D}$.
 By carefully selecting minibatches with non-\emph{iid} samples, we can
-decrease the variance of our estimate of $\partl{ \mbox{Elbo}_\theta
+decrease the variance of our estimate of the ELBO $\partl{ \mathcal{L}_\theta
 }{\theta}$.  Quasi-Monte Carlo methods such as the Latin hypercube
 design have been developed for exactly this purpose
 \cite{tang:1993,owen:1998,niederreiter:1992}.
@@ -495,15 +494,15 @@ independent), SVO does not require sequential samples.
     \STATE Draw samples $x_{n1}, \ldots, x_{nM} \sim q_{\theta_{n - 1}}$ using quasi-Monte Carlo sampling.
     \STATE Compute $\partl{\log q_{\theta_n}(x_{nm})}{\theta} \Bigr|_{\theta_{n-1}}$ and
     $\partll{\log q_{\theta_n}(x_{nm})}{\theta} \Bigr|_{\theta_{n-1}}$. % for $m = 1 \ldots, M$.
-    \STATE Estimate $\partl{\mbox{Elbo}_\theta }{\theta} \Bigr|_{\theta_{n-1}}$ using Equation~\ref{equation:svo_gradient}.
-    \STATE Estimate $\partll{\mbox{Elbo}_\theta }{\theta} \Bigr|_{\theta_{n-1}}$ using Equation~\ref{equation:empirical_second_order_estimates}.
+    \STATE Estimate $\partl{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_{n-1}}$ using Equation~\ref{equation:svo_gradient}.
+    \STATE Estimate $\partll{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_{n-1}}$ using Equation~\ref{equation:empirical_second_order_estimates}.
     \STATE Update $\theta$, using Equation \ref{equation:second_order_updates}:
         \vspace{-10pt}
 	\begin{align*}
      	   \displaystyle \theta_n \gets \theta_{n-1} - \left( 
-     	\partll{\mbox{Elbo}_\theta }{\theta}
+     	\partll{\mathcal{L}_\theta }{\theta}
      	\right)^{-1}
-     	\partl{\mbox{Elbo}_\theta }{\theta}.  \end{align*}
+     	\partl{\mathcal{L}_\theta }{\theta}.  \end{align*}
     \vspace{-15pt}
     \STATE $n \gets n + 1$ % (until convergence)
     \ENDWHILE
@@ -521,22 +520,22 @@ are sometimes used in stochastic optimization
 \cite{robbins:1951,bottou:2004} and were used by
 \citet{carbonetto:2009} and \citet{wei:1990}.  To derive the
 second-order updates, we make a Taylor approximation of the
-variational objective $\mbox{Elbo}_\theta$
-(Equation~\ref{equation:traditional_variational_objective}) around the
+variational objective $\mathcal{L}_\theta$
+(Equation~\ref{equation:stochastic_traditional_variational_objective}) around the
 current estimate $\theta_0$:
 \begin{align}
-  \mbox{Elbo}_\theta \approx & \mbox{Elbo}_{\theta_0} + ( \partl{\mbox{Elbo}_\theta }{\theta} \Bigr|_{\theta_0} )^T \Delta_\theta
- + \Delta_\theta^T ( \frac{\delta^2 \mbox{Elbo}_\theta }{\delta \theta \delta \theta^T} \Bigr|_{\theta_0} ) \Delta_\theta, \\ \nonumber
+  \mathcal{L}_\theta \approx & \mathcal{L}_{\theta_0} + ( \partl{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_0} )^T \Delta_\theta
+ + \Delta_\theta^T ( \frac{\delta^2 \mathcal{L}_\theta }{\delta \theta \delta \theta^T} \Bigr|_{\theta_0} ) \Delta_\theta, \\ \nonumber
 \end{align}
 where $\Delta_\theta = \theta - \theta_0$.  This approximation becomes
 exact as $\theta_0$ approaches the optimal solution.
 
-In addition to estimating the gradient $\partl{\mbox{Elbo}_\theta }{\theta} \Bigr|_{\theta_0}$, we also estimate the curvature
-$\partll{\mbox{Elbo}_\theta }{\theta} \Bigr|_{\theta_0}$
+In addition to estimating the gradient $\partl{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_0}$, we also estimate the curvature
+$\partll{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_0}$
 empirically with samples:
 \begin{align}
   \label{equation:empirical_second_order_estimates}
-  \displaystyle \partll{\mbox{Elbo}_\theta }{\theta} & \approx
+  \displaystyle \partll{\mathcal{L}_\theta }{\theta} & \approx
   \frac{1}{M} \sum_M \Bigg(
   \left( \partl{\log q_\theta(x_{nm})}{\theta} \Bigr|_{\theta_0} \right)^2 \\ \nonumber
   & \hspace{35pt} \times \left( \log p(x_{nm},  y) - \log q_{\theta_0}(x_{nm}) - 1 \right)  \\ \nonumber
@@ -545,9 +544,9 @@ empirically with samples:
 The estimate of the optimum is then
 \begin{align}
   \displaystyle \theta \gets \theta_0 - \left( 
-  \partll{\mbox{Elbo}_\theta }{\theta} \Bigr|_{\theta_0}
+  \partll{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_0}
   \right)^{-1}
-  \partl{\mbox{Elbo}_\theta }{\theta} \Bigr|_{\theta_0}.
+  \partl{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_0}.
   \label{equation:second_order_updates}
 \end{align}
 This algorithm is summarized in
@@ -668,7 +667,7 @@ $\log p(x, y)$ available to SVO.
 (\myfig{second_order_algorithm}) with quasi-Monte Carlo samples.  We
 assessed convergence using the method described in
 \mysec{stochastic_optimization_var_obj}, tracking an exponential
-moving average of the $\mbox{ELBO}$ and doubling sample size each time
+moving average of the ELBO $\mathcal{L}$ and doubling sample size each time
 the moving average was low.  We illustrate SVO's estimate of the mean
 as a function of the number of samples (and evaluations of the joint)
 in \myfig{univariate_comparison}.
@@ -694,7 +693,7 @@ approaches the posterior mean much more quickly than the MH estimate.
 }
 
 \newcommand{\changepointdata}[0]{
-  \small
+  \center
   \begin{tabular}{|c|c|c|}
     \hline
     \multicolumn{3}{|c|}{Switching Kalman filter (well log data)} \\ 
@@ -721,7 +720,6 @@ approaches the posterior mean much more quickly than the MH estimate.
 }
 
 \newcommand{\irtdata}[0]{
-  \small
   \center
   \begin{tabular}{|c|c|c|c|}
     \hline

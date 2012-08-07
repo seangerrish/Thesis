@@ -15,9 +15,10 @@ In this chapter we will outline the basic methodology for
 probabilistic modeling in datasets.  We begin by discussing a ``data
 analysis pipeline'' so the reader will understand what we mean by
 phrases like ``the data'', ``fit the model'', and ``heldout
-log-likelihood''.  We then provide basic definitions from
-probabilistic modeling and illustrate these ideas with models that
-will be used as building blocks later in this thesis.
+log-likelihood'', and where it falls in the overall research pipeline.
+We then provide basic definitions from the field of probabilistic
+modeling and illustrate these ideas with models that will be used as
+building blocks in later chapters.
 
 \section{Standards and naming conventions}
 We begin by outlining naming and variable conventions in this work.
@@ -196,12 +197,11 @@ The benefits in using latent variable models are broad:
 
   The risk with applying latent-variable models is that the
   credibility and careful deliberation we often associate with
-  statistics suggests that an estimated posterior must be meaningful.
-  This may not be true, particularly when the question is poorly
-  embedded into a statistical model, when the model incorrectly
-  interpreted, or when the data is poorly fit by the model.  Both of
-  these can easily happen when Item~\ref{lvm:matching} above is carried out
-  carelessly.
+  statistics lends credence to results of fitting a model.  This may
+  not be true, particularly when the model is incorrectly interpreted,
+  when the data is poorly fit by the model, or when the model is
+  poorly defined.  Both of these can easily happen when
+  Step~\ref{lvm:matching} above is carried out carelessly.
 
 \subsection{Undirected graphical models for summarizing distributional assumptions}
 A latent variable model can be fully specified with
@@ -213,8 +213,8 @@ A latent variable model can be fully specified with
 While some practitioners may index the distribution $p$ with some
 index set $\{ \theta \}$ with the goal of learning that index $\hat
 \theta$ which makes the data most likely, we will usually focus on a
-single distribution.  Further, as $p$ is a probability distribution,
-it satisfies
+single distribution and use a Bayesian treatment of the problem.  As
+$p$ is a probability distribution, it satisfies
 \begin{align*}
   \int_{x_{1:M_x}, y_{1:M_y}} p(X_{1:M_x}, Y_{1:M_y}) d x_{1:M_x}, d
   y_{1:M_y} = 1.
@@ -224,7 +224,7 @@ For $p$ to be useful, we typically will make distributional
 assumptions about it.  We often describe assumptions about
 factorization using a \emph{graphical model} (sometimes called a
 Bayesian network).  A graphical model is a directed, acyclic graph $G
-= (V, E)$ in which vertices $V=1, \ldots, M$, with $M = M_x + M_y$,
+= (V, E)$ in which vertices $V=1, \ldots, M = M_x + M_y$
 index random variables and a \emph{lack} of edges between random
 variables connotes conditional independence.
 
@@ -375,8 +375,7 @@ Before describing how to fit such a model, we show four
 topics from LDA in Table~\ref{table:example_lda_topics}.  Note that some
 of these ``words'' are instead phrases.  This can be done by creating
 a vocabulary of phrases instead of words and describing documents as a
-mixture of phrases.  We will describe in a later section how to accomplish
-this.
+mixture of phrases.  We will describe how to select a vocabulary of these phrases in Appendix~\ref{section:issue_corpus_preparation}.
 \begin{table}
   \caption{Example topics from Latent Dirichlet Allocation fit to sentences from the the textbook \emph{Biology} by Campbell and Reece.  This is a small subset of the 1000 topics. These topics were graciously provided by Ricky Wong.}
   \center  \begin{tabular}{|c|c|c|c|}
@@ -428,12 +427,15 @@ sections.
 % One of these applications is prediction. In the simplest of these   In text regressionWe will see in later sections that topic models can be used for
 % prediction by using Text regression is a
 
-\subsection{Ideal point models and matrix factorization}
+\subsection{Matrix factorization, latent space models, and
+  multidimensional scaling}
 
-One of the most common primitives in latent-variable models is matrix
-factorization \cite{salakhutdinov:2008a}. We will discuss a specific
-application of matrix factorization called item response theory (IRT),
-which has been used for decades in political science
+Two of the most common primitives in latent-variable models are matrix
+factorization \cite{salakhutdinov:2008a} and multidimensional scaling,
+which describe relationships between pairs of items, or dyads. We
+first discuss a specific application of matrix factorization called
+item response theory (IRT), which has been used for decades in
+political science
 \cite{clinton:2004,martin:2002,poole:1991,enelow:1984,albert:1992}.
 
 In IRT, we have two types of objects, and we would like to make
@@ -478,7 +480,32 @@ which the scalar logistic function $\sigma(s) = \frac{\exp(s)}{1 +
 
 A wide variety of researchers have used formulations like this for
 applications such as recommendation and representing the votes of
-lawmakers \citet{wang:2011,salakhutdinov:2008a,poole:1985,poole:1991,clinton:2004}. In later chapters, we will use it for models of legislative voting.
+lawmakers
+\citet{wang:2011,salakhutdinov:2008a,poole:1985,poole:1991,clinton:2004}. In
+later chapters, we will use it for models of legislative voting.
+
+Sometimes these pairs of items that interact in dyads are of the same
+``type'', and we wish to model them in the same latent space.  Instead
+of bills and lawmakers interacting, for example, we will also consider
+pairs of countries that interact, and we wish for these countries to
+be represented in the same latent, interpretable space.  In this case,
+we will still model each country with a latent position vector $\bm
+x_u$, and we will model their interaction as above, with
+\[
+  p(v | \bm x_i, \bm x_j) = \sigma(\bm x_i^T \bm x_j).
+\]
+An alternative formulation of the relationship between pairs of items
+uses their Euclidean distance in this latent space:
+\[
+  p(v | \bm x_i, \bm x_j) = \sigma(\bm \beta w_{ij} - || \bm x_i - \bm x_j ||_2),
+\]
+where $w_{ij}$ are observed covariates about the dyad and $\bm \beta$
+is hidden along with $\bm x$ \cite{hoff:2002}.  In this latent-space
+formulation and the probabilistic matrix factorization model above,
+the logistic repsonse is arbitrary; we will use both a logistic
+response and a normally-distributed response. Both of these
+formulations allow us to model interaction between pairs of objects of
+the same type.
 
 % Recent 
 %   - relevant sources
@@ -501,11 +528,13 @@ this case is called \emph{time-homogenous}.  A wide variety of
 problems can be modeled accurately with a well-selected homogeneous
 HMM.  Importantly, inference in these models is very efficient because
 the set of conditional independencies yields a tree: inference can
-usually be reduced to an application of a forward-backward algorithm.
-One of the most famous examples of a hidden Markov model is the Kalman
-filter, which assumes linear (or quadratic) transitions between the
-states $X$ and Gaussian noise: $p(Y_t | X_t) \propto \mathcal{N}(X_t,
-\sigma^2)$ for some variance $\sigma^2$.
+usually be reduced to an application of a forward-backward algorithm,
+especially when the conditional distribution of each variable given
+its neighbor is conjugate.  One of the most famous examples of a
+hidden Markov model is the Kalman filter, which assumes linear (or
+quadratic) transitions between the states $X$ and Gaussian noise:
+$p(Y_t | X_t) \propto \mathcal{N}(X_t, \sigma^2)$ for some variance
+$\sigma^2$.
 \begin{figure}
   \begin{center}
   \includegraphics[width=0.6\textwidth]{chapter_introductory_material/figs/hmm_gm.pdf}
@@ -519,7 +548,8 @@ incorporate the order of words.  Part-of-speech taggers, for example,
 often use hidden Markov model assumptions, treating words as observed
 and part-of-speech as tags.  While these assumptions are useful for
 some applications, we will use the bag-of-words assumption described
-in \mysec{text_intro}.
+in \mysec{text_intro}. We will use hidden Markov models in other ways,
+however.
 
 % TODO(sgerrish): cite Kalman.
 
@@ -592,17 +622,13 @@ providing a fast, deterministic alternative to MCMC
 \cite{jordan:2003,jordan:1999}. These algorithms have been
 successfully applied to many kinds of topic models, where corpus size
 and vocabulary dimension are large.  We review the key ideas of
-variational inference here and will use use these methods as we
-develop models in later chapters.
+variational inference here for use in later chapters.
 
-\textit{variational parameters}, which are fit to minimize the KL
-divergence between the variational family and the true posterior.  The
-family is chosen to be simpler than the posterior, which allows for
-efficient optimization.
-
-Variational methods posit a simplified family of distributions and
-select the member $q_\theta$ of this family that is closest in
-KL-divergence to the true posterior $p(x | y)$:
+Variational methods posit a simplified\footnote{Simplified compared to
+  the true posterior.} family of probability distributions, indexed by
+variational parameters $\theta$, and select the member $q_\theta$ of
+this family that is closest in KL-divergence to the true posterior
+$p(x | y)$:
 \begin{align}
   \arg \min_{\theta} \mbox{KL}(q_\theta || p) = \arg \min_{\theta} \int_x q_\theta(x) \log \frac{q_\theta(x)}{p(x | y)} dx.
   \label{equation:variational_objective}
@@ -640,11 +666,11 @@ might be represented by the product $q(x_{1:D}) = \prod_D \mathcal{N}(x_d | \mu_
 \sigma_d^2)$ of $D$ Gaussian distributions. and a Dirichlet
 distribution might represent a multinomial random variable
 \cite{bishop:2006}.  In the case of Latent Dirichlet Allocation, for
-example, \citet{blei:2003} assume that the indicators $z_n$ can be
+example, Blei et al. assume that the indicators $z_n$ can be
 described by a fully-factorized product of multinomial distributions,
 and they assume that the topics $\beta$ and mixture proportions
 $\theta$ can be represented by a fully-factorized product of Dirichlet
-distributions.
+distributions \cite{blei:2003}.
 
 Once a family is selected, the bound in
 Equation~\ref{equation:traditional_variational_objective} is evaluated
@@ -660,11 +686,12 @@ gradient ascent.
 
 The role of variational inference in statistical machine learning will
 become more clear as we develop several algorithms using these methods
-over the next two chapters.  We will also introduce an alternative
-method for performing variational inference.  This alternative method
-will remove the onus of deriving new variational updates from the
-practitioner, making it easy to perform rapid model development on
-simple models.
+over the next two chapters.  We also introduce an alternative
+method for performing variational inference in
+Appendix~\ref{chapter:stochastic_variational_optimization}.  This
+alternative method removes the onus of deriving new variational
+updates from the practitioner, making it easy to perform rapid model
+development on simple models.
 
 % \subsection{Stochastic optimization}
 %   - examples
@@ -737,10 +764,16 @@ One of the final
 \section{Using these tools to understand influence and decisionmaking}
 
 The tools outlined in this chapter cover only the tip of the iceberg
-of tools used by machine learning experts, but they will serve as
-building blocks for future sections.  In the next chapter we will use
-some of these blocks as we return to the original questions that
-motivated this thesis: how can we identify influential documents in a
-larger collection?
+of tools used by statistical machine learning researchers (and this is
+only a subset of all machine learning researchers).  However, they
+will serve as building blocks for future sections.  In the next
+chapter we will use some of these ideas as we return to the original
+questions that motivated this thesis: how can we understand patterns
+of behavior in society using text?  How do documents interact with one
+another and with the people who interact with them?
 
-TODO(sgerrish): elaborate on this more.
+In the next chapter we will begin with a model to understand how
+collections of text grow over time, by identifying key ``influential''
+documents. In subsequent chapters we will incorporate ideas which
+allow for more sophisticated interaction between documents, including
+pairs of documents and pairs of lawmakers.
