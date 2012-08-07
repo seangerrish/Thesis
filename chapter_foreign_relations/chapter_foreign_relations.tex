@@ -170,12 +170,18 @@ these positions by gradient ascent on $x_{c,d}$.
 To infer the sentiment $s_d$ between two countries, we treat the
 corresponding news article as a bag-of-words and use text regression
 \cite{kogan:2009}.  In each of these cases, the sentiment $s_d$ is
-first estimated on a training set using Amazon Mechanical Turk (AMT).
-AMT is a crowdsourcing platform which provides access to thousands of
-``workers'' who perform simple tasks over the Internet.  These labels
-are then attached to all articles by predicting their sentiment.
+first estimated on a training set using Amazon Mechanical Turk (AMT or
+Mechanical Turk).
+
+Mechanical Turk is a crowdsourcing platform which provides a
+``requestor'' access to thousands of ``workers'' who perform simple
+tasks over the Internet.  Common tasks include manually labeling
+training examples for machine learning tasks.  As the requestor, we
+provided workers with the instruction to label paragraphs to perform these tasks
+then attached to all articles by predicting their sentiment.
 
 \section{A latent-space model of foreign relations}
+
 
 \subsection{Posterior inference}
 
@@ -220,14 +226,15 @@ labeling nations from the sentiment vocabulary.
   \normalsize
 \end{figure*}
 
-To fit the model, we asked \emph{Amazon Mechanical Turk} raters to rate the
-sentiment between two nations mentioned in a paragraph in the range -5
-= "mortal enemies'', $\ldots, 5 = $''very good relationship''.
-With these training examples, we fit the coefficients $\beta$ of the
-text regression discussed in Section~\ref{section:model}.  This
-coefficient was then fixed in the joint model in
-Figure~\ref{figure:gm} to allow us to learn sentiment from
-paragraphs' words.  We trained and fit the model with the following procedure:
+To fit the model, we asked \emph{Amazon Mechanical Turk} raters to
+rate the sentiment between two nations mentioned in a paragraph in the
+range -5 = "mortal enemies'', $\ldots, 5 = $''very good
+relationship''.  With these training examples, we fit the coefficients
+$\beta$ of the text regression discussed in
+Section~\ref{section:model}.  This coefficient was then fixed in the
+joint model in Figure~\ref{figure:gm} to allow us to learn sentiment
+from paragraphs' words.  We trained and fit the model with the
+following procedure:
 
 \begin{enumerate}
   \item Randomly select 3607 paragraphs discussing pairs of 245 countries.
@@ -242,7 +249,9 @@ paragraphs' words.  We trained and fit the model with the following procedure:
     paragraphs.
 \end{enumerate}
   
-\subsection{Expert labels: Correlates of War}x
+\subsection{Expert labels: Correlates of War}
+
+We also apply this model with an alternative
 
 \subsection{Results}
  \begin{figure}
@@ -312,24 +321,25 @@ paragraphs' words.  We trained and fit the model with the following procedure:
  \begin{table}[t]
    \caption{Average error predicting sentiment $s_d$ between heldout nation pairs for Correlates of War.}
    \begin{center}
-   \begin{tabular}{|c|c|c|}
+   \begin{tabular}{|c|c|c|c|}
      \hline
-     Dimension & Mean Squared Error & Mean Absolute Error \\
+     Model & Details & Mean Squared Error & Mean Absolute Error \\
      \hline
-     Text regression & 3.37 & 1.12 \\
+     Text regression & & 3.37 & 1.12 \\
      \hline
-     Mean & 3.68 & 1.19 \\
+     Mean & & 1.28 & 0.127 \\
      \hline
      \hline
      Dimension & Reversion variance & Mean Squared Error & Mean Absolute Error \\
      \hline
-     1 & 10 & 0.628 & 0.389 \\
-     2 & 10 & 0.561 & 0.287 \\
-     \textbf{3} & 10 & 0.559 & 0.286 \\
-     4 & 10 & 0.562 & 0.308 \\
-     5 & 10 & 0.557 & 0.306 \\
-     6 & 10 & 0.535 & 0.142 \\
-     7 & 10 & 0.535 & 0.140 \\
+     0 & 10 & 0.511 & 0.263 \\
+     1 & 10 & 0.583 & 0.331 \\
+     2 & 10 & 0.550 & 0.287 \\
+     \textbf{3} & 10 & 0.555 & 0.299 \\
+     4 & 10 & 0.554 & 0.297 \\
+     5 & 10 & 0.557 & 0.296 \\
+     6 & 10 & 0.557 & 0.297 \\
+     % 7 & 10 & 0.535 & 0.140 \\
      \hline
      3 & 0.1 & 0.539 & 0.163 \\
      3 & 1 & 0.555 & 0.245 \\
@@ -398,8 +408,9 @@ appear to have a rocky relationship.
 % x_{c_2}$, and $\bar s_{c1,c2}$ (Note that $\mathbb{E}[s_{c1,c2}] \neq
 % \bar s_{c1,c2}$; we compute $\bar s_{c1,c2}$ out of convenience.
 
-
 \subsection{Comparisons with Ground Truth}
+
+An alternative model of the relationships between countries is 
 
 \subsection{Relation to ideal points inferred from the UN General Assembly}
 
