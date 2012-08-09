@@ -1,181 +1,21 @@
 \chapter{A time-series model of foreign affairs: sentiment between nation-states}
+\label{chapter:foreign_relations}
 
 \section*{Introduction}
-The written history of foreign relations is peppered with the bias of
-politics and hindsight.  Because historians currently have limited
-resources to review thousands of relevant news sources, research may
-be biased by popular knowledge or even politics and culture. The goal
-of this work is to create a history of the relationships between the
-world's nations using the text of newspaper articles and political
-commentary. An assumption of our work is that the tension between two
-nations -- or a warm and robust relationship between them -- is
-reflected by the language we use to discuss them. Using this
-assumption, we outline a model that is able to infer the relationship
-between pairs of countries whose relationship has not been observed in
-training.
 
-%, an idea
-%inspired by relational topic models and multidimensional scaling
-%\cite{chang:2009}.
+\input{chapter_foreign_relations/sec_introduction.tex}
 
-An advantage of a text-based approach to history is that we can
-incorporate information from all articles of a given collection with
-modest computational cost.  This means that historians and political
-scientists can then search and review thousands of historical
-documents to identify forgotten or overlooked ``blips'' in history.
-
-% We infer sentiment with the supervision of voting on UN resolutions.
-% Learning sentiment based on voting patterns provides an objective
-% measure of the political goals of different countries.
-
-% Potential idea: can use filtering instead of smoothing to see
-% how things look "as they happen".
-
-\section{Foreign relations and their influence on news reporting}
-\label{section:model}
-
-\begin{figure}
-  \center
-  \vspace{-55pt}
-  \includegraphics[width=0.3\textwidth]{chapter_foreign_relations/figures/countries_gm.pdf}
-  \caption{A time-series model of countries' interactions.
-    Pseudo-observations of ``zero'' are added for regularization.
-    Amazon Mechanical Turk labels are used to fit $\beta$, which is
-    used to infer unobserved sentiments.}
-  \label{figure:gm}
-  \vspace{-30pt}
-\end{figure}
-Reflecting the intuitions above, we assume that each nation lies in a
-space of latent `''foreign sentiment''.  A spatial a model has two
-benefits. First, it provides interpretability: nations with similar
-positions in this latent space tend to interact more positively, while
-nations further apart tend to have more tension in their relationship.
-A spatial model also allows us to draw on ideas from
-multidimensional scaling, which has been used successfully in both
-political science \cite{martin:2002,jackman:2001} and social network
-modeling \cite{hoff:2002,chang:2009}.
-
-In the model we outline below, we assume that each country $c$ takes a
-position $\bar x_c \in \mathcal{R}^P$ in the space of latent political
-sentiment. International relations are determined by the interaction
-of countries' positions $\bar x_c$.
-
-\paragraph{A temporal model of interaction.}
-Foreign relations are not static, however; nations' alliances and
-preferences change over time with the evolution of economies,
-technology, and culture.  We make an assumption that each piece of
-news $d$ about two nations $c_1$ and $c_2$ reflects some underlying
-sentiment $s_d$ between them.  We make this a fully temporal model by
-allowing each country's mean position $\bar x_{c,t}$ to drift over
-time with the Markov transition
-\begin{align}
-  \bar x_{ct} | \bar x_{c,t-1} \sim N(\bar x_{c,t-1}, \sigma_K^2),
-\end{align}
-as shown in Figure~\ref{figure:gm}. At any time $t$, state $c_1$ may interact with state $c_2$ in the following way:
-\begin{align}
-  x_{c_1,d} \sim N(\bar x_{c_1, t}, \sigma_D^2) \nonumber \\
-  x_{c_2,d} \sim N(\bar x_{c_2, t}, \sigma_D^2) \nonumber \\
-  s_d := x_{c_1,d}^T x_{c_2,d}, \nonumber \\
-\label{equation:sentiment}
-\end{align}
-where we interpret $s_d$ as the sentiment between $c_1$ and $c_2$ as
-reflected by article $d$.  When $c_1$ and $c_2$ are similar (as
-measured by their inner product), their sentiment $s_d$ will be
-positive; if they are dissimilar, their sentiment will be negative.
-More extreme values indicate stronger sentiment.
-
-
-\label{section:text_regression}
-When a news source discusses the relationship between these nations,
-the author's choice of words $\bm w_d$ reflects the relationship
-between the countries.  We model this sentiment with the text of the
-article $d$.  Using text regression \cite{kogan:2009}, the sentiment is modeled on wordcounts $\bm w_d$ of the article:
-\[
-  s_d | \bm w_d, \beta \sim \mathcal{N}( \bm w_d^T \beta , \sigma_W^2 ).
-\]
-We describe how to fit $\beta$ with Amazon Mechanical Turk workers in
-Section~\ref{section:mturk}.
-
-% In addition, a UN resolution may come up for vote at any time.  States
-% cast a vote based on their current positions:
-% \begin{align}
-% x_{c_1,d} \sim N(\bar x_{c_1, t}, \sigma_D^2) \nonumber \\
-% p(v_{cr}) = \sigma(x_{c_2, t} b_r + a_r) \nonumber \\
-% \end{align}
-
-% \begin{wrapfigure}{r}{0.4\textwidth}
-%   \includegraphics[width=0.4\textwidth]{figs/countries_gm.pdf}
-%   \caption{The full time-series model of interaction by countries.
-%     The large plate shows replication of a Markov chain for each
-%     country.  Certain countries interact at each epoch -- possibly
-%     multiple times -- with sentiment $s$.}
-%   \label{fig:countries_by_ip}
-% \end{wrapfigure}
-
-\subsection{Related work}
-
-% Democracy, Political Similarity, and International Alliances, 1816-1992
-% Brian Lai
-% Dan Reiterb
-% Department of Political Science, Emory University
-Spatial models such as Item Response Theory (IRT) have been developed
-over the past century by quantitative social scientists for analyzing
-behavior.  While much of this work has been used to model
-parliamentary voting behavior, these techniques have also been used to
-model voting in the UN General Assembly. Gartzke et al., for example,
-use these votes and alliance models to study the nations' affinities
-\cite{gartzke:1998}.
-
-These models have been developed for dyadic data more fully in network
-models such as the latent space model \cite{hoff:2002,sarkar:2005}, in
-which the probability of a link between two nodes is a function of
-their latent-space distance.  The qualitative relationship of
-entities' dyadic relationships has been more fully developed with text
-by the relational topic model, which uses free text to model the
-relationship between actors in an unsupervised setting
-\cite{chang:2009}.
-% Supervised topic models
-
-
-% Affinity of states dataset: 
-% Fading Friendships (working paper)
-% Alliances, Affinities and the Activation of International Identities∗
-% Erik Gartzke†
-% Alex Weisiger‡
-% 7 March 2011
-
-\section{Inference}
-We fit the \emph{MAP} objective of this probabilistic model.  This has
-the benefit of both clean exposition and simple implementation, and it
-can be interpreted as a form of unregularized variational inference.
-We optimize the \emph{MAP} objective in this model using traditional
-EM.
-
-\paragraph{M Step.} In the M step, the mean of each country's position
-is updated using a modified Kalman filter.  This step differs from a
-standard Kalman filter in that we may have no or multiple observations
-on any given date.  We also add \emph{pseudo-observations} for each
-country at each day $t$ with mean 0 and variance 10.  These
-observations are a form of ``time-series regularization'' and reflect
-the sense that a lack of news is effectively neutral news. The prior
-over the ends of the chain are standard normal.
-
-\paragraph{E Step.} In the E-step, our goal is to infer nations'
-positions $x_{c,d} | \bar{x}_{c,t_d}, s_d$ with each interaction $d$ given
-their means and the sentiment $s_d$ for this interaction.  We find
-these positions by gradient ascent on $x_{c,d}$.
-
-\section{Estimation of sentiment $s$}
-\label{section:sentiment_models}
-To infer the sentiment $s_d$ between two countries, we treat the
-corresponding news article as a bag-of-words and use text regression
-\cite{kogan:2009}.  In each of these cases, the sentiment $s_d$ is
-first estimated on a training set using Amazon Mechanical Turk (AMT).
-AMT is a crowdsourcing platform which provides access to thousands of
-``workers'' who perform simple tasks over the Internet.  These labels
-are then attached to all articles by predicting their sentiment.
+%\section{Foreign relations and their influence on news reporting}
+%
 
 \section{A latent-space model of foreign relations}
+
+
+\section{A supervised model of dyadic sentiment}
+\input{chapter_foreign_relations/sec_supervised_dyadic_sentiment.tex}
+
+\section{Unsupervised relationships between countries}
+\input{chapter_foreign_relations/sec_unsupervised_relationship_mining.tex}
 
 \subsection{Posterior inference}
 
@@ -312,13 +152,13 @@ paragraphs' words.  We trained and fit the model with the following procedure:
  \begin{table}[t]
    \caption{Average error predicting sentiment $s_d$ between heldout nation pairs for Correlates of War.}
    \begin{center}
-   \begin{tabular}{|c|c|c|}
+   \begin{tabular}{|c|c|c|c|}
      \hline
-     Dimension & Mean Squared Error & Mean Absolute Error \\
+     Dimension & & Mean Squared Error & Mean Absolute Error \\
      \hline
-     Text regression & 3.37 & 1.12 \\
+     Text regression & & 3.37 & 1.12 \\
      \hline
-     Mean & 3.68 & 1.19 \\
+     Mean & & 3.68 & 1.19 \\
      \hline
      \hline
      Dimension & Reversion variance & Mean Squared Error & Mean Absolute Error \\
@@ -370,7 +210,6 @@ of these nations' mentions had mean 0.12 and standard deviation
 appear to have a rocky relationship.
 
 % > a = read.csv("../../data/v4/v4-doc-training_samples.csv", as.is=TRUE, header=FALSE)
-
 
 
   %  We then evaluate perplexity
