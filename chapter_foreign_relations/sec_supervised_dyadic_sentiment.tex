@@ -3,13 +3,12 @@
 \begin{figure}
   \center
   \vspace{-55pt}
-  \includegraphics[width=0.3\textwidth]{chapter_foreign_relations/figures/countries_gm.pdf}
+  \includegraphics[width=0.5\textwidth]{chapter_foreign_relations/figures/countries_gm.pdf}
   \caption{A time-series model of countries' interactions.
     Pseudo-observations of ``zero'' are added for regularization.
     Amazon Mechanical Turk labels are used to fit $\beta$, which is
     used to infer unobserved sentiments.}
   \label{figure:gm}
-  \vspace{-30pt}
 \end{figure}
 Reflecting the intuitions above, we assume that each nation lies in a
 space of latent `''foreign sentiment''.  A spatial a model has two
@@ -144,3 +143,215 @@ first estimated on a training set using Amazon Mechanical Turk (AMT).
 AMT is a crowdsourcing platform which provides access to thousands of
 ``workers'' who perform simple tasks over the Internet.  These labels
 are then attached to all articles by predicting their sentiment.
+
+\section{Empirical studies: comparisons with ground truth}
+
+\label{section:experiments}
+
+We fit and evaluate this model over news articles discussing 245
+nations from twenty years of the \emph{New York Times} (NYT).  This
+collection spanned the years 1987 to 2007, a period which included
+both Gulf wars; the collapse of the Soviet Union; the reunification of
+Germany; September 11th, 2001; and countless other world events.
+
+\subsection{Datasets and tokenization}  We made an important
+assumption that the scope of foreign sentiment discussion is at the
+level of a paragraph.  We therefore used the subset of paragraphs
+which discuss exactly two nations as ``documents'' $d$, a set of
+257,472 distinct paragraphs which came from the foreign, business,
+financial, and magazine desks of the newspaper during this period. We
+used standard stopword filters and removed the geographic tags for
+labeling nations from the sentiment vocabulary.
+
+\subsection{Human labels with Amazon Mechanical Turk}
+\label{section:mturk}
+\begin{figure*}
+  \setlength\fboxsep{0pt}
+  \setlength\fboxrule{0.5pt}
+  \center \fbox{\includegraphics[width=1.0\textwidth]{chapter_foreign_relations/figures/mturk_screenshot.png}}
+  \label{figure:mechanical_turk_sample}
+  \small\caption{A screenshot of a Mechanical Turk labeling task.
+    Sometimes relationships may be complicated; both raters gave this
+    example a score of ``slightly positive''.}
+  \normalsize
+\end{figure*}
+
+To fit the model, we asked \emph{Amazon Mechanical Turk} raters to rate the
+sentiment between two nations mentioned in a paragraph in the range -5
+= "mortal enemies'', $\ldots, 5 = $''very good relationship''.
+With these training examples, we fit the coefficients $\beta$ of the
+text regression discussed in Section~\ref{section:model}.  This
+coefficient was then fixed in the joint model in
+Figure~\ref{figure:gm} to allow us to learn sentiment from
+paragraphs' words.  We trained and fit the model with the following procedure:
+
+\begin{enumerate}
+  \item Randomly select 3607 paragraphs discussing pairs of 245 countries.
+  \item Label each of these paragraphs' sentiment with two ratings
+    from Amazon Mechanical Turk.
+  \item Hold out 42 random country pairs (244 paragraphs) for testing.
+  \item Estimate sentiment model parameters $\beta$ using the training
+    paragraphs.
+  \item Infer the spatial sentiment model with these parameters on
+    all 257,472 paragraphs.
+  \item Evaluate model sentiment prediction on the heldout 244 test
+    paragraphs.
+\end{enumerate}
+  
+\subsection{Expert labels: Correlates of War}x
+
+\subsection{Results}
+ \begin{figure}
+  \begin{tabular}{ccc}
+    \includegraphics[width=0.33\textwidth]{chapter_foreign_relations/figures/002_countries_by_ip_1987.pdf} &
+    \includegraphics[width=0.33\textwidth]{chapter_foreign_relations/figures/002_countries_by_ip_2007.pdf} &
+    \includegraphics[width=0.33\textwidth]{chapter_foreign_relations/figures/002_us_vs_everyone.pdf} \\
+    (a) & (b) & (c) \\
+  \end{tabular}
+  \caption{
+    (a) Example positions of selected countries in the latent space of national sentiment, in 1987. Sentiment is given by the inner product between two vectors.
+    (b) Example positions of selected countries in 2007.
+    (c) Mutual sentiment $s = \bar x_{c, \cdot}^T \bar x_{\mbox{\small us}, \cdot}$ with the United States over time. The two Iraq wars and September 11th, 2001 are marked.
+  }
+  \label{figure:figures}
+\end{figure}
+
+\paragraph{Heldout sentiment}
+ \begin{table}[t]
+   \caption{Average error predicting sentiment $s_d$ between heldout nation pairs.}
+   \begin{center}
+   \begin{tabular}{|c|c|c|}
+     \hline
+     Model & Mean Squared Error & Mean Absolute Error \\
+     \hline
+     Inter-rater agreement & 1.77 (7.11) & 1.037 (2.07) \\
+     \hline
+     Text regression & 5.53 & 1.94 \\
+     \hline
+     Prior variance 0.1 & 2.36 & 1.09 \\
+     Prior variance 1 & \textbf{2.32} & \textbf{1.07} \\
+     Prior variance 10 & 2.32 & 1.08 \\
+     Prior variance 100 & 2.34 & 1.09 \\
+     Prior variance 1000 & 2.33 & 1.08 \\
+     \hline
+   \end{tabular}
+   \label{figure:sse_test}
+   \end{center}
+\end{table}
+
+
+\paragraph{Heldout sentiment}
+ \begin{table}[t]
+   \caption{Average error predicting sentiment $s_d$ between heldout nation pairs.}
+   \begin{center}
+   \begin{tabular}{|c|c|c|}
+     \hline
+     Model & Mean Squared Error & Mean Absolute Error \\
+     \hline
+     Inter-rater agreement & 1.77 (7.11) & 1.037 (2.07) \\
+     \hline
+     Text regression & 5.53 & 1.94 \\
+     \hline
+     1 & \textbf{2.33} & \textbf{1.08} \\
+     2 & 2.37 & 1.09 \\
+     3 & 2.36 & 1.09 \\
+     4 & 2.38 & 1.09 \\
+     5 & 2.40 & 1.10 \\
+     6 & 2.38 & 1.10 \\
+     7 & 2.40 & 1.10 \\
+     \hline
+   \end{tabular}
+   \label{figure:sse_test}
+   \end{center}
+\end{table}
+
+ \begin{table}[t]
+   \caption{Average error predicting sentiment $s_d$ between heldout nation pairs for Correlates of War.}
+   \begin{center}
+   \begin{tabular}{|c|c|c|c|}
+     \hline
+     Dimension & & Mean Squared Error & Mean Absolute Error \\
+     \hline
+     Text regression & & 3.37 & 1.12 \\
+     \hline
+     Mean & & 3.68 & 1.19 \\
+     \hline
+     \hline
+     Dimension & Reversion variance & Mean Squared Error & Mean Absolute Error \\
+     \hline
+     1 & 10 & 0.628 & 0.389 \\
+     2 & 10 & 0.561 & 0.287 \\
+     \textbf{3} & 10 & 0.559 & 0.286 \\
+     4 & 10 & 0.562 & 0.308 \\
+     5 & 10 & 0.557 & 0.306 \\
+     6 & 10 & 0.535 & 0.142 \\
+     7 & 10 & 0.535 & 0.140 \\
+     \hline
+     3 & 0.1 & 0.539 & 0.163 \\
+     3 & 1 & 0.555 & 0.245 \\
+     3 & \textbf{10} & 0.559 & 0.286 \\
+     3 & 100 & 0.560 & 0.296 \\
+     3 & 1000 & 0.561 & 0.298 \\
+     3 & 10000 & 0.561 & 0.298 \\
+     \hline
+   \end{tabular}
+   \label{figure:sse_test}
+   \end{center}
+\end{table}
+
+For two nations $c_1$ and $c_2$ mentioned together at time $t$, we
+predict their sentiment to be $\tilde s_{c_1, c_2} = \bar x_{c_1,t}
+\bar x_{c_2, t}$.  Based on this estimate, the average squared error
+for heldout nations is 2.32 ($R^2=0.51$), considerably better than a
+baseline of text regression, which had means-squared-error $5.53$; for
+comparison, average \emph{inter-rater squared error} -- the minimum
+theoretically possible given the set of Mechanical Turk ratings -- was
+$1.77$, and the square of the difference \emph{between} raters was
+$7.11$.  We also found that using ``pseudo observations'' with even
+modest observation variance improves predictive performance; these
+results are summarized in Table~\ref{figure:sse_test}.
+
+Nations' positions are illustrated in Figure~\ref{figure:figures}.
+Figures~\ref{figure:figures}(a,b) show nations' relative positions
+and interactions for a two- dimensional model; heldout error slightly
+increased for higher dimensions. The United States' relationship with
+Iraq (see Figure~\ref{figure:figures}(c)) serves as an excellent
+example of this model in action; the relationship between these
+nations degrades during both the Gulf War and the invasion of Iraq
+following September 9th, 2001.  Israel's relationship with the United
+States demonstrates one of the model's downfalls: while Israel is
+considered a close ally of the United States, the raters' 95 ratings
+of these nations' mentions had mean 0.12 and standard deviation
+2.65.  Because the model is only as good as its ratings, the nations
+appear to have a rocky relationship.
+
+% > a = read.csv("../../data/v4/v4-doc-training_samples.csv", as.is=TRUE, header=FALSE)
+
+
+  %  We then evaluate perplexity
+ % \begin{align}
+ %   \mbox{perp}_d & = \mathbb{E_{\hat D}} \log p(w | \bar x_{d_{c1}}
+ %     \bar x_{d_{c2}} ) \\
+ %     & = \frac{1}{N} \sum_N \sum_{W_{d_n}}
+ %     \log p(w | \bar x_{d_{c1}} \bar x_{d_{c2}} ) \\
+ % \end{align}
+
+% \subsubsection*{Bivariate change point detection}
+% In addition to identifying the latent positions of nations over
+% time, we can pinpoint periods of great change or upheaval.  Sudden
+% changes in a nation's position is an indication of newsworthy events
+% in its history; simultaneous changes in two nations' positions is an
+% indication that they are both taking part in these newsworthy events.
+
+% The task of identifying sudden changes in a time-series is known as
+% change point detection.  Change point detection is frequently
+% addressed by simple univariate significance tests.  We consider
+% changes in the statistic $\bar s_{c1,c2} := \bar x_{c1} \bar x_{c2}$
+% (see Equation~\ref{figure:sentiment}).  Because $\bar s_{c1,c1}$ may
+% be change significantly when either $x_{c_1}$ or $x_{c_2}$ changes, we
+% search for simultaneous significant changes in $\bar x_{c_1}$, $\bar
+% x_{c_2}$, and $\bar s_{c1,c2}$ (Note that $\mathbb{E}[s_{c1,c2}] \neq
+% \bar s_{c1,c2}$; we compute $\bar s_{c1,c2}$ out of convenience.
+
+
+\subsection{Comparisons with Ground Truth}
