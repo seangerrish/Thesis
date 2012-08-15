@@ -479,17 +479,17 @@ from a given random variable.  When MCMC does not require sequential
 samples (e.g., updates to variables which are conditionally
 independent), SVO does not require sequential samples.
 
-\subsubsection{Second-order updates}
-\label{section:second_order_updates}
-%\begin{figure}
-  \begin{algorithm}[tb]
-    \begin{algorithmic}[1]
+ \subsubsection{Second-order updates}
+ \label{section:second_order_updates}
+\begin{figure}
+%   \begin{algorithm}[tb]
+     \begin{algorithmic}[1]
     \setlength{\topsep}{1pt}
     \setlength{\itemsep}{2pt}
     \setlength{\parskip}{1pt}
     \setlength{\parsep}{1pt}
 
-    \STATE $n \gets 1$
+     \STATE $n \gets 1$
     \WHILE{not converged}
     \STATE Draw samples $x_{n1}, \ldots, x_{nM} \sim q_{\theta_{n - 1}}$ using quasi-Monte Carlo sampling.
     \STATE Compute $\partl{\log q_{\theta_n}(x_{nm})}{\theta} \Bigr|_{\theta_{n-1}}$ and
@@ -506,12 +506,13 @@ independent), SVO does not require sequential samples.
     \vspace{-15pt}
     \STATE $n \gets n + 1$ % (until convergence)
     \ENDWHILE
-  \end{algorithmic}
-  \caption{Second-order SVO. We begin with a variational distribution
-$q_{\theta_0}(x)$ and joint likelihood $p(x, y)$.  }
-  \label{figure:second_order_algorithm}
-%\end{figure}
-\end{algorithm}
+   \end{algorithmic}
+     \caption{Second-order SVO. We begin with a variational distribution
+       $q_{\theta_0}(x)$ and joint likelihood $p(x, y)$.  }
+     \label{figure:second_order_algorithm}
+\end{figure}
+%   \end{algorithm}
+
 We also note that the step size parameters $\eta$ and $k$ have a large
 impact on convergence to an optimal solution: they must be carefully
 tuned in both stochastic optimization and our algorithm. We circumvent

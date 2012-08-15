@@ -1,25 +1,35 @@
-The written history of foreign relations is peppered with the bias of
-politics and hindsight.  Because historians currently have limited
-resources to review thousands of relevant news sources, research may
-be biased by popular knowledge or even politics and culture. 
-
 In this chapter we will use the text of newspaper articles to infer a
-history of the relationships between different nations. An assumption
-of our work is that the tension between two nations -- or a warm and
-robust relationship between them -- is reflected by the language we
-use to discuss them. Using this assumption, we outline a model that is
-able to infer the relationship between pairs of countries whose
-relationship has not been observed in training.
+history of the relationships between different nations.  Just as with
+the previous chapter, a computational model of textwill allow us to
+incorporate information from all articles of a given collection with
+modest computational cost.  This means that historians and political
+scientists can then search and review thousands of historical
+documents to identify forgotten or overlooked ``blips'' in history.
+Because historians currently have limited resources to review
+thousands of relevant news sources, research may be colored by popular
+knowledge or even politics and culture.
+
+An assumption of our work is that the tension between two nations --
+or a warm and robust relationship between them -- is reflected by the
+language that is used to discuss them.  In developing this assumption,
+we will discuss two models designed to infer the relationships between
+pairs of countries.
 
 %, an idea
 %inspired by relational topic models and multidimensional scaling
 %\cite{chang:2009}.
 
-An advantage of a text-based approach to history is that we can
-incorporate information from all articles of a given collection with
-modest computational cost.  This means that historians and political
-scientists can then search and review thousands of historical
-documents to identify forgotten or overlooked ``blips'' in history.
+An important development in this chapter is that we will incorporate
+explicit assumptions about individual countries within our collection.
+Our assumptions---known in the literature as multidimensional
+scaling---will allow us to make predictions about the relationships
+between pairs of countries over time.  By linking this assumption to
+text, we will also be able determine the relationship between
+countries using the text of documents.  While the last chapter's
+Document Influence Model allowed us to describe themes over time and
+individual documents' influence on these themes, the assumptions we
+will make in this chapter allow us to create a more rich story about
+specific entities--countries--over time.
 
 % We infer sentiment with the supervision of voting on UN resolutions.
 % Learning sentiment based on voting patterns provides an objective
@@ -27,3 +37,24 @@ documents to identify forgotten or overlooked ``blips'' in history.
 
 % Potential idea: can use filtering instead of smoothing to see
 % how things look "as they happen".
+
+\section{Organization of this chapter}
+
+In the next two sections we will develop two computational models that
+link the text of a news source to the relationships between countries.
+We begin with a model which infers these relationships by using using
+two sources of labels about the sentiment between pairs of countries.
+We will develop a set of spatio-temporal assumptions that allow us to
+describe the sentiment between countries by inspecting their relative
+positions in a latent space.  We will demonstrate that modeling
+countries with this model allows us to create a history of foreign
+relations over time.  Importantly, we will show that the latent-space
+assumption allows us to better represent the sentiment observed
+between countries than a text-only model would allow.
+
+After developing a supervised model, we invert this question and ask:
+what sentiment is implied by the text alone of news articles?  We will
+develop an unsupervised model of the relationship between countries to
+to qualitatively describe these relationships.  We then demonstrate a
+connection between the unsupervised relationships and the sentiment
+labels we had used for the supervised model.

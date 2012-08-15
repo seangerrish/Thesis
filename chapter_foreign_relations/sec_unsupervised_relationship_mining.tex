@@ -7,14 +7,15 @@
 %     - Trade
 %     - Culture and society
 
-The preceding approach has limitations, however.  Sentiment labels
-measure only one kind of interaction: whether countries are at war or
-peace; but relationships between countries may be characterized in
-many ways, some of which are independent of whether countries are at
-war.  For example, the relationship between coutries may be
-characterized by trade in goods, or by the exchange of culture and
-society. Finally, these labels may be unavailable for a certain period
-of time.
+The preceding approach has limitations, however.  First, sentiment
+labels measure only one kind of interaction: whether countries are at
+war or peace.  In reality, relationships between countries may be
+characterized in many ways, some of which are independent of whether
+countries are at war.  For example, the relationship between coutries
+may be characterized by trade in goods, or by the exchange of culture
+and society. Another limitation to a supervised sentiment model is
+that labels of the sentiment between countries may be unavailable or
+limited, or (as we saw before), the labels may be noisy.
 
 % in this section, we will describe a model which will allow us to discover
 % unsupervised relationships
@@ -23,21 +24,21 @@ of time.
 In this section we will describe a model for inferring relationships
 between countries in an unsupervised fashion.  This model serves as an
 alternative to the model in the last section in that it requires no
-explicit labels of the relationship between two different countries.
-Instead, it infers a qualitative relationship between countries which
-we will interpreted post-hoc.
+explicit labels of the relationship between pairs of countries.
+Instead it infers a qualitative relationship between countries -- a
+relationship which we can attempt to interpret post-hoc.  The
+significance of this approach is that it infers a relationship between
+countries based more on the discussion of these countries than
+explicit labels.  Particularly, if there is a relationship which was
+been overlooked by historians, then we might be able to learn it.
 
-The significance of this approach is that it infers a relationship
-between countries based more on the discussion of these countries than
-explicit labels.  This will allow us to qualify the discussion of
-foreign relations.
-
-We will begin by outlining a language model for this purpose.  We will
-outline the key assumptions of this model -- namely, that a an
-exposition about two countries comprises language about each country,
-language about their relationship, and language from some background
-distribution. We then describe inference for this model, and finally
-provide an empirical analysis using this model.
+In the remainder of this section we will outline a probabilistic model
+for inferring sentiment between pairs of countries.  We will outline
+the key assumptions of this model -- first, a language model inspired
+by the \emph{Networks Uncovered by Bayesian Inference} model
+\cite{chang:2009nubbi}; and second, a spatial model of dyadic
+relationships. We will then describe inference for this model, and
+finally provide an empirical analysis of this model.
 
 \subsection{A model of unsupervised relationship.}
 % The assumptions are as follows:
@@ -86,11 +87,11 @@ to model each country's typical interaction style.  This gives us the augmented 
 We illustrate this sentiment model graphically in \myfig{dynamic_dyadic_chain}.
 
 The sentiment parameter $\kappa_d$ will become important when we link
-this sentiment model to text.  Intuitively, if two countries in
-document are far apart in the latent space, we expect that $\kappa$ is
-more likely to be 1.  Otherwise, $\kappa$ is more likely to be 0.  As
-we develop the language model, we will use this random variable to
-select a topic used to describe pairs of countries.
+this sentiment model to text.  Intuitively, if two countries are far
+apart in the latent space at time $t$, we expect that $\kappa$ is more
+likely to be 1 when they interact.  Otherwise, $\kappa$ is more likely
+to be 0.  As we develop the language model, we will use this random
+variable to decide which topic is used to describe the pair of countries.
 
 \subsubsection*{Binary Relational language model}
 We incorporate text using a mixed-membership language model similar to
@@ -100,7 +101,7 @@ we assume that the words describing a pair of countries come from
 topics about those countries.
 
 \paragraph{A mixture of four topics.} To be concrete, consider a document discussing Iran and the United
-States.  Each word in this document will serve one of
+States.  We assume that each word in this document will serve one of
 four roles:
 \begin{enumerate}
   \item It discusses the U.S. only,
@@ -108,7 +109,7 @@ four roles:
   \item It discusses the relationship between the U.S. and Iran. \label{foreign_relations:relationship}
   \item It is a ``filler'' word, providing little contribution to the discussion. \label{foreign_relations:filler}
 \end{enumerate}
-The first two roles are self-explanatory.  The relationship in
+The first two roles for a word are self-explanatory.  The relationship in
 (\ref{foreign_relations:relationship}) above could be any type of
 relationship -- the goal of this section is of course to discover the
 relationships in a collection of documents about these
@@ -122,7 +123,7 @@ We therefore keep $(N_c + 2 + 1)$ topics---topics $\beta_{C,1},
 sentiment topics $\beta_{S,0}, \beta_{S,1}$, and a single, global
 background topic $\beta_{B0}$ \cite{chemudugunta:2009}.  We assume, as in LDA, that a document
 about the United States and Iran is a mixture of topics; in contrast
-to LDA, we constrain this document's topics to be exactly the four
+to LDA, however, we constrain this document's topics to be exactly the four
 topics enumerated above: $\beta_{C,\mbox{\tiny Iran}}$,
 $\beta_{C,\mbox{\tiny United States}}$, $\beta_{B,0}$, and either
 $\beta_{S,0}$ or $\beta_{S,1}$ (we describe below how to make the
@@ -132,10 +133,12 @@ $\beta_{C,\mbox{\tiny Germany}}$, $\beta_{C,\mbox{\tiny Hungary}}$,
 $\beta_{B,0}$, and either $\beta_{S,0}$ or $\beta_{S,1}$.
 
 Once these topics are fixed for a document, the language model
-proceeds exactly as with LDA: each word in the document comes from one
-of four topics, with probability for topic $k$ proportional to the
-document-topic mixture weights $\theta_{dk}$.  We illustrate this
-model graphically in \myfig{binary_relational_language_model}.
+proceeds as with LDA for each word: each word in the document comes
+from one of four topics, with probability for topic $k$ proportional
+to the topic mixture $\expect \theta_k$.  We illustrate this model
+graphically in \myfig{binary_relational_language_model}.  Note that we
+keep the topic mixture $\theta$ global instead of local to each
+document because the topics are already very constrained.
 
 \subsubsection{Determining the sentiment topic: connecting dyadic sentiment and text}
 
@@ -172,10 +175,11 @@ begin by specifying the global topics.
   \item Draw negative-interaction topic $\beta_{\mbox{S},1} \sim \mbox{Dir}(1, \ldots, 1)$
 \end{enumerate}
 
-\item Next, draw documents. \\
+\item Next, draw the global topic mixture $\theta \sim \mbox{Dir}(1, 1, 1, 1)$.
+
+\item Finally, draw documents. \\
 For document $d=1, \ldots, D$, each representing interactions between pairs of countries $c_{d_1},c_{d_2}$:
   \begin{enumerate}
-    \item Draw topic mixture $\theta_d \sim \mbox{Dir}(1, 1, 1, 1)$
     \item Draw sentiment index $\kappa_d \sim \sigma(s_d)$
     \item For word $n = 1, \ldots, N_d$:
     \begin{itemize}
@@ -202,10 +206,15 @@ entity-specific and relationship-specific topics
   Inference} (Nubbi) model, topics described the ``context''
 surrounding either entities (countries) or relationships (interactions
 between countries).  The goal of Nubbi was to infer relationships
-between entities.
+between arbitrary entities tagged in a collection of text documents.
+
+Nubbi inferred relationships by finding similar topic weights between
+documents. In contrast, we use sentiment to select between topics,
+with an ``upstream'' model in which actors are embedded in a latent
+space.
 
 The idea of a background topic was researched by
-Chemudugunta et al. \cite{chemudugunta:2009}.
+Chemudugunta et al. \cite{chemudugunta:2009}.  Chemudugunta et al. 
 
 Neither of these sources included a switch variable for interaction topics.
 
@@ -234,17 +243,98 @@ Neither of these sources included a switch variable for interaction topics.
   \label{fig:dynamic_dyadic_chain_binary_relational_language_model}
 \end{figure}
 
+\subsection{Inference}
+As before, we only observe a collection $\{ (\bm w_d, c_{d,1},
+c_{d,2}) \}_{d \in D}$ of interactions between countries.  Each of
+these interactions takes the form of a vector of wordcounts $\bm w_d$
+and a pair of countries interacting.  To perform an empirical analysis
+with this model, we must estimate the latent positions of countries
+and the latent topics associated with documents.  These are described
+by the hidden random variables $\bar x_c, \theta$, and $\beta$.
+We accomplish this with posterior inference, which will provide us
+with an estimate of the distribution $p(\bar x_c, \theta, \beta |
+\{ (\bm w_d, c_{d,1}, c_{d,2}) \}_{d \in D})$.
+
+We fit this model with \emph{maximum a posteriori} (MAP) inference,
+which has the benefit of a simpler derivation than variational
+inference.  As the reader may recall, the MAP estimate is
+\begin{align}
+  \hat x_c, \hat \theta, \hat \beta &
+  = \arg \max_{\bar x_c, \theta, \beta} p(\bar x_c, \theta, \beta | \{ (\bm w_d, c_{d,1}, c_{d,2}) \}_{d \in D}) \nonumber \\
+  & = \arg \max_{\bar x_c, \theta, \beta} p(\bar x_c, \theta, \beta, \{ (\bm w_d, c_{d,1}, c_{d,2}) \}_{d \in D}). \label{equation:fr_unsupervised_map_likelihood}
+\end{align}
+
+Deriving the algorithm for MAP estimation requires expanding the full likelihood
+function (Equation ) and maximixing with respect to the parameters.  We have
+designed the model in such a way that updates can be performed by a combination of exact coordinate ascent and EM, with the exception of countries' mean position $\hat x_{c_{d,1}, c_{d,2}}$ during an interaction.
+
+The EM algorithm uses the expectations $\expect{\kappa_d}$ and
+$\expect{z_n}$.  This means that each interaction is manifested as a
+\emph{mixture} of sentiment.  We estimate countries' mean positions
+$\bar \hat x$ using a Kalman filter \cite{kalman:1960} as in the last
+section.  We omit details for the Kalman filter here but refer the
+reader to the last section for details.
+
+We countries' positions during an interaction by gradient ascent on
+$x_{c_{d,1}, c_{d,2}}$ in the objective.
+
+\paragraph{Estimating topics $\beta_{C, \cdot}, \beta_{S, \cdot}$, and $\beta_{B}$.}
+The update for topics is similar to that in LDA.  In both cases, we
+aggregate the sufficient statistics and normalize during an M-step.
+We also use Laplace smoothing by adding $\epsilon=10^{-8}$ to these
+statistics.
+
+\paragraph{Estimating $\expect{\kappa}$ and $\expect{z_n}$.}
+During inference, we compute the expectations $\expect{\kappa_d}$ and $\expect{z_n}$.  Letting $S_0$ and $S_1$ index the sentiment word-topic distributions, and letting $S$ index the sentiment topic in the topic indicators $z$, and recalling that the indicator $z_n$ describes word $w_n$, this update is:
+\begin{align}
+  \kappa_{d,0} & \propto \sum_{n=1}^{N_d} \beta_{S_0,w_n} \expect{z_{n,S}} \nonumber \\
+  \kappa_{d,1} & \propto \exp(s_d) \sum_{n=1}^{N_d} \beta_{S_1,w_n} \expect{z_{n,S}} \nonumber \\
+  \expect{\kappa_{d,i}} & = \frac{\kappa_{d,m}} { \sum_k \kappa_{d,m} } \nonumber \\
+\end{align}
+
+The update for $\expect{z_{n}}$ is similar.  Again letting $S (S_0, S_1)$ refer to the sentiment topic indices, and describing the remaining indices with $C_1, C_2, B$, we have:
+\begin{align}
+  z_{n,S} & \propto \expect{\theta_{S}} \left( \beta_{S_0,w_n} \expect{\kappa_{d_z, 0}} + \beta_{S_1,w_n} \expect{\kappa_{d_z, 1}} \right) \nonumber \\
+  z_{n,k_{c1}} & \propto \expect{\theta_{C_1}} \beta_{C_1,w_n}  \nonumber \\
+  z_{n,k_{c2}} & \propto \expect{\theta_{C_2}} \beta_{C_2,w_n} \nonumber \\
+  z_{n,k_{b}} & \propto \expect{\theta_{B}} \beta_{B,w_n} \nonumber \\
+  \expect{z_{n,i}} & = \frac{ z_{n,i}} { \sum_k z_{n,k} } \label{equation:fr_e_z}
+\end{align}
+
+The update for $\expect{\theta_k}$ is similar to $\kappa_{dk}$, but we use sufficient statistics from all documents:
+\begin{align}
+  \theta_{k} & \propto \sum_{d=1}^D \sum_{n=1}^{N_d} \expect{z_{n,k}} \nonumber \\
+  \expect{\theta_{k}} & = \frac{\theta_{k}} { \sum_m \theta_{m} } \nonumber \\
+\end{align}
+
 \subsection*{Empirical analysis}
 
-\subsubsection*{Quantitative evaluation}
-\paragraph{Perplexity}
-% comparison with LDA, for a variety of topics.
-% comparison with 
-\paragraph{Sentiment}
+In this section we perform an empirical validation of this model.  We
+will provide anecdotal examples, but our particular interest is in
+assessing whether the latent space assumption is a meaningful modeling
+assumption.  We begin by providing an overview of the qualitative
+results of this model.  We follow this with several metrics of
+goodness-of-fit.  These metrics are designed to measure how well the
+latent-space assumptions improve the language model and how well the
+inferred relationships correspond to third-party metrics of sentiment.
 
-\paragraph{Relationship between sentiment and third-party sentiment}
+For this analysis, we used two corpora: the \emph{New York Times}
+(NYT) and XXX.  We summarize these corpora below.
+
+\paragraph{The New York Times.}  The NYT corpus included xxxx articles from which we isolated xxxx paragraphs which mentioned exactly two countries. There were 87 distinct countries mentioned in these paragraphs.  We defined a vocabulary of size xxxx by removing words appearing in fewer than xxx\% of documents or more than xxx\% of documents.  We split these paragraphs into a set of xxxx training documents and xxxx test documents.
+
+\paragraph{XXX.}  The xxx corpus included xxxx articles from which we isolated xxxx paragraphs which mentioned exactly two countries. There were xxx distinct countries mentioned in these paragraphs.  We defined a vocabulary of size xxxx by removing words appearing in fewer than xxx\% of documents or more than xxx\% of documents.  We split these paragraphs into a set of xxxx training documents and xxxx test documents.
 
 \subsubsection*{Topics}
+We first summarize a set of topics inferred by the unsupervised
+sentiment model to the entire NYT corpus.
+Figure~\ref{table:fr_unsupervised_topics} lists the most-likely words
+from sample of topics fit to these twenty years of articles.
+
+\paragraph{State-specific topics $\beta_{C,\cdot}$.}  The state-specific topics describe words used when one of these countries is mentioned in text.  Many of these topics are intuitive: ``oil'' shows up in the Iran topic, and ``drug'' is the top word in the Mexico topic.  As these countries are mentioned in a major U.S. news source, the topics are sometimes biased toward ideas specific to the U.S. relationship with these countries (for example, ``border'' and ``traffickers'' in the Mexico topic).  The U.S. topic contains phrases specific to policy and leadership.
+
+While these topics are intuitive, they are not much more useful.  On
+the other hand, they serve as a ``sponge'' to explain away words commonly used to describe a country, especially when those words might otherwise be interpreted to refer to a specific relationship.
 
 \paragraph{An economics/military dichotomy.}
 The sentiment topic is particularly telling.  Again using the
@@ -256,7 +346,7 @@ sentiment between warring states:
 % What do the topics look like?
 %  background topic?
 
-\begin{table}
+\begin{figure}
 %         Country
 % 2   united_states
 % 3            iran
@@ -368,8 +458,15 @@ sentiment between warring states:
 \end{tabular}
 \caption{Per-country topics ($\beta_{C,\cdot}$), a background topics ($\beta_{B,0}$), and the two interaction topics ($\beta_{S,0}, \beta_{S,1}$).}
 \label{table:fr_unsupervised_topics}
-\end{table}
-\paragraph{National topics}
+\end{figure}
 
+
+\subsubsection*{Quantitative evaluation}
+\paragraph{Perplexity}
+% comparison with LDA, for a variety of topics.
+% comparison with 
+\paragraph{Sentiment}
+
+\paragraph{Relationship between sentiment and third-party sentiment}
 
 
