@@ -1,4 +1,12 @@
+\section{A supervised model of dyadic sentiment}
 \label{section:foreign_relations_supervised_model}
+
+In the last chapter we described a model for identifying influential
+documents.  An important feature of that model was that it was
+unsupervised; only after it was fit did we compare the inferred
+influence of an article with the number of citations it had recieved.
+In this section we will take a more direct approach, fitting a
+model with labels \emph{defined} to represent sentiment.
 
 \begin{figure}
   \center
@@ -15,7 +23,7 @@ space of latent `''foreign sentiment''.  A spatial a model has two
 benefits. First, it provides interpretability: nations with similar
 positions in this latent space tend to interact more positively, while
 nations further apart tend to have more tension in their relationship.
-A spatial model also allows us to draw on ideas from
+A spatial model also allows us to draw on existing work from
 multidimensional scaling, which has been used successfully in both
 political science \cite{martin:2002,jackman:2001} and social network
 modeling \cite{hoff:2002,chang:2009}.
@@ -24,10 +32,6 @@ In the model we outline below, we assume that each country $c$ takes a
 position $\bar x_c \in \mathcal{R}^P$ in the space of latent political
 sentiment. The relationship between two countries will be determined
 by the interaction of their positions $\bar x_c$.
-
-\subsection{Related work}
-% Covariates of war
-% united nations general assembly
 
 \paragraph{A temporal model of interaction.}
 Foreign relations are not static, however; nations' alliances and
@@ -134,35 +138,18 @@ positions $x_{c,d} | \bar{x}_{c,t_d}, s_d$ with each interaction $d$ given
 their means and the sentiment $s_d$ for this interaction.  We find
 these positions by gradient ascent on $x_{c,d}$.
 
-\section{Estimation of sentiment $s$}
-\label{section:sentiment_models}
-To infer the sentiment $s_d$ between two countries, we treat the
-corresponding news article as a bag-of-words and use text regression
-\cite{kogan:2009}.  In each of these cases, the sentiment $s_d$ is
-first estimated on a training set using Amazon Mechanical Turk (AMT).
-AMT is a crowdsourcing platform which provides access to thousands of
-``workers'' who perform simple tasks over the Internet.  These labels
-are then attached to all articles by predicting their sentiment.
-
 \section{Empirical studies: comparisons with ground truth}
 
-\label{section:experiments}
+\subsection{Sentiment labels $s$}
 
-We fit and evaluate this model over news articles discussing 245
-nations from twenty years of the \emph{New York Times} (NYT).  This
-collection spanned the years 1987 to 2007, a period which included
-both Gulf wars; the collapse of the Soviet Union; the reunification of
-Germany; September 11th, 2001; and countless other world events.
+To infer the sentiment $s_d$ between two countries, we treat the
+corresponding news article as a bag-of-words and fit text regression
+\cite{kogan:2009} to predict the sentiment from the text.  We used two
+sources for sentiment labels: Amazon Mechanical Turk and Covariates of
+War.  In each case, we fit a text regression which predicted the
+sentiment $s_d$ from a training set of text snippets.
 
-\subsection{Datasets and tokenization}  We made an important
-assumption that the scope of foreign sentiment discussion is at the
-level of a paragraph.  We therefore used the subset of paragraphs
-which discuss exactly two nations as ``documents'' $d$, a set of
-257,472 distinct paragraphs which came from the foreign, business,
-financial, and magazine desks of the newspaper during this period. We
-used standard stopword filters and removed the geographic tags for
-labeling nations from the sentiment vocabulary.
-
+\label{section:sentiment_models}
 \subsection{Human labels with Amazon Mechanical Turk}
 \label{section:mturk}
 \begin{figure*}
@@ -197,6 +184,31 @@ paragraphs' words.  We trained and fit the model with the following procedure:
   \item Evaluate model sentiment prediction on the heldout 244 test
     paragraphs.
 \end{enumerate}
+
+\paragraph{Covariates of War.}  We also used a set of expert labels
+called the \emph{Covariates of War} (CoW).  These labels describe the
+relationships between countries created over the past
+
+\subsection{Datasets and tokenization}  We made an important
+assumption that the scope of foreign sentiment discussion is at the
+level of a paragraph.  We therefore used the subset of paragraphs
+which discuss exactly two nations as ``documents'' $d$, a set of
+257,472 distinct paragraphs which came from the foreign, business,
+financial, and magazine desks of the newspaper during this period. We
+used standard stopword filters and removed the geographic tags for
+labeling nations from the sentiment vocabulary.
+
+\label{section:experiments}
+
+\paragraph{New York Times.} We fit and evaluate this model over news articles discussing 245
+nations from twenty years of the \emph{New York Times} (NYT).  This
+collection spanned the years 1987 to 2007, a period which included
+both Gulf wars; the collapse of the Soviet Union; the reunification of
+Germany; September 11th, 2001; and countless other world events.
+
+\paragraph{...}
+TODO(sgerrish)
+
   
 \subsection{Expert labels: Correlates of War}x
 

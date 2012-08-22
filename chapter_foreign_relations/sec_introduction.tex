@@ -1,3 +1,5 @@
+% \section*{Introduction}
+
 The written history of foreign relations is peppered with the bias of
 politics and hindsight.  Because historians currently have limited
 resources to review thousands of relevant news sources, research may
@@ -6,20 +8,44 @@ be biased by popular knowledge or even politics and culture.
 In this chapter we will use the text of newspaper articles to infer a
 history of the relationships between different nations. An assumption
 of our work is that the tension between two nations -- or a warm and
-robust relationship between them -- is reflected by the language we
-use to discuss them. Using this assumption, we outline a model that is
-able to infer the relationship between pairs of countries whose
+robust relationship between them -- is reflected by the language used
+to discuss them. Using this assumption, we will outline a model that
+is able to infer the relationship between pairs of countries whose
 relationship has not been observed in training.
 
 %, an idea
 %inspired by relational topic models and multidimensional scaling
 %\cite{chang:2009}.
 
-An advantage of a text-based approach to history is that we can
-incorporate information from all articles of a given collection with
-modest computational cost.  This means that historians and political
-scientists can then search and review thousands of historical
-documents to identify forgotten or overlooked ``blips'' in history.
+\subsection*{Text and latent spaces}
+The unit of analysis in this chapter will be paragraphs from news
+articles---one of the the smallest units of discussion about a pair of
+countries; and we will use some of the same ideas presented in the last chapter to model this text: mixed-membership models of each document.  An advantage of a text-based approach to history is that
+we can incorporate information from all articles of a given collection
+with modest computational cost.  This means that historians and
+political scientists can then search and review thousands of
+historical documents to identify forgotten or overlooked incidents in
+history.
+
+An important additional assumption that we will make is that each
+nation can be summarized by its position in a latent space, so that
+the sentiment between two nations is determined (up to stochasticity)
+by the relationship between their positions in this latent space.  By
+making this assumption, we will gain two benefits: the ability to
+interpret these countries' positions, since they provide meaningful
+summaries of these countries' positions; and the ability to make
+predictions about the relationships between countries, based on their
+latent positions.
+
+We begin this chapter by outlining a model of foreign relations.  In
+this model, we will use both expert and novice labels of the sentiment
+between pairs of countries attached to each snippet of text.  Using
+this model, we will demonstrate that embedding countries into a latent
+space improves our ability to predict sentiment of heldout documents.
+After analyzing this supervised model, we will turn the question
+around and ask, ``in the absense of supervision, what type of
+relationships best describe the interaction between countries?''  As
+we will demonstrate, this relationship coincides with expert labels.
 
 % We infer sentiment with the supervision of voting on UN resolutions.
 % Learning sentiment based on voting patterns provides an objective
