@@ -8,6 +8,20 @@ influence of an article with the number of citations it had recieved.
 In this section we will take a more direct approach, fitting a
 model with labels \emph{defined} to represent sentiment.
 
+
+In the model we outline below, we will make an assumption that each
+country can be described by a vector in some latent space.  The
+relationship between two countries is then determined (up to
+stochasticity) by the relationship between these countries' positions
+in this latent space. A spatial a model has two
+benefits. First, it provides interpretability: nations with similar
+positions in this latent space tend to interact more positively, while
+nations further apart tend to have more tension in their relationship.
+A spatial model also allows us to draw on existing work from
+multidimensional scaling, which has been used successfully in both
+political science \cite{martin:2002,jackman:2001} and social network
+modeling \cite{hoff:2002,chang:2009}.
+
 \begin{figure}
   \center
   \vspace{-55pt}
@@ -18,22 +32,13 @@ model with labels \emph{defined} to represent sentiment.
     used to infer unobserved sentiments.}
   \label{figure:gm}
 \end{figure}
-Reflecting the intuitions above, we assume that each nation lies in a
-space of latent `''foreign sentiment''.  A spatial a model has two
-benefits. First, it provides interpretability: nations with similar
-positions in this latent space tend to interact more positively, while
-nations further apart tend to have more tension in their relationship.
-A spatial model also allows us to draw on existing work from
-multidimensional scaling, which has been used successfully in both
-political science \cite{martin:2002,jackman:2001} and social network
-modeling \cite{hoff:2002,chang:2009}.
 
-In the model we outline below, we assume that each country $c$ takes a
-position $\bar x_c \in \mathcal{R}^P$ in the space of latent political
-sentiment. The relationship between two countries will be determined
-by the interaction of their positions $\bar x_c$.
+\subsection{A temporal model of interaction.}
+We formalize the latent space assumption by letting each country $c$
+take a position $\bar x_c \in \mathcal{R}^P$ in a space of latent
+political sentiment. The relationship between two countries $c_1, c_2$
+will be determined by the interaction of their positions: $s_{c_1, c_2} \sim \mathbb{f}(\bar x_{c_1}, \bar x_{c_2})$, for some suitable distribution $\mathbb{f}$.
 
-\paragraph{A temporal model of interaction.}
 Foreign relations are not static, however; nations' alliances and
 preferences change over time with the evolution of economies,
 technology, and culture.  We make a further assumption that each piece
@@ -48,7 +53,7 @@ as shown in Figure~\ref{figure:gm}. At any time $t$, state $c_1$ may interact wi
 \begin{align}
   x_{c_1,d} \sim N(\bar x_{c_1, t}, \sigma_D^2) \nonumber \\
   x_{c_2,d} \sim N(\bar x_{c_2, t}, \sigma_D^2) \nonumber \\
-  s_d := x_{c_1,d}^T x_{c_2,d}, \nonumber \\
+  s_d := x_{c_1,d}^T x_{c_2,d},
 \label{equation:sentiment}
 \end{align}
 where we interpret $s_d$ as the sentiment between $c_1$ and $c_2$ as
@@ -56,7 +61,6 @@ reflected by article $d$.  When $c_1$ and $c_2$ are similar (as
 measured by their inner product), their sentiment $s_d$ will be
 positive; if they are dissimilar, their sentiment will be negative.
 More extreme values indicate stronger sentiment.
-
 
 \label{section:text_regression}
 When a news source discusses the relationship between these nations,
@@ -117,7 +121,7 @@ relationship between actors in an unsupervised setting
 % Alex Weisiger‡
 % 7 March 2011
 
-\section{Inference}
+\subsection{Inference}
 We fit the \emph{MAP} objective of this probabilistic model.  This has
 the benefit of both clean exposition and simple implementation, and it
 can be interpreted as a form of unregularized variational inference.
@@ -127,11 +131,13 @@ EM.
 \paragraph{M Step.} In the M step, the mean of each country's position
 is updated using a modified Kalman filter.  This step differs from a
 standard Kalman filter in that we may have no or multiple observations
-on any given date.  We also add \emph{pseudo-observations} for each
-country at each day $t$ with mean 0 and variance 10.  These
-observations are a form of ``time-series regularization'' and reflect
-the sense that a lack of news is effectively neutral news. The prior
-over the ends of the chain are standard normal.
+on any given date.\footnote{We also experimented with
+  \emph{pseudo-observations} for each country at each day $t$ with
+  mean 0 and variance $\sigma_p^2$.  These observations are a form of
+  ``time-series regularization'' and reflect the sense that a lack of
+  news is effectively neutral news.  Low values of $\sigma_p^2$ harmed
+  performance, and it was best set around $10^6$.}  The prior over the
+ends of the chain are standard normal.
 
 \paragraph{E Step.} In the E-step, our goal is to infer nations'
 positions $x_{c,d} | \bar{x}_{c,t_d}, s_d$ with each interaction $d$ given
@@ -141,6 +147,7 @@ these positions by gradient ascent on $x_{c,d}$.
 \section{Empirical studies: comparisons with ground truth}
 
 \subsection{Sentiment labels $s$}
+\label{section:sentiment_models}
 
 To infer the sentiment $s_d$ between two countries, we treat the
 corresponding news article as a bag-of-words and fit text regression
@@ -149,9 +156,14 @@ sources for sentiment labels: Amazon Mechanical Turk and Covariates of
 War.  In each case, we fit a text regression which predicted the
 sentiment $s_d$ from a training set of text snippets.
 
-\label{section:sentiment_models}
-\subsection{Human labels with Amazon Mechanical Turk}
+\subsubsection{Human labels with Amazon Mechanical Turk}
 \label{section:mturk}
+
+\emph{Amazon Mechanical Turk} (AMT) is a crowdsourcing platform which
+provides access to thousands of ``workers'' who perform simple tasks
+over the Internet.  Although the ``requestor'' can use tests to
+demonstrate that , these workers are typically not experts.
+
 \begin{figure*}
   \setlength\fboxsep{0pt}
   \setlength\fboxrule{0.5pt}
@@ -185,11 +197,7 @@ paragraphs' words.  We trained and fit the model with the following procedure:
     paragraphs.
 \end{enumerate}
 
-\paragraph{Covariates of War.}  We also used a set of expert labels
-called the \emph{Covariates of War} (CoW).  These labels describe the
-relationships between countries created over the past
-
-\subsection{Datasets and tokenization}  We made an important
+\subsubsection{Datasets and tokenization}  We made an important
 assumption that the scope of foreign sentiment discussion is at the
 level of a paragraph.  We therefore used the subset of paragraphs
 which discuss exactly two nations as ``documents'' $d$, a set of
@@ -207,12 +215,15 @@ both Gulf wars; the collapse of the Soviet Union; the reunification of
 Germany; September 11th, 2001; and countless other world events.
 
 \paragraph{...}
-TODO(sgerrish)
-
+TODO(sgerrish): Add another dataset.
   
-\subsection{Expert labels: Correlates of War}x
+\subsubsection{Expert labels: Correlates of War}x
 
-\subsection{Results}
+We also used a set of expert labels called the \emph{Covariates of
+  War} (CoW).  These labels describe the relationships between
+countries created over the past
+
+\subsubsection{Results}
  \begin{figure}
   \begin{tabular}{ccc}
     \includegraphics[width=0.33\textwidth]{chapter_foreign_relations/figures/002_countries_by_ip_1987.pdf} &
@@ -365,5 +376,3 @@ appear to have a rocky relationship.
 % x_{c_2}$, and $\bar s_{c1,c2}$ (Note that $\mathbb{E}[s_{c1,c2}] \neq
 % \bar s_{c1,c2}$; we compute $\bar s_{c1,c2}$ out of convenience.
 
-
-\subsection{Comparisons with Ground Truth}
