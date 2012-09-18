@@ -1,4 +1,5 @@
 \section{A supervised model of dyadic sentiment}
+
 \label{section:foreign_relations_supervised_model}
 
 In the last chapter we described a model for identifying influential
@@ -8,13 +9,14 @@ influence of an article with the number of citations it had recieved.
 In this section we will take a more direct approach, fitting a
 model with labels \emph{defined} to represent sentiment.
 
-
-In the model we outline below, we will make an assumption that each
-country can be described by a vector in some latent space.  The
-relationship between two countries is then determined (up to
-stochasticity) by the relationship between these countries' positions
-in this latent space. A spatial a model has two
-benefits. First, it provides interpretability: nations with similar
+Here will make further assumptions about the object of discussion in
+the text. We will assume in particular that each country can be
+described by a vector in some latent space.  The relationship between
+two countries is then determined (up to stochasticity) by the
+relationship between these countries' positions in this latent space
+(models that make this assumption are sometimes referred to as latent
+space models or spatial models).  A spatial a model provides two
+benefits for us. First, it provides interpretability: nations with similar
 positions in this latent space tend to interact more positively, while
 nations further apart tend to have more tension in their relationship.
 A spatial model also allows us to draw on existing work from
@@ -35,26 +37,26 @@ modeling \cite{hoff:2002,chang:2009}.
 
 \subsection{A temporal model of interaction.}
 We formalize the latent space assumption by letting each country $c$
-take a position $\bar x_c \in \mathcal{R}^P$ in a space of latent
+take a position $\bar x_c \in \mathbb{R}^P$ in a space of latent
 political sentiment. The relationship between two countries $c_1, c_2$
-will be determined by the interaction of their positions: $s_{c_1, c_2} \sim \mathbb{f}(\bar x_{c_1}, \bar x_{c_2})$, for some suitable distribution $\mathbb{f}$.
+will be described by a scalar $s_{c_1,c_2} \in \mathbb{R}$.  This
+sentiment is determined by the interaction of their positions:
+$s_{c_1, c_2} = \mathcal{F}(\bar x_{c_1}, \bar x_{c_2})$, for some
+suitable function $\mathcal{F}$.
 
-Foreign relations are not static, however; nations' alliances and
-preferences change over time with the evolution of economies,
-technology, and culture.  We make a further assumption that each piece
-of news $d$ about two nations $c_1$ and $c_2$ reflects some underlying
-sentiment $s_d$ between them.  We make this a fully temporal model by
+Foreign relations are not static; nations' alliances and preferences
+change over time with the evolution of economies, technology, and
+culture.  Therefore we make this a fully temporal model by
 allowing each country's mean position $\bar x_{c,t}$ to drift over
 time with the Markov transition
 \begin{align}
-  \bar x_{ct} | \bar x_{c,t-1} \sim N(\bar x_{c,t-1}, \sigma_K^2),
+  \bar x_{c,t} | \bar x_{c,t-1} \sim \mathcal{N}(\bar x_{c,t-1}, \sigma_{\mbox{\tiny chain}}^2),
 \end{align}
 as shown in Figure~\ref{figure:gm}. At any time $t$, state $c_1$ may interact with state $c_2$ in the following way:
 \begin{align}
-  x_{c_1,d} \sim N(\bar x_{c_1, t}, \sigma_D^2) \nonumber \\
-  x_{c_2,d} \sim N(\bar x_{c_2, t}, \sigma_D^2) \nonumber \\
-  s_d := x_{c_1,d}^T x_{c_2,d},
-\label{equation:sentiment}
+  x_{c_1,d} \sim \mathcal{N}(\bar x_{c_1, t}, \sigma_D^2) \nonumber \\
+  x_{c_2,d} \sim \mathcal{N}(\bar x_{c_2, t}, \sigma_D^2) \nonumber \\
+  s_d := x_{c_1,d}^T x_{c_2,d}, \label{eq:sentiment_space}
 \end{align}
 where we interpret $s_d$ as the sentiment between $c_1$ and $c_2$ as
 reflected by article $d$.  When $c_1$ and $c_2$ are similar (as
@@ -62,16 +64,45 @@ measured by their inner product), their sentiment $s_d$ will be
 positive; if they are dissimilar, their sentiment will be negative.
 More extreme values indicate stronger sentiment.
 
+\subsection{Inferring sentiment from text.}
 \label{section:text_regression}
 When a news source discusses the relationship between these nations,
 the author's choice of words $\bm w_d$ reflects the relationship
 between the countries.  We model this sentiment with the text of the
-article $d$.  Using text regression \cite{kogan:2009}, the sentiment is modeled on wordcounts $\bm w_d$ of the article:
-\[
-  s_d | \bm w_d, \beta \sim \mathcal{N}( \bm w_d^T \beta , \sigma_W^2 ).
-\]
-We describe how to fit $\beta$ with Amazon Mechanical Turk workers in
-Section~\ref{section:mturk}.
+article $d$.  Using text regression \cite{kogan:2009}, we model
+sentiment using the wordcounts $\bm w_d$ of the article:
+\begin{align}
+  s_d | \bm w_d, \beta \sim \mathcal{N}( \bm w_d^T \beta, \sigma_W^2 ).
+  \label{eq:sentiment_text}
+\end{align}
+For the purposes of countries' positions in the latent-space model, we
+will assume that $\beta$ is observed (we describe how to fit $\beta$
+with \myeq{sentiment_text} and human labels in
+Section~\ref{section:mturk}).  In fitting $\beta$, we interpret the
+distribution of $s_d$ as a Gaussian with a mean which depends on the
+text.
+
+For the purposes of countries' positions in the latent-space model,
+however, we will use the symmetry of the Gaussian to model text as if
+it were conditioned on sentiment: $\mathcal{N}(s_d | \bm w_d^T \beta,
+\sigma_w^2) = \mathcal{N}( \bm w_d^T \beta | s_d, \sigma_W^2 )$.  This
+allows us to reconcile \myeq{sentiment_text} and
+\myeq{sentiment_space}, so that the distribution of sentiment
+conditioned on text and countries' positions is:
+\begin{align}
+  p(s_d | \bm w_d, \beta, x_{c_1,d}, x_{c_2,d}) & \propto
+  \mathcal{N}(\bm w_d^T \beta | s_d, \sigma_W^2 )
+  \mathcal{N}(x_{c_1,d} | \bar x_{c_1, t}, \sigma_D^2)
+  \mathcal{N}(x_{c_2,d} | \bar x_{c_2, t}, \sigma_D^2) \\
+  & \hspace{20pt} \mbox{ such that } s_d = \mathcal{F}(x_{c_1,t},
+  x_{c_2,t})
+  \\
+  & = 
+  \mathcal{N}(\bm w_d^T \beta |
+    \mathcal{F}(x_{c_1,t}, x_{c_2,t}), \sigma_W^2 )
+  \mathcal{N}(x_{c_1,d} | \bar x_{c_1, t}, \sigma_D^2)
+  \mathcal{N}(x_{c_2,d} | \bar x_{c_2, t}, \sigma_D^2).
+\end{align}
 
 % In addition, a UN resolution may come up for vote at any time.  States
 % cast a vote based on their current positions:
@@ -88,6 +119,23 @@ Section~\ref{section:mturk}.
 %     multiple times -- with sentiment $s$.}
 %   \label{fig:countries_by_ip}
 % \end{wrapfigure}
+
+\paragraph{A brief comment on notation.} Before proceeding to
+inference and the experimental validation of this model, we pause to
+summarize our use of notation.  In this chapter, we will use notation
+flexibly when it is convenient.  The typical unit of discussion will
+be the $d$th document occurring at time $t$.  The $d$th document
+discusses two countries, $c_1$ and $c_2$; these define a tuple $(c_1,
+c_2, d, t) = (c_2, c_1, d, t)$.  We will generally use $d$ to index
+documents, $t$ or $s$ to index time, and $c$ to index a country.  When
+document $d$ is given, we may refer to its time $t_d$ (which is
+unique) or to the two interacting countries as $c_{d,1},c_{d,2}$ or
+$c_1,c_2$.  Alternatively, we may refer to the documents in which a
+country $c$ appears as $d_{c,1}, \ldots, d_{c,1}$.
+For example, we may index the variable $x_{(c_1,d,t)}$ variously as
+$x_{c_{d,1}}$ or $x_{d,1}$, or even $x_c$ if the context is clear. The
+sentiment between two countries might be described as $s_d$,
+$s_{c_1,c_2}$, $s_{d,t}$, or $s_{c_1,c_2,d,t}$.
 
 \subsection{Related work}
 
@@ -125,11 +173,20 @@ relationship between actors in an unsupervised setting
 We fit the \emph{MAP} objective of this probabilistic model.  This has
 the benefit of both clean exposition and simple implementation, and it
 can be interpreted as a form of unregularized variational inference.
-We optimize the \emph{MAP} objective in this model using traditional
-EM.
+We optimize the \emph{MAP} objective in this model using an
+expectation maximization (EM) algorithm.
 
-\paragraph{M Step.} In the M step, the mean of each country's position
-is updated using a modified Kalman filter.  This step differs from a
+We designed the probabilistic objective to make inference tractable.
+For example, the Gaussian distribution of per-document sentiment
+variables $x_{c, t} | \bar x_{c,t}$ makes inference for $\bar x_{c,t}$
+closed-form.  Countries' per-interaction positions $x_{c_{d,1}, t},
+x_{c_{d,2},t} | \bar x_{c_{d,1},t}, \bar x_{c_{d,2}, t}, s_{c_{d1},
+  c_{d2}}$ are then fit using gradient ascent.
+
+\subsubsection{M Step.} In the M step, we estimate the mean $\bar
+x_{c,t} | x_{c_1,1}, \ldots, x_{c_N,T}$ of each country's position
+using a modified Kalman filter (modified because it must take into
+account all interactions in a given year).  This step differs from a
 standard Kalman filter in that we may have no or multiple observations
 on any given date.\footnote{We also experimented with
   \emph{pseudo-observations} for each country at each day $t$ with
@@ -139,18 +196,83 @@ on any given date.\footnote{We also experimented with
   performance, and it was best set around $10^6$.}  The prior over the
 ends of the chain are standard normal.
 
-\paragraph{E Step.} In the E-step, our goal is to infer nations'
-positions $x_{c,d} | \bar{x}_{c,t_d}, s_d$ with each interaction $d$ given
-their means and the sentiment $s_d$ for this interaction.  We find
-these positions by gradient ascent on $x_{c,d}$.
+\paragraph{Kalman updates.}
+The M step seeks the most-likely mean position $\bar x_c$ for each
+country $c$ given its $D_{c,s}$ interactions at each time $s=1, \ldots,
+T$
+\begin{align}
+  \arg \max \bar x_{c,t} | x_{c,1,1}, \ldots, x_{c,D_{c,1},1}, x_{c,D_{c,2},2},
+  \ldots, x_{c,D_{c,t},T},
+\end{align}
+for $t=1, \ldots, T$. The optimal value for $\bar x$ can be found with
+a modified Kalman smoother \cite{kalman:1960}.  This modified Kalman
+smoother requires a forward filter step and a backward filter step.
+The forward filter estimates the mean position given all previous
+observations (note that we are liberal with notation and use $x_c,d,t$
+to describe the position of country $c$ at time $t$ for interaction
+$d$:
+\begin{align}
+  \bar x_{\mbox{\tiny forward},c,t} | \bar x_{\mbox{\tiny forward},c,t-1}, x_{c,1,t-1}, \ldots, x_{c,D_{c,t-1},t-1}
+  & \gets \frac{\bar x_{\mbox{\tiny forward},c,t-1} / \sigma_{\mbox{\tiny forward},t-1}^2
+    + \sum_{d=1}^{D_{c,t-1}} x_{c,d,t-1} / \sigma_{\mbox{\tiny obs}}^2}
+  {1 / \sigma_{\mbox{\tiny forward},t-1}^2 + 1 / \sigma_{\mbox{\tiny obs}}^2} \\
+  \sigma_{\mbox{\tiny forward},t}^2
+  & \gets \frac{1}{1 / \sigma_{\mbox{\tiny forward},t - 1}^2
+    + D_{c,t-1} / \sigma_{\mbox{\tiny obs}}^2} + \sigma_{\mbox{\tiny chain}}^2,
+\end{align}
+with initial condition $\bar x_{c,0} = 0,
+\sigma_{\mbox{\tiny forward},0}^2=10$.  The backward step estimates
+the chain's mean given all current and future observations:
+\begin{align}
+  \bar x_{\mbox{\tiny backward},c,t} | \bar x_{\mbox{\tiny backward,c,t+1}}, x_{c,1}, \ldots, x_{c,D_{c,t}}
+  & \gets \frac{\bar x_{\mbox{\tiny backward},c,t+1} / \sigma_{t+1}^2
+    + \sum_{d=1}^{D_{c,t}} x_{c,d,t} / \sigma_{\mbox{\tiny obs}}^2}
+  {1 / \sigma_{\mbox{\tiny backward},t-1}^2 + 1 / \sigma_{\mbox{\tiny obs}}^2} \\
+  \sigma_{\mbox{\tiny backward},t}^2
+  & \gets \frac{1}{1 / (\sigma_{\mbox{\tiny backward},t + 1}^2 + \sigma_{\mbox{\tiny chain}}^2)
+    + D_{c,t} / \sigma_{\tiny obs}^2},
+\end{align}
+with initial conditions $\bar x_{\mbox{\tiny backward},c,T} = 0, \sigma_{\mbox{\tiny
+    backward},T}^2=10$. The smoothed means given all observations are then:
+\begin{align}
+  \bar x_{c,t} | \bar x_{\mbox{\tiny forward,c,t}}, \bar x_{\mbox{\tiny backward,c,t}}
+  & \gets \frac{\bar x_{\mbox{\tiny forward},c,t} / \sigma_{\mbox{\tiny forward},t}^2
+    + \bar x_{\mbox{\tiny backward},c,t} / \sigma_{\mbox{\tiny backward},t}^2}
+  {1 / \sigma_{\mbox{\tiny forward},t}^2
+    + 1 / \sigma_{\mbox{\tiny backward},t}^2}
+\end{align}
 
-\section{Empirical studies: comparisons with ground truth}
+% x_{c,d,t}
+\subsubsection{E Step.} In the E-step, our goal is to infer each
+nation's position $x_{c_{d,1}} | \bar{x}_{c,d,t}, x_{c_{d,2}}, s_d$
+during interaction $d$ given its mean $\bar x_{c_{d,1},t_d}$ and text
+$\bm w_d$ of describing this interaction, \emph{and} given the other
+country's position for this interaction.  We find these positions by
+gradient ascent on each interaction:
+\begin{align}
+  & {\arg \max}_{x_{c_{d,1},t}, x_{c_{d,2},t}}
+  p(\bm w_d^T \beta | \mathcal{F}(x_{c_{d,1},t}, x_{c_{d,2},t}),
+  \bar x_{c_{d,1},t}, \bar x_{c_{d,2},t}) \\
+  = & 
+  {\arg \max}_{x_{c_{d,1},t}, x_{c_{d,2},t}}
+  p(\bm w_d^T \beta | \mathcal{F}(x_{c_{d,1},t}, x_{c_{d,2},t}), \beta)
+  p(x_{c_{d,1},t} | \bar x_{c_{d,1},t})
+  p(x_{c_{d,2},t} | \bar x_{c_{d,2},t}).
+\end{align}
+
+\subsection{Empirical studies: comparisons with ground truth}
+We now turn to an experimental analysis of this model.  We first
+describe the human labels we have used to define sentiment $s_d$
+within this model.  We then describe two news archives from which we
+have inferred countries' sentiment over time. text in which the
+relationships of countries are deto which we applied this model and .
+We then turn
 
 \subsection{Sentiment labels $s$}
 \label{section:sentiment_models}
 
 To infer the sentiment $s_d$ between two countries, we treat the
-corresponding news article as a bag-of-words and fit text regression
+corresponding news article as a bag of words and fit text regression
 \cite{kogan:2009} to predict the sentiment from the text.  We used two
 sources for sentiment labels: Amazon Mechanical Turk and Covariates of
 War.  In each case, we fit a text regression which predicted the
@@ -197,6 +319,13 @@ paragraphs' words.  We trained and fit the model with the following procedure:
     paragraphs.
 \end{enumerate}
 
+\subsubsection{Expert labels: Correlates of War}
+\label{section:correlates_of_war}
+
+We also used a set of expert labels called the \emph{Covariates of
+  War} (CoW).  These labels describe the relationships between
+countries created over the past
+
 \subsubsection{Datasets and tokenization}  We made an important
 assumption that the scope of foreign sentiment discussion is at the
 level of a paragraph.  We therefore used the subset of paragraphs
@@ -217,12 +346,6 @@ Germany; September 11th, 2001; and countless other world events.
 \paragraph{...}
 TODO(sgerrish): Add another dataset.
   
-\subsubsection{Expert labels: Correlates of War}x
-
-We also used a set of expert labels called the \emph{Covariates of
-  War} (CoW).  These labels describe the relationships between
-countries created over the past
-
 \subsubsection{Results}
  \begin{figure}
   \begin{tabular}{ccc}
@@ -353,7 +476,7 @@ appear to have a rocky relationship.
 
   %  We then evaluate perplexity
  % \begin{align}
- %   \mbox{perp}_d & = \mathbb{E_{\hat D}} \log p(w | \bar x_{d_{c1}}
+ %   \mbox{perp}_d & = \mathcal{E_{\hat D}} \log p(w | \bar x_{d_{c1}}
  %     \bar x_{d_{c2}} ) \\
  %     & = \frac{1}{N} \sum_N \sum_{W_{d_n}}
  %     \log p(w | \bar x_{d_{c1}} \bar x_{d_{c2}} ) \\
@@ -373,6 +496,6 @@ appear to have a rocky relationship.
 % (see Equation~\ref{figure:sentiment}).  Because $\bar s_{c1,c1}$ may
 % be change significantly when either $x_{c_1}$ or $x_{c_2}$ changes, we
 % search for simultaneous significant changes in $\bar x_{c_1}$, $\bar
-% x_{c_2}$, and $\bar s_{c1,c2}$ (Note that $\mathbb{E}[s_{c1,c2}] \neq
+% x_{c_2}$, and $\bar s_{c1,c2}$ (Note that $\mathcal{E}[s_{c1,c2}] \neq
 % \bar s_{c1,c2}$; we compute $\bar s_{c1,c2}$ out of convenience.
 
