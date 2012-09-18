@@ -287,9 +287,9 @@ We fit this model with \emph{maximum a posteriori} (MAP) inference,
 which has the benefit of a simpler derivation than variational
 inference.  As the reader may recall, the MAP estimate is
 \begin{align}
-  \hat x_c, \hat \theta, \hat \beta &
-  = \arg \max_{\bar x_c, \theta, \beta} p(\bar x_c, \theta, \beta | \{ (\bm w_d, c_{d,1}, c_{d,2}) \}_{d \in D}) \nonumber \\
-  & = \arg \max_{\bar x_c, \theta, \beta} p(\bar x_c, \theta, \beta, \{ (\bm w_d, c_{d,1}, c_{d,2}) \}_{d \in D}). \label{equation:fr_unsupervised_map_likelihood}
+  \hat x_c, \hat \theta, \hat \beta
+  = & \arg \max_{\bar x_c, \theta, \beta} p(\bar x_c, \theta, \beta | \{ (\bm w_d, c_{d,1}, c_{d,2}) \}_{d \in D}) \nonumber \\
+  = & \arg \max_{\bar x_c, \theta, \beta} p(\bar x_c, \theta, \beta, \{ (\bm w_d, c_{d,1}, c_{d,2}) \}_{d \in D}). \label{equation:fr_unsupervised_map_likelihood}
 \end{align}
 
 Deriving the algorithm for MAP estimation requires expanding the full

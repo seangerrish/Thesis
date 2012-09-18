@@ -93,10 +93,9 @@ conditioned on text and countries' positions is:
   p(s_d | \bm w_d, \beta, x_{c_1,d}, x_{c_2,d}) & \propto
   \mathcal{N}(\bm w_d^T \beta | s_d, \sigma_W^2 )
   \mathcal{N}(x_{c_1,d} | \bar x_{c_1, t}, \sigma_D^2)
-  \mathcal{N}(x_{c_2,d} | \bar x_{c_2, t}, \sigma_D^2) \\
+  \mathcal{N}(x_{c_2,d} | \bar x_{c_2, t}, \sigma_D^2) \nonumber \\
   & \hspace{20pt} \mbox{ such that } s_d = \mathcal{F}(x_{c_1,t},
-  x_{c_2,t})
-  \\
+  x_{c_2,t}) \nonumber \\
   & = 
   \mathcal{N}(\bm w_d^T \beta |
     \mathcal{F}(x_{c_1,t}, x_{c_2,t}), \sigma_W^2 )
@@ -125,17 +124,17 @@ inference and the experimental validation of this model, we pause to
 summarize our use of notation.  In this chapter, we will use notation
 flexibly when it is convenient.  The typical unit of discussion will
 be the $d$th document occurring at time $t$.  The $d$th document
-discusses two countries, $c_1$ and $c_2$; these define a tuple $(c_1,
-c_2, d, t) = (c_2, c_1, d, t)$.  We will generally use $d$ to index
-documents, $t$ or $s$ to index time, and $c$ to index a country.  When
-document $d$ is given, we may refer to its time $t_d$ (which is
-unique) or to the two interacting countries as $c_{d,1},c_{d,2}$ or
-$c_1,c_2$.  Alternatively, we may refer to the documents in which a
-country $c$ appears as $d_{c,1}, \ldots, d_{c,1}$.
-For example, we may index the variable $x_{(c_1,d,t)}$ variously as
-$x_{c_{d,1}}$ or $x_{d,1}$, or even $x_c$ if the context is clear. The
-sentiment between two countries might be described as $s_d$,
-$s_{c_1,c_2}$, $s_{d,t}$, or $s_{c_1,c_2,d,t}$.
+discusses two countries, $c_1$ and $c_2$; these define a tuple $(\{
+c_1, c_2 \}, d, t)$ (where the set $\{ c_1, c_2 \} = \{ c_2, c_1 \}$).
+We will generally use $d$ to index documents, $t$ or $s$ to index
+time, and $c$ to index a country.  When document $d$ is given, we may
+refer to its time $t_d$ (which is unique) or to the two interacting
+countries as $c_{d,1},c_{d,2}$ or $c_1,c_2$.  Alternatively, we may
+refer to the documents in which a country $c$ appears as $d_{c,1},
+\ldots, d_{c,1}$.  For example, we may index the variable
+$x_{(c_1,d,t)}$ variously as $x_{c_{d,1}}$ or $x_{d,1}$, or even $x_c$
+if the context is clear. The sentiment between two countries might be
+described as $s_d$, $s_{c_1,c_2}$, $s_{d,t}$, or $s_{c_1,c_2,d,t}$.
 
 \subsection{Related work}
 
@@ -183,6 +182,17 @@ closed-form.  Countries' per-interaction positions $x_{c_{d,1}, t},
 x_{c_{d,2},t} | \bar x_{c_{d,1},t}, \bar x_{c_{d,2}, t}, s_{c_{d1},
   c_{d2}}$ are then fit using gradient ascent.
 
+Our goal in performing EM is to estimate parameters for the model.  Expectation allows us to find a \emph{MaP} estimate by optimizing the lower bound on the data likelihood:
+\begin{align}
+  \mathcal{L_{x}} \log p(s_d, \bm w, \beta, x)
+  % & \propto p(s_d | \bm w, \beta, x, \beta) \\
+  & \ge \log \expectq{ \frac{q(\bar x)}{q(\bar x)}
+    p(s_d | \bm w, \beta, x, \beta) } \nonumber \\
+  & \ge \expectq{ q(\bar x)
+    \log \frac{ p(s_d | \bm w, \beta, x, \beta) }{
+      q(\bar x)} }
+\end{align}
+
 \subsubsection{M Step.} In the M step, we estimate the mean $\bar
 x_{c,t} | x_{c_1,1}, \ldots, x_{c_N,T}$ of each country's position
 using a modified Kalman filter (modified because it must take into
@@ -197,9 +207,9 @@ on any given date.\footnote{We also experimented with
 ends of the chain are standard normal.
 
 \paragraph{Kalman updates.}
-The M step seeks the most-likely mean position $\bar x_c$ for each
-country $c$ given its $D_{c,s}$ interactions at each time $s=1, \ldots,
-T$
+The M step seeks the expected value of the mean position $\bar x_c$
+for each country $c$ given our estimate of the $D_{c,s}$ interactions
+at each time $s=1, \ldots, T$:
 \begin{align}
   \arg \max \bar x_{c,t} | x_{c,1,1}, \ldots, x_{c,D_{c,1},1}, x_{c,D_{c,2},2},
   \ldots, x_{c,D_{c,t},T},
@@ -208,56 +218,56 @@ for $t=1, \ldots, T$. The optimal value for $\bar x$ can be found with
 a modified Kalman smoother \cite{kalman:1960}.  This modified Kalman
 smoother requires a forward filter step and a backward filter step.
 The forward filter estimates the mean position given all previous
-observations (note that we are liberal with notation and use $x_c,d,t$
-to describe the position of country $c$ at time $t$ for interaction
-$d$:
+observations (note that we use $x_{c,d,t}$ to describe the position of
+country $c$ at time $t$ for interaction $d$:
 \begin{align}
-  \bar x_{\mbox{\tiny forward},c,t} | \bar x_{\mbox{\tiny forward},c,t-1}, x_{c,1,t-1}, \ldots, x_{c,D_{c,t-1},t-1}
-  & \gets \frac{\bar x_{\mbox{\tiny forward},c,t-1} / \sigma_{\mbox{\tiny forward},t-1}^2
+  \bar x_{\mbox{\tiny forth},c,t} | \bar x_{\mbox{\tiny forth},c,t-1}, \{ x_{c,d,t-1} \}_{d}
+  & \gets \frac{\bar x_{\mbox{\tiny forth},c,t-1} / \sigma_{\mbox{\tiny forth},t-1}^2
     + \sum_{d=1}^{D_{c,t-1}} x_{c,d,t-1} / \sigma_{\mbox{\tiny obs}}^2}
-  {1 / \sigma_{\mbox{\tiny forward},t-1}^2 + 1 / \sigma_{\mbox{\tiny obs}}^2} \\
-  \sigma_{\mbox{\tiny forward},t}^2
-  & \gets \frac{1}{1 / \sigma_{\mbox{\tiny forward},t - 1}^2
+  {1 / \sigma_{\mbox{\tiny forth},t-1}^2 + 1 / \sigma_{\mbox{\tiny obs}}^2} \\
+  \sigma_{\mbox{\tiny forth},t}^2
+  & \gets \frac{1}{1 / \sigma_{\mbox{\tiny forth},t - 1}^2
     + D_{c,t-1} / \sigma_{\mbox{\tiny obs}}^2} + \sigma_{\mbox{\tiny chain}}^2,
 \end{align}
 with initial condition $\bar x_{c,0} = 0,
-\sigma_{\mbox{\tiny forward},0}^2=10$.  The backward step estimates
+\sigma_{\mbox{\tiny forth},0}^2=10$.  The backward step estimates
 the chain's mean given all current and future observations:
 \begin{align}
-  \bar x_{\mbox{\tiny backward},c,t} | \bar x_{\mbox{\tiny backward,c,t+1}}, x_{c,1}, \ldots, x_{c,D_{c,t}}
-  & \gets \frac{\bar x_{\mbox{\tiny backward},c,t+1} / \sigma_{t+1}^2
+  \bar x_{\mbox{\tiny back},c,t} | \bar x_{\mbox{\tiny back,c,t+1}}, \{ x_{c,d,t} \}_d
+  & \gets \frac{\bar x_{\mbox{\tiny back},c,t+1} / \sigma_{t+1}^2
     + \sum_{d=1}^{D_{c,t}} x_{c,d,t} / \sigma_{\mbox{\tiny obs}}^2}
-  {1 / \sigma_{\mbox{\tiny backward},t-1}^2 + 1 / \sigma_{\mbox{\tiny obs}}^2} \\
-  \sigma_{\mbox{\tiny backward},t}^2
-  & \gets \frac{1}{1 / (\sigma_{\mbox{\tiny backward},t + 1}^2 + \sigma_{\mbox{\tiny chain}}^2)
+  {1 / \sigma_{\mbox{\tiny back},t-1}^2 + 1 / \sigma_{\mbox{\tiny obs}}^2} \nonumber \\
+  \sigma_{\mbox{\tiny back},t}^2
+  & \gets \frac{1}{1 / (\sigma_{\mbox{\tiny back},t + 1}^2 + \sigma_{\mbox{\tiny chain}}^2)
     + D_{c,t} / \sigma_{\tiny obs}^2},
 \end{align}
-with initial conditions $\bar x_{\mbox{\tiny backward},c,T} = 0, \sigma_{\mbox{\tiny
-    backward},T}^2=10$. The smoothed means given all observations are then:
+with initial conditions $\bar x_{\mbox{\tiny back},c,T} = 0, \sigma_{\mbox{\tiny
+    backward},T}^2=10$. The smoothed means---that is, the mean of countries' positions at time $t$ given all observations for all time---are
 \begin{align}
-  \bar x_{c,t} | \bar x_{\mbox{\tiny forward,c,t}}, \bar x_{\mbox{\tiny backward,c,t}}
-  & \gets \frac{\bar x_{\mbox{\tiny forward},c,t} / \sigma_{\mbox{\tiny forward},t}^2
-    + \bar x_{\mbox{\tiny backward},c,t} / \sigma_{\mbox{\tiny backward},t}^2}
-  {1 / \sigma_{\mbox{\tiny forward},t}^2
-    + 1 / \sigma_{\mbox{\tiny backward},t}^2}
+  \expectq{\bar x_{c,t}} & = \bar x_{c,t} | x \nonumber \\
+  & = \bar x_{c,t} | \bar x_{\mbox{\tiny forth,c,t}}, \bar x_{\mbox{\tiny back,c,t}}, \sigma_{\mbox{\tiny back}}^2, \sigma_{\mbox{\tiny forth}}^2 \nonumber \\
+  & = \frac{\bar x_{\mbox{\tiny forth},c,t} / \sigma_{\mbox{\tiny forth},t}^2
+    + \bar x_{\mbox{\tiny back},c,t} / \sigma_{\mbox{\tiny back},t}^2}
+  {1 / \sigma_{\mbox{\tiny forth},t}^2
+    + 1 / \sigma_{\mbox{\tiny back},t}^2}
 \end{align}
 
 % x_{c,d,t}
 \subsubsection{E Step.} In the E-step, our goal is to infer each
-nation's position $x_{c_{d,1}} | \bar{x}_{c,d,t}, x_{c_{d,2}}, s_d$
-during interaction $d$ given its mean $\bar x_{c_{d,1},t_d}$ and text
-$\bm w_d$ of describing this interaction, \emph{and} given the other
-country's position for this interaction.  We find these positions by
-gradient ascent on each interaction:
+nation's position $x_{c_{d,1}} | \expectq{ \bar{x}_{c,d,t} },
+x_{c_{d,2}}, s_d$ during interaction $d$ given its expected mean $\expectq{ \bar
+x_{c_{d,1},t_d} }$ and the text $\bm w_d$ describing this interaction,
+\emph{and} given the other country's position for this interaction.
+We find these positions by gradient ascent on each interaction:
 \begin{align}
   & {\arg \max}_{x_{c_{d,1},t}, x_{c_{d,2},t}}
   p(\bm w_d^T \beta | \mathcal{F}(x_{c_{d,1},t}, x_{c_{d,2},t}),
-  \bar x_{c_{d,1},t}, \bar x_{c_{d,2},t}) \\
-  = & 
+  \expectq{ \bar x_{c_{d,1},t} }, \expectq{ \bar x_{c_{d,2},t} }) \nonumber \\
+  & = 
   {\arg \max}_{x_{c_{d,1},t}, x_{c_{d,2},t}}
   p(\bm w_d^T \beta | \mathcal{F}(x_{c_{d,1},t}, x_{c_{d,2},t}), \beta)
-  p(x_{c_{d,1},t} | \bar x_{c_{d,1},t})
-  p(x_{c_{d,2},t} | \bar x_{c_{d,2},t}).
+  p(x_{c_{d,1},t} | \expectq{ \bar x_{c_{d,1},t} } )
+  p(x_{c_{d,2},t} | \expectq{ \bar x_{c_{d,2},t} } ).
 \end{align}
 
 \subsection{Empirical studies: comparisons with ground truth}
@@ -322,9 +332,9 @@ paragraphs' words.  We trained and fit the model with the following procedure:
 \subsubsection{Expert labels: Correlates of War}
 \label{section:correlates_of_war}
 
-We also used a set of expert labels called the \emph{Covariates of
+We also used a set of expert labels called the \emph{Correlates of
   War} (CoW).  These labels describe the relationships between
-countries created over the past
+pairs of countries over the past century.  
 
 \subsubsection{Datasets and tokenization}  We made an important
 assumption that the scope of foreign sentiment discussion is at the
@@ -343,8 +353,8 @@ collection spanned the years 1987 to 2007, a period which included
 both Gulf wars; the collapse of the Soviet Union; the reunification of
 Germany; September 11th, 2001; and countless other world events.
 
-\paragraph{...}
-TODO(sgerrish): Add another dataset.
+%\paragraph{...}
+%TODO(sgerrish): Add another dataset.
   
 \subsubsection{Results}
  \begin{figure}
