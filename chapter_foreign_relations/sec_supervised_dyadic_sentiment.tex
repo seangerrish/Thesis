@@ -24,6 +24,33 @@ multidimensional scaling, which has been used successfully in both
 political science \cite{martin:2002,jackman:2001} and social network
 modeling \cite{hoff:2002,chang:2009}.
 
+\subsection{Inferring sentiment from text.}
+\label{section:text_regression}
+When a news source discusses the relationship between these nations,
+the author's choice of words $\bm w_d$ reflects the relationship
+between the countries.  We model this sentiment with the text of the
+article $d$.  Using text regression \cite{kogan:2009}, we model
+sentiment using the wordcounts $\bm w_d$ of the article:
+\begin{align}
+  s_d | \bm w_d, \beta \sim \mathcal{N}( \bm w_d^T \beta, \sigma_W^2 ).
+  \label{eq:sentiment_text}
+\end{align}
+For the purposes of countries' positions in the latent-space model, we
+will assume that $\beta$ is observed (we describe how to fit $\beta$
+with \myeq{sentiment_text} and human labels in
+Section~\ref{section:mturk}).  In fitting $\beta$, we interpret the
+distribution of $s_d$ as a Gaussian with a mean which depends on the
+text.
+
+\subsection{A temporal model of interaction.}
+We formalize the latent space assumption by letting each country $c$
+take a position $\bm x_c \in \mathbb{R}^p$ in a space of latent
+political sentiment. The relationship between two countries $c_1, c_2$
+will be described by a scalar $s_{c_1,c_2} \in \mathbb{R}$.  This
+sentiment is determined by the interaction of their positions:
+$s_{c_1, c_2} = \mathcal{F}(\bm x_{c_1}, \bm x_{c_2})$, for some
+suitable function $\mathcal{F}$.
+
 \begin{figure}
   \center
   \vspace{-55pt}
@@ -35,14 +62,6 @@ modeling \cite{hoff:2002,chang:2009}.
   \label{figure:gm}
 \end{figure}
 
-\subsection{A temporal model of interaction.}
-We formalize the latent space assumption by letting each country $c$
-take a position $\bar x_c \in \mathbb{R}^P$ in a space of latent
-political sentiment. The relationship between two countries $c_1, c_2$
-will be described by a scalar $s_{c_1,c_2} \in \mathbb{R}$.  This
-sentiment is determined by the interaction of their positions:
-$s_{c_1, c_2} = \mathcal{F}(\bar x_{c_1}, \bar x_{c_2})$, for some
-suitable function $\mathcal{F}$.
 
 Foreign relations are not static; nations' alliances and preferences
 change over time with the evolution of economies, technology, and
@@ -63,24 +82,6 @@ reflected by article $d$.  When $c_1$ and $c_2$ are similar (as
 measured by their inner product), their sentiment $s_d$ will be
 positive; if they are dissimilar, their sentiment will be negative.
 More extreme values indicate stronger sentiment.
-
-\subsection{Inferring sentiment from text.}
-\label{section:text_regression}
-When a news source discusses the relationship between these nations,
-the author's choice of words $\bm w_d$ reflects the relationship
-between the countries.  We model this sentiment with the text of the
-article $d$.  Using text regression \cite{kogan:2009}, we model
-sentiment using the wordcounts $\bm w_d$ of the article:
-\begin{align}
-  s_d | \bm w_d, \beta \sim \mathcal{N}( \bm w_d^T \beta, \sigma_W^2 ).
-  \label{eq:sentiment_text}
-\end{align}
-For the purposes of countries' positions in the latent-space model, we
-will assume that $\beta$ is observed (we describe how to fit $\beta$
-with \myeq{sentiment_text} and human labels in
-Section~\ref{section:mturk}).  In fitting $\beta$, we interpret the
-distribution of $s_d$ as a Gaussian with a mean which depends on the
-text.
 
 For the purposes of countries' positions in the latent-space model,
 however, we will use the symmetry of the Gaussian to model text as if
@@ -288,13 +289,43 @@ sources for sentiment labels: Amazon Mechanical Turk and Covariates of
 War.  In each case, we fit a text regression which predicted the
 sentiment $s_d$ from a training set of text snippets.
 
-\subsubsection{Human labels with Amazon Mechanical Turk}
+\subsection{Datasets and tokenization}
+
+\paragraph{New York Times.}
+We fit and evaluate this model over news articles discussing 245
+nations and territories from twenty years of the \emph{New York Times}
+(NYT).  This collection spanned the years 1987 to 2007, a period which
+included both Gulf wars; the collapse of the Soviet Union; the
+reunification of Germany; September 11th, 2001; and countless other
+world events.
+
+\paragraph{Data preparation.}
+We used articles from the Foreign, Business, Financial, and Magazine
+desks of the newspaper during this period. We made an important
+assumption that the scope of foreign sentiment discussion is at the
+level of a paragraph.  We therefore used the subset of paragraphs
+which discuss exactly two nations as ``documents'' $d$, a collection
+of 257,472 paragraphs from 1987 to 2007.  We then defined a vocabulary
+to be those words which appeared at least twenty times in the
+collection, in no more than 40\% of documents, and in at least 0.1\%
+of documents.
+
+This resulted in a vocabulary of 5958 words, mentioned by 40,356
+paragraphs. We randomly selected 80\% (32,249) distict paragraphs from
+this set as training examples and used the remaining examples to
+evaluate our model.
+
+We next labeled our training examples with both human reviewers and
+expert labels, representing opposite ends of the extreme.
+
+\subsubsection{Amazon Mechanical Turk labels}
 \label{section:mturk}
 
 \emph{Amazon Mechanical Turk} (AMT) is a crowdsourcing platform which
-provides access to thousands of ``workers'' who perform simple tasks
-over the Internet.  Although the ``requestor'' can use tests to
-demonstrate that , these workers are typically not experts.
+provides a \emph{requestor} (the author of this thesis) with access to
+thousands of \emph{workers} who perform simple tasks over the
+Internet.  Although the requestor can use tests to ensure that workers
+are high-quality, these workers are typically not experts.
 
 \begin{figure*}
   \setlength\fboxsep{0pt}
@@ -307,55 +338,113 @@ demonstrate that , these workers are typically not experts.
   \normalsize
 \end{figure*}
 
-To fit the model, we asked \emph{Amazon Mechanical Turk} raters to rate the
-sentiment between two nations mentioned in a paragraph in the range -5
-= "mortal enemies'', $\ldots, 5 = $''very good relationship''.
-With these training examples, we fit the coefficients $\beta$ of the
-text regression discussed in Section~\ref{section:model}.  This
-coefficient was then fixed in the joint model in
-Figure~\ref{figure:gm} to allow us to learn sentiment from
-paragraphs' words.  We trained and fit the model with the following procedure:
+To fit the model, we asked \emph{Amazon Mechanical Turk} raters to
+rate the sentiment between two nations mentioned in the text of a
+paragraph on the scale -5 (mortal enemies), $\ldots$, 5 (very good
+relationship). We illustrate a rating task (as seen by a Mechanical
+Turk worker) in \myfig{mechanical_turk_sample}.
 
-\begin{enumerate}
-  \item Randomly select 3607 paragraphs discussing pairs of 245 countries.
-  \item Label each of these paragraphs' sentiment with two ratings
-    from Amazon Mechanical Turk.
-  \item Hold out 42 random country pairs (244 paragraphs) for testing.
-  \item Estimate sentiment model parameters $\beta$ using the training
-    paragraphs.
-  \item Infer the spatial sentiment model with these parameters on
-    all 257,472 paragraphs.
-  \item Evaluate model sentiment prediction on the heldout 244 test
-    paragraphs.
-\end{enumerate}
+Raters were asked to review a random subset of 3607 paragraphs from
+the original collection.  Before fitting the model, we manually
+disqualified eight raters (out of 85) who consistently performed
+poor ratings.
+
+With all rated paragraphs which were not in the test set, we fit the
+coefficients $\bm \beta$ of the text regression discussed in
+Section~\ref{section:model}.  This coefficient was then treated as
+constant in the joint model in Figure~\ref{figure:gm} to allow us to
+infer sentiment from the words of all 32,249 training paragraphs.  We
+illustrate the $\bm \beta$ inferred from Mechanical Turk-labeled
+paragraphs in \myfig{fr_example_betas} (left).
 
 \subsubsection{Expert labels: Correlates of War}
 \label{section:correlates_of_war}
 
-We also used a set of expert labels called the \emph{Correlates of
-  War} (CoW).  These labels describe the relationships between
-pairs of countries over the past century.  
+We also used a combined set of expert labels based on the Correlates of War \cite{sarkees:2010} and Issue Correlates of War \cite{hensel:2001}.
+\begin{itemize}
+  \item The \emph{Correlates of War} project ``seeks to facilitate the
+    collection, dissemination, and use of accurate and reliable
+    quantitative data in international relations''
+    \cite{cow_webpage:2012}, and it provides labels describing the
+    relationships between pairs of countries from 1823 to 2003.
+    At-war is a binary relationship (either countries are at war, or
+    they are at peace). We used a list of CoW inter-state wars
+    (version 4.0) from 1823 to 2003 of inter-state wars
+    \cite{sarkees:2010}.
+  \item The \emph{Issue Correlates of War} project ``is a research
+    project that is collecting systematic data on contentious issues
+    in world politics'' \cite{icow_webpage:2012}, and they provide
+    expert labels on a variety of inter-state conflicts that \emph{do
+      not require militarized conflict}.  However, these issue label
+    do require documented evidence of contention between states; such
+    issues include maritime and territorial disputes.
+    \cite{icow_webpage:2012,hensel:2001}.
+\end{itemize}
 
-\subsubsection{Datasets and tokenization}  We made an important
-assumption that the scope of foreign sentiment discussion is at the
-level of a paragraph.  We therefore used the subset of paragraphs
-which discuss exactly two nations as ``documents'' $d$, a set of
-257,472 distinct paragraphs which came from the foreign, business,
-financial, and magazine desks of the newspaper during this period. We
-used standard stopword filters and removed the geographic tags for
-labeling nations from the sentiment vocabulary.
+We combined these datasets by treating two countries as having a
+rating of -5 if they are at war from the Correlates of War codes and
+-1 if there is any contentious issue between the countries in the
+Issue Correlates of War.\footnote{These values were selected to
+  correspond roughly to the Mechanical Turk labels.}.  All other pairs
+of countries were treated as having a rating of 0.1.  As before, we
+fit the text regression parameters $\beta$ using these labels on the
+training set and evaluated countries' ratings on the test dataset. We
+illustrate $\bm \beta$ fit to CoW-labeled paragraphs in
+\myfig{fr_example_betas} (left).
+
+\begin{figure}
+  \begin{tabular}{cc}
+    \includegraphics[width=0.4\textwidth]{chapter_foreign_relations/figures/mturk_sample_words.pdf} &
+    \includegraphics[width=0.4\textwidth]{chapter_foreign_relations/figures/cow_sample_words.pdf} \\
+    \end{tabular}
+  \caption{Coefficients $\beta_w$ for selected words $w$ fit on text
+    labeled by Amazon Mechanical Turk workers (left) and Correlates of
+    War data (right). Coefficients fit from Mechanical Turk labels are
+    more clearly separated than those fit to Correlates of War labels;
+    this is likely due to explicit positive sentiment in that dataset.
+    The $x$-axis is $\beta$, and the $y$-axis is used for display (it
+    corresponds to no variable).  Size of each word is proportional to
+    $\sqrt{\mbox{frequency}}$, and color corresponds to $\beta$.}
+  \label{figure:fr_example_betas}
+\end{figure}
+
+\subsubsection{Casual vs. expert labels}
+The CoW represent a data source which is fairly different from
+Mechanical Turk ratings. In the NYT dataset, CoW ratings and
+Mechanical Turk ratings were correlated at $\sigma=0.196$.  To
+see why this was the case, we give several examples:
+\begin{itemize}
+  \item $s_{d,\mbox{AMT}} = 1, s_{d,\mbox{CoW}}=-5$. \emph{as an
+    indication of the dangers the damage occurred in waters where
+    military spokesmen said no mines had been suspected before but
+    where a \textbf{saudi} officer said today that some 22 were later
+    found. \textbf{iraq}i mines widely deployed} \cite{cushman:1991}
+  \item $s_{d,\mbox{AMT}} = -5, s_{d,\mbox{CoW}}=0.1$ \emph{not since
+    the grim old days of the cold war have relations between the
+    \textbf{united states} and russia been quite as problematic as they
+    are this weekend on the eve of president clinton's visit for
+    celebrations marking the 50th anniversary of the allied victory in
+    europe in world war ii.} \cite{apple:1995}
+\end{itemize}
+
+The first of these examples outlines a limitation in the ratings we
+obtained: a single paragraph is sometimes too small a unit of
+discussion.  This meant Mechanical Turk workers likely missed the
+larger context of the article about the Gulf war (including the title,
+\emph{War in the Gulf: Sea Mines; Allied Ships Hunt Gulf for Iraqi
+  Mines}).
+
+The second example represents a limitation of both data sources.  The
+two Mechanical Turk ratings of -5 were clearly too strong, as the
+countries are not at war; but AMT workers likely based their rating in
+part on the reference to World War II (worker instructions deserve a
+rating of -3 or, possibly -1).  In addition, however, the United
+States and Russia were not at War and had no official, documented
+conflicts at this time.  This means that this sentiment was not
+reflected in the CoW labels -- which defaulted to 0.1.
 
 \label{section:experiments}
 
-\paragraph{New York Times.} We fit and evaluate this model over news articles discussing 245
-nations from twenty years of the \emph{New York Times} (NYT).  This
-collection spanned the years 1987 to 2007, a period which included
-both Gulf wars; the collapse of the Soviet Union; the reunification of
-Germany; September 11th, 2001; and countless other world events.
-
-%\paragraph{...}
-%TODO(sgerrish): Add another dataset.
-  
 \subsubsection{Results}
  \begin{figure}
   \begin{tabular}{ccc}
@@ -372,89 +461,9 @@ Germany; September 11th, 2001; and countless other world events.
   \label{figure:figures}
 \end{figure}
 
-\paragraph{Heldout sentiment}
- \begin{table}[t]
-   \caption{Average error predicting sentiment $s_d$ between heldout nation pairs.}
-   \begin{center}
-   \begin{tabular}{|c|c|c|}
-     \hline
-     Model & Mean Squared Error & Mean Absolute Error \\
-     \hline
-     Inter-rater agreement & 1.77 (7.11) & 1.037 (2.07) \\
-     \hline
-     Text regression & 5.53 & 1.94 \\
-     \hline
-     Prior variance 0.1 & 2.36 & 1.09 \\
-     Prior variance 1 & \textbf{2.32} & \textbf{1.07} \\
-     Prior variance 10 & 2.32 & 1.08 \\
-     Prior variance 100 & 2.34 & 1.09 \\
-     Prior variance 1000 & 2.33 & 1.08 \\
-     \hline
-   \end{tabular}
-   \label{figure:sse_test}
-   \end{center}
-\end{table}
+\subsection{Results}
 
-
-\paragraph{Heldout sentiment}
- \begin{table}[t]
-   \caption{Average error predicting sentiment $s_d$ between heldout nation pairs.}
-   \begin{center}
-   \begin{tabular}{|c|c|c|}
-     \hline
-     Model & Mean Squared Error & Mean Absolute Error \\
-     \hline
-     Inter-rater agreement & 1.77 (7.11) & 1.037 (2.07) \\
-     \hline
-     Text regression & 5.53 & 1.94 \\
-     \hline
-     1 & \textbf{2.33} & \textbf{1.08} \\
-     2 & 2.37 & 1.09 \\
-     3 & 2.36 & 1.09 \\
-     4 & 2.38 & 1.09 \\
-     5 & 2.40 & 1.10 \\
-     6 & 2.38 & 1.10 \\
-     7 & 2.40 & 1.10 \\
-     \hline
-   \end{tabular}
-   \label{figure:sse_test}
-   \end{center}
-\end{table}
-
- \begin{table}[t]
-   \caption{Average error predicting sentiment $s_d$ between heldout nation pairs for Correlates of War.}
-   \begin{center}
-   \begin{tabular}{|c|c|c|c|}
-     \hline
-     Dimension & & Mean Squared Error & Mean Absolute Error \\
-     \hline
-     Text regression & & 3.37 & 1.12 \\
-     \hline
-     Mean & & 3.68 & 1.19 \\
-     \hline
-     \hline
-     Dimension & Reversion variance & Mean Squared Error & Mean Absolute Error \\
-     \hline
-     1 & 10 & 0.628 & 0.389 \\
-     2 & 10 & 0.561 & 0.287 \\
-     \textbf{3} & 10 & 0.559 & 0.286 \\
-     4 & 10 & 0.562 & 0.308 \\
-     5 & 10 & 0.557 & 0.306 \\
-     6 & 10 & 0.535 & 0.142 \\
-     7 & 10 & 0.535 & 0.140 \\
-     \hline
-     3 & 0.1 & 0.539 & 0.163 \\
-     3 & 1 & 0.555 & 0.245 \\
-     3 & \textbf{10} & 0.559 & 0.286 \\
-     3 & 100 & 0.560 & 0.296 \\
-     3 & 1000 & 0.561 & 0.298 \\
-     3 & 10000 & 0.561 & 0.298 \\
-     \hline
-   \end{tabular}
-   \label{figure:sse_test}
-   \end{center}
-\end{table}
-
+\paragraph{Prediction.}
 For two nations $c_1$ and $c_2$ mentioned together at time $t$, we
 predict their sentiment to be $\tilde s_{c_1, c_2} = \bar x_{c_1,t}
 \bar x_{c_2, t}$.  Based on this estimate, the average squared error
@@ -466,6 +475,110 @@ $1.77$, and the square of the difference \emph{between} raters was
 $7.11$.  We also found that using ``pseudo observations'' with even
 modest observation variance improves predictive performance; these
 results are summarized in Table~\ref{figure:sse_test}.
+
+\paragraph{Static latent space.}
+We first evaluate the latent-space assumption that countries'
+interactions can be summarized by their positions in a latent space.
+For this, we used a simplified model of sentiment, in which documents'
+mean positions $\bar x_c, y_c$ are fixed, and that the sentiment is
+drawn from .
+
+We tested this assumption for both a distance and inner-product link
+function, with intercepts and without intercepts.  We find that the
+the inner-product assumption $\bar x_{c_1}^T \bar x_{c_2}$ alone is
+poor because it provides no natural way to model mischief-prone
+countries well.  If the inner-product model is endowed with intercepts
+$y_{c_1}, y_{c_2}$, however, it becomes a top-performer.
+
+Both the inner product and distance link functions perform best when
+they are able to use intercepts and when they have many dimensions: we
+evaluated the models with up to 9 dimensions, and they TODO(sgerrish), modeling articles' sentiment at 0.32.
+
+\paragraph{The benefit in adding Markov drift.}
+We can improve the predictive power of this model by adding a time
+dimension, allowing $\bar x_c$ to drift over time for each country
+$c$.  We illustrate these results in (bottom).
+
+The inner product model again performed poorly, often worse than the
+baseline model.  In this case, the seven-dimensional distance link
+function performed better than any other model, and adding per-country
+intercepts $y_c$ significantly \emph{hurt} the model's performance.
+
+The better performance of these models under a time-series assumption
+provides support for the argument that countries' relationships change
+over time, and that these relationships are observed through the news
+cycle.
+
+\paragraph{Improvement due to zero-reversion regularization}
+We can improve the predictive power of this model by adding a time
+dimension, allowing $\bar x_c$ to drift over time for each country
+$c$.  We illustrate these results in (bottom).
+
+The inner product model again performed poorly, often worse than the
+baseline model.  In this case, the seven-dimensional distance link
+function performed better than any other model, and adding per-country
+intercepts $y_c$ significantly \emph{hurt} the model's performance.
+
+The better performance of these models under a time-series assumption
+provides support for the argument that countries' relationships change
+over time, and that these relationships are observed through the news
+cycle.
+
+\paragraph{Static latent space.}
+
+\begin{figure}
+  \begin{tabular}{|c|c|c|c|c|c|c|c|}
+   \hline
+  Link $\mathcal{F}(\bm x_{c_1}, y_{c_1}, \bm x_{c_2}, y_{c_2})$ & & & & & & \\
+  \hline
+  \textbf{Dimension of $\bm x$} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+  \hline
+  $y_{c_1} + y_{c_2}$ & 0.0964 & - & - & - & - & - & - & - & - & - \\
+  \hline
+  $\bm x_{c_1}^T \bm x_{c_2}$
+  & 0.1036 & 0.1013 & 0.1050 & 0.1038 & 0.1033 & 0.1025 & 0.1018 & & & \\
+  \hline
+  $y_{c_1} + y_{c_2} + \bm x_{c_1}^T \bm x_{c_2}$
+  & 0.0964 & 0.0943 & 0.0940 & 0.0936 & 0.0935 & 0.0934 & 0.0934 & & & \\
+  \hline
+  $-\log(||\bm x_{c_1} - \bm x_{c_2}||_2^2 + 1)$
+  & 0.1036 & 0.1037 & 0.0978 & 0.0957 & 0.0951 & 0.0947 & 0.0943 & & & \\
+  \hline
+  $y_{c_1} + y_{c_2} -\log(||\bm x_{c_1} - \bm x_{c_2}||_2^2 + 1)$
+  & 0.0964 & 0.0949 & 0.0943 & 0.0938 & 0.0939 & 0.0937 & 0.0936 & & & \\
+  \hline
+  mean($\{s_d\}_d$) & 0.1036 & - & - & - & - & - & - & & & \\
+  \hline
+  \end{tabular}
+  \vspace{30pt}
+  \begin{tabular}{|c|c|c|c|c|c|c|c|}
+   \hline
+  Link $\mathcal{F}(\bm x_{c_1}, y_{c_1}, \bm x_{c_2}, y_{c_2})$ & & & \\
+  \hline
+  \textbf{Dimension of $\bm x$} & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+  \hline
+  $y_{c_1} + y_{c_2}$ & 0.0964 & - & - & - & - & - & - \\
+  \hline
+  $\bm x_{c_1}^T \bm x_{c_2}$
+  & 0.1036 & 0.1013 & 0.1050 & 0.1038 & 0.1033 & 0.1025 & 0.1018 \\
+  \hline
+  $y_{c_1} + y_{c_2} + \bm x_{c_1}^T \bm x_{c_2}$
+  & 0.0964 & 0.0943 & 0.0940 & 0.0936 & 0.0935 & 0.0934 & 0.0934 \\
+  \hline
+  $-\log(||\bm x_{c_1} - \bm x_{c_2}||_2^2 + 1)$
+  & 0.1036 & 0.1037 & 0.0978 & 0.0957 & 0.0951 & 0.0947 & 0.0943 \\
+  \hline
+  $y_{c_1} + y_{c_2} -\log(||\bm x_{c_1} - \bm x_{c_2}||_2^2 + 1)$
+  & 0.0964 & 0.0949 & 0.0943 & 0.0938 & 0.0939 & 0.0937 & 0.0936 \\
+  \hline
+  mean($\{s_d\}_d$) & 0.1036 & - & - & - & - & - & - \\
+  \hline
+\end{tabular}
+   \caption{Mean-squared error of text sentiment inferred with a
+     static sentiment model across 20 years of \emph{New York Times}
+     articles. An inner-product model with four dimensions (plus
+     intercepts) performs best.}
+\end{figure}
 
 Nations' positions are illustrated in Figure~\ref{figure:figures}.
 Figures~\ref{figure:figures}(a,b) show nations' relative positions
