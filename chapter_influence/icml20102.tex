@@ -1,0 +1,105 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{subfigure}
+\usepackage{gensymb}
+\usepackage{microtype}
+\usepackage{times}
+\usepackage{mdwlist}
+\usepackage[small,compact]{titlesec}
+\usepackage{natbib}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{hyperref}
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+\usepackage[accepted]{icml2010} 
+\usepackage{times}
+
+
+
+
+\long\def\comment#1{}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+\DeclareMathOperator*{\GP}{GP}
+\DeclareMathOperator*{\GaP}{GaP}
+\DeclareMathOperator*{\DP}{DP}
+\DeclareMathOperator*{\GEM}{GEM}
+\DeclareMathOperator*{\Bet}{Beta}
+\DeclareMathOperator*{\IBP}{IBP}
+\DeclareMathOperator*{\BP}{BP}
+\DeclareMathOperator*{\BeP}{BeP}
+\DeclareMathOperator*{\Bern}{Bernoulli}
+\DeclareMathOperator*{\Disc}{Discrete}
+\DeclareMathOperator*{\Mult}{Multinomial}
+\DeclareMathOperator*{\Pois}{Poisson}
+\DeclareMathOperator*{\Gam}{Gamma}
+\DeclareMathOperator*{\Dir}{Dirichlet}
+\DeclareMathOperator*{\PG}{NB}
+%\let\oldthebibliography=\thebibliography
+%\let\endoldthebibliography=\endthebibliography
+%\renewenvironment{thebibliography}[1]{
+%\begin{oldthebibliography}{#1}
+%\setlength{\parskip}{0ex}
+%\setlength{\itemsep}{0ex}
+%}
+%{
+%\end{oldthebibliography}
+%}
+\icmltitlerunning{Indian Buffet Process Compound Dirichlet Process}
+
+\begin{document}
+\twocolumn[
+\icmltitle{The IBP Compound Dirichlet Process \\ and its Application to Focused Topic Modeling}
+
+% It is OKAY to include author information, even for blind
+% submissions: the style file will automatically remove it for you
+% unless you've provided the [accepted] option to the icml2010
+% package.
+\icmlauthor{Sinead Williamson}{saw56@cam.ac.uk}
+\icmladdress{Department of Engineering, University of Cambridge,
+            Trumpington Street, Cambridge, UK}
+\icmlauthor{Chong Wang}{chongw@cs.princeton.edu}
+\icmladdress{Department of Computer Science, Princeton University,
+            35 Olden Street, Princeton, NJ 08540, USA}
+\icmlauthor{Katherine A. Heller}{heller@gatsby.ucl.ac.uk}
+\icmladdress{Department of Engineering, University of Cambridge,
+            Trumpington Street, Cambridge, UK}
+\icmlauthor{David M. Blei}{blei@cs.princeton.edu}
+\icmladdress{Department of Computer Science, Princeton University,
+            35 Olden Street, Princeton, NJ 08540, USA}
+% You may provide any keywords that you 
+% find helpful for describing your paper; these are used to populate 
+% the "keywords" metadata in the PDF but will not be shown in the document
+\icmlkeywords{topic modeling, IBP}
+
+\vskip 0.3in
+]
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+
+
+\begin{abstract}
+Identifying the most influential documents in a corpus is an important
+problem in many fields, from information science and
+historiography to text summarization and news aggregation.
+Unfortunately, traditional bibliometrics such as citations are often
+not available.  We propose using changes in the thematic content of
+documents over time to measure the importance of individual documents
+within the collection.  We describe a dynamic topic model for both
+quantifying and qualifying the impact of these documents and validate
+this model empirically.
+\end{abstract}
+
+\end{document}

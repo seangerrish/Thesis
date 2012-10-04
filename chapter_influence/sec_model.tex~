@@ -1,0 +1,187 @@
+\section{The Document Influence Model}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.9\linewidth]{../figures/docinf_gm.pdf}
+ \label{fig:doc_influence_model}
+  \vspace{-.05in}
+  \caption{\label{fig:gm} The Document Influence Model.}
+  \vspace{-.15in}
+\end{figure}
+
+\label{section:model}
+
+We develop a probabilistic model that captures how past articles
+exhibit varying influence on future articles.  Our hypothesis is that
+an article's influence on the future is corroborated by how the
+language of its field changes subsequent to its publication.  In the
+model, the influence of each article is encoded as a hidden variable
+and posterior inference reveals the influential articles of the
+collection.
+
+Our model is based on the dynamic topic model (DTM)~\cite{blei:2006},
+a model of sequential corpora that allows language statistics to drift
+over time.  Previous probabilistic models of text assumed that the
+underlying distributions over words were fixed. The DTM introduced a
+Markov chain of term distributions to capture probabilities that drift
+over the course of the collection.
+
+Let $V$ be the number of words in a vocabulary and consider the
+natural parameters $\beta_t$ of a term distribution at time $t$, where
+the probability of a word $w$ is given by the softmax transformation
+of the unconstrained vector,
+\begin{equation}
+  \label{eq:softmax}
+  p(w \g \beta_{t}) \propto \exp(\beta_{t,w}).
+\end{equation}
+The corresponding distribution over terms, i.e., the ``topic,'' is a
+point on the vocabulary simplex.  In the logistic normal Markov chain,
+this distribution drifts with the stationary autoregressive process
+\begin{equation}
+  \label{eq:logistic-normal}
+  \beta_{t+1} \g \beta_t \sim \mathcal{N}(\beta_{t}, \sigma^2 I),
+\end{equation}
+where $\sigma^2$ is the transition variance.
+
+Now consider a corpus with $D$ articles at each time $t$ and let the
+rows $\w_{t,d}$ of $\W_{t,1:D}$ denote the articles as vectors of word
+counts.  In the simplest DTM, a single distribution over words drifts
+according to \myeq{logistic-normal}.  For each time point, the words
+of its articles are drawn independently from \myeq{softmax}.  One can
+then compute the posterior distribution of the sequence of topics
+$\beta_{1:T}$ conditioned on the observed documents.  This summarizes
+the corpus as a smooth trajectory of word frequencies.
+
+We now turn to our central idea: some articles influence the topic
+more than others.  In our model, each article is assigned a normally
+distributed \textit{influence score} $\ell_d$, which is a scalar value
+that describes the influence that article $d$ has on the topic.  The
+higher the influence, the more the words of the article affect how the
+topic drifts.
+
+This is encoded in the time series model.  The more influential a
+document is, the more its words ``nudge'' the topic's natural
+parameters at the next time step,
+\begin{equation}
+  \begin{split}
+    \label{eq:logistic-normal-influence}
+    \beta_{t+1} \g & \beta_t, (w, \ell)_{t,1:D} \sim \\
+    & \mathcal{N}\left(
+      \beta_{t} +
+      \exp(-\beta_t) \textstyle \sum_d w_{d,t} \ell_{t,d},
+      \sigma^2 I
+    \right).
+  \end{split}
+\end{equation}
+The words of an article with a high influence will have a higher
+expected probability in the next epoch; the words of an article
+with zero influence will not affect the next epoch.
+
+% smg: Do you think the reader will understand the role of this term?
+% The $\exp(-\beta_t)$ term makes influence meaningful in the space of
+% natural parameters.
+
+We call this model the \textit{document influence model}
+(DIM). Conditioned on a corpus, the posterior distribution of the
+topic and influence scores gives a trajectory of term frequencies and
+a retrospective estimate of the influence of each article.  An article
+whose words can help explain the way the word frequencies change will
+have a high posterior influence score.  We show in \mysec{results}
+that this estimate of influence is meaningful.
+
+\paragraph{Multiple topics.}  Corpora typically contain multiple
+persistent themes.  Accordingly, the full dynamic topic model contains
+multiple topics, each associated with a time series of distributions.
+Conditioned on the topics, articles at each time are modeled
+with latent Dirichlet allocation (LDA).  Each article exhibits the
+topics with different random proportions $\theta_d$; each word of each
+article is drawn by choosing a topic assignment from those proportions
+$z_{d,n}$, and choosing a word from the corresponding topic
+~\cite{blei:2003}.
+
+Modeling multiple topics is important to the influence model because
+an article might have different impact in the different fields that it
+discusses.  For example, an article about computational genomics may
+be very important to biology but less important to computer science.
+We want to discern its influence on each of these topics separately.
+
+As with the DTM, we posit $K$ topic trajectories, and each document of
+each time point is modeled with LDA.  For each document, we now
+associate an influence score $\ell_{d,k}$ for each topic $k$.  Each of
+the $K$ topics drifts according to an adapted version of
+\myeq{logistic-normal}, where we restrict attention to the influence
+score for that topic and to the words of each document that were
+assigned to it,
+\begin{equation}
+  \begin{split}
+    \label{eq:logistic-normal-influence-topics}
+    \beta_{k,t+1} & \g \beta_{k,t}, (w, \ell, z)_{t,1:D} \sim \\
+    & \hspace{-10pt} \mathcal{N}\left(
+      \beta_{k,t} +
+      \exp(-\beta_{k,t}) \textstyle \sum_{d} \ell_{d,k} \sum_n w_{d,n} z_{d,n,k},
+      \sigma^2 I
+    \right).
+  \end{split}
+\end{equation}
+Here, $z_{d,n,k}$ is the indicator that the $n$th word in document $d$
+is assigned to topic $k$ and we have dropped the index $t$ on $z$ and
+$w$.  The graphical model is illustrated \myfig{gm}.
+
+Although we presented our model in this section with influence
+spanning one year, we also adapted it to accomodate an ``influence
+envelope'', where an article's influence spans $W$ years.  This
+provides a more realistic model of influence \cite{porter:2005}, but
+it complicates the inference algorithm and may not be necessary, as we
+note in section~\ref{sec:results}.
+
+% dmb: do we name the model anywhere as the DIM?
+% smg: this is noted earlier (I think you added it in your rev.).
+
+To use this model, we analyze a corpus through posterior inference.
+This reveals a set of $K$ changing topics and influence scores for
+each article and each topic.  The posterior provides a thematic window
+into the corpus and can help identify which articles most contributed
+to the development of its themes.
+
+\vspace{-29pt}
+\paragraph{Related work.}
+There is a large literature on citation analysis and bibliometrics.
+See~\citet{osareh:1996} for a review.  Much work in this area uses the
+link structure of citation networks to extract higher level structure.
+\citet{borner:2003} for example, have used author and citation
+networks to understand the evolution of ideas in the history of
+science.  There has also been work that proposes features and models
+for predicting future citation counts.  Successful features often
+include the publishing journal's impact factor, previous citations to
+last author, key terms, and number of authors
+\cite{tang:2009,lokker:2008}.
+
+A number of algorithms include the text of the articles in their
+analysis.  This work often models the information in citations by
+predicting them or modeling them with
+topics~\cite{nallapati:2008,chang:2009,dietz:2007,Cohn01themissing} or
+other semantic tools \cite{mcnee:2002,ibanez:2009}.  Other work in
+this area uses the text of documents along with citations to summarize
+documents \cite{qazvinian:2008} or to propose new bibliometrics:
+\citet{mann:2006} use topic models and citations to map topics over
+time and define several new bibliometric measurements such as topic
+Impact Factor, topical diffusion, and topic longevity.
+
+Our model has a different flavor from this research.  We are
+interested in identifying the influential articles in a collection,
+but we do not assume that there are any notions of reference within
+them: there is no training data that contains citations.  While we
+validate our model by looking at the relationship between our measure
+of influence and citation counts, our model is applicable to
+collections for which this kind of information does not exist.
+
+Two important pieces of recent research have similar
+goals. \citet{leskovec:2009} describe a framework for tracking the
+spread of memes, or ideas, in document collections, and investigate
+the direction in which ideas tend to percolate.
+\citet{shaparenko:2007} describe a measure of influence by modeling
+documents as unigram mixtures of earlier documents and use a
+likelihood ratio test to predict citations between documents. In
+contrast to this work, the DIM uses dynamic topics to explicitly model
+the change in \emph{topic} language.  Further, we do not attempt to
+model links between documents, as in \citet{shaparenko:2007}.

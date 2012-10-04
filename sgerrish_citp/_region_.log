@@ -1,0 +1,4204 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2011.6.4)  2 MAY 2012 18:26
+entering extended mode
+ %&-line parsing enabled.
+**\nonstopmode\nofiles\PassOptionsToPackage{active,tightpage,auctex}{preview}\A
+tBeginDocument{\ifx\ifPreview\undefined\RequirePackage[displaymath,floats,graph
+ics,textmath,sections,footnotes]{preview}[2004/11/05]\fi} \input _region_.tex
+(./_region_.tex  !name(sgerrish_citp.tex)
+(/usr/share/texmf/tex/latex/beamer/base/beamer.cls
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasercs.sty
+Package: beamerbasercs 2007/01/28 (rcs-revision 1.4)
+)
+Document Class: beamer 2007/03/11 cvs version 3.07 A class for typesetting pres
+entations (rcs-revision 1.70)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasemodes.sty
+Package: beamerbasemodes 2007/01/28 (rcs-revision 1.22)
+\beamer@tempbox=\box26
+\beamer@tempcount=\count79
+\c@beamerpauses=\count80
+
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasedecode.sty
+Package: beamerbasedecode 2007/01/28 (rcs-revision 1.20)
+\beamer@slideinframe=\count81
+\beamer@minimum=\count82
+)
+\beamer@commentbox=\box27
+\beamer@modecount=\count83
+)
+\headheight=\dimen102
+\headdp=\dimen103
+\footheight=\dimen104
+\sidebarheight=\dimen105
+\beamer@tempdim=\dimen106
+\beamer@finalheight=\dimen107
+\beamer@animht=\dimen108
+\beamer@animdp=\dimen109
+\beamer@animwd=\dimen110
+\beamer@leftmargin=\dimen111
+\beamer@rightmargin=\dimen112
+\beamer@leftsidebar=\dimen113
+\beamer@rightsidebar=\dimen114
+\beamer@boxsize=\dimen115
+\beamer@vboxoffset=\dimen116
+\beamer@descdefault=\dimen117
+\beamer@descriptionwidth=\dimen118
+\beamer@lastskip=\skip41
+\beamer@areabox=\box28
+\beamer@animcurrent=\box29
+\beamer@animshowbox=\box30
+\beamer@sectionbox=\box31
+\beamer@logobox=\box32
+\beamer@linebox=\box33
+\beamer@sectioncount=\count84
+\beamer@subsubsectionmax=\count85
+\beamer@subsectionmax=\count86
+\beamer@sectionmax=\count87
+\beamer@totalheads=\count88
+\beamer@headcounter=\count89
+\beamer@partstartpage=\count90
+\beamer@sectionstartpage=\count91
+\beamer@subsectionstartpage=\count92
+\beamer@animationtempa=\count93
+\beamer@animationtempb=\count94
+\beamer@xpos=\count95
+\beamer@ypos=\count96
+\beamer@showpartnumber=\count97
+\beamer@currentsubsection=\count98
+\beamer@coveringdepth=\count99
+\beamer@sectionadjust=\count100
+\beamer@tocsectionnumber=\count101
+
+(/usr/share/texmf/tex/latex/beamer/base/beamerbaseoptions.sty
+Package: beamerbaseoptions 2007/01/28 (rcs-revision 1.8)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+))
+(/usr/share/texmf/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: dvips.def on input line 91.
+
+(/usr/share/texmf-texlive/tex/latex/graphics/dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen119
+\Gin@req@width=\dimen120
+)
+(/usr/share/texmf/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texmf/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfutil-common.tex
+\pgfutil@everybye=\toks15
+)
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfutil-latex.def)
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfrcs.code.tex
+Package: pgfrcs 2008/02/20 v2.00 (rcs-revision 1.21)
+))
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2008/02/07 v2.00 (rcs-revision 1.31)
+
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks16
+\pgfkeys@temptoks=\toks17
+)
+\pgf@x=\dimen121
+\pgf@y=\dimen122
+\pgf@xa=\dimen123
+\pgf@ya=\dimen124
+\pgf@xb=\dimen125
+\pgf@yb=\dimen126
+\pgf@xc=\dimen127
+\pgf@yc=\dimen128
+\c@pgf@counta=\count102
+\c@pgf@countb=\count103
+\c@pgf@countc=\count104
+\c@pgf@countd=\count105
+
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2008/01/13  (rcs-revision 1.6)
+)
+Package pgfsys Info: Driver file for pgf: pgfsys-dvips.def on input line 885.
+
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsys-dvips.def
+File: pgfsys-dvips.def 2007/12/12  (rcs-revision 1.19)
+
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsys-common-postscript.def
+File: pgfsys-common-postscript.def 2008/02/07  (rcs-revision 1.18)
+\pgf@objectcount=\count106
+)))
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2008/01/23  (rcs-revision 1.6)
+\pgfsyssoftpath@smallbuffer@items=\count107
+\pgfsyssoftpath@bigbuffer@items=\count108
+)
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
+File: pgfsysprotocol.code.tex 2006/10/16  (rcs-revision 1.4)
+))
+(/usr/share/texmf/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/etc/texmf/tex/latex/config/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: dvips.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2008/01/15 v2.00 (rcs-revision 1.6)
+
+(/usr/share/texmf/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathutil.code.tex
+\pgfmath@box=\box34
+)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@stack=\toks18
+\c@pgfmath@parsecounta=\count109
+\c@pgfmath@parsecountb=\count110
+\c@pgfmath@parsecountc=\count111
+\pgfmath@parsex=\dimen129
+)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathoperations.code.tex
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathtrig.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathrnd.code.tex))
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathbase.code.tex)))
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
+File: pgfcorepoints.code.tex 2008/02/03  (rcs-revision 1.13)
+\pgf@picminx=\dimen130
+\pgf@picmaxx=\dimen131
+\pgf@picminy=\dimen132
+\pgf@picmaxy=\dimen133
+\pgf@pathminx=\dimen134
+\pgf@pathmaxx=\dimen135
+\pgf@pathminy=\dimen136
+\pgf@pathmaxy=\dimen137
+\pgf@xx=\dimen138
+\pgf@xy=\dimen139
+\pgf@yx=\dimen140
+\pgf@yy=\dimen141
+\pgf@zx=\dimen142
+\pgf@zy=\dimen143
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
+File: pgfcorepathconstruct.code.tex 2008/02/13  (rcs-revision 1.14)
+\pgf@path@lastx=\dimen144
+\pgf@path@lasty=\dimen145
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
+File: pgfcorepathusage.code.tex 2008/01/23  (rcs-revision 1.11)
+\pgf@shorten@end@additional=\dimen146
+\pgf@shorten@start@additional=\dimen147
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex
+File: pgfcorescopes.code.tex 2008/01/15  (rcs-revision 1.26)
+\pgfpic=\box35
+\pgf@hbox=\box36
+\pgf@layerbox@main=\box37
+\pgf@picture@serial@count=\count112
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
+File: pgfcoregraphicstate.code.tex 2007/12/12  (rcs-revision 1.8)
+\pgflinewidth=\dimen148
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoretransformations.code.tex
+File: pgfcoretransformations.code.tex 2008/02/04  (rcs-revision 1.10)
+\pgf@pt@x=\dimen149
+\pgf@pt@y=\dimen150
+\pgf@pt@temp=\dimen151
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+File: pgfcorequick.code.tex 2006/10/11  (rcs-revision 1.2)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex
+File: pgfcoreobjects.code.tex 2006/10/11  (rcs-revision 1.2)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.tex
+File: pgfcorepathprocessing.code.tex 2008/01/23  (rcs-revision 1.7)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex
+File: pgfcorearrows.code.tex 2007/06/07  (rcs-revision 1.8)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+File: pgfcoreshade.code.tex 2007/12/10  (rcs-revision 1.9)
+\pgf@max=\dimen152
+\pgf@sys@shading@range@num=\count113
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+File: pgfcoreimage.code.tex 2008/01/15  (rcs-revision 1.1)
+\pgfexternal@startupbox=\box38
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex
+File: pgfcorelayers.code.tex 2008/01/15  (rcs-revision 1.1)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
+File: pgfcoretransparency.code.tex 2008/01/17  (rcs-revision 1.2)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex
+File: pgfcorepatterns.code.tex 2008/01/15  (rcs-revision 1.1)
+)))
+(/usr/share/texmf/tex/latex/pgf/basiclayer/pgfbaseimage.sty
+
+Package pgf Warning: This package is obsolete and no longer needed on input lin
+e 13.
+
+) (/usr/share/texmf/tex/latex/pgf/utilities/xxcolor.sty
+Package: xxcolor 2003/10/24 ver 0.1
+\XC@nummixins=\count114
+\XC@countmixins=\count115
+)
+(/usr/share/texmf-texlive/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2009/06/22 v3.00
+
+(/usr/share/texmf-texlive/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
+\@emptytoks=\toks19
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 96.
+))
+(/usr/share/texmf-texlive/tex/latex/geometry/geometry.sty
+Package: geometry 2008/12/21 v4.2 Page Geometry
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2009/04/10 v2.0 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in pdf mode not detected.
+)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2008/11/04 v1.4 Switches for detecting VTeX and its modes (HO)
+Package ifvtex Info: VTeX not detected.
+)
+\Gm@cnth=\count116
+\Gm@cntv=\count117
+\c@Gm@tempcnt=\count118
+\Gm@bindingoffset=\dimen153
+\Gm@wd@mp=\dimen154
+\Gm@odd@mp=\dimen155
+\Gm@even@mp=\dimen156
+\Gm@dimlist=\toks20
+)
+(/usr/share/texmf-texlive/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2009/10/09 v6.79a Hypertext links for LaTeX
+
+(/usr/share/texmf-texlive/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2009/01/23 v0.5 Provides ifxetex conditional
+)
+(/usr/share/texmf-texlive/tex/latex/oberdiek/hycolor.sty
+Package: hycolor 2009/10/02 v1.5 Code for color options of hyperref/bookmark (H
+O)
+
+(/usr/share/texmf-texlive/tex/latex/oberdiek/xcolor-patch.sty
+Package: xcolor-patch 2009/10/02 xcolor patch
+))
+\@linkdim=\dimen157
+\Hy@linkcounter=\count119
+\Hy@pagecounter=\count120
+
+(/usr/share/texmf-texlive/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2009/10/09 v6.79a Hyperref: PDFDocEncoding definition (HO)
+)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2007/12/12 v1.2 Prefix for e-TeX command names (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2007/09/09 v1.2 Providing info/warning/message (HO)
+)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)
+(/usr/share/texmf-texlive/tex/latex/latexconfig/hyperref.cfg
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+)
+(/usr/share/texmf-texlive/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2009/08/13 v3.4 Keyval support for LaTeX options (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2009/07/30 v1.5 Key value parser with default handler suppor
+t (HO)
+))
+Package hyperref Info: Option `bookmarks' set `true' on input line 2864.
+Package hyperref Info: Option `bookmarksopen' set `true' on input line 2864.
+Package hyperref Info: Option `implicit' set `false' on input line 2864.
+Package hyperref Info: Hyper figures OFF on input line 2975.
+Package hyperref Info: Link nesting OFF on input line 2980.
+Package hyperref Info: Hyper index ON on input line 2983.
+Package hyperref Info: Plain pages OFF on input line 2990.
+Package hyperref Info: Backreferencing OFF on input line 2995.
+
+Implicit mode OFF; no redefinition of LaTeX internals
+Package hyperref Info: Bookmarks ON on input line 3191.
+(/usr/share/texmf-texlive/tex/latex/ltxmisc/url.sty
+\Urlmuskip=\muskip10
+Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 3428.
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/bitset.sty
+Package: bitset 2007/09/28 v1.0 Data type bit set (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/intcalc.sty
+Package: intcalc 2007/09/27 v1.1 Expandable integer calculations (HO)
+)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/bigintcalc.sty
+Package: bigintcalc 2007/11/11 v1.1 Expandable big integer calculations (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2009/09/23 v0.6 LuaTeX support for pdfTeX utility functions
+ (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2009/04/17 v1.2 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2009/08/05 v1.0 Some LaTeX kernel commands for general use (HO
+)
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+)))
+\Fld@menulength=\count121
+\Field@Width=\dimen158
+\Fld@charsize=\dimen159
+\Field@toks=\toks21
+Package hyperref Info: Hyper figures OFF on input line 4377.
+Package hyperref Info: Link nesting OFF on input line 4382.
+Package hyperref Info: Hyper index ON on input line 4385.
+Package hyperref Info: backreferencing OFF on input line 4392.
+Package hyperref Info: Link coloring OFF on input line 4397.
+Package hyperref Info: Link coloring with OCG OFF on input line 4402.
+Package hyperref Info: PDF/A mode OFF on input line 4407.
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/atbegshi.sty
+Package: atbegshi 2008/07/31 v1.9 At begin shipout hook (HO)
+)
+
+Package hyperref Warning: Option `pdfpagelabels' is turned off
+(hyperref)                because \thepage is undefined.
+
+Hyperref stopped early
+)
+*hyperref using default driver hdvips*
+(/usr/share/texmf-texlive/tex/latex/hyperref/hdvips.def
+File: hdvips.def 2009/10/09 v6.79a Hyperref driver for dvips
+
+(/usr/share/texmf-texlive/tex/latex/hyperref/pdfmark.def
+File: pdfmark.def 2009/10/09 v6.79a Hyperref definitions for pdfmark specials
+\pdf@docset=\toks22
+\pdf@box=\box39
+\pdf@toks=\toks23
+\pdf@defaulttoks=\toks24
+\Fld@listcount=\count122
+))
+(/usr/share/texmf-texlive/tex/latex/base/size11.clo
+File: size11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasecompatibility.sty
+Package: beamerbasecompatibility 2007/01/28  (rcs-revision 1.63)
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasefont.sty
+Package: beamerbasefont 2007/01/28  (rcs-revision 1.16)
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasemisc.sty
+Package: beamerbasemisc 2007/01/28  (rcs-revision 1.24)
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasetwoscreens.sty
+Package: beamerbasetwoscreens 2007/01/28  (rcs-revision 1.7)
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbaseoverlay.sty
+Package: beamerbaseoverlay 2007/01/28  (rcs-revision 1.50)
+\beamer@argscount=\count123
+\beamer@lastskipcover=\skip42
+\beamer@trivlistdepth=\count124
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasetitle.sty
+Package: beamerbasetitle 2007/01/28  (rcs-revision 1.25)
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasesection.sty
+Package: beamerbasesection 2007/01/28  (rcs-revision 1.21)
+\c@lecture=\count125
+\c@part=\count126
+\c@section=\count127
+\c@subsection=\count128
+\c@subsubsection=\count129
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbaseframe.sty
+Package: beamerbaseframe 2007/01/28  (rcs-revision 1.60)
+\beamer@framebox=\box40
+\beamer@frametitlebox=\box41
+\beamer@zoombox=\box42
+\beamer@zoomcount=\count130
+\beamer@zoomframecount=\count131
+\beamer@frametextheight=\dimen160
+\c@subsectionslide=\count132
+\beamer@frametopskip=\skip43
+\beamer@framebottomskip=\skip44
+\beamer@frametopskipautobreak=\skip45
+\beamer@framebottomskipautobreak=\skip46
+\beamer@envbody=\toks25
+\c@framenumber=\count133
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbaseverbatim.sty
+Package: beamerbaseverbatim 2007/01/28  (rcs-revision 1.8)
+\beamer@verbatimfileout=\write3
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbaseframesize.sty
+Package: beamerbaseframesize 2007/01/28  (rcs-revision 1.18)
+\beamer@splitbox=\box43
+\beamer@autobreakcount=\count134
+\beamer@autobreaklastheight=\dimen161
+\beamer@frametitletoks=\toks26
+\beamer@framesubtitletoks=\toks27
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbaseframecomponents.sty
+Package: beamerbaseframecomponents 2007/01/28  (rcs-revision 1.41)
+\beamer@footins=\box44
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasecolor.sty
+Package: beamerbasecolor 2007/01/28  (rcs-revision 1.42)
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasenotes.sty
+Package: beamerbasenotes 2007/01/28  (rcs-revision 1.23)
+\beamer@frameboxcopy=\box45
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasetoc.sty
+Package: beamerbasetoc 2007/01/28  (rcs-revision 1.21)
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasetemplates.sty
+Package: beamerbasetemplates 2007/01/28  (rcs-revision 1.51)
+\beamer@sbttoks=\toks28
+
+(/usr/share/texmf/tex/latex/beamer/base/beamerbaseauxtemplates.sty
+Package: beamerbaseauxtemplates 2007/01/28  (rcs-revision 1.28)
+
+(/usr/share/texmf/tex/latex/beamer/base/beamerbaseboxes.sty
+Package: beamerbaseboxes 2007/03/11  (rcs-revision 1.32)
+\bmb@box=\box46
+\bmb@colorbox=\box47
+\bmb@boxshadow=\box48
+\bmb@boxshadowball=\box49
+\bmb@boxshadowballlarge=\box50
+\bmb@temp=\dimen162
+\bmb@dima=\dimen163
+\bmb@dimb=\dimen164
+\bmb@prevheight=\dimen165
+)
+\beamer@blockheadheight=\dimen166
+))
+(/usr/share/texmf/tex/latex/beamer/base/beamerbaselocalstructure.sty
+Package: beamerbaselocalstructure 2007/01/28  (rcs-revision 1.53)
+
+(/usr/share/texmf-texlive/tex/latex/tools/enumerate.sty
+Package: enumerate 1999/03/05 v3.00 enumerate extensions (DPC)
+\@enLab=\toks29
+)
+\c@figure=\count135
+\c@table=\count136
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasenavigation.sty
+Package: beamerbasenavigation 2007/01/28  (rcs-revision 1.36)
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasetheorems.sty
+Package: beamerbasetheorems 2007/01/28  (rcs-revision 1.10)
+
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2000/07/18 v2.13 AMS math features
+\@mathmargin=\skip49
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texmf-texlive/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks30
+\ex@=\dimen167
+))
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen168
+)
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count137
+LaTeX Info: Redefining \frac on input line 211.
+\uproot@=\count138
+\leftroot@=\count139
+LaTeX Info: Redefining \overline on input line 307.
+\classnum@=\count140
+\DOTSCASE@=\count141
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
+\Mathstrutbox@=\box51
+\strutbox@=\box52
+\big@size=\dimen169
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+\macc@depth=\count142
+\c@MaxMatrixCols=\count143
+\dotsspace@=\muskip11
+\c@parentequation=\count144
+\dspbrk@lvl=\count145
+\tag@help=\toks31
+\row@=\count146
+\column@=\count147
+\maxfields@=\count148
+\andhelp@=\toks32
+\eqnshift@=\dimen170
+\alignsep@=\dimen171
+\tagshift@=\dimen172
+\tagwidth@=\dimen173
+\totwidth@=\dimen174
+\lineht@=\dimen175
+\@envbody=\toks33
+\multlinegap=\skip50
+\multlinetaggap=\skip51
+\mathdisplay@stack=\toks34
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+)
+(/usr/share/texmf-texlive/tex/latex/amscls/amsthm.sty
+Package: amsthm 2004/08/06 v2.20
+\thm@style=\toks35
+\thm@bodyfont=\toks36
+\thm@headfont=\toks37
+\thm@notefont=\toks38
+\thm@headpunct=\toks39
+\thm@preskip=\skip52
+\thm@postskip=\skip53
+\thm@headsep=\skip54
+\dth@everypar=\toks40
+)
+\c@theorem=\count149
+)
+(/usr/share/texmf/tex/latex/beamer/base/beamerbasethemes.sty
+Package: beamerbasethemes 2007/01/28  (rcs-revision 1.10)
+)
+(/usr/share/texmf/tex/latex/beamer/themes/theme/beamerthemedefault.sty
+Package: beamerthemedefault 2007/01/28  (rcs-revision 1.7)
+
+(/usr/share/texmf/tex/latex/beamer/themes/font/beamerfontthemedefault.sty
+Package: beamerfontthemedefault 2007/01/28  (rcs-revision 1.13)
+)
+(/usr/share/texmf/tex/latex/beamer/themes/color/beamercolorthemedefault.sty
+Package: beamercolorthemedefault 2007/01/28  (rcs-revision 1.28)
+)
+(/usr/share/texmf/tex/latex/beamer/themes/inner/beamerinnerthemedefault.sty
+Package: beamerinnerthemedefault 2007/01/28  (rcs-revision 1.20)
+\beamer@dima=\dimen176
+\beamer@dimb=\dimen177
+)
+(/usr/share/texmf/tex/latex/beamer/themes/outer/beamerouterthemedefault.sty
+Package: beamerouterthemedefault 2007/01/28  (rcs-revision 1.14)
+)))
+(./beamerthemeGerrish.sty
+
+LaTeX Warning: You have requested package `beamerthemeGerrish',
+               but the package provides `beamerthemeSingapore'.
+
+Package: beamerthemeSingapore 2004/10/11  (rcs-revision 1.9)
+) (/usr/share/texmf-texlive/tex/latex/amsfonts/euscript.sty
+Package: euscript 2009/06/22 v3.00 Euler Script fonts
+LaTeX Font Info:    Overwriting math alphabet `\EuScript' in version `bold'
+(Font)                  U/eus/m/n --> U/eus/b/n on input line 33.
+)
+(/usr/share/texmf-texlive/tex/latex/tools/array.sty
+Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen178
+\extrarowheight=\dimen179
+\NC@list=\toks41
+\extratabsurround=\skip55
+\backup@length=\skip56
+)
+(/usr/share/texmf-texlive/tex/latex/tools/bm.sty
+Package: bm 2004/02/26 v1.1c Bold Symbol Support (DPC/FMi)
+\symboldoperators=\mathgroup6
+\symboldletters=\mathgroup7
+\symboldsymbols=\mathgroup8
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 138.
+LaTeX Info: Redefining \bm on input line 204.
+) (./wrapfig.sty
+\wrapoverhang=\dimen180
+\WF@size=\dimen181
+\c@WF@wrappedlines=\count150
+\WF@box=\box53
+\WF@everypar=\toks42
+Package: wrapfig 2003/01/31  v 3.6
+)
+(./multirow.sty
+\bigstrutjot=\dimen182
+) (./natbib.sty
+Package: natbib 2009/07/16 8.31 (PWD, AO)
+\bibhang=\skip57
+\bibsep=\skip58
+LaTeX Info: Redefining \cite on input line 694.
+
+
+! LaTeX Error: \makeindex undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.795 \renewcommand\makeindex
+                             {\NAT@makeindex
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+\c@NAT@ctr=\count151
+)
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\\' on input line 47.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\\' on input line 47.
+
+No file _region_.aux.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 51.
+LaTeX Font Info:    ... okay on input line 51.
+(/usr/share/texmf/tex/latex/preview/preview.sty
+Package: preview 2008/02/03 11.85 (AUCTeX/preview-latex)
+
+(/usr/share/texmf/tex/latex/preview/prtightpage.def
+\PreviewBorder=\dimen183
+)
+(/usr/share/texmf/tex/latex/preview/prauctex.def
+No auxiliary output files.
+
+
+\hbadness=\count152
+\hfuzz=\dimen184
+(/usr/share/texmf/tex/latex/preview/prauctex.cfg))
+(/usr/share/texmf/tex/latex/preview/prfootnotes.def)
+\pr@snippet=\count153
+\pr@box=\box54
+\pr@output=\toks43
+
+Preview: Fontsize 10.95pt
+)
+*geometry auto-detecting driver*
+*geometry detected driver: dvips*
+-------------------- Geometry parameters
+paper: user defined
+landscape: --
+twocolumn: --
+twoside: --
+asymmetric: --
+h-parts: 0.0pt, 335.74261pt, 28.45274pt
+v-parts: 0.0pt, 273.14662pt, 0.0pt
+hmarginratio: --
+vmarginratio: --
+lines: --
+heightrounded: --
+bindingoffset: 0.0pt
+truedimen: --
+includehead: true
+includefoot: true
+includemp: --
+driver: dvips
+-------------------- Page layout dimensions and switches
+\paperwidth  364.19536pt
+\paperheight 273.14662pt
+\textwidth  335.74261pt
+\textheight 244.6939pt
+\oddsidemargin  -72.26999pt
+\evensidemargin -72.26999pt
+\topmargin  -72.26999pt
+\headheight 14.22636pt
+\headsep    0.0pt
+\footskip   14.22636pt
+\marginparwidth 4.0pt
+\marginparsep   10.0pt
+\columnsep  10.0pt
+\skip\footins  10.0pt plus 4.0pt minus 2.0pt
+\hoffset 0.0pt
+\voffset 0.0pt
+\mag 1000
+
+(1in=72.27pt, 1cm=28.45pt)
+-----------------------
+Package hyperref Info: Link coloring OFF on input line 51.
+(/usr/share/texmf-texlive/tex/latex/hyperref/nameref.sty
+Package: nameref 2007/05/29 v2.31 Cross-referencing by name of section
+
+(/usr/share/texmf-texlive/tex/latex/oberdiek/refcount.sty
+Package: refcount 2008/08/11 v3.1 Data extraction from references (HO)
+)
+\c@section@level=\count154
+)
+LaTeX Info: Redefining \ref on input line 51.
+LaTeX Info: Redefining \pageref on input line 51.
+\AtBeginShipoutBox=\box55
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 51.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/bx/n on input line 51.
+\symnumbers=\mathgroup9
+\sympureletters=\mathgroup10
+LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
+(Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 51.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 51.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 51.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> OT1/cmss/m/n on input line 51.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> OT1/cmss/m/n on input line 51.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 51.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/cmss/m/it on input line 51.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/cmss/m/it on input line 51.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 51.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 51.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 51.
+LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
+(Font)                  OT1/cmss/m/n --> OT1/cmss/bx/n on input line 51.
+LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
+(Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 51.
+LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
+(Font)                  OT1/cmss/bx/n --> OT1/cmr/bx/n on input line 51.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> OT1/cmss/bx/n on input line 51.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/m/n --> OT1/cmss/bx/n on input line 51.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmss/m/it --> OT1/cmss/bx/it on input line 51.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/bx/n on input line 51.
+
+No file _region_.nav.
+ !name(sgerrish_citp.tex) !offset(-3) 
+
+LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <4> not available
+(Font)              size <5> substituted on input line 55.
+
+Missing character: There is no ‚ in font cmss8!
+Missing character: There is no Ä in font cmss8!
+Missing character: There is no ú in font cmss8!
+Missing character: There is no ‚ in font cmss8!
+Missing character: There is no Ä in font cmss8!
+Missing character: There is no ù in font cmss8!
+! Preview: Snippet 1 started.
+<-><->
+      
+l.89 }
+      
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/news.jpg (no BoundingBo
+x).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.89 }
+      
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/news.jpg Graphic file (type eps)
+<figs/news.jpg>
+Preview: Tightpage -32891 -32891 32891 32891
+! Preview: Snippet 1 ended.(12347833+0x24210374).
+<-><->
+      
+l.89 }
+      
+Not a real error.
+
+[1]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.89 }
+      
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+LaTeX Font Info:    Try loading font information for OMS+cmss on input line 109
+.
+LaTeX Font Info:    No file OMScmss.fd. on input line 109.
+
+LaTeX Font Warning: Font shape `OMS/cmss/m/n' undefined
+(Font)              using `OMS/cmsy/m/n' instead
+(Font)              for symbol `textbullet' on input line 109.
+
+! Preview: Snippet 2 started.
+<-><->
+      
+l.152 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/citation_network.pdf (n
+o BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.152 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/citation_network.pdf Graphic file (type eps)
+<figs/citation_network.pdf>
+! Preview: Snippet 2 ended.(16503357+0x16502421).
+<-><->
+      
+l.152 }
+       
+Not a real error.
+
+[2]
+
+Package natbib Warning: Citation `wells:1987' on page 4 undefined on input line
+ 152.
+
+! Preview: Snippet 3 started.
+<-><->
+      
+l.173 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/no_citation_network.pdf
+ (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.173 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/no_citation_network.pdf Graphic file (type eps)
+<figs/no_citation_network.pdf>
+! Preview: Snippet 3 ended.(16503357+0x16502421).
+<-><->
+      
+l.173 }
+       
+Not a real error.
+
+[3]
+! Preview: Snippet 4 started.
+<-><->
+      
+l.215 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/influence_intuition.pdf
+ (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.215 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/influence_intuition.pdf Graphic file (type eps)
+<figs/influence_intuition.pdf>
+! Preview: Snippet 4 ended.(17607498+0x17602649).
+<-><->
+      
+l.215 }
+       
+Not a real error.
+
+[4]
+
+Package natbib Warning: Citation `blei:2003' on page 7 undefined on input line 
+232.
+
+! Preview: Snippet 5 started.
+<-><->
+      
+l.232 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/topics.pdf (no Bounding
+Box).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.232 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/topics.pdf Graphic file (type eps)
+<figs/topics.pdf>
+! Preview: Snippet 5 ended.(20248460+0x20242929).
+<-><->
+      
+l.232 }
+       
+Not a real error.
+
+[5]
+! Preview: Snippet 6 started.
+<-><->
+      
+l.243 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/example_topics.jpg (no 
+BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.243 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/example_topics.jpg Graphic file (type eps)
+<figs/example_topics.jpg>
+! Preview: Snippet 6 ended.(17607498+0x17602649).
+<-><->
+      
+l.243 }
+       
+Not a real error.
+
+[6]
+
+Package natbib Warning: Citation `changrtl:2009' on page 8 undefined on input l
+ine 243.
+
+LaTeX Font Info:    Try loading font information for U+msa on input line 381.
+(/usr/share/texmf-texlive/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2009/06/22 v3.00 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 381.
+
+(/usr/share/texmf-texlive/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2009/06/22 v3.00 AMS symbols B
+)
+
+LaTeX Font Warning: Font shape `OT1/cmss/bx/it' undefined
+(Font)              using `OT1/cmss/bx/n' instead on input line 381.
+
+! Preview: Snippet 7 started.
+<-><->
+      
+l.381 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/dtm.pdf (no BoundingBox
+).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.381 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/dtm.pdf Graphic file (type eps)
+<figs/dtm.pdf>
+! Preview: Snippet 7 ended.(9901385+0x9901928).
+<-><->
+      
+l.381 }
+       
+Not a real error.
+
+[7]
+
+Package natbib Warning: Citation `blei:2006' on page 9 undefined on input line 
+381.
+
+! Preview: Snippet 8 started.
+<-><->
+      
+l.403 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/dtm_1.pdf (no BoundingB
+ox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.403 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/dtm_1.pdf Graphic file (type eps)
+<figs/dtm_1.pdf>
+! Preview: Snippet 8 ended.(9901385+0x9901928).
+<-><->
+      
+l.403 }
+       
+Not a real error.
+
+[8]
+
+Package natbib Warning: Citation `blei:2006' on page 10 undefined on input line
+ 403.
+
+! Preview: Snippet 9 started.
+<-><->
+      
+l.426 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/dtm_2.pdf (no BoundingB
+ox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.426 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/dtm_2.pdf Graphic file (type eps)
+<figs/dtm_2.pdf>
+! Preview: Snippet 9 ended.(9901385+0x9901928).
+<-><->
+      
+l.426 }
+       
+Not a real error.
+
+[9]
+
+Package natbib Warning: Citation `blei:2006' on page 11 undefined on input line
+ 426.
+
+! Preview: Snippet 10 started.
+<-><->
+      
+l.447 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/dtm_3.pdf (no BoundingB
+ox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.447 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/dtm_3.pdf Graphic file (type eps)
+<figs/dtm_3.pdf>
+! Preview: Snippet 10 ended.(9901385+0x9901928).
+<-><->
+      
+l.447 }
+       
+Not a real error.
+
+[10]
+
+Package natbib Warning: Citation `blei:2006' on page 12 undefined on input line
+ 447.
+
+! Preview: Snippet 11 started.
+<-><->
+      
+l.477 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/dtm_4.pdf (no BoundingB
+ox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.477 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/dtm_4.pdf Graphic file (type eps)
+<figs/dtm_4.pdf>
+! Preview: Snippet 11 ended.(9901385+0x9901928).
+<-><->
+      
+l.477 }
+       
+Not a real error.
+
+[11]
+! Preview: Snippet 12 started.
+<-><->
+      
+l.517 }
+       
+Not a real error.
+
+! Preview: Snippet 12 ended.(538218+218855x10736019).
+<-><->
+      
+l.517 }
+       
+Not a real error.
+
+[12]
+! Preview: Snippet 13 started.
+<-><->
+      
+l.517 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/cowsmonaut.pdf (no Boun
+dingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.517 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/cowsmonaut.pdf Graphic file (type eps)
+<figs/cowsmonaut.pdf>
+! Preview: Snippet 13 ended.(7481461+0x7481016).
+<-><->
+      
+l.517 }
+       
+Not a real error.
+
+[13]
+! Preview: Snippet 14 started.
+<-><->
+      
+l.548 }
+       
+Not a real error.
+
+! Preview: Snippet 14 ended.(498346+0x756494).
+<-><->
+      
+l.548 }
+       
+Not a real error.
+
+[14]
+! Preview: Snippet 15 started.
+<-><->
+      
+l.548 }
+       
+Not a real error.
+
+! Preview: Snippet 15 ended.(538214+179404x4389698).
+<-><->
+      
+l.548 }
+       
+Not a real error.
+
+[15]
+
+Package natbib Warning: Citation `jordan:1999' on page 15 undefined on input li
+ne 548.
+
+! Preview: Snippet 16 started.
+<-><->
+      
+l.548 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/variational_distributio
+n.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.548 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/variational_distribution.pdf Graphic file (type eps)
+<figs/variational_distribution.pdf>
+! Preview: Snippet 16 ended.(13202859+0x13202071).
+<-><->
+      
+l.548 }
+       
+Not a real error.
+
+[16]
+! Preview: Snippet 17 started.
+<-><->
+      
+l.587 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/dynamic_topics.pdf (no 
+BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.587 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/dynamic_topics.pdf Graphic file (type eps)
+<figs/dynamic_topics.pdf>
+! Preview: Snippet 17 ended.(15403119+0x15402192).
+<-><->
+      
+l.587 }
+       
+Not a real error.
+
+[17]
+! Preview: Snippet 18 started.
+<-><->
+      
+l.628 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/mathematics_statistical
+.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.628 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/mathematics_statistical.pdf Graphic file (type eps)
+<figs/mathematics_statistical.pdf>
+! Preview: Snippet 18 ended.(5941243+0x5940891).
+<-><->
+      
+l.628 }
+       
+Not a real error.
+
+[18]
+! Preview: Snippet 19 started.
+<-><->
+      
+l.628 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/acl_brown.pdf (no Bound
+ingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.628 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/acl_brown.pdf Graphic file (type eps)
+<figs/acl_brown.pdf>
+! Preview: Snippet 19 ended.(15403119+0x15402192).
+<-><->
+      
+l.628 }
+       
+Not a real error.
+
+[19]
+! Preview: Snippet 20 started.
+<-><->
+      
+l.662 }
+       
+Not a real error.
+
+! Preview: Snippet 20 ended.(546132+0x606233).
+<-><->
+      
+l.662 }
+       
+Not a real error.
+
+[20]
+! Preview: Snippet 21 started.
+<-><->
+      
+l.662 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/results_roc.pdf (no Bou
+ndingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.662 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/results_roc.pdf Graphic file (type eps)
+<figs/results_roc.pdf>
+! Preview: Snippet 21 ended.(24210374+0x24203685).
+<-><->
+      
+l.662 }
+       
+Not a real error.
+
+[21]
+! Preview: Snippet 22 started.
+<-><->
+      
+l.676 }
+       
+Not a real error.
+
+! Preview: Snippet 22 ended.(546132+0x606233).
+<-><->
+      
+l.676 }
+       
+Not a real error.
+
+[22]
+! Preview: Snippet 23 started.
+<-><->
+      
+l.676 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/results_roc_marked.pdf 
+(no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.676 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/results_roc_marked.pdf Graphic file (type eps)
+<figs/results_roc_marked.pdf>
+! Preview: Snippet 23 ended.(24210374+0x24203685).
+<-><->
+      
+l.676 }
+       
+Not a real error.
+
+[23]
+Missing character: There is no ‚ in font cmss12!
+Missing character: There is no Ä in font cmss12!
+Missing character: There is no ú in font cmss12!
+Missing character: There is no ‚ in font cmss12!
+Missing character: There is no Ä in font cmss12!
+Missing character: There is no ù in font cmss12!
+Missing character: There is no ‚ in font cmss8!
+Missing character: There is no Ä in font cmss8!
+Missing character: There is no ù in font cmss8!
+Missing character: There is no ‚ in font cmss8!
+Missing character: There is no Ä in font cmss8!
+Missing character: There is no ò in font cmss8!
+Missing character: There is no ‚ in font cmss8!
+Missing character: There is no Ä in font cmss8!
+Missing character: There is no ô in font cmss8!
+Missing character: There is no ‚ in font cmss8!
+Missing character: There is no Ä in font cmss8!
+Missing character: There is no ù in font cmss8!
+
+! Preview: Snippet 24 started.
+<-><->
+      
+l.714 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/news.jpg (no BoundingBo
+x).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.714 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/news.jpg Graphic file (type eps)
+<figs/news.jpg>
+! Preview: Snippet 24 ended.(15403119+0x15402192).
+<-><->
+      
+l.714 }
+       
+Not a real error.
+
+[24]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.714 }
+       
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Preview: Snippet 25 started.
+<-><->
+      
+l.720 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/bad_headlines.jpg (no B
+oundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.720 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/bad_headlines.jpg Graphic file (type eps)
+<figs/bad_headlines.jpg>
+! Preview: Snippet 25 ended.(24210374+0x24203685).
+<-><->
+      
+l.720 }
+       
+Not a real error.
+
+[25]
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.726 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Preview: Snippet 26 started.
+<-><->
+      
+l.726 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/good_headlines.jpg (no 
+BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.726 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/good_headlines.jpg Graphic file (type eps)
+<figs/good_headlines.jpg>
+! Preview: Snippet 26 ended.(24210374+0x24203685).
+<-><->
+      
+l.726 }
+       
+Not a real error.
+
+[26]
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.739 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Package natbib Warning: Citation `chang:2009' on page 26 undefined on input lin
+e 739.
+
+
+Package natbib Warning: Citation `chang:2009' on page 26 undefined on input lin
+e 739.
+
+
+Package natbib Warning: Citation `hoff:2002' on page 26 undefined on input line
+ 739.
+
+
+Package natbib Warning: Citation `clinton:2004' on page 26 undefined on input l
+ine 739.
+
+
+Package natbib Warning: Citation `martin:2002' on page 26 undefined on input li
+ne 739.
+
+
+Package natbib Warning: Citation `gartzke:1998' on page 26 undefined on input l
+ine 739.
+
+! Preview: Snippet 27 started.
+<-><->
+      
+l.745 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/mturk_screenshot.png (n
+o BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.745 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/mturk_screenshot.png Graphic file (type eps)
+<figs/mturk_screenshot.png>
+! Preview: Snippet 27 ended.(24210374+0x24203685).
+<-><->
+      
+l.745 }
+       
+Not a real error.
+
+[27]
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.766 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+Package natbib Warning: Citation `kogan:2009' on page 29 undefined on input lin
+e 766.
+
+! Preview: Snippet 28 started.
+<-><->
+      
+l.766 }
+       
+Not a real error.
+
+! Preview: Snippet 28 ended.(797578+141557x3561001).
+<-><->
+      
+l.766 }
+       
+Not a real error.
+
+[28]
+! Preview: Snippet 29 started.
+<-><->
+      
+l.766 }
+       
+Not a real error.
+
+! Preview: Snippet 29 ended.(650116+141557x2622738).
+<-><->
+      
+l.766 }
+       
+Not a real error.
+
+[29]
+! Preview: Snippet 30 started.
+<-><->
+      
+l.766 }
+       
+Not a real error.
+
+! Preview: Snippet 30 ended.(797578+183500x3065219).
+<-><->
+      
+l.766 }
+       
+Not a real error.
+
+[30]
+! Preview: Snippet 31 started.
+<-><->
+      
+l.772 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/lm_sample_words.pdf (no
+ BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.772 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/lm_sample_words.pdf Graphic file (type eps)
+<figs/lm_sample_words.pdf>
+! Preview: Snippet 31 ended.(22009246+0x22003228).
+<-><->
+      
+l.772 }
+       
+Not a real error.
+
+[31]
+! Preview: Snippet 32 started.
+<-><->
+      
+l.772 }
+       
+Not a real error.
+
+! Preview: Snippet 32 ended.(786431+220200x688776).
+<-><->
+      
+l.772 }
+       
+Not a real error.
+
+[32]
+! Preview: Snippet 33 started.
+<-><->
+      
+l.793 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/two_countries.pdf (no B
+oundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.793 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/two_countries.pdf Graphic file (type eps)
+<figs/two_countries.pdf>
+! Preview: Snippet 33 ended.(15403119+0x15402192).
+<-><->
+      
+l.793 }
+       
+Not a real error.
+
+[33]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.793 }
+       
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Preview: Snippet 34 started.
+<-><->
+      
+l.793 }
+       
+Not a real error.
+
+! Preview: Snippet 34 ended.(3014441+0x22003228).
+<-><->
+      
+l.793 }
+       
+Not a real error.
+
+[34]
+! Preview: Snippet 35 started.
+<-><->
+      
+l.793 }
+       
+Not a real error.
+
+! Preview: Snippet 35 ended.(573657+141557x1030746).
+<-><->
+      
+l.793 }
+       
+Not a real error.
+
+[35]
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.806 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Preview: Snippet 36 started.
+<-><->
+      
+l.806 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/two_countries_time1.pdf
+ (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.806 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/two_countries_time1.pdf Graphic file (type eps)
+<figs/two_countries_time1.pdf>
+! Preview: Snippet 36 ended.(15403119+0x15402192).
+<-><->
+      
+l.806 }
+       
+Not a real error.
+
+[36]
+! Preview: Snippet 37 started.
+<-><->
+      
+l.806 }
+       
+Not a real error.
+
+! Preview: Snippet 37 ended.(5841347+0x22003228).
+<-><->
+      
+l.806 }
+       
+Not a real error.
+
+[37]
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.819 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Preview: Snippet 38 started.
+<-><->
+      
+l.819 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/two_countries_time2.pdf
+ (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.819 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/two_countries_time2.pdf Graphic file (type eps)
+<figs/two_countries_time2.pdf>
+! Preview: Snippet 38 ended.(15403119+0x15402192).
+<-><->
+      
+l.819 }
+       
+Not a real error.
+
+[38]
+! Preview: Snippet 39 started.
+<-><->
+      
+l.819 }
+       
+Not a real error.
+
+! Preview: Snippet 39 ended.(5841347+0x22003228).
+<-><->
+      
+l.819 }
+       
+Not a real error.
+
+[39]
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.866 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Preview: Snippet 40 started.
+<-><->
+      
+l.866 }
+       
+Not a real error.
+
+! Preview: Snippet 40 ended.(498346+139537x443778).
+<-><->
+      
+l.866 }
+       
+Not a real error.
+
+[40]
+! Preview: Snippet 41 started.
+<-><->
+      
+l.892 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/002_countries_by_ip_200
+7.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.892 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/002_countries_by_ip_2007.pdf Graphic file (type eps)
+<figs/002_countries_by_ip_2007.pdf>
+! Preview: Snippet 41 ended.(11002238+0x11001614).
+<-><->
+      
+l.892 }
+       
+Not a real error.
+
+[41]
+! Preview: Snippet 42 started.
+<-><->
+      
+l.892 }
+       
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/002_us_vs_everyone.pdf 
+(no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.892 }
+       
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/002_us_vs_everyone.pdf Graphic file (type eps)
+<figs/002_us_vs_everyone.pdf>
+! Preview: Snippet 42 ended.(11001614+0x11002238).
+<-><->
+      
+l.892 }
+       
+Not a real error.
+
+[42]
+
+Package natbib Warning: Citation `chang:2009' on page 40 undefined on input lin
+e 942.
+
+! Preview: Snippet 43 started.
+<-><->
+      
+l.1055 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/ron_paul.png (no Boundi
+ngBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1055 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/ron_paul.png Graphic file (type eps)
+<figs/ron_paul.png>
+! Preview: Snippet 43 ended.(15874806+0x15875693).
+<-><->
+      
+l.1055 }
+        
+Not a real error.
+
+[43]
+! Preview: Snippet 44 started.
+<-><->
+      
+l.1081 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/newcongress_photo_G_200
+90105182921.jpg (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1081 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/newcongress_photo_G_20090105182921.jpg Graphic file (type eps)
+<figs/newcongress_photo_G_20090105182921.jpg>
+! Preview: Snippet 44 ended.(7481461+0x7481016).
+<-><->
+      
+l.1081 }
+        
+Not a real error.
+
+[44]
+! Preview: Snippet 45 started.
+<-><->
+      
+l.1081 }
+        
+Not a real error.
+
+File: figs/health-bill.jpg Graphic file (type eps)
+<figs/health-bill.jpg>
+! Preview: Snippet 45 ended.(8912890+0x20310897).
+<-><->
+      
+l.1081 }
+        
+Not a real error.
+
+[45]
+! Preview: Snippet 46 started.
+<-><->
+      
+l.1175 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/ip_gm.pdf (no BoundingB
+ox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1175 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/ip_gm.pdf Graphic file (type eps)
+<figs/ip_gm.pdf>
+! Preview: Snippet 46 ended.(13202859+0x13202071).
+<-><->
+      
+l.1175 }
+        
+Not a real error.
+
+[46]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1175 }
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Preview: Snippet 47 started.
+<-><->
+      
+l.1199 }
+        
+Not a real error.
+
+! Preview: Snippet 47 ended.(318941+107642x672617).
+<-><->
+      
+l.1199 }
+        
+Not a real error.
+
+[47]
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1199 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Preview: Snippet 48 started.
+<-><->
+      
+l.1199 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3393_example_ideal_poin
+ts_final.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1199 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3393_example_ideal_points_final.pdf Graphic file (type eps)
+<figs/3393_example_ideal_points_final.pdf>
+! Preview: Snippet 48 ended.(2747054+0x2747054).
+<-><->
+      
+l.1199 }
+        
+Not a real error.
+
+[48]
+! Preview: Snippet 49 started.
+<-><->
+      
+l.1315 }
+        
+Not a real error.
+
+! Preview: Snippet 49 ended.(318941+107642x672617).
+<-><->
+      
+l.1315 }
+        
+Not a real error.
+
+[49]
+
+Package natbib Warning: Citation `jackman:2001' on page 46 undefined on input l
+ine 1315.
+
+
+Package natbib Warning: Citation `poole:1985' on page 46 undefined on input lin
+e 1315.
+
+
+Package natbib Warning: Citation `martin:2002' on page 46 undefined on input li
+ne 1315.
+
+
+Package natbib Warning: Citation `johnson:1999ch6' on page 46 undefined on inpu
+t line 1315.
+
+
+Package natbib Warning: Citation `clinton:2004' on page 46 undefined on input l
+ine 1315.
+
+! Preview: Snippet 50 started.
+<-><->
+      
+l.1315 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3393_example_ideal_poin
+ts_cut2.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1315 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3393_example_ideal_points_cut2.pdf Graphic file (type eps)
+<figs/3393_example_ideal_points_cut2.pdf>
+! Preview: Snippet 50 ended.(2747054+0x2747054).
+<-><->
+      
+l.1315 }
+        
+Not a real error.
+
+[50]
+
+Package natbib Warning: Citation `ramage:2009' on page 47 undefined on input li
+ne 1341.
+
+! Preview: Snippet 51 started.
+<-><->
+      
+l.1341 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/labeled_topics.pdf (no 
+BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1341 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/labeled_topics.pdf Graphic file (type eps)
+<figs/labeled_topics.pdf>
+! Preview: Snippet 51 ended.(18708026+0x18702878).
+<-><->
+      
+l.1341 }
+        
+Not a real error.
+
+[51]
+! Preview: Snippet 52 started.
+<-><->
+      
+l.1372 }
+        
+Not a real error.
+
+! Preview: Snippet 52 ended.(589824+196608x6541039).
+<-><->
+      
+l.1372 }
+        
+Not a real error.
+
+[52]
+! Preview: Snippet 53 started.
+<-><->
+      
+l.1372 }
+        
+Not a real error.
+
+! Preview: Snippet 53 ended.(649479+196608x9324852).
+<-><->
+      
+l.1372 }
+        
+Not a real error.
+
+[53]
+! Preview: Snippet 54 started.
+<-><->
+      
+l.1372 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/ip_gm.pdf (no BoundingB
+ox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1372 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/ip_gm.pdf Graphic file (type eps)
+<figs/ip_gm.pdf>
+! Preview: Snippet 54 ended.(9901928+0x9901385).
+<-><->
+      
+l.1372 }
+        
+Not a real error.
+
+[54]
+! Preview: Snippet 55 started.
+<-><->
+      
+l.1372 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/legis_gm.pdf (no Boundi
+ngBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1372 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/legis_gm.pdf Graphic file (type eps)
+<figs/legis_gm.pdf>
+! Preview: Snippet 55 ended.(12102549+0x12101842).
+<-><->
+      
+l.1372 }
+        
+Not a real error.
+
+[55]
+! Preview: Snippet 56 started.
+<-><->
+      
+l.1479 }
+        
+Not a real error.
+
+! Preview: Snippet 56 ended.(318941+107642x672617).
+<-><->
+      
+l.1479 }
+        
+Not a real error.
+
+[56]
+! Preview: Snippet 57 started.
+<-><->
+      
+l.1479 }
+        
+Not a real error.
+
+! Preview: Snippet 57 ended.(624507+179404x8813508).
+<-><->
+      
+l.1479 }
+        
+Not a real error.
+
+[57]
+! Preview: Snippet 58 started.
+<-><->
+      
+l.1479 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3393_example_ideal_poin
+ts_finance.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1479 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3393_example_ideal_points_finance.pdf Graphic file (type eps)
+<figs/3393_example_ideal_points_finance.pdf>
+! Preview: Snippet 58 ended.(2747054+0x2747054).
+<-><->
+      
+l.1479 }
+        
+Not a real error.
+
+[58]
+! Preview: Snippet 59 started.
+<-><->
+      
+l.1479 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3393_example_ideal_poin
+ts_congressional_sessions.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1479 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3393_example_ideal_points_congressional_sessions.pdf Graphic file (t
+ype eps)
+<figs/3393_example_ideal_points_congressional_sessions.pdf>
+! Preview: Snippet 59 ended.(2747054+0x2747054).
+<-><->
+      
+l.1479 }
+        
+Not a real error.
+
+[59]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1479 }
+        
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Preview: Snippet 60 started.
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3397_ideal_point_9.pdf 
+(no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1549 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3397_ideal_point_9.pdf Graphic file (type eps)
+<figs/3397_ideal_point_9.pdf>
+! Preview: Snippet 60 ended.(6601429+0x6601035).
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+[60]
+! Preview: Snippet 61 started.
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3397_adjusted_ideal_poi
+nt_9.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1549 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3397_adjusted_ideal_point_9.pdf Graphic file (type eps)
+<figs/3397_adjusted_ideal_point_9.pdf>
+! Preview: Snippet 61 ended.(6601429+0x6601035).
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+[61]
+! Preview: Snippet 62 started.
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3397_ideal_point_7.pdf 
+(no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1549 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3397_ideal_point_7.pdf Graphic file (type eps)
+<figs/3397_ideal_point_7.pdf>
+! Preview: Snippet 62 ended.(6601429+0x6601035).
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+[62]
+! Preview: Snippet 63 started.
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3397_adjusted_ideal_poi
+nt_7.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1549 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3397_adjusted_ideal_point_7.pdf Graphic file (type eps)
+<figs/3397_adjusted_ideal_point_7.pdf>
+! Preview: Snippet 63 ended.(6601429+0x6601035).
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+[63]
+! Preview: Snippet 64 started.
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3397_ideal_point_5.pdf 
+(no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1549 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3397_ideal_point_5.pdf Graphic file (type eps)
+<figs/3397_ideal_point_5.pdf>
+! Preview: Snippet 64 ended.(6601429+0x6601035).
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+[64]
+! Preview: Snippet 65 started.
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3397_adjusted_ideal_poi
+nt_5.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1549 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3397_adjusted_ideal_point_5.pdf Graphic file (type eps)
+<figs/3397_adjusted_ideal_point_5.pdf>
+! Preview: Snippet 65 ended.(6601429+0x6601035).
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+[65]
+! Preview: Snippet 66 started.
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3397_ideal_point_3.pdf 
+(no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1549 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3397_ideal_point_3.pdf Graphic file (type eps)
+<figs/3397_ideal_point_3.pdf>
+! Preview: Snippet 66 ended.(6601429+0x6601035).
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+[66]
+! Preview: Snippet 67 started.
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3397_adjusted_ideal_poi
+nt_3.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1549 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3397_adjusted_ideal_point_3.pdf Graphic file (type eps)
+<figs/3397_adjusted_ideal_point_3.pdf>
+! Preview: Snippet 67 ended.(6601429+0x6601035).
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+[67]
+! Preview: Snippet 68 started.
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3397_ideal_point_1.pdf 
+(no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1549 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3397_ideal_point_1.pdf Graphic file (type eps)
+<figs/3397_ideal_point_1.pdf>
+! Preview: Snippet 68 ended.(6601429+0x6601035).
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+[68]
+! Preview: Snippet 69 started.
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3397_adjusted_ideal_poi
+nt_1.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1549 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3397_adjusted_ideal_point_1.pdf Graphic file (type eps)
+<figs/3397_adjusted_ideal_point_1.pdf>
+! Preview: Snippet 69 ended.(6601429+0x6601035).
+<-><->
+      
+l.1549 \end{frame}
+                  
+Not a real error.
+
+[69]
+
+Package natbib Warning: Citation `fenno:1965' on page 53 undefined on input lin
+e 1583.
+
+
+Package natbib Warning: Citation `jones:1964' on page 53 undefined on input lin
+e 1583.
+
+
+Package natbib Warning: Citation `cox:2002' on page 53 undefined on input line 
+1583.
+
+
+Package natbib Warning: Citation `cox:1993' on page 53 undefined on input line 
+1583.
+
+
+Package natbib Warning: Citation `cox:1993' on page 53 undefined on input line 
+1583.
+
+
+Package natbib Warning: Citation `cox:2005' on page 53 undefined on input line 
+1583.
+
+! Preview: Snippet 70 started.
+<-><->
+      
+l.1828 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3393_house_Ronald_Paul_
+400311.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1828 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3393_house_Ronald_Paul_400311.pdf Graphic file (type eps)
+<figs/3393_house_Ronald_Paul_400311.pdf>
+! Preview: Snippet 70 ended.(15874806+0x15875693).
+<-><->
+      
+l.1828 }
+        
+Not a real error.
+
+[70]
+! Preview: Snippet 71 started.
+<-><->
+      
+l.1835 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/3393_house_Donald_Young
+_400440.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1835 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/3393_house_Donald_Young_400440.pdf Graphic file (type eps)
+<figs/3393_house_Donald_Young_400440.pdf>
+! Preview: Snippet 71 ended.(15874806+0x15875693).
+<-><->
+      
+l.1835 }
+        
+Not a real error.
+
+[71]
+No file _region_.bbl.
+! Preview: Snippet 72 started.
+<-><->
+      
+l.1891 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/fraction_docs_vs_fracti
+on_citations.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1891 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/fraction_docs_vs_fraction_citations.pdf Graphic file (type eps)
+<figs/fraction_docs_vs_fraction_citations.pdf>
+! Preview: Snippet 72 ended.(17607498+0x17602649).
+<-><->
+      
+l.1891 }
+        
+Not a real error.
+
+[72]
+! Preview: Snippet 73 started.
+<-><->
+      
+l.1906 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/penn.pdf (no BoundingBo
+x).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1906 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/penn.pdf Graphic file (type eps)
+<figs/penn.pdf>
+! Preview: Snippet 73 ended.(5941243+0x5940891).
+<-><->
+      
+l.1906 }
+        
+Not a real error.
+
+[73]
+! Preview: Snippet 74 started.
+<-><->
+      
+l.1906 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/acl_penn.pdf (no Boundi
+ngBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1906 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/acl_penn.pdf Graphic file (type eps)
+<figs/acl_penn.pdf>
+! Preview: Snippet 74 ended.(15403119+0x15402192).
+<-><->
+      
+l.1906 }
+        
+Not a real error.
+
+[74]
+! Preview: Snippet 75 started.
+<-><->
+      
+l.1921 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/cover_nature.jpg (no Bo
+undingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1921 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/cover_nature.jpg Graphic file (type eps)
+<figs/cover_nature.jpg>
+! Preview: Snippet 75 ended.(5941243+0x5940891).
+<-><->
+      
+l.1921 }
+        
+Not a real error.
+
+[75]
+! Preview: Snippet 76 started.
+<-><->
+      
+l.1921 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/nature_north_america.pd
+f (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1921 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/nature_north_america.pdf Graphic file (type eps)
+<figs/nature_north_america.pdf>
+! Preview: Snippet 76 ended.(15403119+0x15402192).
+<-><->
+      
+l.1921 }
+        
+Not a real error.
+
+[76]
+! Preview: Snippet 77 started.
+<-><->
+      
+l.1932 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/docs_basic_topics.png (
+no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1932 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/docs_basic_topics.png Graphic file (type eps)
+<figs/docs_basic_topics.png>
+! Preview: Snippet 77 ended.(22009246+0x22003228).
+<-><->
+      
+l.1932 }
+        
+Not a real error.
+
+[77]
+! Preview: Snippet 78 started.
+<-><->
+      
+l.1936 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/user_ips_jackman_vs_mod
+el_by_dispersion.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1936 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/user_ips_jackman_vs_model_by_dispersion.pdf Graphic file (type eps)
+<figs/user_ips_jackman_vs_model_by_dispersion.pdf>
+! Preview: Snippet 78 ended.(22009246+0x22003228).
+<-><->
+      
+l.1936 }
+        
+Not a real error.
+
+[78]
+! Preview: Snippet 79 started.
+<-><->
+      
+l.1957 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/ideal-point-intuition.j
+pg (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1957 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/ideal-point-intuition.jpg Graphic file (type eps)
+<figs/ideal-point-intuition.jpg>
+! Preview: Snippet 79 ended.(2841800+0x2841800).
+<-><->
+      
+l.1957 \end{frame}
+                  
+Not a real error.
+
+[79]
+! Preview: Snippet 80 started.
+<-><->
+      
+l.1957 \end{frame}
+                  
+Not a real error.
+
+! Preview: Snippet 80 ended.(318941+214045x693083).
+<-><->
+      
+l.1957 \end{frame}
+                  
+Not a real error.
+
+[80]
+! Preview: Snippet 81 started.
+<-><->
+      
+l.1957 \end{frame}
+                  
+Not a real error.
+
+! Preview: Snippet 81 ended.(318941+214045x574143).
+<-><->
+      
+l.1957 \end{frame}
+                  
+Not a real error.
+
+[81]
+! Preview: Snippet 82 started.
+<-><->
+      
+l.1957 \end{frame}
+                  
+Not a real error.
+
+! Preview: Snippet 82 ended.(318941+112100x548356).
+<-><->
+      
+l.1957 \end{frame}
+                  
+Not a real error.
+
+[82]
+! Preview: Snippet 83 started.
+<-><->
+      
+l.1978 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/ideal-point-prediction-
+intuition.pdf (no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1978 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/ideal-point-prediction-intuition.pdf Graphic file (type eps)
+<figs/ideal-point-prediction-intuition.pdf>
+! Preview: Snippet 83 ended.(2841800+0x2841800).
+<-><->
+      
+l.1978 \end{frame}
+                  
+Not a real error.
+
+[83]
+! Preview: Snippet 84 started.
+<-><->
+      
+l.1989 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/ideal-point.pdf (no Bou
+ndingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1989 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/ideal-point.pdf Graphic file (type eps)
+<figs/ideal-point.pdf>
+! Preview: Snippet 84 ended.(9901928+0x9901385).
+<-><->
+      
+l.1989 \end{frame}
+                  
+Not a real error.
+
+[84]
+! Preview: Snippet 85 started.
+<-><->
+      
+l.1994 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/ideal-point-topics.pdf 
+(no BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1994 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/ideal-point-topics.pdf Graphic file (type eps)
+<figs/ideal-point-topics.pdf>
+! Preview: Snippet 85 ended.(18708026+0x18702878).
+<-><->
+      
+l.1994 \end{frame}
+                  
+Not a real error.
+
+[85]
+! Preview: Snippet 86 started.
+<-><->
+      
+l.2002 \end{frame}
+                  
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/vote-accuracy.pdf (no B
+oundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2002 \end{frame}
+                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/vote-accuracy.pdf Graphic file (type eps)
+<figs/vote-accuracy.pdf>
+! Preview: Snippet 86 ended.(16503357+0x16502421).
+<-><->
+      
+l.2002 \end{frame}
+                  
+Not a real error.
+
+[86]
+! Preview: Snippet 87 started.
+<-><->
+      
+l.2050 }
+        
+Not a real error.
+
+! Preview: Snippet 87 ended.(410069+0x310986).
+<-><->
+      
+l.2050 }
+        
+Not a real error.
+
+[87]
+! Preview: Snippet 88 started.
+<-><->
+      
+l.2050 }
+        
+Not a real error.
+
+! Preview: Snippet 88 ended.(1695343+0x16182484).
+<-><->
+      
+l.2050 }
+        
+Not a real error.
+
+[88]
+! Preview: Snippet 89 started.
+<-><->
+      
+l.2050 }
+        
+Not a real error.
+
+! Preview: Snippet 89 ended.(498346+0x570111).
+<-><->
+      
+l.2050 }
+        
+Not a real error.
+
+[89]
+! Preview: Snippet 90 started.
+<-><->
+      
+l.2050 }
+        
+Not a real error.
+
+LaTeX Font Info:    Try loading font information for U+eus on input line 2050.
+(/usr/share/texmf-texlive/tex/latex/amsfonts/ueus.fd
+File: ueus.fd 2009/06/22 v3.00 Euler Script
+)
+! Preview: Snippet 90 ended.(3674426+0x14902510).
+<-><->
+      
+l.2050 }
+        
+Not a real error.
+
+[90]
+! Preview: Snippet 91 started.
+<-><->
+      
+l.2088 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/patentsqvsf.pdf (no Bou
+ndingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2088 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/patentsqvsf.pdf Graphic file (type eps)
+<figs/patentsqvsf.pdf>
+! Preview: Snippet 91 ended.(5941315+0x5940965).
+<-><->
+      
+l.2088 }
+        
+Not a real error.
+
+[91]
+! Preview: Snippet 92 started.
+<-><->
+      
+l.2088 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/papersqvsf.pdf (no Boun
+dingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2088 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/papersqvsf.pdf Graphic file (type eps)
+<figs/papersqvsf.pdf>
+! Preview: Snippet 92 ended.(5941315+0x5940965).
+<-><->
+      
+l.2088 }
+        
+Not a real error.
+
+[92]
+! Preview: Snippet 93 started.
+<-><->
+      
+l.2088 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/wikiqvsf.pdf (no Boundi
+ngBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2088 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/wikiqvsf.pdf Graphic file (type eps)
+<figs/wikiqvsf.pdf>
+! Preview: Snippet 93 ended.(5941315+0x5940965).
+<-><->
+      
+l.2088 }
+        
+Not a real error.
+
+[93]
+! Preview: Snippet 94 started.
+<-><->
+      
+l.2088 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/qnaqvsf.pdf (no Boundin
+gBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2088 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/qnaqvsf.pdf Graphic file (type eps)
+<figs/qnaqvsf.pdf>
+! Preview: Snippet 94 ended.(5941315+0x5940965).
+<-><->
+      
+l.2088 }
+        
+Not a real error.
+
+[94]
+! Preview: Snippet 95 started.
+<-><->
+      
+l.2101 }
+        
+Not a real error.
+
+! Preview: Snippet 95 ended.(604482+245274x17328591).
+<-><->
+      
+l.2101 }
+        
+Not a real error.
+
+[95]
+! Preview: Snippet 96 started.
+<-><->
+      
+l.2101 }
+        
+Not a real error.
+
+! Preview: Snippet 96 ended.(6157108+0x22003228).
+<-><->
+      
+l.2101 }
+        
+Not a real error.
+
+[96]
+! Preview: Snippet 97 started.
+<-><->
+      
+l.2101 }
+        
+Not a real error.
+
+! Preview: Snippet 97 ended.(538214+179404x4039815).
+<-><->
+      
+l.2101 }
+        
+Not a real error.
+
+[97]
+! Preview: Snippet 98 started.
+<-><->
+      
+l.2101 }
+        
+Not a real error.
+
+! Preview: Snippet 98 ended.(538214+179404x7939493).
+<-><->
+      
+l.2101 }
+        
+Not a real error.
+
+[98]
+! Preview: Snippet 99 started.
+<-><->
+      
+l.2101 }
+        
+Not a real error.
+
+! Preview: Snippet 99 ended.(707788+235929x3334112).
+<-><->
+      
+l.2101 }
+        
+Not a real error.
+
+[99]
+! Preview: Snippet 100 started.
+<-><->
+      
+l.2101 }
+        
+Not a real error.
+
+! Preview: Snippet 100 ended.(707788+235929x5198335).
+<-><->
+      
+l.2101 }
+        
+Not a real error.
+
+[100]
+! Preview: Snippet 101 started.
+<-><->
+      
+l.2120 }
+        
+Not a real error.
+
+! Preview: Snippet 101 ended.(5682833+0x22003228).
+<-><->
+      
+l.2120 }
+        
+Not a real error.
+
+[101
+
+
+]
+! Preview: Snippet 102 started.
+<-><->
+      
+l.2120 }
+        
+Not a real error.
+
+! Preview: Snippet 102 ended.(873345+0x309691).
+<-><->
+      
+l.2120 }
+        
+Not a real error.
+
+[102]
+! Preview: Snippet 103 started.
+<-><->
+      
+l.2136 }
+        
+Not a real error.
+
+! Preview: Snippet 103 ended.(263276+0x717621).
+<-><->
+      
+l.2136 }
+        
+Not a real error.
+
+[103]
+! Preview: Snippet 104 started.
+<-><->
+      
+l.2136 }
+        
+Not a real error.
+
+! Preview: Snippet 104 ended.(604482+0x1028920).
+<-><->
+      
+l.2136 }
+        
+Not a real error.
+
+[104]
+! Preview: Snippet 105 started.
+<-><->
+      
+l.2136 }
+        
+Not a real error.
+
+! Preview: Snippet 105 ended.(263276+0x717621).
+<-><->
+      
+l.2136 }
+        
+Not a real error.
+
+[105]
+! Preview: Snippet 106 started.
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+! Preview: Snippet 106 ended.(498346+139537x3805654).
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+[106]
+! Preview: Snippet 107 started.
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+! Preview: Snippet 107 ended.(498346+139537x3905325).
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+[107]
+! Preview: Snippet 108 started.
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+! Preview: Snippet 108 ended.(604482+218855x15072247).
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+[108]
+! Preview: Snippet 109 started.
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+! Preview: Snippet 109 ended.(498346+107642x641851).
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+[109]
+! Preview: Snippet 110 started.
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+! Preview: Snippet 110 ended.(455111+98303x579893).
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+[110]
+! Preview: Snippet 111 started.
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+! Preview: Snippet 111 ended.(282168+98303x660525).
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+[111]
+! Preview: Snippet 112 started.
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+! Preview: Snippet 112 ended.(455111+127431x611978).
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+[112]
+! Preview: Snippet 113 started.
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+! Preview: Snippet 113 ended.(455111+127431x3566504).
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+[113]
+! Preview: Snippet 114 started.
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+! Preview: Snippet 114 ended.(538881+187504x4438753).
+<-><->
+      
+l.2153 }
+        
+Not a real error.
+
+[114]
+! Preview: Snippet 115 started.
+<-><->
+      
+l.2163 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/hot_cold_topics.jpg (no
+ BoundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2163 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/hot_cold_topics.jpg Graphic file (type eps)
+<figs/hot_cold_topics.jpg>
+! Preview: Snippet 115 ended.(22009246+0x22003228).
+<-><->
+      
+l.2163 }
+        
+Not a real error.
+
+[115]
+
+Package natbib Warning: Citation `griffiths:2004' on page 81 undefined on input
+ line 2163.
+
+! Preview: Snippet 116 started.
+<-><->
+      
+l.2184 }
+        
+Not a real error.
+
+! Preview: Snippet 116 ended.(498346+0x756494).
+<-><->
+      
+l.2184 }
+        
+Not a real error.
+
+[116]
+! Preview: Snippet 117 started.
+<-><->
+      
+l.2184 }
+        
+Not a real error.
+
+! Preview: Snippet 117 ended.(498346+0x594306).
+<-><->
+      
+l.2184 }
+        
+Not a real error.
+
+[117]
+! Preview: Snippet 118 started.
+<-><->
+      
+l.2184 }
+        
+Not a real error.
+
+! Preview: Snippet 118 ended.(717618+0x22003228).
+<-><->
+      
+l.2184 }
+        
+Not a real error.
+
+[118]
+! Preview: Snippet 119 started.
+<-><->
+      
+l.2195 }
+        
+Not a real error.
+
+! Preview: Snippet 119 ended.(538214+179404x2626576).
+<-><->
+      
+l.2195 }
+        
+Not a real error.
+
+[119]
+! Preview: Snippet 120 started.
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+! Preview: Snippet 120 ended.(503918+0x485312).
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+[120]
+! Preview: Snippet 121 started.
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+! Preview: Snippet 121 ended.(1800788+0x13412875).
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+[121]
+! Preview: Snippet 122 started.
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+! Preview: Snippet 122 ended.(318941+139537x588224).
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+[122]
+! Preview: Snippet 123 started.
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+! Preview: Snippet 123 ended.(487525+0x241169).
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+[123]
+! Preview: Snippet 124 started.
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+! Preview: Snippet 124 ended.(538214+214045x3285905).
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+[124]
+! Preview: Snippet 125 started.
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+! Preview: Snippet 125 ended.(487525+0x241169).
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+[125]
+! Preview: Snippet 126 started.
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+! Preview: Snippet 126 ended.(487525+139537x257117).
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+[126]
+! Preview: Snippet 127 started.
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+! Preview: Snippet 127 ended.(318941+214045x732951).
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+[127]
+! Preview: Snippet 128 started.
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+! Preview: Snippet 128 ended.(487525+0x241169).
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+[128]
+! Preview: Snippet 129 started.
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+! Preview: Snippet 129 ended.(487525+139537x257117).
+<-><->
+      
+l.2217 }
+        
+Not a real error.
+
+[129]
+! Preview: Snippet 130 started.
+<-><->
+      
+l.2224 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/topics.pdf (no Bounding
+Box).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2224 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/topics.pdf Graphic file (type eps)
+<figs/topics.pdf>
+! Preview: Snippet 130 ended.(19808192+0x19802770).
+<-><->
+      
+l.2224 }
+        
+Not a real error.
+
+[130]
+! Preview: Snippet 131 started.
+<-><->
+      
+l.2237 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/example_words.pdf (no B
+oundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2237 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/example_words.pdf Graphic file (type eps)
+<figs/example_words.pdf>
+! Preview: Snippet 131 ended.(19808192+0x19802770).
+<-><->
+      
+l.2237 }
+        
+Not a real error.
+
+[131]
+! Preview: Snippet 132 started.
+<-><->
+      
+l.2237 }
+        
+Not a real error.
+
+! Preview: Snippet 132 ended.(406323+183500x2151199).
+<-><->
+      
+l.2237 }
+        
+Not a real error.
+
+[132]
+! Preview: Snippet 133 started.
+<-><->
+      
+l.2243 }
+        
+Not a real error.
+
+
+! LaTeX Error: Cannot determine size of graphic in figs/64_topic_plot.pdf (no B
+oundingBox).
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2243 }
+        
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+File: figs/64_topic_plot.pdf Graphic file (type eps)
+<figs/64_topic_plot.pdf>
+! Preview: Snippet 133 ended.(22009246+0x22003228).
+<-><->
+      
+l.2243 }
+        
+Not a real error.
+
+[133]
+
+Package natbib Warning: There were undefined citations.
+
+
+LaTeX Font Warning: Size substitutions with differences
+(Font)              up to 1.0pt have occurred.
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 13064 strings out of 495062
+ 227922 string characters out of 1182645
+ 314957 words of memory out of 3000000
+ 15807 multiletter control sequences out of 15000+50000
+ 34775 words of font info for 126 fonts, out of 3000000 for 9000
+ 28 hyphenation exceptions out of 8191
+ 45i,17n,51p,2915b,568s stack positions out of 5000i,500n,10000p,200000b,50000s
+
+Output written on _region_.dvi (133 pages, 34384 bytes).

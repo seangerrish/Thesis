@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   width="351.30341"
+   height="316.34576"
+   sodipodi:docname="cowsmonaut.jpg">
+  <metadata
+     id="metadata8">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs6">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect3596"
+       is_visible="true" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       id="perspective10" />
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="739"
+     inkscape:window-height="573"
+     id="namedview4"
+     showgrid="false"
+     inkscape:zoom="0.71515152"
+     inkscape:cx="194.0839"
+     inkscape:cy="123.91441"
+     inkscape:window-x="41"
+     inkscape:window-y="45"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
+  <path
+     sodipodi:type="arc"
+     style="fill:#ff0000;fill-opacity:0;stroke:#ff0007;stroke-width:24.10000038;stroke-miterlimit:4;stroke-opacity:0.72727272;stroke-dasharray:none;stroke-dashoffset:0"
+     id="path2820"
+     sodipodi:cx="191.56779"
+     sodipodi:cy="142.62712"
+     sodipodi:rx="155.21187"
+     sodipodi:ry="137.03391"
+     d="m 346.77966,142.62712 a 155.21187,137.03391 0 1 1 -310.423733,0 155.21187,137.03391 0 1 1 310.423733,0 z"
+     transform="matrix(1.0497396,0,0,1.0614397,-25.444596,6.7827987)" />
+  <image
+     sodipodi:absref="/home/sgerrish/sgerrish_fpo/figs/figs/cowsmonaut.jpg"
+     xlink:href="figs/cowsmonaut.jpg"
+     y="65.982208"
+     x="43.41441"
+     id="image12"
+     height="194.3644"
+     width="264.78815" />
+  <path
+     style="fill:none;stroke:#ff0000;stroke-width:27.29883766;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:0.74641149;stroke-dasharray:none"
+     d="M 41.615524,257.95058 306.89127,68.183321"
+     id="path3594"
+     inkscape:path-effect="#path-effect3596"
+     inkscape:original-d="M 41.615524,257.95058 306.89127,68.183321" />
+</svg>

@@ -1,0 +1,201 @@
+\section{Inference and parameter estimation}
+\label{section:inference}
+
+Our computational challenge is to compute the posterior distribution
+of the latent variables---the sequences of topics and the per-document
+influence values---conditioned on an observed corpus.  As for simpler
+topic models, this posterior is intractable to compute exactly. We
+employ variational methods---introduced in Chapter 2---to fit this
+posterior.
+
+To apply variational methods, we begin by specifying a variational
+distribution for the DIM posterior.  First, the word assignments $z_n$
+and topic proportions $\theta_d$ are governed by multinomial
+parameters $\phi_d$ and Dirichlet parameters $\gamma_d$, as in
+LDA~\cite{blei:2003}; we refer to these distributions as $q(z_n |
+\phi_n)$ and $q(\theta_d | \gamma_d)$.
+
+The variational distribution for topic trajectories
+$\{\beta_{k,1}, \ldots, \beta_{k,T} \}$ is described by a linear
+Gaussian chain.  It is governed by parameters $\{ \bv_{k,1}, \ldots,
+\bv_{k,T} \}$, which are interpreted as the ``variational
+observations'' of the chain.  These induce a sequence of means $\mv_t$
+and variances $\vv_t$. Blei and Lafferty \cite{blei:2006} call this a ``variational
+Kalman filter.''
+
+Finally, the variational distribution of the document influence value
+$\ell_{d,k}$ is a Gaussian with mean $\ellv_{d,k}$ and fixed variance
+$\vlv$.
+% ~\footnote{In general, we may abuse notation and refer to the
+%  vector $\ellv_{t,k}$ of all document weights at time $t$ for topic
+%  $k$; notation should be evident from context.}
+
+% dmb: above, do we fit the variance term or is it fixed?  (in the
+% influence variational distribution)
+% smg: I've kept the variance term fixed.
+
+% dmb: above, do we really need that footnote?
+% smg: if you think it's unnecessary, then probably not.
+
+% dmb: below, do we ever say that "x" is all the latent variables?  do
+% we really need this shorthand?
+% smg: I can try to 
+
+In full, the variational distribution is
+\begin{align}
+  q(\beta, \ell, z, \theta | & \bv, \ellv, \phi, \gamma) = \prod_{k=1}^K q(\beta_{k,1:T} | \bv_{k,1:T})
+  \prod_{t=1}^T \prod_{d=1}^{D_t} q(\theta_{t,d} | \gamma_{t,d})
+  q(\ell_{d} | \ellv_{d})
+  \prod_{n=1}^{N_{t,d}} q(z_{t,d,n} | \vphi_{t,d,n}). \nonumber
+\end{align}
+% dmb: use different notation from d... it looks like the document index
+% smg: that's what d is -- which d are you referring to?
+% dmb: in general, clean up this equation.  i'm not sure you need the
+% first integral.  it suffices to go right to the terms.  and, i think
+% that multiple sums will look better than parentheses.
+Using this variational family, our goal is to maximize the Evidence Lower Bound (ELBO) $\mathcal{L}$ on the model evidence of the observed words $\W$:
+\begin{align}
+  \label{eq:elbo}
+  \ln p(\W) \geq & \mathcal{L}(\bv, \vphi, \gamma) \\
+  = & \sum_T \expectq{\ln p(\beta_{t} | \beta_{t-1})} 
+  + \sum_{T} \sum_{D_t} \expectq{\ln p(\ell_{d})} + \expectq{\ln p(\theta_{d} | \alpha)} \label{eq:elbo_line2} \\
+  & + \sum_{T} \sum_{D_t} \sum_{N_d} \expectq{\ln p( z_n | \theta_d)} + \expectq{\ln p(w_n | z_n, \beta_t)}
+  + H(q). \label{eq:elbo_line3}
+\end{align}
+Note also that the variational parameters $\bv, \vphi,$ and $\gamma$
+are present in lines~\ref{eq:elbo_line2} and~\ref{eq:elbo_line3} of
+the above equation because they parameterize the variational
+distribution $q$.
+
+\subsection*{Optimizing the variational bound}
+This bound is optimized by variational EM, with an update schedule similar to that in Blei and Lafferty \cite{blei:2006}:
+\begin{enumerate}
+\item For Topic $k=1, \ldots, K$:
+  \begin{enumerate}
+  \item Update parameters $\bv_k$.
+  \end{enumerate}
+\item For time $t = 1, \ldots, T$:
+  \begin{enumerate}
+  \item For document $d_{1,t}, \ldots, d_{{D_t}, t}$:
+  \item Update parameters $\ellv_d, \vphi_d$, and $\gamma_d$,
+    \end{enumerate}
+  \end{enumerate}    
+where the variational parameters are optimized sequentially in
+blocks.  These updates are repeated until the relative increase in
+the lower bound is below a threshold.
+
+\paragraph{Topic trajectories.}
+The variational update for $\bv$ is similar to that in
+\cite{blei:2006}. For each topic, we update the variational Kalman   % citet
+``observations'' by applying gradient ascent:
+\begin{align*}
+\partl{\mathcal{L}}{\bv_{sw}} =
+% From beta generative rule:
+   & -  \frac{1}{\sigma^2} \sum_{t=1}^T
+     \left( \mv_{tw} - \mv_{t-1,w} - G_{t-1,w} \right) \\
+   & \hspace{30pt}  \times \left( \partl{\mv_{tw}}{\bv_{sw}}
+     - \partl{\mv_{t-1,w}}{\bv_{sw}}
+     + G_{t-1,w} \partl{\mv_{t-1,w}}{\bv_{sw}} \right) \\
+   & +  \sum_T \left(
+       N_{w,t} - N_{t} \zeta_t^{-1}
+       \exp( \hat{m}_{\bb_{tw}} + \frac{\tilde{V}_{tw}}{2} ) \right)
+       \partl{\mv_{tw}}{\bv_{sw}} \\
+   & +  \frac{1}{\sigma^2} \sum_{t=1}^T
+         \partl{\mv_{t-1,w}}{\bv_{sw}}
+         \left( H_{t-1,w} - G_{t-1,w}^2 \right) \\
+   & +  \frac{1}{\sigma^2} \sum_{t=0}^{T-1}
+         \partl{\mv_{tw}}{\bv_{sw}}
+         G_{tw} \vv_{tw},
+\end{align*}
+where
+\begin{eqnarray*}
+%\mbox{where} \\
+ G_{sn} &=& \expectq{\exp(-\beta_{s,k,n} ) ( \W_{s,k,n} \circ
+  z_{s,k,n} ) \ell_{s,k}} \\
+ H_{sn} &=& \mathbb{E}_q \big[ \exp(-2 \beta_{s,k,n}) \left( (\W_{s,k,n} \circ z_{s,k,n} ) \ell_{s,k} \right)^2 \big].
+\end{eqnarray*}
+
+We expand $H_t$ in Appendix~\mysec{section:docinf_appendix}. Note also
+that we have added the additional variational parameter $\zeta_t$ and
+the term $\partl{\mv_{tn}}{\bv_{sn}}$, which are both described in
+Blei and Lafferty \cite{blei:2006}. The % citet
+former can be updated once per iteration with $\zeta_t \gets \sum_w
+\exp(\mv_{t,n} + \vv_{t,n}/2)$. The latter can be derived from the
+variational Kalman filter updates (see the Appendix~\mysec{section:docinf_appendix} and
+Blei and Lafferty \cite{blei:2006}).
+
+\paragraph{Influence values.}
+In the DIM, changes in a topic's mean parameters are governed by a
+normal distribution.  As a consequence of this choice, updates for the
+influence parameters $\ellv_{t,k}$ solve a linear regression.  In this
+regression, documents' words at time $t$ explain the expected topic
+drift $\bm{\Delta_{\beta,t,k}} = (\beta_{t+1,k} - \beta_{t,k})$, where
+the contributions of each document's words are given by the design
+matrix $X = \diag{\exp(-\beta_{t,k})} (\bm W_{t,k} \circ \phi_{t,k}
+)$. ($\diag{\vec{x}}$ refers to the matrix having the elements of
+$\vec{x}$ on its diagonal.)
+%\begin{eqnarray}
+%\bm{\Delta_{\beta,t,k,w}} := & \hspace{-34pt} \exp(-\mv_{t,k,w} + \vv_{t,k,w} / 2) \nonumber \\
+%& \hspace{-11pt} \times \hspace{2pt} (\mv_{t+1,k,w} - \mv_{t,k,w} + \vv_{t,k,w}). \nonumber
+%\end{eqnarray}
+
+The parameter updates for document influence $\ellv_{t,k}$ are
+defined, for each time $t$ and each topic $k$, by the
+variational normal equation
+\begin{align}
+\ellv_{t, k} \gets \big(  \frac{\vbv}{\vd} \bm I
+  + \expectq{X^T X} \big)^{-1} \expectq{X^T \bm{\Delta_{\beta,t,k}}}.
+  \label{eq:regression}
+\end{align}
+%\begin{align*}
+%\[ \small
+%\bm H_{t,k} = \expectq{(\bm W_t \circ z_{t,k})^T \diag{\exp(-2\beta_{t,k})} (\bm W_t \circ z_{t,k})}; \\
+%\normalsize
+% & 
+% (\bm W_{t,k} \circ \vphi_{t,k})^T \diag{h_{\exp}}
+%   (\bm W_{t,k} \circ \vphi_{t,k}) \nonumber \\
+% & \hspace{-25pt}  + \mbox{Diag} \Big( (\bm W_{t,k} \circ \bm W_{t,k} \circ ( \vphi_{t,k} - \vphi_{t,k} \circ \vphi_{t,k}))^T h_{\exp} \Big), \nonumber \\
+%\end{align*}
+%\]
+The expectation $\expectq{X^TX}$ is a matrix with dimension $D_t \times D_t$.  Its elements are
+\begin{eqnarray*}
+ {\expectq{X^T X}}_{d,d'} = \sum_n \exp(-2\mv_{t,k,n} + 2 \vv_{t,k,n}) (w_{t,d,n} w_{t,d',n} \phi_{t,k,d,n } \phi_{t,k,d',n})
+\end{eqnarray*}
+when $d \neq d'$ and
+\begin{eqnarray*}
+{\expectq{X^T X}}_{d,d} = \sum_n \exp(-2\mv_{t,k,n} + 2 \vv_{t,k,n}) (w_{t,d,n}^2 \phi_{t,k,d,n})
+\end{eqnarray*}
+otherwise. The expectation $\expectq{X^T \bm{\Delta_{\beta,t,k}}}$
+is a $D_t$-dimensional matrix with elements
+\begin{eqnarray*}
+ {\expectq{X^T \bm{\Delta_{\beta,t,k}}}}_d = 
+ \sum_n & \hspace{-10pt} w_{t,d,n} \phi_{t,k,d,n} 
+  \times (\mv_{t+1,k,n} - \mv_{t,k,n} + \vv_{t,k,n}/2) 
+  \times \exp(-\mv_{t,k,n} + \vv_{t,k,n}/2). 
+\end{eqnarray*}
+
+\paragraph{Topic proportions and topic assignments.}
+Updates for the variational Dirichlet on the topic proportions
+$\theta_{d,k}$ have a closed-form solution, exactly as in LDA
+\cite{blei:2003}; we omit details here.
+
+The variational parameter for each word $w_n$'s hidden topic $z_n$ is
+the multinomial $\phi_n$.  We solve for $\phi_{n,k}$ by the
+closed-form updates
+\begin{align}
+\label{eq:phi_update}
+%\log(\phi_{w,k}) & \gets & \Psi(\gamma_k) + \mv_{t, k,w} \nonumber \\
+%& & \hspace{-60pt} + \frac{1}{\sigma^2} \bm w_{t} \ellv_{d_w,k} \big( \exp(-\mv_{t,k,w} + \vv_{t,k,w} / 2) \nonumber \\
+%    & & \hspace{-10pt} \times  (\mv_{t + 1,k,w} - \mv_{t,k,w} + \vv_{t,k,w}) \big) \nonumber \\
+%   & & \hspace{-60pt} - \frac{1}{\sigma^2} \bm w_{t} \exp(-2 \mv_{t} + 2 \vv_t) \big( 
+%        \ellv_{d} \times (\bm W_t \circ \phi_{t,k}^{\mbox{L}} \ellv_{t,k})_w \nonumber \\
+%   & & \hspace{55pt} + \bm w_{t} \phi_{w,k}^{\mbox{L}} \ellv_{d}^2 - \ellv_{d}^2 - \sigma_l^2 \big) \nonumber \\
+\log(\phi_{n,k}) \gets & \Psi(\gamma_k) + \mv_{t,k,n} + \frac{1}{\sigma^2} w_{t} \ellv_{d_n,k} \exp(-\mv_{t,k} \hspace{-1pt} + \hspace{-1pt} \vv_{t,k} / 2) (\mv_{t+1,k} - \mv_{t,k} + \vv_{t,k})  \nonumber \\ 
+& - \frac{1}{\sigma^2} w_{t,n} \Big[ \ellv_{d_n,k} \exp(-2\mv_{t,k} + 2 \vv_{t,k})
+ (\bm W_{t,n,\setminus{d_n}} \circ \phi_{t,n,k,\setminus{d_n}}) \ellv_{t,k,\setminus d_n} \Big] \nonumber \\
+& - \frac{1}{\sigma^2} w_{t,n}^2 \exp(-2\mv_{t,k} + 2 \vv_{t,k}) (\ellv_{d,n,k}^2 + \sigma_l^2),
+\end{align}
+where $\Psi$ is the digamma function and $\setminus{d_n}$ refers to
+the set of all documents \emph{except} $d_n$. Solving the constrained
+optimization problem, this update is followed by normalization
+$\phi_{w, k} \gets \frac{\phi_{w, k}}{\sum_K \phi_{n, k}}$.

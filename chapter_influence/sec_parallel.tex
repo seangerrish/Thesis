@@ -1,0 +1,113 @@
+\section{A parallel implementation of the model}
+\label{section:influence_parallel_inference}
+
+The algorithm described in \mysec{inference} takes approximately 11
+hours on a modern desktop computer\footnote{This was a 2.2GHz, 1MB
+  cache, Dual core AMD Opteron 275 processor}, for about 30,000
+documents.  For a larger dataset---such as all scientific articles in
+\emph{Nature}, \emph{Science}, and \emph{PNAS} combined---this
+na\:{i}ve implementation takes considerably longer to complete, and it
+requires too much memory to fit on a traditional desktop
+computer.\footnote{Circa 2009.}
+
+In this section, we describe a parallel implementation for this model.
+As with the standard algorithm, this algorithm optimizes the evidence
+lower bound by local coordinate ascent.  Here, however, many of these
+steps are made in parallel.  While most of this algorithm involves
+simply scheduling these updates across many computers, we also
+describe below how to handle an update that cannot be distributed
+without modification.
+
+In this section, we will refer to a single computer as a processor.
+We will differentiate between the roles a processor may take by
+referring to a ``master'', which coordinates the entire algorithm, and
+the ``workers'', which perform lower-level computing.  The master
+launches workers, checks when they are complete, and monitors model
+convergence.  Each worker performs updates for a partition of the
+entire collection.
+
+\subsection*{Algorithm overview}
+With both the parallel implementation and the standard implementation,
+we initialize the model with LDA topics.  The parallel implementation
+of LDA distributes the work of the E step among the many workers
+during each iteration.  The LDA M step for each iteration---which
+simply aggregates sufficient statistics---is then run on the master.
+
+Following this initialization, the actual model is fit.  This is
+driven by a single master program which alternates between two steps:
+a \emph{topic} M-step and a \emph{document} E-step.
+
+\subsection*{The parallel topics M-step}
+In the topic step of the original algorithm, our goal is to re-fit
+topics $\bv_k | \vphi_k, \ellv_k, \w$ by adjusting their variational
+observations.  Topic chains $\bv_k$ are conditionally independent
+given the documents' variational parameters, so the parallel algorithm
+performs the same operations as the original algorithm, but in
+parallel.  We simply split the work among $W$ distinct workers.
+
+\subsection*{The parallel documents E-step}
+In the documents $E$-step of the algorithm, our goal is to re-fit each
+document's parameters $\gamma, \vphi | \ellv, \bv, \w$ and $\ellv |
+\vphi, \bv, \w $ using the topics estimated in the $M$-step.  In this
+step the master partitions the entire collection of documents into
+time-contiguous chunks and assigns each chunk to a worker. The
+algorithm can update $\gamma$ and $\vphi$ using the same operations as
+the original algorithm because the Markov blanket of $\gamma$ contains
+variables from a single timestamp and because each $\vphi$ is
+conditionally independent given the remaining variational parameters.
+Therefore we fit these using alternating updates of $\vphi_{d}$ and
+$\gamma_d$ as in LDA.
+
+The update for $\ellv | \vphi, \bv, \w$ is a bit trickier because each
+$\ellv$ is not conditionally independent of the other random
+variables.
+
+
+\subsubsection*{Parallel update dampening}
+
+The update for $\ellv_{k} | \vphi_k, \bv_k$ is trickier because the
+influence of documents at arbitrary time $t$ is not conditionally
+independent of the influence of documents at a different time $s \neq
+t$.  This means that we cannot simply estimate the optimal influence
+of documents independently in $W$ different workers because it is not
+guaranteed to improve the variational objective.
+
+We address this with \textbf{parallel update dampening}.  In parallel
+update dampening, we assume that documents have been partitioned into
+$W$ sets, and workers $\omega = 1, \ldots, W$ each manage one of those
+sets.
+
+\begin{enumerate}
+\item Each worker calculates the optimal variational influence
+  $\ellv_{k,\omega}$ for its managed documents, given all other
+  (unmanaged) documents.  Each worker then has a list of all influence
+  scores, this list comprising its unmanaged documents' scores (which take the
+  old values) and its managed documents' scores (which take the new
+  values).
+  
+\item After each worker has run and saved its scores, a master then
+  calculates the average of scores in these lists.
+\end{enumerate}
+Importantly, this process maintains the requirement that the
+variational lower bound never decrease.  In the first step, each of
+the ``local'' estimates has not decreased the variational bound.  The
+variational lower bound is concave in $\ellv_{k}$, so the average of
+these estimates does not decrease the variational bound.  Therefore,
+both the first and second steps guarantee that the variational
+objective never decrease.
+
+Instead of taking the global average in a second stage, this can be
+implemented in each worker by taking the estimate of the optimal
+solution $\ellv^{\mbox{\tiny worker}}_{d,k}$, and dampening it with
+the current estimate, $\ellv^{\mbox{\tiny old}}_{d,k}$:
+ \[
+  \ellv^{\mbox{\tiny new}}_{d,k} \gets \frac{W - 1}{W} \ellv^{\mbox{\tiny old}}_{d,k} + \frac{1}{W} \ellv^{\mbox{\tiny worker}}_{d,k},
+\]
+or, equivalently,
+ \[
+ \ellv^{\mbox{\tiny new}}_{d,k} \gets \ellv^{\mbox{\tiny old}}_{d,k} + \frac{1}{W} (\ellv^{\mbox{\tiny worker}}_{d,k} - \ellv^{\mbox{\tiny old}}_{d,k}).
+\]
+
+We note again that we can only guarantee that parallel update
+dampening increases the variational objective because the objective is
+concave in the parameter $\ellv$.

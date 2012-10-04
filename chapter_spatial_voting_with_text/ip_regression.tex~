@@ -1,0 +1,84 @@
+\section{Supervised topics with }
+
+We can generalize ridge regression on ideal points to provide a fully
+supervised topic model.  Ridge regression on ideal corresponds to the
+model
+\begin{enumerate}
+  \item Fit the ideal point model \[
+    \label{item:ideal_point}
+    \arg \max_{a_d, b_d, x_u} \sum_{u \in U, d \in D} \log p(v_{ud} | a_d, b_d, x_u)
+    - \sum_{d \in D} (\lambda_1 a_d^T a_d + \lambda_2 b_d^T b_d)
+    - \sum_{u \in U} \lambda_3 x_u^T x_u, \]
+    where \[
+    p(v_{ud} | a_d, b_d, x_u) = \frac{1_{v_{ud} = yea} \exp(a_d^T x_u + b_d) + 1_{v_{ud} = nay}}{\exp(a_d^T x_u + b_d) + 1}
+    \]
+  \item Fit the ridge regression
+    \label{item:fit_regression}
+    \[
+    a_d \sim N(\bm w_d^T \beta_a, \sigma_a), \\
+    b_d \sim N(\bm w_d^T \beta_b, \sigma_b),
+    \]
+    where $\bm w_d$ are word counts and $\lambda_4$ is a ridge penalty.
+\end{enumerate}
+Although this model performed well in the prediction task, it suffers
+from a critical limitation: the ideal points are informed only by
+votes.  Coefficients $\beta_a, \beta_b$ are interpretable, but only in the sense that they relate words to ideal points.
+
+\paragraph{Ideal point text regression} We can solve this problem by
+forcing $\sigma_a, \sigma_b \rightarrow 0$.  We can accomplish this by
+modeling the ideal points only implicitly:
+\begin{eqnarray}
+    \label{item:ideal_point}
+    \arg \max_{\bm B, \bm b, x_u} \sum_{u \in U, d \in D} \log p(v_{ud} | \bm w_d, \bm B, \bm b, x_u) - \lambda_1 \sum (\bm B \circ \bm B) - \lambda_2 x_u^T x_u,
+\end{eqnarray}
+where $\bm B$ is a $r \times V$ matrix, $x_u$ is again the $r \times 1$
+user ideal point, $\bm b$ is a $V \times 1$ vector, and
+\begin{eqnarray}
+    p(v_{ud} | \bm w_d, \bm B, \bm b, x_u) = \frac{1_{v_{ud} = yea} \exp(\bm w_d^T(\bm B x_u + \bm b)) + 1_{v_{ud} = nay}}{\exp(\bm w_d^T (\bm B x_u + \bm b)) + 1}.
+\end{eqnarray}
+
+We call this model \emph{ideal point text regression}, as it infers an
+ideal point ideal point $X \in R^r$ for each individual while
+implicitly performing regression on word counts.  The role of $\bm b$
+is a per-word intercept term, serving the same purpose as the per-document difficulty terms $b_d$.  The most-useful
+
+The columns of $\bm B$ define a $r$-dimensional subspace of $R^V$ and
+can be interpreted as topics. \footnote{These topics are much more similar to classic LSA
+topics than LDA topics \cite{hoffman:1990}} A document's topic vector is given by
+$\bm w^T \bm B \in R^r$, and users' ideal points interact with
+documents' topics as with traditional ideal point models.
+
+\paragraph{Semiometrie interpretation}
+A particularly nice interpretation of ideal point text regression
+comes about when we compare it with semiometrie.  Semiometrie is a
+methodology used in marketing and politics for placing users in a
+latent space of preferences.  To find this latent space, each user $u
+\in U$ is asked to provide a rating $r_{ud} \in \{ 1, \ldots, 7 \}$ to
+210 words, summarizing their personal warmth toward these words.
+Principle component analysis is then applied to the resulting ratings,
+optimizing the PCA objective
+ \[ \arg \max_{Z \in R^r, X } \sum_{u \in U, d \in D} \log p(r_{ud} | W, X),
+ \]
+where \[
+\label{equation:rating_draw}
+r_{ud} | W, X \sim N((\bm Z x_u)_d, 1),
+ \]
+ subject to several orthogonalization constraints on $Z$ and $X$: they
+ are fit to maximize explained variance.  The principle component
+ $\bm z = Z_{1*}$ explains the positive ratings shared by everyone; without loss
+ of generality, then, $x_{*1}$ are all nearly 1. Assuming $x_{*1}$, we can therefore
+ rewrite \ref{equation:rating_draw} with an intercept $\bm z$: \[
+   r_{ud} | W, X \sim N((\bm Z' x_u + \bm z)_d, 1),
+ \]
+ In semiometrie, this component is typically discarded because it does
+ is not informative about individual preferences.
+
+The similarity of ideal point text regression to this scenario is evident:
+  \[
+  \arg \max_{\bm B, \bm b, X} \sum_{u \in U, d \in D} \log p( v_{ud} | \bm B, \bm b, X), \]
+where \[ v_{ud} | \bm B, \bm b, X \sim \sigma( \bm w_d^T (\bm B x_u + \bm b) ). \]
+The goal is to best explain observed votes by finding a subspace $\bm B \cup \bm b$ which maximizes the likelihood of observed votes.
+
+Here the intercept $\bm b$ is likewise noninformative about
+individuals' preferences.
+

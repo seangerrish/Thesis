@@ -1,0 +1,72 @@
+\section{A parallel implementation of the model}
+\label{section:influence_parallel_inference}
+
+The algorithm described in \mysec{influence_inference} takes
+approximately 11 hours on a modern desktop computer \footnote{This was
+a 2.2GHz, 1MB cache, Dual core AMD Opteron 275 processor}, for about
+30,000 documents.  For a larger dataset -- such as all scientific
+articles in \emph{Nature}, \emph{Science}, and \emph{PNAS} combined,
+it takes considerably longer to complete.  In this section, we
+describe a parallel algorithm for this model.  As with the standard
+algorithm, this one optimizes the evidence lower bound by local coordinate
+ascent.  Here, however, many of these steps are made in parallel.
+
+\subsection{Algorithm overview}
+With both the parallel implementation and the standard implementation,
+we initialize the model with LDA topics.  The parallel implementation
+distributes the work of the E step among the many workers during each
+iteration.  The LDA M step for each iteration (which simply aggregates
+sufficient statistics) is then run on a single processor.
+
+Following this initialization, the actual model is fit.  This is
+driven by a single master program which alternates between two steps:
+a \emph{topic} M-step and a \emph{document} E-step.
+
+\subsection{The topics M-step}
+In the topic step of the original algorithm, topics are re-fit by
+adjusting the ``variational observations'' using documents'
+parameters.  The parallel algorithm performs the same operations in
+parallel, simply splitting the work among $N$ workers.  After this,
+the likelihood of each topic chain is printed to a sentinel file to
+alert the master that the task is complete.
+
+\subsection{The documents E-step}
+In the documents step of the algorithm, our goal is to re-fit each document using topics.
+As with the original algorithm, we re-fit $\gamma_d$ using alternating
+updates of $\phi_{dn}$ and $\gamma_d$.  We also update the influence
+$I_d$ of all documents at each time $t=1 \ldots T$, as before.
+
+We perform inference of $I_d$ by distributing the $D$ documents among $W$ workers
+$W$ sequentially contiguous blocks 
+\[
+d_{n_1} \ldots d_{n_2} \hspace{20pt} d_{n_2 + 1} \ldots d_{n_3} \hspace{20pt} \ldots \hspace{20pt} d_{n_W + 1} \ldots d_{n_{W+1}},
+\]
+for $0 =
+n_1 < \ldots n_i < \ldots < n_{W+1}=D$, and performing the E-step on
+each worker $1 \ldots W$ in parallel. 
+
+This update is problematic, however, because the influence of
+documents at \emph{different} times interact.  A document $d_j$
+handled by worker $W_i$ and a document $d_k$ handled by worker $W_i +
+1$ might both influence the same topic, for example: we cannot
+therefore simply update $I_{d_j}$ and $I_{d_k}$ independently because
+doing so would over-explain a topic's influence.  This could lead to
+instability, as documents attempt to explain ever-diverging topics and
+topics must adjust to ever-divergent influence. We address this with
+\textbf{update dampening}: on each iteration $s$, the influence of any
+document $d$ is the geometric average of the exact update
+$I_{d,s,D_{s-1}\beta_{s-1}}$ and its previous value $I'_{d,
+{s-1}}$:
+ \[
+  I'_{d,s} \gets \frac{W-1}{W} I'_{d,{s-1}} + \frac{1}{W} I_{d,s, D_{s-1}, \beta_{s-1}},
+\]
+or, equivalently,
+ \[
+  I'_{d,s} \gets I'_{d,{s-1}} + \frac{1}{W} (I_{d,s, D_{s-1}, \beta_{s-1}} - I'_{d,{s-1}})
+\]
+
+This update has two nice properties:
+\begin{enumerate}
+  \item The influence of each document is no more than 1/W closer to the total influence than it was before; this prevents global fluctuations.
+  \item Posterior modes are stationary points.
+\end{enumerate}

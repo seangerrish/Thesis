@@ -1,0 +1,105 @@
+%\section{}
+\label{chapter:influence}
+
+- we begin our discussion with collections of text documents
+
+- Typically in text analysis, documents tell a story.  But this story
+is hard to detect without metadata.
+
+- One of the most fundamental problems in research is that of finding
+which ideas in a field have been the most influential.
+
+- This happens in scientific research, for example.
+
+This an important and common problem in many fields, including
+political science, history, and scientific research.
+Influence measurements are used to assess the quality of academic
+instruments, such as journals, scientists, and universities; and they
+can play a role in decisions surrounding publishing and funding.
+Influence measurements are also important for academic research:
+finding and reading the influential articles of a field is central to
+good research practice.
+
+Modern researchers now have at their disposal a large catalog of
+previous work.  Their challenge is finding articles that are important
+and interesting while wading through articles that are not.
+
+In this chapter, we will describe an approach to identifying
+influential articles in a collection without the use of citations.
+The key assumption of our method is that an influential article will
+affect how future articles are written and that this effect can be
+detected by examining the way corpus statistics change over time.  We
+encode this intuition in a time-series model of sequential document
+collections.
+
+\subsection*{Measuring influence with citations}
+
+A traditional method of assessing an article's influence is to count
+the citations to it. The impact factor of a journal, for example, is
+based on aggregate citation counts~\cite{garfield:2002}.  This is
+intuitive: if more people have cited an article, then more people have
+read it, and it is likely to have had more impact on its field.
+Citation counts are used with other types of documents as well.  The
+Pagerank algorithm, for example, uses hyperlinks of web-pages to
+identify the most influential Webpages on the Internet, and it was
+essential to Google's early success in Web search~\cite{brin:1998}.
+There is a large literature on these and other methods for citation
+analysis and bibliometrics.  See~\cite{osareh:1996} for a review.
+
+Though citation counts can be powerful, they can be hard to use in
+practice.  Some collections, such as news stories, blog posts, or
+legal documents, contain articles that were influential on others but
+lack explicit citations between them.  Other collections, like OCR
+scans of historical scientific literature, do contain citations, but
+they are difficult to read in reliable electronic form.  Finally,
+citation counts only capture one kind of influence.  All citations
+from an article are counted equally in an impact factor, when some
+articles of a bibliography might have influenced the authors more than
+others.
+
+\subsection*{Using text to measure influence}
+
+We will use a text-based approach to measure influence and base our
+assumptions on a topic model which allows topics to drift over time in
+a corpus~\cite{blei:2006}.
+
+Though our algorithm aims to capture something different from
+citation, we will validate the inferred influence measurements by
+comparing them to citation counts.  However, we seek a model that is
+applicable to collections for which the notion of citation may not
+exist.  Therefore, predicting citations is an explicit non-goal. 
+
+For the reader interested in predicting citations, an appropriate
+solution might be to propose features and models for predicting future
+or heldout citation counts; Tang and Zhang \cite{tang:2009} and Lokker
+et al. \cite{lokker:2008} use methods like these; successful features
+include the publishing journal's impact factor, previous citations to
+last author, key terms, and number of authors
+\cite{tang:2009,lokker:2008}.  Such research has had measured success:
+56\% explained variance \cite{lokker:2008}, and 91.5\% prediction
+accuracy \cite{ibanez:2009}.  However, works such as these have
+specialized classifiers and restrictive features for narrow
+application domains; Lokker et al. \cite{lokker:2008} even note that
+their results ``may not be readily transferable to... basic science
+articles or journals''. Indeed, Lokker et al.  further noted that
+earlier work in their field of predicting citations to medical
+journals had only achieved 14\% to 20\% explained variance
+\cite{lokker:2008}.
+
+%\subsubsection*{Using text to measure influence}
+
+%interdisciplinary journal such as \textit{Nature} might have influence
+%on Neuroscience without having influence on Genomics.  In our model,
+%both the topics and influential articles are inferred.
+
+In the rest of this chapter, we will introduce and explore a model to
+encode these assumptions.  We begin with a discussion of previous work
+aimed at modeling influential documents.  We then describe the
+Document Influence Model (DIM), our unsupervised model for determining
+the influence of a document using the changes in language used by
+documents over time.  We follow this with experiments to both compare
+this model with citation counts on three well-known scientific corpora
+and a collection of legal opinions to provide the reader with an
+intuition for the model. With only the language of the
+articles as input, our algorithm produces a meaningful measure of each
+document's influence in the corpus.

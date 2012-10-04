@@ -1,0 +1,43 @@
+\section{A parallel implementation of the model}
+\label{section:influence_parallel_inference}
+
+The algorithm described in \mysec{influence_inference} takes
+approximately 11 hours on a 2.2GHz, 1MB cache, Dual core AMD Opteron
+275 processor, for about 30,000 documents.  For a larger dataset, it
+takes considerably longer to complete.  In this section, we describe a
+parallel algorithm for this model.  As with the previous algorithm,
+this one makes local coordinate ascent steps which satisfy the
+necessary condition of a global optimum that.  Here, these steps are
+made in parallel.
+
+\subsection{Algorithm overview}
+With both the parallel implementation and the standard implementation,
+we initialize the model with LDA topics.  The parallel implementation
+distributes the work of the E step among the many workers during each
+iteration.  The LDA M step for each iteration (which simply aggregates
+sufficient statistics) is then run on a single processer.
+
+Following this initialization, the actual model is fit.  This is
+driven by a single master program which alternates between two steps:
+a \emph{topic} step and a \emph{document} step.
+
+\subsection{The topics M-step}
+In the topic step of the standard algorithm, the ``variational
+observations'' are fit from documents' gammas.  The parallel algorithm
+performs the same operations in parallel, simply splitting the work
+among $N$ workers.  After this, the likelihood of each topic chain is
+printed to a sentinel file to alert the driver that work is complete.
+
+\subsection{The documents E-step}
+In the documents step of the standard algorithm, $\gamma_d$ and the
+influence $I_d$ are inferred for each document.  Inference of
+$\gamma_d$ requires sequential updates of $\phi_{dn}$ and $\gamma_d$.
+Parallel inference of $\gamma_d$ and $\phi_{dn}$ are performed as
+expected: documents are simply partitioned sequentially among the
+workers.
+
+We perform inference of $I_d$ by splitting up our $D$ documents into
+$k sequentially contiguous blocks $d_{n_1} \ldots d_{n_2}, d_{n_2 + 1}
+\ldots d_{n_3}; \ldots ; d_{n_k + 1} \ldots d_{n_{k+1}}$, for $0 = n_1 <
+\ldots n_i < \ldots < n_{k+1}=D$, and performing this update on each subset $d_{n_i + 1} \ldots d_{n_{i+1}}$ in parallel.  \emph{in parallel, with dampening}.  Dampening ensures that
+documents are not forced to e

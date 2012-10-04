@@ -1,0 +1,118 @@
+\documentclass[table]{puthesis}
+
+%\usepackage{xcolor}
+%\usepackage[table]
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage{natbib}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{url}
+
+%\usepackage[bookmarks=false]{hyperref}
+\newcommand{\theHalgorithm}{\arabic{algorithm}}
+
+% For chapter_influence:
+\newcommand{\myeq}[1]{Equation~\ref{eq:#1}}
+\newcommand{\mysec}[1]{Section~\ref{sec:#1}}
+\newcommand{\myfig}[1]{Figure~\ref{fig:#1}}
+\newcommand{\mytab}[1]{Table~\ref{fig:#1}}
+\newcommand{\mychap}[1]{Chapter~\ref{chapter:#1}}
+
+\newcommand{\g}{\, | \,}
+\newcommand{\w}{\textbf{w}}
+\newcommand{\W}{\textbf{W}}
+\newcommand{\bv}{\tilde{\beta}}
+\newcommand{\mv}{\tilde{m}} 
+\newcommand{\vv}[0]{\tilde{V}}
+\newcommand{\ellv}{\tilde{\ell}}
+\newcommand{\vlv}{{\sigma^2_{\ell}}}
+\newcommand{\vphi}{\phi}
+\newcommand{\expect}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\expectq}[1]{\mathbb{E}_q\left[#1\right]}
+\newcommand{\expectd}[1]{\mathbb{E}_{\mathcal{D}}\left[#1\right]}
+\newcommand{\expectqarg}[2]{\mathbb{E}_{q_{#2}}\left[#1\right]}
+\newcommand{\expectqnoarg}[0]{\mathbb{E}_q}
+\newcommand{\partl}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\partll}[2]{\frac{\partial^2 #1}{\partial {#2}^2}}
+\newcommand{\partlapprox}[2]{{\tilde \nabla_{ #2}{ #1}}}
+\newcommand{\bb}{\beta}
+\newcommand{\diag}[1]{\mbox{Diag}\left( #1 \right)}
+\newcommand{\vbv}{\sigma^2}
+\newcommand{\vd}{\sigma^2_{d}}
+\newcommand{\ev}{\bm \hat \eta}
+
+\author{Sean M. Gerrish}
+\advisor{David M. Blei}
+\title{Applications of Latent Variable Models in Modeling Influence and Decision Making}
+\abstract{The abstract goes here.}
+\acknowledgements{
+  \input{acknowledgments.tex}
+}
+
+\dedication{This thesis is dedicated to Kimberly Misa Gerrish, 1984-2009.}
+
+% \hypersetup{ 
+%   pdfauthor={Your Name},
+%   colorlinks,
+% %  linkcolor=darkblue,
+% %  filecolor=darkgreen,
+% %  urlcolor=darkred,
+% %  citecolor=darkblue
+% }
+
+\begin{document}
+
+%\addcontentsline{toc}{chapter}{Title Page}
+
+\section*{Previous Publications}
+The work here represents expanded versions of the following publications and presentations:
+\begin{itemize}
+\item Sean Gerrish and David Blei. \emph{Predicting legislative roll
+    calls from text.} Proceedings of the 28th International Conference
+  on Machine Learning (ICML), 2011.
+\item Sean Gerrish and David Blei. \emph{A language-based approach to
+    measuring scholarly impact.}  Proceedings of the 27th
+  International Conference on Machine Learning (ICML), 2010.
+\item Sean Gerrish and David Blei. \emph{How they voted: A model of
+    Issue Voting in the United States Congress.}  Proceedings of the
+  Twenty Fifth Annual Conference on Neural Information Processing
+  Systems (NIPS) 2012
+\item Sean Gerrish and David Blei. \emph{A text-based HMM of
+    foreign-affairs sentiment.} Second Annual Computational Social
+  Science and the Wisdom of Crowds (NIPS Workshop).  December 2011.
+\item Sean Gerrish and David Blei. \emph{Stochastic Optimization of
+    the Variational Lower Bound.} NIPS workshop on blah blah.
+\end{itemize}
+
+The current presentation attempts to provide deeper and broader
+understanding to the reader of the above work.
+
+\input{chapter_introduction/introduction.tex}
+
+\input{chapter_introductory_material/introductory_material.tex}
+
+\input{chapter_influence/chapter_influence.tex}
+
+%\input{chapter_dissent/chapter_dissent.tex}
+\input{chapter_foreign_relations/chapter_foreign_relations.tex}
+
+\input{chapter_spatial_voting_with_text/chapter_spatial_voting_with_text.tex}
+
+% \input{chapter_dissent/chapter_dissent.tex}
+\input{chapter_conclusions/chapter_conclusions.tex}
+%\input{chapter_tweets/chapter_tweets.tex}
+
+\appendix{Optimizing the variational bound stochastically}
+\input{chapter_stochastic_variational_optimization/chapter_stochastic_variational_optimization.tex}
+
+\input{chapter_appendix/chapter_appendix.tex}
+
+%\bibliographystyle{mla}
+\bibliographystyle{unsrt}
+\bibliography{bib}
+
+\end{document}
