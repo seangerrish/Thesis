@@ -427,21 +427,21 @@ see why this was the case, we give several examples:
     europe in world war ii.} \cite{apple:1995}
 \end{itemize}
 
-The first of these examples outlines a limitation in the ratings we
-obtained: a single paragraph is sometimes too small a unit of
-discussion.  This meant Mechanical Turk workers likely missed the
-larger context of the article about the Gulf war (including the title,
-\emph{War in the Gulf: Sea Mines; Allied Ships Hunt Gulf for Iraqi
-  Mines}).
+The first of these examples outlines a limitation in our modeling
+assumptions: a single paragraph is sometimes too small a unit of
+discussion.  In this example, Mechanical Turk workers likely missed
+the larger context of the article about the Gulf war (including the
+article's title, \emph{War in the Gulf: Sea Mines; Allied Ships Hunt
+  Gulf for Iraqi Mines}).
 
 The second example represents a limitation of both data sources.  The
 two Mechanical Turk ratings of -5 were clearly too strong, as the
 countries are not at war; but AMT workers likely based their rating in
 part on the reference to World War II (worker instructions deserve a
-rating of -3 or, possibly -1).  In addition, however, the United
-States and Russia were not at War and had no official, documented
-conflicts at this time.  This means that this sentiment was not
-reflected in the CoW labels -- which defaulted to 0.1.
+rating of -3 or, possibly -1).  In 1995, the United States and Russia
+were not at war and had no documented territorial conflicts.  This
+means that this sentiment was not reflected in the CoW labels -- which
+defaulted to 0.1.
 
 \label{section:experiments}
 
@@ -462,70 +462,6 @@ reflected in the CoW labels -- which defaulted to 0.1.
 \end{figure}
 
 \subsection{Results}
-
-\paragraph{Prediction.}
-For two nations $c_1$ and $c_2$ mentioned together at time $t$, we
-predict their sentiment to be $\tilde s_{c_1, c_2} = \bar x_{c_1,t}
-\bar x_{c_2, t}$.  Based on this estimate, the average squared error
-for heldout nations is 2.32 ($R^2=0.51$), considerably better than a
-baseline of text regression, which had means-squared-error $5.53$; for
-comparison, average \emph{inter-rater squared error} -- the minimum
-theoretically possible given the set of Mechanical Turk ratings -- was
-$1.77$, and the square of the difference \emph{between} raters was
-$7.11$.  We also found that using ``pseudo observations'' with even
-modest observation variance improves predictive performance; these
-results are summarized in Table~\ref{figure:sse_test}.
-
-\paragraph{Static latent space.}
-We first evaluate the latent-space assumption that countries'
-interactions can be summarized by their positions in a latent space.
-For this, we used a simplified model of sentiment, in which documents'
-mean positions $\bar x_c, y_c$ are fixed, and that the sentiment is
-drawn from .
-
-We tested this assumption for both a distance and inner-product link
-function, with intercepts and without intercepts.  We find that the
-the inner-product assumption $\bar x_{c_1}^T \bar x_{c_2}$ alone is
-poor because it provides no natural way to model mischief-prone
-countries well.  If the inner-product model is endowed with intercepts
-$y_{c_1}, y_{c_2}$, however, it becomes a top-performer.
-
-Both the inner product and distance link functions perform best when
-they are able to use intercepts and when they have many dimensions: we
-evaluated the models with up to 9 dimensions, and they TODO(sgerrish), modeling articles' sentiment at 0.32.
-
-\paragraph{The benefit in adding Markov drift.}
-We can improve the predictive power of this model by adding a time
-dimension, allowing $\bar x_c$ to drift over time for each country
-$c$.  We illustrate these results in (bottom).
-
-The inner product model again performed poorly, often worse than the
-baseline model.  In this case, the seven-dimensional distance link
-function performed better than any other model, and adding per-country
-intercepts $y_c$ significantly \emph{hurt} the model's performance.
-
-The better performance of these models under a time-series assumption
-provides support for the argument that countries' relationships change
-over time, and that these relationships are observed through the news
-cycle.
-
-\paragraph{Improvement due to zero-reversion regularization}
-We can improve the predictive power of this model by adding a time
-dimension, allowing $\bar x_c$ to drift over time for each country
-$c$.  We illustrate these results in (bottom).
-
-The inner product model again performed poorly, often worse than the
-baseline model.  In this case, the seven-dimensional distance link
-function performed better than any other model, and adding per-country
-intercepts $y_c$ significantly \emph{hurt} the model's performance.
-
-The better performance of these models under a time-series assumption
-provides support for the argument that countries' relationships change
-over time, and that these relationships are observed through the news
-cycle.
-
-\paragraph{Static latent space.}
-
 
 \begin{figure}
 %%   \begin{tabular}{|c|c|c|c|c|c|c|c|}
@@ -579,13 +515,86 @@ cycle.
   \tiny{Mechanical Turk} & \includegraphics[height=0.2\textheight]{chapter_foreign_relations/figures/010_static_model_results.pdf} & \includegraphics[height=0.2\textheight]{chapter_foreign_relations/figures/010_dynamic_model_results.pdf}
   \\ & Static & Dynamic (Interaction over time) \\
 \end{tabular}
+  \label{figure:fr_supervised_performance}
    \caption{The dyadic sentiment model captures text well . Each
-     colored line represents performance of the model on a collection
+     colored line represents performance of the supervised model on a collection
      of heldout documents across twenty years of New York Times
      articles. An inner-product model with four dimensions (plus
-     intercepts) performs well for most settings.  Using a dynamic
-     model instead of a static model improves performance slightly }
+     intercepts) performs well for most settings.  A distance model
+     with many dimensions but no intercepts also performs well across
+     a range of assumptions, performing best with many dimensions.}
 \end{figure}
+
+\paragraph{Prediction.}
+For two nations $c_1$ and $c_2$ mentioned together at time $t$, we
+predict their sentiment to be $\tilde s_{c_1, c_2} = \bar x_{c_1,t}
+\bar x_{c_2, t}$.  Based on this estimate, the average squared error
+for heldout nations is 2.32 ($R^2=0.51$), considerably better than a
+baseline of text regression, which had means-squared-error $5.53$; for
+comparison, average \emph{inter-rater squared error} -- the minimum
+theoretically possible given the set of Mechanical Turk ratings -- was
+$1.77$, and the square of the difference \emph{between} raters was
+$7.11$.  We also found that using ``pseudo observations'' with even
+modest observation variance improves predictive performance; these
+results are summarized in Table~\ref{figure:sse_test}.
+
+\paragraph{Static latent space.}
+We first evaluate the latent-space assumption that countries'
+interactions can be summarized by their positions in a latent space.
+For this, we used a simplified model of sentiment, in which documents'
+mean positions $\bar x_c, y_c$ are fixed, and that the sentiment is
+drawn from .
+
+We tested this assumption for both a distance and inner-product link
+function, with intercepts and without intercepts.  We find that the
+the inner-product assumption $\bar x_{c_1}^T \bar x_{c_2}$ alone is
+poor because it provides no natural way to model countries that are
+frequently in conflicts.  If the inner-product model is endowed with intercepts
+$y_{c_1}, y_{c_2}$, however, it becomes a top-performer.
+
+Both the inner product and distance link functions perform best when
+they are able to use intercepts and when they have many dimensions: we
+evaluated the models with up to 9 dimensions, and they TODO(sgerrish),
+modeling articles' sentiment at 0.32.
+
+\paragraph{The benefit in adding a time-series assumption.}
+We can sometimes improve the predictive power of this model by adding a time
+dimension, allowing $\bar x_c$ to drift over time for each country
+$c$.  We illustrate these results in \myfig{fr_supervised_performance}.
+
+The inner product model again performed poorly, often worse than the
+baseline model.  Adding an intercept term harms performance for the
+intercept model.  The time-series assumption overall improved
+performance for correlates of war and harmed performance for
+Mechanical Turk labels.
+
+We note that the time-series models performed better than the static
+model for the CoW labels but \emph{not} for the Mechanical Turk
+labels.  The better performance of these models for one set of labels
+suggests that the formal relationships of these countries -- as
+determined by expert labels -- is indeed changing over time; while the
+lay relationships between these countries -- as determined by lay
+interpretations of countries' relationships -- remains more static
+over time.
+
+\paragraph{Improvement due to zero-reversion regularization}
+A further explanation for the decrease in performance for the
+time-series models (compared to the static model) is sensitivity to
+parameters.  The static models have one parameter for each link
+function: the prior of countries' positions $\sigma_{c}^2$.  In the
+dynamic model, we must set the priors over countries' positions
+$\sigma_{c,d}^2$ for each interaction, chain variance
+$\sigma_{\mbox{\tiny chain }}^2$, and zero-reversion variance
+$\sigma_{p}^2$.  We selected chain variance $\sigma_{\mbox{\tiny
+    chain}}^2=0.0001$ and zero-reversion variance $\sigma_p^2=1,0.01$
+by grid search for these models at $3$ dimensions.
+
+\paragraph{Static latent space.}
+What relationships does this model infer?  Because the relationships
+between countries are treated as functions of their positions, we can
+interpret their positions.  We illustrate countries' positions in the
+static models in \myfig{}.
+
 
 Nations' positions are illustrated in Figure~\ref{figure:figures}.
 Figures~\ref{figure:figures}(a,b) show nations' relative positions
