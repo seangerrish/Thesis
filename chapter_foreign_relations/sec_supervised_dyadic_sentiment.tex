@@ -526,58 +526,65 @@ cycle.
 
 \paragraph{Static latent space.}
 
+
 \begin{figure}
-  \begin{tabular}{|c|c|c|c|c|c|c|c|}
-   \hline
-  Link $\mathcal{F}(\bm x_{c_1}, y_{c_1}, \bm x_{c_2}, y_{c_2})$ & & & & & & \\
-  \hline
-  \textbf{Dimension of $\bm x$} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
-  \hline
-  $y_{c_1} + y_{c_2}$ & 0.0964 & - & - & - & - & - & - & - & - & - \\
-  \hline
-  $\bm x_{c_1}^T \bm x_{c_2}$
-  & 0.1036 & 0.1013 & 0.1050 & 0.1038 & 0.1033 & 0.1025 & 0.1018 & & & \\
-  \hline
-  $y_{c_1} + y_{c_2} + \bm x_{c_1}^T \bm x_{c_2}$
-  & 0.0964 & 0.0943 & 0.0940 & 0.0936 & 0.0935 & 0.0934 & 0.0934 & & & \\
-  \hline
-  $-\log(||\bm x_{c_1} - \bm x_{c_2}||_2^2 + 1)$
-  & 0.1036 & 0.1037 & 0.0978 & 0.0957 & 0.0951 & 0.0947 & 0.0943 & & & \\
-  \hline
-  $y_{c_1} + y_{c_2} -\log(||\bm x_{c_1} - \bm x_{c_2}||_2^2 + 1)$
-  & 0.0964 & 0.0949 & 0.0943 & 0.0938 & 0.0939 & 0.0937 & 0.0936 & & & \\
-  \hline
-  mean($\{s_d\}_d$) & 0.1036 & - & - & - & - & - & - & & & \\
-  \hline
-  \end{tabular}
-  \vspace{30pt}
-  \begin{tabular}{|c|c|c|c|c|c|c|c|}
-   \hline
-  Link $\mathcal{F}(\bm x_{c_1}, y_{c_1}, \bm x_{c_2}, y_{c_2})$ & & & \\
-  \hline
-  \textbf{Dimension of $\bm x$} & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
-  \hline
-  $y_{c_1} + y_{c_2}$ & 0.0964 & - & - & - & - & - & - \\
-  \hline
-  $\bm x_{c_1}^T \bm x_{c_2}$
-  & 0.1036 & 0.1013 & 0.1050 & 0.1038 & 0.1033 & 0.1025 & 0.1018 \\
-  \hline
-  $y_{c_1} + y_{c_2} + \bm x_{c_1}^T \bm x_{c_2}$
-  & 0.0964 & 0.0943 & 0.0940 & 0.0936 & 0.0935 & 0.0934 & 0.0934 \\
-  \hline
-  $-\log(||\bm x_{c_1} - \bm x_{c_2}||_2^2 + 1)$
-  & 0.1036 & 0.1037 & 0.0978 & 0.0957 & 0.0951 & 0.0947 & 0.0943 \\
-  \hline
-  $y_{c_1} + y_{c_2} -\log(||\bm x_{c_1} - \bm x_{c_2}||_2^2 + 1)$
-  & 0.0964 & 0.0949 & 0.0943 & 0.0938 & 0.0939 & 0.0937 & 0.0936 \\
-  \hline
-  mean($\{s_d\}_d$) & 0.1036 & - & - & - & - & - & - \\
-  \hline
+%%   \begin{tabular}{|c|c|c|c|c|c|c|c|}
+%%    \hline
+%%   Link $\mathcal{F}(\bm x_{c_1}, y_{c_1}, \bm x_{c_2}, y_{c_2})$ & & & & & & \\
+%%   \hline
+%%   \textbf{Dimension of $\bm x$} & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 \\
+%%   \hline
+%%   $y_{c_1} + y_{c_2}$ & 0.0964 & - & - & - & - & - & - & - & - & - \\
+%%   \hline
+%%   $\bm x_{c_1}^T \bm x_{c_2}$
+%%   & 0.1036 & 0.1013 & 0.1050 & 0.1038 & 0.1033 & 0.1025 & 0.1018 & & & \\
+%%   \hline
+%%   $y_{c_1} + y_{c_2} + \bm x_{c_1}^T \bm x_{c_2}$
+%%   & 0.0964 & 0.0943 & 0.0940 & 0.0936 & 0.0935 & 0.0934 & 0.0934 & & & \\
+%%   \hline
+%%   $-\log(||\bm x_{c_1} - \bm x_{c_2}||_2^2 + 1)$
+%%   & 0.1036 & 0.1037 & 0.0978 & 0.0957 & 0.0951 & 0.0947 & 0.0943 & & & \\
+%%   \hline
+%%   $y_{c_1} + y_{c_2} -\log(||\bm x_{c_1} - \bm x_{c_2}||_2^2 + 1)$
+%%   & 0.0964 & 0.0949 & 0.0943 & 0.0938 & 0.0939 & 0.0937 & 0.0936 & & & \\
+%%   \hline
+%%   mean($\{s_d\}_d$) & 0.1036 & - & - & - & - & - & - & & & \\
+%%   \hline
+%%   \end{tabular}
+%%   \vspace{30pt}
+%%   \begin{tabular}{|c|c|c|c|c|c|c|c|}
+%%    \hline
+%%   Link $\mathcal{F}(\bm x_{c_1}, y_{c_1}, \bm x_{c_2}, y_{c_2})$ & & & \\
+%%   \hline
+%%   \textbf{Dimension of $\bm x$} & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+%%   \hline
+%%   $y_{c_1} + y_{c_2}$ & 0.0964 & - & - & - & - & - & - \\
+%%   \hline
+%%   $\bm x_{c_1}^T \bm x_{c_2}$
+%%   & 0.1036 & 0.1013 & 0.1050 & 0.1038 & 0.1033 & 0.1025 & 0.1018 \\
+%%   \hline
+%%   $y_{c_1} + y_{c_2} + \bm x_{c_1}^T \bm x_{c_2}$
+%%   & 0.0964 & 0.0943 & 0.0940 & 0.0936 & 0.0935 & 0.0934 & 0.0934 \\
+%%   \hline
+%%   $-\log(||\bm x_{c_1} - \bm x_{c_2}||_2^2 + 1)$
+%%   & 0.1036 & 0.1037 & 0.0978 & 0.0957 & 0.0951 & 0.0947 & 0.0943 \\
+%%   \hline
+%%   $y_{c_1} + y_{c_2} -\log(||\bm x_{c_1} - \bm x_{c_2}||_2^2 + 1)$
+%%   & 0.0964 & 0.0949 & 0.0943 & 0.0938 & 0.0939 & 0.0937 & 0.0936 \\
+%%   \hline
+%%   mean($\{s_d\}_d$) & 0.1036 & - & - & - & - & - & - \\
+%%   \hline
+\begin{tabular}{m{2cm}cc}
+  \tiny{Correlates of War} & \includegraphics[height=0.2\textheight]{chapter_foreign_relations/figures/008_static_model_results.pdf} & \includegraphics[height=0.2\textheight]{chapter_foreign_relations/figures/009_dynamic_model_results.pdf} \\
+  \tiny{Mechanical Turk} & \includegraphics[height=0.2\textheight]{chapter_foreign_relations/figures/010_static_model_results.pdf} & \includegraphics[height=0.2\textheight]{chapter_foreign_relations/figures/010_dynamic_model_results.pdf}
+  \\ & Static & Dynamic (Interaction over time) \\
 \end{tabular}
-   \caption{Mean-squared error of text sentiment inferred with a
-     static sentiment model across 20 years of \emph{New York Times}
+   \caption{The dyadic sentiment model captures text well . Each
+     colored line represents performance of the model on a collection
+     of heldout documents across twenty years of New York Times
      articles. An inner-product model with four dimensions (plus
-     intercepts) performs best.}
+     intercepts) performs well for most settings.  Using a dynamic
+     model instead of a static model improves performance slightly }
 \end{figure}
 
 Nations' positions are illustrated in Figure~\ref{figure:figures}.
