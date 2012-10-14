@@ -527,16 +527,7 @@ defaulted to 0.1.
 
 \paragraph{Prediction.}
 For two nations $c_1$ and $c_2$ mentioned together at time $t$, we
-predict their sentiment to be $\tilde s_{c_1, c_2} = \bar x_{c_1,t}
-\bar x_{c_2, t}$.  Based on this estimate, the average squared error
-for heldout nations is 2.32 ($R^2=0.51$), considerably better than a
-baseline of text regression, which had means-squared-error $5.53$; for
-comparison, average \emph{inter-rater squared error} -- the minimum
-theoretically possible given the set of Mechanical Turk ratings -- was
-$1.77$, and the square of the difference \emph{between} raters was
-$7.11$.  We also found that using ``pseudo observations'' with even
-modest observation variance improves predictive performance; these
-results are summarized in Table~\ref{figure:sse_test}.
+predict their sentiment to be $\tilde s_{c_1, c_2} = \bar x_{c_1,t} \bar x_{c_2, t}$.
 
 \paragraph{Static latent space.}
 We first evaluate the latent-space assumption that countries'
@@ -550,24 +541,35 @@ sentiment between countries interacting in document $d$ is $s_d =
 \sigma_D^2)$.
 
 We tested this assumption for five link functions $\mathcal{F}(\bm
-x_{c_1}, \bm x_{c_2})$ These were:
+x_{c_1}, \bm x_{c_2})$.  We summarize these functions in Table~\ref{table:fr_link_functions}.
+\begin{figure}
 \begin{align}
-  \begin{array}{cc}
-    \mathcal{F}(\bm x_1, \bm x_2) = &
-    \begin{tabular}{lll}
+    \begin{array}{lll}
+      \hline
+      \mbox{Description} & \mathcal{F}(\bm x_1, \bm x_2) & \mbox{where ...} \\
+      \hline
+      \hline
       \mbox{distance} & -\log(|| \bm z_{1} - \bm
       z_{2} ||_2^2 + 1) & \mbox{where } \bm z_{1} = \bm x_{1,2:D}, \bm z_2 = \bm x_{1,2:D} \\
-      \mbox{inner product} & \bm z_{1}^T \bm z_{2} & \mbox{where } \bm z_{1} = \bm x_{1}, \bm z_2 = \bm x_{2} \\
-      \mbox{intercept} & y_1 + y_2 & \mbox{where } y_1 = x_{1,1}, y_2 = x_{2,1} \\
-      \mbox{intercept + inner product} & y_1 + y_2 + \bm z_{1}^T \bm
-      z_{2}^T & \mbox{where } y_1 = x_{1,1}, y_2 = x_{2,1}, \bm z_{1}
-      = \bm x_{1,2:D}, \bm z_2 = \bm x_{1,2:D} \\
-      \mbox{intercept + distance} & y_1 + y_2 - \log(|| \bm z_{1} - \bm
-      z_{2} ||_2^2 + 1) & \mbox{where } y_1 = x_{1,1}, y_2 = x_{2,1}, \bm z_{1}
-      = \bm x_{1,2:D}, \bm z_2 = \bm x_{1,2:D} \\
-    \end{tabular}
-  \end{tabular}
+     \mbox{inner product} & \bm z_{1}^T \bm z_{2} & \mbox{where } \bm z_{1} = \bm x_{1}, \bm z_2 = \bm x_{2} \\
+     \mbox{intercept} & y_1 + y_2 & \mbox{where } y_1 = x_{1,1}, y_2 = x_{2,1} \\
+     \mbox{intercept + inner product} & y_1 + y_2 + \bm z_{1}^T \bm
+     z_{2}^T & \mbox{where } y_1 = x_{1,1}, y_2 = x_{2,1}, \bm z_{1}
+     = \bm x_{1,2:D}, \bm z_2 = \bm x_{1,2:D} \\
+     \mbox{intercept + distance} & y_1 + y_2 - \log(|| \bm z_{1} - \bm
+     z_{2} ||_2^2 + 1) & \mbox{where } y_1 = x_{1,1}, y_2 = x_{2,1}, \bm z_{1}
+     = \bm x_{1,2:D}, \bm z_2 = \bm x_{1,2:D} \\
+     \hline
+    \end{array} \\
 \end{align}
+\label{table:fr_link_functions}
+\caption{Link functions $\mathcal{F}: \mathbb{R}^P \times \mathbb{R}^P
+  \rightarrow \mathbb{R}$.  Intercept link functions introduce
+  per-country intercepts that indicate how prone a country is to war;
+  distance link functions are based on the distance between countries'
+  vectors; and inner-product link functions represent sentiment as a
+  function of countries' political ``orientations''.}
+\end{figure}
 
 We measured the model's ability to predict inferences from the
 text-based sentiment model $s_d = \bm w_d^T \beta$ for $1 \le
@@ -576,8 +578,8 @@ these predictions in \myfig{fr_supervised_performance}.  We find that
 the the inner-product assumption $\bar z_{c_1}^T \bar z_{c_2}$ alone
 is poor because it provides no natural natural way to model countries that are
 in conflict with many other countries (to model this, we
-would require $\bar \bm x_c$ for that country to have large magnitude,
-and for other countries to have $\bar \bm x_c$ with large magnitude
+would require $\bar x_c$ for that country to have large magnitude,
+and for other countries to have $\bar x_c$ with large magnitude
 but opposite direction; this becomes difficult without requiring many
 dimensions.
 
