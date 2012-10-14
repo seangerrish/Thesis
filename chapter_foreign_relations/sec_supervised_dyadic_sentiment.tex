@@ -49,7 +49,8 @@ political sentiment. The relationship between two countries $c_1, c_2$
 will be described by a scalar $s_{c_1,c_2} \in \mathbb{R}$.  This
 sentiment is determined by the interaction of their positions:
 $s_{c_1, c_2} = \mathcal{F}(\bm x_{c_1}, \bm x_{c_2})$, for some
-suitable function $\mathcal{F}$.
+suitable function $\mathcal{F}: \mathbb{R} \times \mathbb{R}
+\rightarrow \mathbb{R}$.
 
 \begin{figure}
   \center
@@ -61,7 +62,6 @@ suitable function $\mathcal{F}$.
     used to infer unobserved sentiments.}
   \label{figure:gm}
 \end{figure}
-
 
 Foreign relations are not static; nations' alliances and preferences
 change over time with the evolution of economies, technology, and
@@ -542,25 +542,60 @@ results are summarized in Table~\ref{figure:sse_test}.
 We first evaluate the latent-space assumption that countries'
 interactions can be summarized by their positions in a latent space.
 For this, we used a simplified model of sentiment, in which documents'
-mean positions $\bar x_c, y_c$ are fixed, and that the sentiment is
-drawn from .
+mean positions $\bar x_{c_1}, x_{c_2}$ do not change over time,
+effectively setting their chain variance $\sigma_{\mbox{\tiny
+    chain}}^2$ to zero.  The
+sentiment between countries interacting in document $d$ is $s_d =
+\mathcal{F}(x_{c_1}, x_{c_2})$, with $x_c \sim \mathcal{N}(\bar x_c,
+\sigma_D^2)$.
 
-We tested this assumption for both a distance and inner-product link
-function, with intercepts and without intercepts.  We find that the
-the inner-product assumption $\bar x_{c_1}^T \bar x_{c_2}$ alone is
-poor because it provides no natural way to model countries that are
-frequently in conflicts.  If the inner-product model is endowed with intercepts
-$y_{c_1}, y_{c_2}$, however, it becomes a top-performer.
+We tested this assumption for five link functions $\mathcal{F}(\bm
+x_{c_1}, \bm x_{c_2})$ These were:
+\begin{align}
+  \begin{array}{cc}
+    \mathcal{F}(\bm x_1, \bm x_2) = &
+    \begin{tabular}{lll}
+      \mbox{distance} & -\log(|| \bm z_{1} - \bm
+      z_{2} ||_2^2 + 1) & \mbox{where } \bm z_{1} = \bm x_{1,2:D}, \bm z_2 = \bm x_{1,2:D} \\
+      \mbox{inner product} & \bm z_{1}^T \bm z_{2} & \mbox{where } \bm z_{1} = \bm x_{1}, \bm z_2 = \bm x_{2} \\
+      \mbox{intercept} & y_1 + y_2 & \mbox{where } y_1 = x_{1,1}, y_2 = x_{2,1} \\
+      \mbox{intercept + inner product} & y_1 + y_2 + \bm z_{1}^T \bm
+      z_{2}^T & \mbox{where } y_1 = x_{1,1}, y_2 = x_{2,1}, \bm z_{1}
+      = \bm x_{1,2:D}, \bm z_2 = \bm x_{1,2:D} \\
+      \mbox{intercept + distance} & y_1 + y_2 - \log(|| \bm z_{1} - \bm
+      z_{2} ||_2^2 + 1) & \mbox{where } y_1 = x_{1,1}, y_2 = x_{2,1}, \bm z_{1}
+      = \bm x_{1,2:D}, \bm z_2 = \bm x_{1,2:D} \\
+    \end{tabular}
+  \end{tabular}
+\end{align}
 
-Both the inner product and distance link functions perform best when
-they are able to use intercepts and when they have many dimensions: we
-evaluated the models with up to 9 dimensions, and they TODO(sgerrish),
-modeling articles' sentiment at 0.32.
+We measured the model's ability to predict inferences from the
+text-based sentiment model $s_d = \bm w_d^T \beta$ for $1 \le
+\mbox{dim}(\bm z) \le 9$ and report the mean-squared-error (MSE) of
+these predictions in \myfig{fr_supervised_performance}.  We find that
+the the inner-product assumption $\bar z_{c_1}^T \bar z_{c_2}$ alone
+is poor because it provides no natural natural way to model countries that are
+in conflict with many other countries (to model this, we
+would require $\bar \bm x_c$ for that country to have large magnitude,
+and for other countries to have $\bar \bm x_c$ with large magnitude
+but opposite direction; this becomes difficult without requiring many
+dimensions.
+
+If the inner-product model is endowed with the intercepts $y_{c_1},
+y_{c_2}$, however, its predictive performance increases substantially.
+Both the \verb!intercept + inner product! and
+\verb!intercept + distance! link functions perform very well, because
+they can use intercepts to explain how conflict-prone a country is;
+and they can use $\bm \bar z$ to explain how each country interacts
+with others.  Interestingly, the \verb!distance! link function is able
+to model data well with many dimensions without an indication that the
+model overfits (we only measured this up to 9 dimensions).
 
 \paragraph{The benefit in adding a time-series assumption.}
-We can sometimes improve the predictive power of this model by adding a time
-dimension, allowing $\bar x_c$ to drift over time for each country
-$c$.  We illustrate these results in \myfig{fr_supervised_performance}.
+We can sometimes improve the predictive power of this model by adding
+a time dimension, allowing $\bar x_c$ to drift over time for each
+country $c$.  We illustrate these results in
+\myfig{fr_supervised_performance}.
 
 The inner product model again performed poorly, often worse than the
 baseline model.  Adding an intercept term harms performance for the
@@ -570,12 +605,11 @@ Mechanical Turk labels.
 
 We note that the time-series models performed better than the static
 model for the CoW labels but \emph{not} for the Mechanical Turk
-labels.  The better performance of these models for one set of labels
-suggests that the formal relationships of these countries -- as
-determined by expert labels -- is indeed changing over time; while the
-lay relationships between these countries -- as determined by lay
-interpretations of countries' relationships -- remains more static
-over time.
+labels.  One theory is that the formal relationships between countries
+-- as determined by expert labels -- is indeed changing over time;
+while the lay relationships between these countries -- as determined
+by lay interpretations of countries' relationships -- remains more
+static over time.
 
 \paragraph{Improvement due to zero-reversion regularization}
 A further explanation for the decrease in performance for the
@@ -594,7 +628,6 @@ What relationships does this model infer?  Because the relationships
 between countries are treated as functions of their positions, we can
 interpret their positions.  We illustrate countries' positions in the
 static models in \myfig{}.
-
 
 Nations' positions are illustrated in Figure~\ref{figure:figures}.
 Figures~\ref{figure:figures}(a,b) show nations' relative positions
