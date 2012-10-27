@@ -12,7 +12,11 @@
 \usepackage{algorithmic}
 \usepackage{url}
 
+\def\NoNumber#1{{\def\alglinenumber##1{}\State #1}\addtocounter{ALG@line}{-1}}
+
 %\usepackage[bookmarks=false]{hyperref}
+% Packages hyperref and algorithmic misbehave sometimes.  We can fix
+% this with the following command.
 \newcommand{\theHalgorithm}{\arabic{algorithm}}
 
 % For chapter_influence:

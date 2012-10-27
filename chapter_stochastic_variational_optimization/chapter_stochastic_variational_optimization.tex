@@ -482,22 +482,64 @@ independent), SVO does not require sequential samples.
 
  \subsubsection{Second-order updates}
  \label{section:second_order_updates}
+
 \begin{figure}
-%   \begin{algorithm}[tb]
-     \begin{algorithmic}[1]
-    \setlength{\topsep}{1pt}
+  \begin{tabular}{cc}
+\begin{minipage}{2.4in}
+\small
+\begin{algorithm}[H]
+  % For numbers, add [1] to this.
+    \begin{algorithmic}
+%      \caption*{\hspace{50pt} First-order SVO}
+\small
+%    \setlength{\topsep}{1pt}
+    \setlength{\itemsep}{4pt}
+    \setlength{\parskip}{3pt}
+    \setlength{\parsep}{3pt}
+    \STATE $n \gets 1$
+    \setlength{\itemsep}{4pt}
+    \setlength{\parsep}{3pt}
+    \setlength{\parskip}{3pt}
+    \WHILE{not converged}
+    \vspace{4pt}
+    \setlength{\itemsep}{4pt}
+      \STATE Draw samples $x_{n1}, \ldots, x_{nM} \sim q_{\theta_{n - 1}}$ using quasi-Monte Carlo sampling.
+    \setlength{\itemsep}{4pt}
+      \STATE Compute $\partl{\log q_{\theta_n}(x_{nm})}{\theta} \bigr|_{\theta_{n-1}}$.
+    \setlength{\itemsep}{4pt}
+      \STATE Estimate $\partl{\mathcal{L}_\theta}{\theta} \bigr|_{\theta_{n-1}}$
+	using Equation~\ref{equation:svo_gradient}.
+        \setlength{\itemsep}{4pt}
+      \STATE Update $\theta$, using Equation~\ref{equation:svo_update}:
+        \vspace{-5pt}
+	\begin{align*}
+          \theta_n \gets \theta_{n-1} -
+          \frac{\eta}{n^k} \partl{\mathcal{L}_\theta}{\theta} 
+        \end{align*}
+        \setlength{\itemsep}{4pt}
+  \ENDWHILE
+  \vspace{16pt}
+\end{algorithmic}
+\end{algorithm}
+\end{minipage}
+ & 
+\begin{minipage}{2.6in} \small
+  \begin{algorithm}[H]
+    \begin{algorithmic}
+ %\caption*{\hspace{50pt} Second-order SVO}
+ \small
+%    \setlength{\topsep}{1pt}
     \setlength{\itemsep}{2pt}
     \setlength{\parskip}{1pt}
     \setlength{\parsep}{1pt}
-
-     \STATE $n \gets 1$
+    \STATE $n \gets 1$
     \WHILE{not converged}
     \STATE Draw samples $x_{n1}, \ldots, x_{nM} \sim q_{\theta_{n - 1}}$ using quasi-Monte Carlo sampling.
-    \STATE Compute $\partl{\log q_{\theta_n}(x_{nm})}{\theta} \Bigr|_{\theta_{n-1}}$ and
-    $\partll{\log q_{\theta_n}(x_{nm})}{\theta} \Bigr|_{\theta_{n-1}}$. % for $m = 1 \ldots, M$.
-    \STATE Estimate $\partl{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_{n-1}}$ using Equation~\ref{eq:svo_gradient}.
-    \STATE Estimate $\partll{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_{n-1}}$ using Equation~\ref{eq:empirical_second_order_estimates}.
-    \STATE Update $\theta$, using Equation \ref{eq:second_order_updates}:
+    \STATE Compute $\partl{\log q_{\theta_n}(x_{nm})}{\theta} \bigr|_{\theta_{n-1}}$.
+    \STATE Compute $\partll{\log q_{\theta_n}(x_{nm})}{\theta} \bigr|_{\theta_{n-1}}$. % for $m = 1 \ldots, M$.
+    \STATE Estimate $\partl{\mathcal{L}_\theta }{\theta} \bigr|_{\theta_{n-1}}$ using Equation~\ref{equation:svo_gradient}.
+    \STATE Estimate $\partll{\mathcal{L}_\theta }{\theta} \bigr|_{\theta_{n-1}}$ using Equation~\ref{equation:empirical_second_order_estimates}.
+    \STATE Update $\theta$, using Equation \ref{equation:second_order_updates}:
         \vspace{-10pt}
 	\begin{align*}
      	   \displaystyle \theta_n \gets \theta_{n-1} - \left( 
@@ -507,12 +549,17 @@ independent), SVO does not require sequential samples.
     \vspace{-15pt}
     \STATE $n \gets n + 1$ % (until convergence)
     \ENDWHILE
-   \end{algorithmic}
-     \caption{Second-order SVO. We begin with a variational distribution
-       $q_{\theta_0}(x)$ and joint likelihood $p(x, y)$.  }
-     \label{fig:second_order_algorithm}
+  \end{algorithmic}
+%\end{figure}
+\end{algorithm}
+\end{minipage}
+\end{tabular}
+\normalsize
+  \caption{First-order SVO (left) and second-order SVO (right). In each, we begin with a variational distribution
+    $q_{\theta_0}(x)$ and joint likelihood $p(x, y)$.  }
+    \label{figure:second_order_algorithm}
+    \label{figure:first_order_algorithm}
 \end{figure}
-%   \end{algorithm}
 
 We also note that the step size parameters $\eta$ and $k$ have a large
 impact on convergence to an optimal solution: they must be carefully
