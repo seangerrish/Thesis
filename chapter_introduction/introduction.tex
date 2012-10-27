@@ -9,11 +9,11 @@ are now able to pore over digital copies of all legally binding
 opinions written by United States Supreme Court Justices, or the text
 of thousands of bills voted on by members of Congress.  Even these
 numbers are dwarfed by the hundreds of thousands of newspaper articles
-written about the very bills written about international relations.
-Unfortunately, this flood of information obscures the very insights
-these researchers aim to discover.  Researchers trying to make sense
-of these collections are subject to the high costs of time spent
-poring over these collections in search of the few key insights.
+written about the international relations.  Unfortunately, this flood
+of information obscures the very insights these researchers aim to
+discover.  Researchers trying to make sense of these collections are
+subject to the high costs of time spent poring over these collections
+in search of the few key insights.
 
  % example questions: how to find phenomena in collections of text
  % how to 
@@ -44,77 +44,60 @@ another to illustrate the flexibility and interpretability of latent
 variable models in large-scale settings.
 
 An implicit premise of this thesis is that these complex but
-interpretable patterns exist in nearly every collection of text
+interpretable patterns are ubiquitous in collections of text
 documents, and that these patterns be discovered automatically to
-describe decisions and behavior of actors in the collection.  I will
+describe decisions and behavior of actors in these collections.  I will
 ground this discussion with the development of several specific models
 but take the position throughout this thesis that these methods draw
 from a suite of common tools which can be used again and again to
 construct models to address alternative questions.
 
-\section*{The deluge of information and some statistical tools
-  available to us}
+\section*{The deluge of information and some statistical tools}
 
 % The availability of observational social science data on a massive scale
 Observational social science data -- including data about how
-organizations and the Government work -- is available on a massive
-scale \cite{lazer:2009}. The National Archives, which collects
-information from over 500 federal agencies, has been digitizing its
-collection of twelve \emph{billion} documents
-\cite{national_archives:2012a,national_archives:2012b}.  In the next
-few chapters, I will discuss several primitives that are useful for
-analyzing large collections of text data.  These themes include text
-data, dyadic relationships, and time-series collections.
+organizations and the Government work -- has become available on a
+massive scale. The National Archives, which collects information from
+over 500 federal agencies, has been digitizing its collection of
+twelve \emph{billion} federal documents \cite{lazer:2009,
+  national_archives:2012a,national_archives:2012b}.  The problem in
+handling this data has moved from collecting the data to processing
+and understanding it.
 
-%Because of this ubiquity and
-%richness of text data, it is an invaluable resource to researchers.
-
-% \subsection*{The Curse of Dimensionality and the Blessing of Big Data}
-
-%  One of the most interesting 
-% - information in digital age -- this is the first time we have had so much data.  This flood is unmanageable in two senses:
-%   - first, data is high-p.  We can solve this by using statistical methods to summarize these observations.  
-%   - second, data is large-N.  We can solve this with computers.  However, note that only when N is large enough can we say anything useful about consistent patterns.
-
-%   - one of the primary goals of the social scientist is to distill
-%   meaningful patterns from these collections of data.  With this flood
-%   of information, this can only be done in two ways:
-
-%   - by sampling this information -- in which case he may choose exemplary cases.
-%   - by distilling consistent patterns in the data which are useful.
-%   - A quantitative treatment will allow us to precisely describe these patterns.  The interpretation of these results is handled by the researcher.
-%     - Along these lines, this thesis will take
+Fortunately for scholars, these data follow recurring patterns which
+make statistical modeling possible. In this thesis, I will focus on
+three specific patterns:
 
 \paragraph{Text data.} This thesis will focus largely on text data.
 Text data is the low-hanging fruit of most social science research
 questions.  It is ubiquitous because it can---indeed, it must---be
 easily created, digitized, and stored. One of the central themes of
-this thesis is that text data serve as an observation of an underlying
-story underlying decisions and politics.
+this thesis is that text data serve as an observation of the story
+underlying decisions and politics.
 
-Just as text data is
-invaluable to researchers, the rate of growth of these text
-collections is staggering.  A single newspaper like the \emph{New York
-  Times} publishes hundreds of thousands of articles each decade.  Of
-the National Archive's collection, billions of its documents are text
+Just as text data is invaluable to researchers, the rate of growth of
+these text collections is staggering.  A single newspaper like the
+\emph{New York Times} publishes hundreds of thousands of articles each
+decade.  Of the National Archive's collection, billions of its
+documents are text
 \cite{national_archives:2012a,national_archives:2012b}.  The rate of
 growth for the World Wide Web is even more staggering.  As far back as
 2008, the Internet was already growing at a rate of several billion
 webpages per \emph{day} \cite{googleblog:2008}.
 
-\paragraph{Time-series collections.}  Many datasets represent
-time-series observations.  This is one of the simplest types of
-metadata to attach to digital collections because it is described by a
-single scalar and because it is widely available.  In addition, the
-dimension of time is especially interesting to researchers because it
-is helpful in framing ideas such as temporal changes, and the
-prediction of future events.
+\paragraph{Time-series collections.}  Many datasets comprise
+time-series observations.  Timestamps are one of the simplest types of
+metadata to attach to digital collections because they are described
+by a single scalar and because they are inexpensive and widely
+available.  In addition, the dimension of time is especially
+interesting to researchers because it is helpful in framing questions
+about causation and prediction.
 
 \paragraph{Dyadic observations.}  Dyadic relationships are one of the
 simplest ways to represent more complicated phenomena in a collection
 of data. In later chapters we will use spatial models to represent
-interactions of lawmakers-bill pairs (i.e., how congresspersons voted
-on bills) and country-country interactions (countries' sentiment
+interactions between lawmakers and bills (i.e., how congresspersons voted
+on bills) and between countries (i.e., countries' sentiment
 toward one another).  As we will show, the underlying representation
 for these cases is very similar.
 
@@ -171,7 +154,7 @@ applications.
     custom-designed to glean latent structure from large or complex
     datasets.  Our statistical assumptions define the shape and
     optical characteristics of these lenses.}
-  \label{figure:person_data_lens}
+  \label{fig:person_data_lens}
 \end{figure}
 
 % - Tools and abstractions for probabilistic inference
@@ -232,14 +215,17 @@ in modeling various social science phenomena.
 
 \paragraph{Inferring lawmakers' preferences.}
 
-In \mychap{spatial_voting} I will extend existing spatial models to better
-understand how Congressmen feel about different issues.  I begin with
-a model which is able to predict how lawmakers will vote on
-previously-unseen bills. I also describe a method for learning
+In \mychap{spatial_voting} I will extend existing spatial models to
+better understand how Congressmen feel about different issues.  I
+begin with a model which is able to predict how lawmakers will vote on
+previously-unseen bills.  I will also describe a method for learning
 lawmakers' issue preferences from their votes on different issues.
+
 These models contrast with those in chapters 3 and 4 in that I ignore
-documents' timestamps but assume that dyadic pairs are explicitly
-labeled, and that each pair is attached to a separate text document.
+documents' timestamps.  I will use some of the same ideas from Chapter
+4, in which we we assume that pairs of items interact (in this case a
+lawmaker and a bill), and that text documents attached to those
+interactions can provide insight into the interaction.
 
 \paragraph{Additional materials.}
 In Appendix~\ref{chapter:stochastic_variational_optimization} I

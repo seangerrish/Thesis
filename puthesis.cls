@@ -88,8 +88,8 @@
   \thispagestyle{empty}
   \vspace*{0in}
   \begin{center}
-    \copyright\ Copyright by \@author, \number\year. \\
-    All Rights Reserved
+    \copyright\ Copyright \number\year { }\@author. \\
+    All Rights Reserved.
   \end{center}
   \clearpage}
 \newcommand*{\makeabstract}{

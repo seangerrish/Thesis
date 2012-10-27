@@ -3,27 +3,25 @@
 
 The work in this thesis builds upon the foundations built by decades
 of research in the development of machine learning.  In this chapter,
-we will describe enough of these foundations for the reader to
-understand later chapters.
+I will describe enough of these foundations for the reader to
+understand later chapters. Some of this work builds off of general
+knowledge in the machine learning community; when the foundational
+work is beyond the scope of this introduction, I will provide
+references to well-known resources in the community.
 
-Some of this work builds off of general knowledge in the machine
-learning community; when the foundational work is beyond the scope of
-this introduction, we will provide references to well-known resources
-in the community.
-
-In this chapter we will outline the basic methodology for
-probabilistic modeling in datasets.  We begin by discussing a ``data
-analysis pipeline'' so the reader will understand what we mean by
+In this chapter I will outline the basic methodology for
+probabilistic modeling in datasets.  I begin by discussing a ``data
+analysis pipeline'' so the reader will understand what is meant by
 phrases like ``the data'', ``fit the model'', and ``heldout
 log-likelihood'', and where it falls in the overall research pipeline.
-We then provide basic definitions from the field of probabilistic
+I then provide basic definitions from the field of probabilistic
 modeling and illustrate these ideas with models that will be used as
 building blocks in later chapters.
 
 \section{Standards and naming conventions}
-We begin by outlining naming and variable conventions in this work.
+I begin by outlining naming and variable conventions in this work.
 Random variables and their instantiations are given by roman or greek
-characters; the role of a variable will typically evident from its
+characters; the role of a variable will typically be evident from its
 context.  Multivariate random variables such as vectors are given by
 boldface, and collections of random variables are given by uppercase
 Roman characters.
@@ -31,7 +29,7 @@ Roman characters.
 The reader may find \mytab{table:notation} a helpful resource in the
 subsequent chapters.  This table summarizes many of the variables
 described in this work.
-\begin{table}
+\begin{figure}
   \caption{Notation used throughout this thesis.}
   \begin{center}
     \begin{tabular}{|c|c|}
@@ -60,66 +58,71 @@ described in this work.
       \hline
     \end{tabular}
   \end{center}
-\end{table}
+  \label{table:notation}
+\end{figure}
 When we refer to a variable, we will sometimes subscript it with
 multiple indices.  For example, in the next chapter, we will refer to
 the probability $\beta_{t,k,n}$ of word $n$ in topic $k$ at time
 $t$. We sometimes refer to only a subset of these indices. In such
 cases, we are referring to the appropriately-shaped variable:
-$\beta_{t,k,n}$ is a scalar, for example; $\beta_{t,k}$ and $\beta_{k,n}$ are
+$\beta_{t,k,n}$ is a scalar; $\beta_{t,k}$ and $\beta_{k,n}$ are
 vectors; $\beta_t$ and $\beta_k$ are matrices; and
 $\beta$ is a three-dimensional tensor.  In the interest of brevity and
 clarity, the shape of such variables will be understood from context.
 
-\label{section:pipeline}
+\label{sec:pipeline}
 
-\section{Latent-variable models for prediction and exploratoration}
+\section{Latent-variable models, prediction, and exploration}
 
 \subsection{Data analysis pipepline}
-\label{section:data_analysis_pipeline}
-We will develop the ideas outlined in the last chapter by referring to
-a ``data analysis pipeline'' illustrated in
-\myfig{data_analysis_pipeline}.\footnote{I have discussed similar
-  pipelines over chats with David Blei.}  This pipeline, which is
-driven by a specific question about a set of data, serves as a recipe
-for answering questions about these data.  The pipeline has several
-important steps.
+\label{sec:data_analysis_pipeline}
+We will develop the ideas outlined in the last chapter by using the
+``data analysis pipeline'' illustrated in
+\myfig{data_analysis_pipeline}.\footnote{This pipelne is very much
+  inspired by discussions with David Blei.}  This pipeline, which
+is driven by a specific question about a set of data, serves as a
+recipe for answering questions about these data.  It will also help to
+make the contributions of this thesis more explicit.
+
+The pipeline has several important steps.
 
 \begin{enumerate}
-  \item \textbf{Questions.} One of the first, most critical steps is
-    defining the question at hand.  In our case, the questions include
-    ``How lawmakers feel about specific issues?'' and ``Which articles
-    are of interest to the field of historiography''? Notice that
-    these questions may have multiple answers.
+\item \textbf{Questions.} One of the first, most critical steps is
+  defining the question at hand.  In our case, the questions include
+  ``Which articles are of interest to the field of historiography?''
+  and ``How do lawmakers feel about specific issues?''. Notice that
+  these questions may have multiple answers.
 
-  \item \textbf{Data.} A parallel question is that of deciding which
-    set of data will allow us to address the question at hand.  Of
-    course, the questions we ask may be guided by the data available
-    to us.  We cannot answer the question ``How do Martian politicians
-    feel about social issues?`` because we have no data about
-    Martian politicians.
+\item \textbf{Data.} At the same time we are formulating questions, we
+  must also understand which set of data will allow us to address the
+  question at hand.  Of course, the questions we ask will be informed
+  by the data available to us, and vice-versa.
 
-  \item \textbf{Modeling assumptions.} Once we have established a set
-    of questions and available data, we define a set of assumptions
-    that will allow us to capture statistics of interest.  When we
-    analyze lawmakers' issue preferences, for example, we will define
-    latent variables to represent lawmakers' issue preferences.
+\item \textbf{Modeling assumptions.} Once we have established a set of
+  questions and available data, we define a set of assumptions that
+  will allow us to capture statistics of interest.  When we analyze
+  lawmakers' issue preferences, for example, we will make assumptions
+  about how lawmakers feel about issues and how they interact with
+  bills.  We will encode these assumptions by specifying them with
+  random variables.
 
-    This step arguably allows the practitioner wide latitude in
-    defining variables of interest.  We consider this step to
-    represent one of the biggest contributions of this work.
+  This step arguably allows the practitioner wide latitude in defining
+  variables of interest.  In following chapters, we will spend a lot
+  of time discussing modeling assumptions, and they compose one of the
+  biggest contributions of this work.
 
-    As with the \textbf{Data} step, our decisions in the \textbf{model
-      assumptions} step are informed by limitations in the
-    tools available for performing inference and the ease of
-    subsequent data analysis.
+  Just as the \textbf{Data} step is limited by the questions we are
+  asking, the, our decisions in the \textbf{Model assumptions} step
+  are informed by limitations in the tools available for performing
+  inference and the ease of subsequent data analysis.
 
   \item \textbf{Model implementation.} In this stage, the model is
-    defined, and the practitioner must encode these modeling
-    assumptions into an algorithm and run that algorithm.  We will
-    variously refer to this stage of the process as \emph{fitting a
-      model}, \emph{performing inference}, and \emph{fitting the
-      posterior}.
+  defined, and the practitioner must encode these modeling assumptions
+  into an algorithm and run that algorithm.  We will variously refer
+  to this stage of the process as \emph{fitting a model},
+  \emph{performing inference}, and \emph{fitting the posterior}.  This
+  steps also represents a significant contribution of our work, in
+  chapters 3-5 and Appendix A.
 
   \item \textbf{Model evaluation.} The goals of this stage are to
     evaluate performance of the model and to criticize the model.
@@ -137,25 +140,28 @@ important steps.
   
   \item \textbf{Conclusions.} Finally, the practitioner may draw
     conclusions from the model.  In our case, this leads to two
-    applications: \emph{exploratoration} and \emph{prediction}.
-    Models build for exploration can be used to answer multiple
-    \emph{future} questions about the data with the guidance of a
-    human (``Which lawmakers are most right-wing on foreign policy?
-    How does Ron Paul feel about Taxation?'') with the guidance of a
-    human.  Models build for prediction can be used to draw specific
-    inferences in the future (``How will Ron Paul vote on the pending
-    taxation bill?'').
+    applications: \emph{exploration} and \emph{prediction}.  Models
+    built for exploration can be used to answer potential \emph{future}
+    questions about the data with the guidance of a human (``Which
+    lawmakers are most right-wing on foreign policy?  How does Ron
+    Paul feel about Taxation?'').  Models
+    build for prediction can be used to draw specific inferences about
+    unseen or future information (``How will Ron Paul vote on the
+    pending taxation bill?'').
 
-    It is worth pointing out the other types of conclusions one may
-    draw in this stage. Some researchers may define their models with
-    very specific questions in mind (``Has Ronald Paul sided more with
-    Democrats than Republicans on wartime spending since the 2003 Iraq
-    invasion?'').  Others may draw causal conclusions (``The Iraq war
-    caused Ronald Paul to favor wartime spending less''). These
-    questions require domain knowledge which we will not assume.
+    It is worth pointing out the other types of conclusions that one
+    may draw in this stage, but which we will not discuss. Some
+    researchers may define their models with very specific questions
+    in mind (``Has Ronald Paul sided more with Democrats than
+    Republicans on wartime spending since the 2003 Iraq invasion?'').
+    Others may draw causal conclusions (``The Iraq war caused Ronald
+    Paul to favor wartime spending less''). These are interesting
+    questions with fascinating solutions, but they require domain
+    knowledge which we will not assume.
 
-    In building models for exploratory analysis, we will focus on the
-    modeling assumptions instead of tools for exploration.  For
+    Finally, it is worth noting that exploratory analysis is a large
+    field of study.  We will focus on modeling assumptions and
+    immediate corollaries that we can draw from the data.  For
     completeness, we note that many researchers create tools to
     display information meaningfully to -- and elicit interaction with
     -- users.  Well-known sources for display of this information
@@ -168,11 +174,11 @@ important steps.
 
 \begin{figure}
   \center \includegraphics[width=0.4\textwidth]{chapter_introductory_material/figs/model_pipeline.pdf}
-  \caption{A data analysis pipeline.  In this work, we discuss
-    elements of defining modeling assumptions, model implementation,
-    and model revision.  We will focus on applications which use
-    text data.}
-  \label{figure:data_analysis_pipeline}
+  \caption{A data analysis pipeline.  In this work, we make
+    contributions in the areas of \textbf{Modeling assumptions},
+    \textbf{Model implementation}, and \textbf{Model revision}.  We
+    will focus on applications which use text data.}
+  \label{fig:data_analysis_pipeline}
 \end{figure}
 
 As alluded to above, this work will focus on modeling assumptions and
@@ -181,34 +187,12 @@ variable models because they have several clear benefits.
 
 \subsection{Latent-variable models}
 
-The benefits in using latent variable models are broad:
-
-  \begin{enumerate}
-    \item Flexibility. These models can describe, summarize, and explain
-    a wide variety of phenomena in the physical and social sciences.
-    \item Embeddability and Interpretability.  Any quantifiable metric in the dataset
-      can be encoded as a random variable in a probabilistic model.
-      The relationship between metrics can be likewise encoded
-      explicity. \label{lvm:matching}
-    \item Modularity. Parts of these models can be re-used across
-      different models.  This leads to efficient transfer of resources
-      and common paradigms.
-    \item Existing toolbox of statistical tools. There is a large and
-      growing body of literature around how to fit these models.
-      Practitioners no longer need to be experts in statistics to
-      correctly apply many of these tools.
-  \end{enumerate}
-
-  The risk with applying latent-variable models is that the
-  credibility and careful deliberation we often associate with
-  statistics lends credence to results of fitting a model.  This may
-  not be true, particularly when the model is incorrectly interpreted,
-  when the data is poorly fit by the model, or when the model is
-  poorly defined.  Both of these can easily happen when
-  Step~\ref{lvm:matching} above is carried out carelessly.
-
-\subsection{Undirected graphical models for summarizing distributional assumptions}
-A latent variable model can be fully specified with
+To formalize what we mean by \emph{Modeling assumptions}, we will
+assume that observed data can be described by a probability
+distribution.  By making this assumption, we will gain several
+benefits, which we outline at the end of this section.  First, we
+formalize a \emph{latent variable model}.  A latent variable model can
+be fully specified with
 \begin{itemize}
   \item A set of latent random variables $X_1, \ldots, X_{M_1}$ ($X_{1:M_x}$ for shorthand);
   \item A set of observed random variables $Y_1, \ldots, Y_{M_2}$ ($Y_{1:M_y}$ for shorthand);
@@ -226,11 +210,13 @@ $p$ is a probability distribution, it satisfies
   
 For $p$ to be useful, we typically will make distributional
 assumptions about it.  We often describe assumptions about
-factorization using a \emph{graphical model} (sometimes called a
-Bayesian network).  A graphical model is a directed, acyclic graph $G
-= (V, E)$ in which vertices $V=1, \ldots, M = M_x + M_y$
-index random variables and a \emph{lack} of edges between random
-variables connotes conditional independence.
+factorization using a \emph{directed graphical model} (sometimes
+called a Bayesian network) \cite{pearl:1985}.\footnote{Undirected
+  graphical models are also useful.  Here we focus on undirected
+  graphical models.}  A graphical model is a directed, acyclic graph
+$G = (V, E)$ in which vertices $V=1, \ldots, M = M_x + M_y$ index
+random variables and a \emph{lack} of edges between random variables
+connotes conditional independence.
 
 We state this more precisely be defining the ``parents'' function
 $\pi_G : \{ 1, \ldots, M \} \rightarrow 2^{\{ 1, \ldots, M \}}$, which
@@ -249,9 +235,7 @@ models (but each distribution must be factorizable based on all of its
 corresponding graphical models). The language of graphical
 models makes it possible to succinctly describe many joint probability
 distributions, and it makes model implementation and inference with
-with these models much easier to discuss formally.
-
-TODO(sgerrish): cite Judea Pearl.
+these models much easier to discuss formally.
 
 Conventionally, a graphical model $G$ is often drawn as a
 block-and-arrow diagram, where we write out the graph with each random
@@ -294,8 +278,38 @@ these distributions' factorizations \cite{bishop:2006} and become
 important when one implements a probabilistic model or makes
 predictions with one.
 
+Before proceeding further, it is worth noting the benefits in using
+latent-variable models.  Several of the most compelling motivations are:
+
+  \begin{enumerate}
+    \item Flexibility. These models can describe, summarize, and explain
+    a wide variety of phenomena in the physical and social sciences.
+  \item Embeddability and interpretability.  Any quantifiable metric
+    in the dataset can be encoded as a random variable in a
+    probabilistic model.  Relationships
+    found within datasets can be likewise encoded
+    explicity. \label{lvm:matching}
+    \item Modularity. Parts of these models can be re-used across
+      different models.  This leads to efficient transfer of resources
+      and common paradigms.
+    \item Existing toolbox of statistical tools. There is a large and
+      growing body of literature around how to fit these models, and
+      there are many widely supported packages for fitting these
+      models.  Practitioners no longer need to be experts in
+      statistics to correctly apply many of these tools.
+  \end{enumerate}
+
+  The risk with applying latent-variable models is that the
+  credibility and careful deliberation we often associate with
+  statistics lends credence to results of fitting a model.  This may
+  lead researchers to be overconfident in the conclusions they draw
+  from their models, particularly when the model is incorrectly
+  interpreted, when the data is poorly fit by the model, or when the
+  model is poorly defined.  Both of these can easily happen when
+  Step~\ref{lvm:matching} above is carried out carelessly.
+
 \subsection{Text as a medium for social science analysis}
-  \label{section:text_intro}
+  \label{sec:text_intro}
   We first illustrate these ideas in an application of text modeling.
   As noted in the last chapter, text data is as easy to work with as
   it is ubiquitous. Importantly, researchers and other practitioners
@@ -336,8 +350,7 @@ We will capture the gist of documents using the topic model Latent
 Dirichlet Allocation \cite{blei:2003}.  Latent Dirichlet allocation
 (LDA) posits a set of $K$ \emph{topics} $\beta_1, \ldots, \beta_K$ to
 formalize what we mean by the \emph{gist} of a document.  LDA
-describes each document $d$ as a mixture $\bm \theta_d$ of themes
-(called topics), where $\sum_K \theta_{dk} = 1$ and $\theta_{dk} > 0
+describes each document $d$ as a mixture $\bm \theta_d$ of $K$ topics, where $\sum_K \theta_{dk} = 1$ and $\theta_{dk} > 0
 \forall d,k$.
 
 Formally, we represent this using a \emph{generative process} of the
@@ -355,7 +368,7 @@ a recipe for creating the observations -- documents, in our case:
       \end{enumerate}
     \end{enumerate}
 \end{enumerate}
-Above, the parameter $\alpha > 0$ above is a Dirichlet prior (it is often set by
+The parameter $\alpha > 0$ above is a Dirichlet prior (it is often set by
 topic model researchers to $1/K$).  The distribtion $\mbox{Dir}(\alpha_1, \ldots, \alpha_M)$ refers to the Dirichlet distribution.  Its density is given by
 \begin{align}
   p(x_1, \ldots, x_M | \alpha_1, \ldots, \alpha_M) =
@@ -375,13 +388,17 @@ on $\eta$ and $\alpha$ respectively (we treat $\alpha, \eta$ as
 hyperparameters and omit them so they're not confused with random
 variables).
 
-Before describing how to fit such a model, we show four
-topics from LDA in Table~\ref{table:example_lda_topics}.  Note that some
+In the vast majority of cases, the practitioner observes the words of
+a set of documents and seeks to learn the topics that describe these
+documents.
+
+Before describing how to fit such a model, we point the reader to the four
+example topics from LDA in Table~\ref{table:example_lda_topics}.  Note that some
 of these ``words'' are instead phrases.  This can be done by creating
 a vocabulary of phrases instead of words and describing documents as a
-mixture of phrases.  We will describe how to select a vocabulary of these phrases in Appendix~\ref{section:issue_corpus_preparation}.
+mixture of phrases.  We will describe how to select a vocabulary of these phrases in Appendix~\ref{sec:issue_corpus_preparation}.
 \begin{table}
-  \caption{Example topics from Latent Dirichlet Allocation fit to sentences from the the textbook \emph{Biology} by Campbell and Reece.  This is a small subset of the 1000 topics. These topics were graciously provided by Ricky Wong.}
+  \caption{Example topics from Latent Dirichlet Allocation fit to sentences from the the textbook \emph{Biology} by Campbell and Reece.  This is a small subset of the 1000 topics. (These topics were provided by Ricky Wong.)}
   \center  \begin{tabular}{|c|c|c|c|}
 % tissue bone collagen connective connective_tissue cartilage bones fibers 
 % population growth rate age rates population growth populations life mortality
@@ -479,7 +496,7 @@ which the scalar logistic function $\sigma(s) = \frac{\exp(s)}{1 +
   \caption{Probabilistic matrix factorization.  We observe
     interactions $V_{ud}$ between users represented by $X_u$ and items
     represented by $A_d, B_d$.}
-  \label{figure:irt_gm}
+  \label{fig:irt_gm}
 \end{figure}
 
 A wide variety of researchers have used formulations like this for
@@ -528,7 +545,7 @@ observed at times $t=1, \ldots, t=T$.  In a \emph{hidden Markov model}
 \end{align}
 (see \myfig{hmm_gm} for the graphical model).  Often the transition
 distribution $p(X_t | X_{t-1})$ is independent of $t$ (the chain in
-this case is called \emph{time-homogenous}.  A wide variety of
+this case is called \emph{time-homogenous}).  A wide variety of
 problems can be modeled accurately with a well-selected homogeneous
 HMM.  Importantly, inference in these models is very efficient because
 the set of conditional independencies yields a tree: inference can
@@ -544,7 +561,7 @@ $\sigma^2$.
   \includegraphics[width=0.6\textwidth]{chapter_introductory_material/figs/hmm_gm.pdf}
   \end{center}
   \caption{A hidden Markov model.  Observations $Y_1, \ldots, Y_T$ are observed at discrete times $t=1, \ldots, T$, and are conditionally independent given the hidden states $X_1, \ldots, X_T$.}
-  \label{figure:hmm_gm}
+  \label{fig:hmm_gm}
 \end{figure}
 
 It is worth pointing out that many language models \emph{do}
@@ -565,7 +582,7 @@ focus on estimates of the posterior distribution $p(x | y) =
 \frac{p(x, y)}{p(y)}$.
 
 \subsection{MAP estimation}
-One of the simplest estimates the value of a random variable is the \emph{maximum-a-posteriori} (MAP) estimate.  The MAP estimate $\hat X$ is defined to be the most-likely value of the random variable:
+One of the simplest estimates of the value of a random variable is the \emph{maximum-a-posteriori} (MAP) estimate.  The MAP estimate $\hat X$ is defined to be the most-likely value of the random variable:
 \begin{align}
   \hat X = \arg \max_x p(X=x | Y) = \arg \max_x \frac{p(X=x | Y) p(Y)}{p(Y)} = \arg_x \max p(X=x, Y).
 \end{align}
@@ -619,7 +636,7 @@ mixture-of-Gaussian applications); a large number of discarded samples
 indicates that there is an inefficiency in the inference pipeline.
 
 \subsection{Variational inference}
-\label{section:variational_inference}
+\label{sec:variational_inference}
 
 Variational methods address some of the shortcomings of MCMC by
 providing a fast, deterministic alternative to MCMC
@@ -659,7 +676,7 @@ true posterior~\cite{jordan:1999,gerrish:2011}.
 \begin{figure}
   \center
   \includegraphics[width=0.6\textwidth]{chapter_introductory_material/figs/variational_family.pdf}
-  \label{figure:variational_inference}
+  \label{fig:variational_inference}
   \caption{Illustration of variational inference.  Practitioners
     define a variational family (shaded yellow region) and find the
     member of that family $q_{\hat \eta}(x)$ which is closest (by KL
@@ -685,8 +702,9 @@ with a Taylor approximation such as the delta method
 \cite{bickel:2007,braun:2007}. These simplifying assumptions -- an
 approximate, fully factorized posterior with further simplifying
 bounds -- make it possible to express the lower bound in terms of the
-variational parameters $\theta$.  This is followed by coordinate or
-gradient ascent.
+variational parameters $\theta$.  The practitioner then uses these
+bounds and gradients in a coordinate or
+gradient ascent algorithm.
 
 The role of variational inference in statistical machine learning will
 become more clear as we develop several algorithms using these methods
@@ -709,7 +727,8 @@ inference, it is important to evaluate the model, as alluded to in
 different goals in modeling data, so they will have different goals in
 model evaluation.  However, several standard approaches exist.
 
-\subsubsection{Likelihood of training data $Y_1, \ldots, Y_{N_{\mbox{obs}}}$}
+\subsubsection{Likelihood of training data $Y_1, \ldots,
+  Y_{N_{\mbox{\small obs}}}$}
 We first describe one of the simplest metrics of how well a model is fit:
 its ability to model training data $Y_{\mbox{\small obs},1},$
 $\ldots,$ $Y_{\mbox{\small obs},N_{\mbox{\tiny obs}}}$.  Like before,
@@ -738,7 +757,8 @@ fit.  In addition, it can be used to measure the flexibility of a model.
 % In a model we will develop later, we are operating in a
 % vacuum: This can be useful when, for example, the model
 
-\subsubsection{Likelihood of heldout observations $Y_1, \ldots, Y_{N_{\mbox{heldout}}}$}
+\subsubsection{Likelihood of heldout observations $Y_1, \ldots,
+  Y_{N_{\mbox{\small heldout}}}$}
 One of the most common metrics of a model is its ability to model
 unseen, heldout observations $Y_{\mbox{\small hdt},1},$ $\ldots,$
 $Y_{\mbox{\small hdt},N_{\mbox{\tiny hdt}}}$ given a set of ``training''
@@ -770,14 +790,24 @@ One of the final
 The tools outlined in this chapter cover only the tip of the iceberg
 of tools used by statistical machine learning researchers (and this is
 only a subset of all machine learning researchers).  However, they
-will serve as building blocks for future sections.  In the next
-chapter we will use some of these ideas as we return to the original
-questions that motivated this thesis: how can we understand patterns
-of behavior in society using text?  How do documents interact with one
-another and with the people who interact with them?
+will serve as important building blocks for future chapters.  In the
+next chapter we will use some of these ideas as we return to the
+original questions that motivated this thesis: how can we understand
+patterns of behavior in society using text?  How do documents interact
+with one another, and how can we use them to tell us how people
+interact with the world?
 
-In the next chapter we will begin with a model to understand how
-collections of text grow over time, by identifying key ``influential''
-documents. In subsequent chapters we will incorporate ideas which
-allow for more sophisticated interaction between documents, including
-pairs of documents and pairs of lawmakers.
+We will use the tools discussed in the preceeding sections to shed
+light on these questions, and we will do this with exactly the
+data-analysis recipe that we outlined in
+\mysec{data_analysis_pipeline}.  This recipe involves defining a question,
+describing a model to answer that question using data, fitting that
+model, and drawing inferences from the model.
+ 
+In the next chapter we will return to a fundamental challenge in
+managing the huge volumes of text now inundating researchers and
+companies: how to find the most important and influential documents in
+a collection.  As we will show in the next chapter, a latent-variable
+treatment of this question will allow us to make our assumptions (and
+the resulting conclusions) explicit.
+

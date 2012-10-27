@@ -359,7 +359,7 @@ estimate a gradient of the objective by combining these samples
   \partlapprox{\mathcal{L}_{\mu, \sigma_1^2}}{\mu} \Bigr|_{\mu_{1}} &
   %    & \hspace{-65pt}
   \hspace{-5pt} = \hspace{-2pt} \frac{1}{M} \sum_M \hspace{-1pt}\frac{x_m\hspace{-1pt}-\mu_1}{\sigma^2_1}
-  \hspace{-2pt} \left( \log p(x_m, y)-\hspace{-1pt} \log q_{\mu_1, \sigma_2^2}(x_m) \right) \\ \nonumber
+  \hspace{-2pt} \left( \log p(x_m, y)-\hspace{-1pt} \log q_{\mu_1, \sigma_2^2}(x_m) \right) \nonumber
 %  & \approx \frac{1}{M} \sum_M \frac{x_m - \mu_1}{\sigma^2_1}
 %    \log p(x_m, y). \\ \nonumber
 %  \vspace{-20pt}
@@ -396,7 +396,7 @@ positive, so $\nu$ is a more natural choice for stochastic updates).}
 %  & = \frac{ (x_{m} - \mu_{1})^2 }{ \exp(\nu_{1}) } - 1 \\ \nonumber
   \partlapprox{ \mathcal{L}_{\mu_1, \nu} }{\nu} \Bigr|_{\nu_{1}} & \approx
   \frac{1}{M} \sum_{m=1}^M \bigg[ \left( \frac{ (x_{m} - \mu_{1})^2 }{ \exp(\nu_{1}) } - 1 \right) \\ \nonumber
-  & \hspace{-30pt} \times \left( \log p(x_m, y) - \log q_{\mu_1, \nu_1}(x_m) \right) \bigg]. \\ \nonumber
+  & \hspace{-30pt} \times \left( \log p(x_m, y) - \log q_{\mu_1, \nu_1}(x_m) \right) \bigg]. \nonumber
 \end{align}
 The variance is then updated with Equation~\ref{equation:svo_update}:
 $ \nu_2~\gets \nu_{1} + \frac{\eta_\nu}{1^k} \partlapprox{ \mathcal{L}_{\mu_1, \nu} }{\nu} \bigr|_{\nu_{1}}$ .
@@ -526,7 +526,7 @@ variational objective $\mathcal{L}_\theta$
 current estimate $\theta_0$:
 \begin{align}
   \mathcal{L}_\theta \approx & \mathcal{L}_{\theta_0} + ( \partl{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_0} )^T \Delta_\theta
- + \Delta_\theta^T ( \frac{\delta^2 \mathcal{L}_\theta }{\delta \theta \delta \theta^T} \Bigr|_{\theta_0} ) \Delta_\theta, \\ \nonumber
+ + \Delta_\theta^T ( \frac{\delta^2 \mathcal{L}_\theta }{\delta \theta \delta \theta^T} \Bigr|_{\theta_0} ) \Delta_\theta, \nonumber
 \end{align}
 where $\Delta_\theta = \theta - \theta_0$.  This approximation becomes
 exact as $\theta_0$ approaches the optimal solution.
@@ -540,7 +540,7 @@ empirically with samples:
   \frac{1}{M} \sum_M \Bigg(
   \left( \partl{\log q_\theta(x_{nm})}{\theta} \Bigr|_{\theta_0} \right)^2 \\ \nonumber
   & \hspace{35pt} \times \left( \log p(x_{nm},  y) - \log q_{\theta_0}(x_{nm}) - 1 \right)  \\ \nonumber
- &   \hspace{-25pt} + \left( \partll{\log q_\theta(x_{nm})}{\theta} \Bigr|_{\theta_0} \right) \left( \log p(x_{nm},  y) - \log q_{\theta_0}(x_{nm}) \right) \Bigg). \\ \nonumber
+ &   \hspace{-25pt} + \left( \partll{\log q_\theta(x_{nm})}{\theta} \Bigr|_{\theta_0} \right) \left( \log p(x_{nm},  y) - \log q_{\theta_0}(x_{nm}) \right) \Bigg). \nonumber
 \end{align}
 The estimate of the optimum is then
 \begin{align}
