@@ -4,30 +4,49 @@ A fundamental problem in research and industry is that of organizing
 collections of documents.  In many cases this problem can be reduced
 to identifying those documents which have been the most influential.
 This is an important and common problem in many fields, including
-political science, history, and academic research.  Influence
-measurements are used to assess the quality of academic instruments,
-such as journals, scientists, and universities; and they can play a
-role in decisions surrounding publishing and funding. These
-measurements are critical for academic researchers: find and reading
-the influential articles of a field is central to good research
-practice.  They are also significant in industry, as laws such as
-Sarbanes Oxley require public companies to retain documents, and for
-litigators searching through documents.
+research in academic fields such as political science, history, and
+science.  Influence measurements are used to assess the quality of
+academic instruments, such as journals, scientists, and universities;
+and they can play a role in decisions surrounding publishing and
+funding. These measurements are critical for academic researchers:
+find and reading the influential articles of a field is central to
+good research practice.  They are also significant in industry, as
+regulations such as Sarbanes Oxley require public companies to retain
+documents.
 
-With the advent of email and digital collections, researchers of all
-types now have at their disposal a large catalog of previous work.
-Their challenge is finding articles that are important and interesting
-while wading through articles that are not.  In some cases they can
-take advantage of citations or other links, but sometimes explicit
-links are missing.
+E-discovery is another field which faces this challenge of .  As a
+recent New York Times article notes the immense need for such tools in
+industry:
+\begin{quote}
+  \emph{[In 1978] the studios examined six million documents at a
+    cost of more than \$2.2 million, much of it to pay for a platoon
+    of lawyers and paralegals who worked for months at high hourly
+    rates.  In January, for example, Blackstone Discovery of Palo
+    Alto, Calif., helped analyze 1.5 million documents for less than
+    \$100,000...}
+
+  \emph{The economic impact will be huge,” said Tom Mitchell, chairman
+    of the machine learning department at Carnegie Mellon University
+    in Pittsburgh. 'We’re at the beginning of a 10-year period where
+    we’re going to transition from computers that can’t understand
+    language to a point where computers can understand quite a bit
+    about language} \cite{markoff:2011}.
+\end{quote}
+
+The article continues, noting that recent solutions use either
+keyword-based search methods or take advantage of metadata such as
+citations or links in emails, which can be helpful when available.
+Metadata can be a boon for finding the most influential documents in a
+collection, but often such metadata is unavailable.
 
 In this chapter, we will describe an approach to identifying
 influential articles in a collection without the use of citations.
 The key assumption of our method is that an influential article will
 affect how future articles are written and that this effect can be
 detected by examining the way corpus statistics change over time.  We
-encode this intuition in a time-series model of sequential document
-collections.
+will take advantage of the tools discussed in the last chapter by
+using them to encode this intuition in a model to measure influence in
+sequential collections of documents.
 
 \subsection*{Measuring influence with citations}
 

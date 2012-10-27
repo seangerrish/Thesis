@@ -1,11 +1,11 @@
-\subsection*{Sparsity.}
+\subsection{Sparsity}
 Issue adjustments $\bm z_u$ ranged widely, moving some lawmakers
 significantly. The variational estimates were not sparse, although a
 high mass was concentrated around 0. Twenty-nine percent of issue
 adjustments were within $[-0.01, 0.01]$, and eighty-seven percent of
 issue adjustments were within $[-0.1, 0.1]$.
 
-\subsection*{Hyperparameter settings}
+\subsection{Hyperparameter settings}
 The most obvious parameter in the issue voting model is the
 regularization term $\lambda$. The Bayesian treatment described in
 the Inference section of \emph{How they Vote} demonstrated considerable robustness
@@ -17,7 +17,7 @@ We recommend a modest value of $1 < \theta < 10$.  At this value, the model
 outperforms ideal points in validation experiments on both the House
 and Senate while maintaining stability in the two-stage model.
 
-\subsection*{Implementation.}
+\subsection{Implementation}
 %% %% This was not a problem in more recent runs.
 %% In rare circumstances, the variational and MAP estimates
 %% resulted in degenerate solutions, in which the model performed no
@@ -32,8 +32,8 @@ estimated Hessian was not positive definite (this disappeared when
 sample sizes grew large enough).  We also limited step sizes to 0.1
 (another possible reason for smaller coefficients).
 
-\subsection*{Issue labels}
-\label{section:issue_issue_labels}
+\subsection{Issue labels}
+\label{sec:issue_labels}
 
 In the empirical analysis, we used issue labels obtained from the
 Congressional Research Service.  There were $5,861$ labels, ranging
@@ -145,8 +145,8 @@ Table~\ref{table:issues}.
   \label{table:issues}
 \end{table*}
 
-\subsection*{Corpus preparation}
-\label{section:issue_corpus_preparation}
+\subsection{Corpus preparation}
+\label{sec:issue_corpus_preparation}
 In this section we provide further details of vocabulary selection.
 We began by considering all phrases with one to five words.  From
 these, we immediately ignored phrases which occurred in more than

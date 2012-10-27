@@ -115,13 +115,13 @@ where
  H_{sn} &=& \mathbb{E}_q \big[ \exp(-2 \beta_{s,k,n}) \left( (\W_{s,k,n} \circ z_{s,k,n} ) \ell_{s,k} \right)^2 \big].
 \end{eqnarray*}
 
-We expand $H_t$ in Appendix~\mysec{section:docinf_appendix}. Note also
+We expand $H_t$ in \myapp{docinf_appendix}. Note also
 that we have added the additional variational parameter $\zeta_t$ and
 the term $\partl{\mv_{tn}}{\bv_{sn}}$, which are both described in
 Blei and Lafferty \cite{blei:2006}. The % citet
 former can be updated once per iteration with $\zeta_t \gets \sum_w
 \exp(\mv_{t,n} + \vv_{t,n}/2)$. The latter can be derived from the
-variational Kalman filter updates (see the Appendix~\mysec{section:docinf_appendix} and
+variational Kalman filter updates (see \myapp{docinf_appendix} and
 Blei and Lafferty \cite{blei:2006}).
 
 \paragraph{Influence values.}

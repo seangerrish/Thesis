@@ -1,5 +1,6 @@
 \chapter{Optimizing the variational bound stochastically}
 \label{chapter:stochastic_variational_optimization}
+\label{sec:stochastic_variational_optimization}
 
 Estimating an arbitrary probability distribution $p(x)$ is a
 fundamental problem in statistical modeling.  This problem arises in
@@ -9,7 +10,7 @@ There are two main classes of solutions---Markov chain Monte Carlo
 (MCMC)~\cite{bishop:2006} and variational methods~\cite{jordan:1999}.
 In MCMC, we define a Markov chain whose stationary distribution is the
 target distribution.  We run the chain to try to collect independent
-samples from the stationary distribution, and then use them to form an
+samples from the stationary distribution, and then usxbe them to form an
 approximation.  In variational inference, we posit a parameterized
 family of distributions $q_\theta(x)$ and find the member of that
 family that is ``closest'' to the true posterior.  This turns the
@@ -105,7 +106,7 @@ $p(x | y)$,
 \begin{align}
   \arg \min_{\theta} \mbox{KL}(q_\theta || p) = \arg \min_{\theta}
   \int q_\theta(x) \log \frac{q_\theta(x)}{p(x | y)} dx.
-  \label{equation:stochastic_variational_objective}
+  \label{eq:stochastic_variational_objective}
 \end{align}
 We select the family to make this optimization problem tractable.  A
 commonly chosen family is the mean-field family, where the variational
@@ -129,7 +130,7 @@ the ``evidence lower bound'' (ELBO) $\mathcal{L}_\theta$:
 \begin{eqnarray}
   \log p(y) \ge \expectq{\log p(x, y) - \log q_\theta(x)}
   =: \mathcal{L}_\theta,
-  \label{equation:stochastic_traditional_variational_objective}
+  \label{eq:stochastic_traditional_variational_objective}
 \end{eqnarray}
 where the slack of the bound is equal to the KL divergence from
 \myeq{stochastic_variational_objective}.  Typical variational inference
@@ -195,7 +196,7 @@ $q_\theta(x)$, and $\nabla \log q_\theta(x)$.
 % optimized sequentially by using a gradient of the objective for each
 % \emph{iid} training example $x_1, \ldots, x_N \sim \mathcal{D}$:
 % \begin{align}
-%   \label{equation:stochastic_optimization}
+%   \label{eq:stochastic_optimization}
 %   \theta_n \gets \theta_{n-1} + \frac{\eta}{n^k} \partl{f(x_n, \theta)}{\theta} \Bigr|_{\theta_{n-1}},
 % \end{align}
 % \paragraph{Stochastic optimization applied to our method}
@@ -203,8 +204,8 @@ $q_\theta(x)$, and $\nabla \log q_\theta(x)$.
 %$\partlapprox{\mathcal{L}_\theta}{\theta}$ of our objective.  To this
 
 We now show that the gradient of
-\myeq{equation:stochastic_traditional_variational_objective} can be written as an
-expectation.  We first exchange integration and
+\myeq{stochastic_traditional_variational_objective} can be written
+as an expectation.  We first exchange integration and
 differentiation\footnote{This assumes the support of $q_\theta$ is not
   a function of $\theta$, and that $\log q_\theta(x)$ and $\nabla \log
   q_\theta(x)$ are continuous with respect to $\theta$.}, and apply
@@ -221,7 +222,7 @@ the chain the rule,
 We can write this as an expectation by using the identity
 $q_\theta(x) \nabla \log q_\theta(x) = \nabla q_\theta(x)$,
 \begin{align}
-  \label{equation:gradient-as-expectation}
+  \label{eq:gradient-as-expectation}
   \nabla \mathcal{L}_\theta =
   \expectq{\nabla \log q_\theta(x) \left(\log p(x,y) - \log
       q_{\theta}(x) - 1 \right)}
@@ -231,7 +232,7 @@ gradient at $\theta = \theta_0$.  We obtain $M$ samples from the
 variational distribution $q_{\theta_0}(x)$, $\{x_{1}, \ldots, x_{M}\}$
 and approximate,
 \begin{align}
-  \label{equation:svo_gradient}
+  \label{eq:svo_gradient}
   \nabla \mathcal{L}_\theta \approx \frac{1}{M} \sum_{m=1}^M
   \nabla \log q_{\theta}(x_{m}) \Bigr|_{\theta_0}
   (\log p(x_{m} , y) - \log q_{\theta_0}(x_{m}) - C).
@@ -292,7 +293,7 @@ Monte-Carlo samples from the previous distribution $q_{\theta_{n-1}}$
 to stochastically estimate the gradient to find the next
 distribution:
 \begin{align}
-  \label{equation:svo_update}
+  \label{eq:svo_update}
   \theta_n \gets & \theta_{n-1} +
   \frac{\eta}{n^k} \partlapprox{\mathcal{L}_\theta }{ \theta } \Bigr|_{\theta_{n-1}},
 \end{align}
@@ -304,7 +305,7 @@ where $\eta > 0$ is a learning rate parameter and $k \in (0.5, 1.0]$
 % \emph{minibatch} for a better estimate $\sum_M \partl{f(x_m,
 %   \theta)}{\theta}$ of the gradient.
 We call this method first-order Stochastic Variational Optimization
-(SVO) and summarize it in Algorithm 1. % ~\ref{figure:first_order_algorithm}.
+(SVO) and summarize it in Algorithm 1. % ~\ref{fig:first_order_algorithm}.
 
 \textbf{Convergence.} We apply these updates until a predefined
 convergence criterion is met (we give details in the next section).
@@ -319,7 +320,7 @@ practice.
 \subsubsection{Example: Gaussian variational marginal}
 \label{section:gaussian}
 In the next section we will describe ways to improve this gradient
-ascent algorithm (Equation~\ref{equation:svo_update}), but first we
+ascent algorithm (Equation~\ref{eq:svo_update}), but first we
 illustrate this method by estimating an ``unknown'' posterior with a
 Gaussian variational posterior.
 
@@ -328,7 +329,7 @@ is a synthetic distribution: a unimodal mixture of two Gaussians,
 $\mathcal{N}(x | 5.1, 12)$ (with component weight 0.5) and
 $\mathcal{N}(x | 5, 3)$ (with component weight 1).  We illustrate this
 distribution in
-Figure~\ref{figure:univariate_comparison_approximation}.  We will make
+\myfig{univariate_comparison_approximation}.  We will make
 only the joint likelihood $\log p(x, y)$ of this posterior available
 to SVO (note that $y$ is a dummy variable in this example).
 \begin{figure}[t!]
@@ -338,7 +339,7 @@ to SVO (note that $y$ is a dummy variable in this example).
   \vspace{-20pt}
   \caption{A non-conjugate posterior density (dashed) and a Gaussian
   variational approximation (solid).}
-  \label{figure:univariate_comparison_approximation}
+  \label{fig:univariate_comparison_approximation}
 \end{figure}
 
 We initialize the Gaussian variational posterior to the distribution
@@ -347,14 +348,14 @@ with $\mu_1=0$ and $\sigma_1^2=4$. We proceed by drawing samples $x_1,
 \ldots, x_{15} \sim N(x | \mu_1, \sigma_1^2)$ and calculating, for each
 sample, the gradients
 \begin{align}
-  \label{equation:gaussian_mean_gradient}
+  \label{eq:gaussian_mean_gradient}
   \partl{\log q_{\mu, \sigma_1^2}(x_m)}{\mu} \Bigr|_{\mu_{n1}}
   = \partl{}{\mu} \frac{-(x_m - \mu)^2}{2 \sigma_1^2} \Bigr|_{\mu_{1}}
   = \frac{x_m - \mu_1}{\sigma_1^2},
 \end{align}
 using the Gaussian density $q_{\mu_1, \sigma_1^2}$.  We
 estimate a gradient of the objective by combining these samples
-(Equation~\ref{equation:svo_gradient})
+(Equation~\ref{eq:svo_gradient})
 \begin{align}
   \partlapprox{\mathcal{L}_{\mu, \sigma_1^2}}{\mu} \Bigr|_{\mu_{1}} &
   %    & \hspace{-65pt}
@@ -377,12 +378,12 @@ estimate a gradient of the objective by combining these samples
   vs. second-order updates (top vs. bottom); and estimating gradients
   using \emph{iid} samples from $q$ vs. quasi-Monte Carlo samples from
   $q$ (left vs. right).}
-  \label{figure:comparision_order_sampling}
+  \label{fig:comparision_order_sampling}
   \vspace{-15pt}
 \end{figure}
-and finally update the mean $\mu$ (Equation~\ref{equation:svo_update}):
+and finally update the mean $\mu$ (Equation~\ref{eq:svo_update}):
 \begin{align}
-  \label{equation:gaussian_mean}
+  \label{eq:gaussian_mean}
   \mu_2 \gets \mu_{1}
     + \frac{\eta_\mu}{1^k}
     \partlapprox{ \mathcal{L}_{\mu, \sigma_1^2} }{\mu} \Bigr|_{\mu_{1}}.
@@ -391,21 +392,21 @@ The update for variance is similar, but we optimize $\nu = \log
 \sigma^2$ instead of $\sigma^2$:\footnote{$\sigma^2$ must be strictly
 positive, so $\nu$ is a more natural choice for stochastic updates).}
 \begin{align}
-  \label{equation:gaussian_variance_gradient}
+  \label{eq:gaussian_variance_gradient}
 %  \partl{\log q_{\mu, \nu_1}(x)}{\nu} \Bigr|_{\nu_{1}}
 %  & = \frac{ (x_{m} - \mu_{1})^2 }{ \exp(\nu_{1}) } - 1 \\ \nonumber
   \partlapprox{ \mathcal{L}_{\mu_1, \nu} }{\nu} \Bigr|_{\nu_{1}} & \approx
   \frac{1}{M} \sum_{m=1}^M \bigg[ \left( \frac{ (x_{m} - \mu_{1})^2 }{ \exp(\nu_{1}) } - 1 \right) \\ \nonumber
   & \hspace{-30pt} \times \left( \log p(x_m, y) - \log q_{\mu_1, \nu_1}(x_m) \right) \bigg]. \nonumber
 \end{align}
-The variance is then updated with Equation~\ref{equation:svo_update}:
+The variance is then updated with Equation~\ref{eq:svo_update}:
 $ \nu_2~\gets \nu_{1} + \frac{\eta_\nu}{1^k} \partlapprox{ \mathcal{L}_{\mu_1, \nu} }{\nu} \bigr|_{\nu_{1}}$ .
 
 
 \paragraph{Testing convergence.}
 We repeated this process for iterations $n = 1, 2, \ldots$ until
 convergence.  The variational estimate of the mean by the total number of
-samples is shown in Figure~\ref{figure:comparision_order_sampling}
+samples is shown in \myfig{comparision_order_sampling}
 (top-left corner).  To test convergence, we estimated the evidence
 lower bound at each iteration,
 \[
@@ -426,8 +427,8 @@ gradients for Dirichlet and multinomial posteriors, which are
 conjugate to multinomial and indicator random variables respectively,
 in the supplementary materials. To fit these variational
 distributions, we need to compute $\partl{\log q_\theta}{\theta}$ as
-in Equations~\ref{equation:gaussian_mean_gradient}
-and~\ref{equation:gaussian_variance_gradient}; the other steps are
+in Equations~\ref{eq:gaussian_mean_gradient}
+and~\ref{eq:gaussian_variance_gradient}; the other steps are
 mechanical.
 
 \subsection{Improving performance}
@@ -440,9 +441,9 @@ $q_{\theta_n}$, and (2) improving step sizes with second-order updates.
 
 \subsubsection{Minibatch sampling}
 \label{section:minibatch_sampling}
-The stochastic gradients in Equation~\ref{equation:svo_gradient} were
+The stochastic gradients in Equation~\ref{eq:svo_gradient} were
 estimated with ``minibatches'' of $M$ \emph{iid} samples from $q$.  As
-Figure~\ref{figure:comparision_order_sampling} (top left) shows, the
+\myfig{comparision_order_sampling} (top left) shows, the
 first-order estimate may need many samples to reach satisfactory
 convergence, a common observation in stochastic optimization.
 
@@ -466,7 +467,7 @@ each of the $D$ distributions, randomly permute samples from each
 distribution, and group them into $M$ $D$-variate samples. We increase
 the number of samples as the algorithm converges as described in the
 experiments section
-\cite{wei:1990}. Figure~\ref{figure:comparision_order_sampling} (top
+\cite{wei:1990}. \myfig{comparision_order_sampling} (top
 right) illustrates the effect of quasi-Monte Carlo sampling on
 convergence of SVO.
 
@@ -494,9 +495,9 @@ independent), SVO does not require sequential samples.
     \STATE Draw samples $x_{n1}, \ldots, x_{nM} \sim q_{\theta_{n - 1}}$ using quasi-Monte Carlo sampling.
     \STATE Compute $\partl{\log q_{\theta_n}(x_{nm})}{\theta} \Bigr|_{\theta_{n-1}}$ and
     $\partll{\log q_{\theta_n}(x_{nm})}{\theta} \Bigr|_{\theta_{n-1}}$. % for $m = 1 \ldots, M$.
-    \STATE Estimate $\partl{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_{n-1}}$ using Equation~\ref{equation:svo_gradient}.
-    \STATE Estimate $\partll{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_{n-1}}$ using Equation~\ref{equation:empirical_second_order_estimates}.
-    \STATE Update $\theta$, using Equation \ref{equation:second_order_updates}:
+    \STATE Estimate $\partl{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_{n-1}}$ using Equation~\ref{eq:svo_gradient}.
+    \STATE Estimate $\partll{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_{n-1}}$ using Equation~\ref{eq:empirical_second_order_estimates}.
+    \STATE Update $\theta$, using Equation \ref{eq:second_order_updates}:
         \vspace{-10pt}
 	\begin{align*}
      	   \displaystyle \theta_n \gets \theta_{n-1} - \left( 
@@ -509,7 +510,7 @@ independent), SVO does not require sequential samples.
    \end{algorithmic}
      \caption{Second-order SVO. We begin with a variational distribution
        $q_{\theta_0}(x)$ and joint likelihood $p(x, y)$.  }
-     \label{figure:second_order_algorithm}
+     \label{fig:second_order_algorithm}
 \end{figure}
 %   \end{algorithm}
 
@@ -522,7 +523,7 @@ are sometimes used in stochastic optimization
 \citet{carbonetto:2009} and \citet{wei:1990}.  To derive the
 second-order updates, we make a Taylor approximation of the
 variational objective $\mathcal{L}_\theta$
-(Equation~\ref{equation:stochastic_traditional_variational_objective}) around the
+(Equation~\ref{eq:stochastic_traditional_variational_objective}) around the
 current estimate $\theta_0$:
 \begin{align}
   \mathcal{L}_\theta \approx & \mathcal{L}_{\theta_0} + ( \partl{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_0} )^T \Delta_\theta
@@ -535,7 +536,7 @@ In addition to estimating the gradient $\partl{\mathcal{L}_\theta }{\theta} \Big
 $\partll{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_0}$
 empirically with samples:
 \begin{align}
-  \label{equation:empirical_second_order_estimates}
+  \label{eq:empirical_second_order_estimates}
   \displaystyle \partll{\mathcal{L}_\theta }{\theta} & \approx
   \frac{1}{M} \sum_M \Bigg(
   \left( \partl{\log q_\theta(x_{nm})}{\theta} \Bigr|_{\theta_0} \right)^2 \\ \nonumber
@@ -548,15 +549,15 @@ The estimate of the optimum is then
   \partll{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_0}
   \right)^{-1}
   \partl{\mathcal{L}_\theta }{\theta} \Bigr|_{\theta_0}.
-  \label{equation:second_order_updates}
+  \label{eq:second_order_updates}
 \end{align}
 This algorithm is summarized in
-Figure~\ref{figure:second_order_algorithm}, and it can be used instead
+\myfig{second_order_algorithm}, and it can be used instead
 of the first-order algorithm
-(Figure~\ref{figure:first_order_algorithm}), just as in stochastic
+(\myfig{first_order_algorithm}), just as in stochastic
 optimization \cite{bottou:2004}.  The results of applying this
 algorithm to the synthetic dataset described in the last section is
-shown in Figure~\ref{figure:comparision_order_sampling} (bottom two
+shown in \myfig{comparision_order_sampling} (bottom two
 panels).  Second order methods can help to avoid both high variance in
 a posterior estimate and poor learning rates.
 
@@ -690,7 +691,7 @@ approaches the posterior mean much more quickly than the MH estimate.
       red: estimated mean of the posterior using a Metropolis-Hastings
       sampler. Shaded: 95\% confidence intervals of the mean
       estimate from an oracle sampler.}
-  \label{figure:univariate_comparison}
+  \label{fig:univariate_comparison}
 }
 
 \newcommand{\changepointdata}[0]{
@@ -717,7 +718,7 @@ approaches the posterior mean much more quickly than the MH estimate.
   \vspace{5pt}
   \caption{Well-log data (grey) fit with a variational switching
     Kalman filter. The inferred means $\bar \mu_{t}$ of the filter are shown in black.  Each timestamp also has an associated variational change point $\bar c_t$ which indicates the probability that the filter is making a large transition.  Transitions at change points with mean $\bar c_t > \frac{1}{2}$ are marked in red.}
-  \label{figure:switching_kalman_filter}
+  \label{fig:switching_kalman_filter}
 }
 
 \newcommand{\irtdata}[0]{
@@ -758,8 +759,8 @@ approaches the posterior mean much more quickly than the MH estimate.
     error (MSE) on heldout observations. We also estimate MSE against
     the ``True'' posterior means, estimated using long Gibbs runs
     (500K and 50K samples for left and right respectively).  }
-  \label{figure:changepoint_results}
-  \label{figure:irt_results}
+  \label{fig:changepoint_results}
+  \label{fig:irt_results}
 \end{figure*}
 
 \begin{figure*}
@@ -793,7 +794,7 @@ able to draw \emph{iid} samples from p(x, y) to estimate the mean.
 For each sample size $M$, we explicitly calculate the 95\% standard
 error confidence intervals of an estimated mean from $M$ samples.  We
 plot these error bars around the true mean in
-Figure~\ref{figure:univariate_comparison}.  Even with a perfect
+\myfig{univariate_comparison}.  Even with a perfect
 sampler, an estimate of the mean takes much longer to converge than
 univariate SVO.
 
@@ -954,7 +955,7 @@ avenues for future work.
 % variational Gaussian posterior and a variational Laplace posterior.
 % In each case, we fixed $\lambda = 50$.
 
-% Figure~\ref{figure:gaussian_vs_laplace} shows coefficients fit from
+% Figure~\ref{fig:gaussian_vs_laplace} shows coefficients fit from
 % both of these models.  The variational posterior, as expected, tends
 % to push its coefficients toward zero.  The two posteriors performed
 % nearly equally: the Gaussian posterior was slightly better in the
@@ -972,10 +973,10 @@ avenues for future work.
 % %%     Solid points are coefficient values fit with a Laplace posterior,
 % %%     and hollow points are values fit with a Gaussian posterior. (a),
 % %%     (b), and (c) are the car, ionosphere, and segment datasets, respectively.}
-% %%   \label{figure:gaussian_vs_laplace}
+% %%   \label{fig:gaussian_vs_laplace}
 % %% \end{figure*}
 % The reader may note that the \verb!statlog! Laplace coefficients shown
-% in Figure~\ref{figure:gaussian_vs_laplace} do not always agree with
+% in Figure~\ref{fig:gaussian_vs_laplace} do not always agree with
 % the Gaussian coefficients.  Upon inspection, we found that the
 % variational Laplace solutions were fairly uncorrelated in successive
 % runs (e.g., $\rho=0.34, 0.25, 0.40$), while the Gaussian posteriors
@@ -998,7 +999,7 @@ avenues for future work.
 %     line is a Metropolis estimate of the mean after 50,000 iterations.  Right: an
 %     illustration of the variational approximation of the true density
 %     (the variational distribution and true density are the same line)}
-%   \label{figure:convergence1}
+%   \label{fig:convergence1}
 % \end{figure}
 
 % \begin{figure}
@@ -1011,7 +1012,7 @@ avenues for future work.
 %     horizontal line is a Metropolis estimate of the mean after 50,000
 %     iterations.  Right: an illustration of the variational
 %     approximation of the true density.}
-%   \label{figure:convergence2}
+%   \label{fig:convergence2}
 % \end{figure}
 
 % \begin{figure}
@@ -1026,7 +1027,7 @@ avenues for future work.
 %     is a Metropolis estimate of the mean after 50,000 iterations.
 %     Right: an illustration of the variational approximation of the
 %     true density.}
-%   \label{figure:convergence3}
+%   \label{fig:convergence3}
 % \end{figure}
 
 %% \subsection{Variational linear regression}
@@ -1093,7 +1094,7 @@ forming superior predictive distributions to competing algorithms.
 
 % %% A final benefit of SVO is that it has an explicit, commonly used
 % %% objective function.
-% %% %% Then the objective (Equation~\ref{equation:objective}) measures the
+% %% %% Then the objective (Equation~\ref{eq:objective}) measures the
 % %% %% goodness-of-fit and has an upper bound of zero. 
 % %% Progress and convergence of the algorithm can be monitored with this
 % %% objective even when the posterior is unnormalized.

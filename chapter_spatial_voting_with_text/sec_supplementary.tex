@@ -1,6 +1,7 @@
 \newcommand{\Ell}{\mathcal{L}}
 
-\subsection*{Variational inference}
+\subsection*{Variational inference for the ideal point topic model}
+\label{sec:iptm_app_variational_inference}
 
 Inference for the ideal point topic model requires variational updates
 (see \cite{jordan:1999} for more details about variational inference).
@@ -142,7 +143,8 @@ $\sigma_d^2$ to 1.0 before the first iteration and update it with $y
 \gets y^{0.9} (\sigma_d^2)^{0.1}$ in a form of ``variational
 annealing''.  We apply the same annealing to $\sigma_u$.
 
-\section{Experimental Results.}
+\section{Experimental Results}
+\label{sec:iptm_app_experimental_results}
 The experimental results for cross-fold validation are presented in
 \myfig{prediction_stats}.  Top performers by various metrics are
 highlighted in bold.

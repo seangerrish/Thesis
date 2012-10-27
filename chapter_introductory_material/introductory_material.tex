@@ -26,7 +26,7 @@ context.  Multivariate random variables such as vectors are given by
 boldface, and collections of random variables are given by uppercase
 Roman characters.
 
-The reader may find \mytab{table:notation} a helpful resource in the
+The reader may find \mytab{notation} a helpful resource in the
 subsequent chapters.  This table summarizes many of the variables
 described in this work.
 \begin{figure}
@@ -58,7 +58,7 @@ described in this work.
       \hline
     \end{tabular}
   \end{center}
-  \label{table:notation}
+  \label{fig:notation}
 \end{figure}
 When we refer to a variable, we will sometimes subscript it with
 multiple indices.  For example, in the next chapter, we will refer to
@@ -392,11 +392,13 @@ In the vast majority of cases, the practitioner observes the words of
 a set of documents and seeks to learn the topics that describe these
 documents.
 
-Before describing how to fit such a model, we point the reader to the four
-example topics from LDA in Table~\ref{table:example_lda_topics}.  Note that some
-of these ``words'' are instead phrases.  This can be done by creating
-a vocabulary of phrases instead of words and describing documents as a
-mixture of phrases.  We will describe how to select a vocabulary of these phrases in Appendix~\ref{sec:issue_corpus_preparation}.
+Before describing how to fit such a model, we point the reader to the
+four example topics from LDA in \mytab{example_lda_topics}.  Note that
+some of these ``words'' are instead phrases.  This can be done by
+creating a vocabulary of phrases instead of words and describing
+documents as a mixture of phrases.  We will describe how to select a
+vocabulary of these phrases in
+\myapp{issue_corpus_preparation}.
 \begin{table}
   \caption{Example topics from Latent Dirichlet Allocation fit to sentences from the the textbook \emph{Biology} by Campbell and Reece.  This is a small subset of the 1000 topics. (These topics were provided by Ricky Wong.)}
   \center  \begin{tabular}{|c|c|c|c|}
@@ -416,7 +418,7 @@ mixture of phrases.  We will describe how to select a vocabulary of these phrase
     cell & effects & mortality & feed \\
     \hline
   \end{tabular}
-  \label{table:example_lda_topics}
+  \label{fig:example_lda_topics}
 \end{table}
 
 \subsubsection{Inference}
