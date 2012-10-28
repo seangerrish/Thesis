@@ -215,11 +215,20 @@ in modeling various social science phenomena.
 
 \paragraph{Inferring lawmakers' preferences.}
 
-In \mychap{spatial_voting} I will extend existing spatial models to
-better understand how Congressmen feel about different issues.  I
-begin with a model which is able to predict how lawmakers will vote on
-previously-unseen bills.  I will also describe a method for learning
-lawmakers' issue preferences from their votes on different issues.
+In Chapters~\ref{chapter:predicting_votes}
+and~\ref{chapter:issue_adjustments} I will extend existing spatial
+models to better understand how congresspersons interact with bills.
+I begin with a model which is able to predict how lawmakers will vote
+on previously-unseen bills in \mychap{predicting_votes}, where I will
+demonstrate that we can predict lawmakers' votes with high accuracy
+given the text of the bills on which they vote.
+
+For those congresspersons not predicted well by the text model, I will
+extend existing spatial models to better understand how Congressmen
+feel about different issues in \mychap{issue_adjustments}.  I will
+describe a method for inferring the legislative issues defining an
+item of legislation and demonstrate that legislators' votes can be
+better understood by describing their positions on different issues.
 
 These models contrast with those in chapters 3 and 4 in that I ignore
 documents' timestamps.  I will use some of the same ideas from Chapter
@@ -230,9 +239,8 @@ interactions can provide insight into the interaction.
 \paragraph{Additional materials.}
 In Appendix~\ref{chapter:stochastic_variational_optimization} I
 discuss details of a new variational inference algorithm which is used
-in \mychap{spatial_voting}.  This Appendix can be treated as a
+in \mychap{issue_adjustments}.  This Appendix can be treated as a
 stand-alone contribution of this thesis, making a quantitative rather
 than a substantive contribution.  I provide additional supplementary
 information for these chapters in
-Appendix~\ref{chapter:supplementary_materials} as well as notes on
-analysis of text datasets in Appendix~\ref{chapter:notes_text}.
+Appendix~\ref{chapter:supplementary_materials}.
