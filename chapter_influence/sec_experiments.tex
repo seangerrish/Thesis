@@ -1,9 +1,9 @@
 \section{Empirical study}
 
-We studied three collections of scientific articles and a collection
-of opinions written by judges in the New York Appellate Court system.
-For each corpus, we estimated and examined the posterior distributions
-of its articles' influence.
+We studied the DIM with four text corpora: three collections of
+scientific articles and a collection of opinions written by judges in
+the New York Appellate Court system.  For each corpus, we estimated
+and examined the posterior distributions of its articles' influence.
 
 In this section, we demonstrate that the estimate of an article's
 influence is robustly correlated to the number of citations it
@@ -41,22 +41,23 @@ exploratory tool of influential articles.
 
 The three scientific corpora we analyzed were the \emph{ACL
   Anthology}, \emph{The Proceedings of the National Academy of
-  Science}, and the journal \emph{Nature}.  For each corpus, we
-removed short documents, terms that occurred in too few documents, and
-terms that occurred in too many documents.  We also removed terms
-whose statistics did not vary over the course of the collection, as
-such terms would not be useful for assessing change in language (a
-sample of such non-varying terms from \emph{Nature} is ``ordinarily'',
+  Science}, and the journal \emph{Nature} (we discuss the New York
+Courts in a later section).  For each corpus, we removed short
+documents, terms that occurred in too few documents, and terms that
+occurred in too many documents.  We also removed terms whose
+statistics did not vary over the course of the collection, as such
+terms would not be useful for assessing change in language (a sample
+of such non-varying terms from \emph{Nature} is ``ordinarily'',
 ``shake'', ``centimetre'', ``traffic'', and ``themselves'').
 
 \textbf{ACL Anthology.} The \emph{Association for Computational
   Linguistics Anthology} is a digital collection of publications about
 computational linguistics and natural language
-processing~\cite{bird:2008}.  We analyzed a 50\% sample from this
+processing~\citep{bird:2008}.  We analyzed a 50\% sample from this
 anthology, spanning 1964 to 2002.  Our sample contains 7,561
 articles and 11,763 unique terms after preprocessing.  For this corpus
 we used article citation counts from the \emph{ACL Anthology
-  Network}~\cite{Radev:2009}.
+  Network}~\citep{Radev:2009}.
 
 \textbf{PNAS.} The \emph{Proceedings of the National Academy of
   Sciences} is a leading, highly-cited, multidisciplinary scientific
@@ -67,7 +68,7 @@ distinct terms after preprocessing.  We found citations using Google
 Scholar for 78\% of this collection.
 
 \textbf{Nature.} The journal \emph{Nature} is the world's most highly
-cited interdisciplinary science journal~\cite{Thompson:2009} with
+cited interdisciplinary science journal~\citep{Thompson:2009} with
 content on a range of scientific fields. We analyzed a $10\%$
 sample from this corpus, spanning 1869 (when it was founded) to
 2008.  Our sample contains 34,418 articles and 6,125 distinct terms
@@ -277,13 +278,13 @@ potential confounders.
 \subsection*{A closer look}
 Experiments showing correlation with citations demonstrate consistency
 with existing bibliometrics. However, the DIM also finds qualitatively
-different articles than citation counts. In this section we describe
-several documents to give the reader an intuition behind the kind of
-analysis that the DIM provides.
+different articles than a bibliometric based on citation counts
+finds. In this section we describe several documents to give the
+reader an intuition behind the kind of analysis that the DIM provides.
 
 \paragraph{IBM Model 3} The second-most cited article in the \emph{ACL
   Anthology Network} is \emph{The Mathematics of Statistical Machine
-  Translation: Parameter Estimation}~\cite{brown:1993}. It has 450
+  Translation: Parameter Estimation}~\citep{brown:1993}. It has 450
 intra-\emph{ACL} citations and 2,130 total citations listed on Google
 Scholar.  This seminal work describes parameter estimation for five
 word-based statistical models of machine translation; it provided
@@ -305,7 +306,7 @@ author or the corpus).
 \paragraph{The Penn Treebank}
 The most-cited article in our subset of the \emph{ACL Anthology
   Network} is \emph{Building a large annotated corpus of English: the
-  Penn Treebank} \cite{marcus:1993}, with 1,622 \emph{ACL} citations
+  Penn Treebank} \citep{marcus:1993}, with 1,622 \emph{ACL} citations
 and 2,810 citations on Google Scholar.  This article describes the
 large-scale part-of-speech and syntax tagging of a 4.5-million word
 corpus.  It falls in a topic about part-of-speech tagging and syntax
@@ -351,7 +352,7 @@ articles.  No citation information was available about this article in
 Google Scholar. The column, \emph{How to be Overtaken by Success},
 discusses a debate about the ``Miller bill'', which considers funding
 for postgraduate education
-\cite{Nature.success:1969}. \textit{Overtaken by Success} provides few
+\citep{Nature.success:1969}. \textit{Overtaken by Success} provides few
 research resources to researchers, which may explain lack of citation
 information. Instead, it presciently discusses a paradigm shift in a
 topic about science, industry, research, and education: ''The record
@@ -362,7 +363,7 @@ which are now accumulating within the system of higher education...''
 In 1972, three years after this article's publication, The NSF
 Authorization Act of 1973 made the NSF explicitly responsible for
 science education programs \emph{at all levels}
-\cite{NSF.website:2010}.  Where this may have been missed by those
+\citep{NSF.website:2010}.  Where this may have been missed by those
 using citation counts to study the history of science education, the
 DIM has provided a metric with which to gauge interest in the article.
 
@@ -374,7 +375,7 @@ The sixth most influential document by the DIM in a 20-topic model of
 \emph{Nature} is \emph{Molecular cloning of a cDNA encoding human
   antihaemophilic factor}, an article describing successful
 cloning of a human mRNA sequence important in blood clotting
-\cite{toole:1984}.  With 584 citations, this article is among the top
+\citep{toole:1984}.  With 584 citations, this article is among the top
 0.2\% of these 34,418 documents.  The most active words
 appearing in this article are shown in
 \myfig{words} (right).  The plot shows some of the
@@ -386,7 +387,7 @@ prominent words in the topic.
 The New York Appellate Court system hears appeals cases within the
 state of New York.  This court ``was established to articulate
 statewide principles of law in the context of deciding particular
-lawsuits.''  \cite{nyca_webpage:2012}, acting as a form of ``Supreme
+lawsuits.''  \citep{nyca_webpage:2012}, acting as a form of ``Supreme
 Court'' for the state of New York.  Judges who hear these cases make
 decisions about the cases and write opinions summarizing their
 reasoning for these decisions.  These decisions and opinions are
@@ -406,24 +407,38 @@ reasons for citing opinions; it has been hypothesized by some
 political methodologists that researchers do not cite dissenting
 opinions because dissenting opinions are considered to hold little if
 any legal sway; citing dissenting opinions is therefore seen as a sign
-of weakness \cite{beim:2011}.
+of weakness \citep{beim:2011}.
 
-We analyzed this collection, splitting xxx appellate court cases into
-xxx distinct opinions, written by judges representing the majority
+We analyzed this collection, splitting 9,266 appellate court cases into
+10,618 distinct opinions, written by judges representing the majority
 opinion, a concurrance in part (i.e., supporting the majority decision
 but with a different rationale for reaching that decision), or a
-dissenting opionion.  Our collection contained xxx distinct terms
+dissenting opionion.  Our collection contained 13,568 distinct terms
 after pre-processing. We also scraped citations within this collection
-and found xxx citations.
+and found 37,348 intra-corpus citations.
 
-We then fit a 40-topic model to this collection to discover
-influential documents.  Consistent with the scientific corpora, we
-measured a Spearman rank-correlation coefficient between posterior
-influence scores and the logarithm of citation counts at $\rho=0.24$.
-We illustrate the fraction of citations explained by documents above
-different influence thresholds in
-\myfig{nyca_citations_explained}.  We also briefly discuss the
-results anecdotally below.
+% pwd
+% /n/fs/grash-model/users/sgerrish/nyc_appellate/kq_NYCtApp
+ % cat sgerrish/data/v1.9/v1.9-docs.dat | head
+ % cat sgerrish/data/v1.9/v1.9-docs.dat | cut -f1 -d_
+ % cat sgerrish/data/v1.9/v1.9-docs.dat | cut -f1 -d_ | sort | uniq | wc -l
+ % cat sgerrish/data/v1.9/v1.9-docs.dat | cut -f1 -d, | sort | uniq | wc -l
+ % cat sgerrish/data/v1.9/v1.9-docs.dat | less
+ % ls -lrt sgerrish/src/generate/v1.9/ROADMAP
+ % less sgerrish/src/generate/v1.9/ROADMAP
+ % wc -l sgerrish/data/v1.8/vocab_filtered_v1.8.txt 
+ % less sgerrish/data/v1.9/citation_counts.csv 
+ % cat sgerrish/data/v1.9/citation_counts.csv | cut -f2 -d, | awk 'BEGIN{a=0}{a = a + $1}'
+ % cat sgerrish/data/v1.9/citation_counts.csv | cut -f2 -d, | awk 'BEGIN{a=0}{a = a + $1}END{print a}'
+
+Based on the analysis of the scientific corpora, we fit a 40-topic
+model to this collection to discover influential documents.
+Consistent with the scientific corpora, we measured a Spearman
+rank-correlation coefficient between posterior influence scores and
+the logarithm of citation counts at $\rho=0.24$.  We illustrate the
+fraction of citations explained by documents above different influence
+thresholds in \myfig{nyca_citations_explained}.  Across all four
+corpora, the model is consistently correlated with citation counts.
 
 \begin{figure}
   \center
@@ -434,12 +449,13 @@ results anecdotally below.
 
 
 
-\paragraph{The Cardozo Topic.} Judge Benjamin Cardozo (later Justice
-Cardozo) was one of the most well-known judges in American political
-history.  Cardozo is known for his thoughtful, deliberate opinions and
-is considered to have had an outsize influence on judicial thought.
-One of the more interesting topics discovered by our model in this
-collection identified language which was predominantjuly used by Judge
-Benjamin Cardozo.\footnote{A similar topic was discovered by a dynamic
-  topic model.}  This topic used phrases such as xxx, xxx, and
-xxx. The average ...
+% \paragraph{The Cardozo Topic.} Judge Benjamin Cardozo (later Justice
+% Cardozo) was one of the most well-known judges in American political
+% history.  Cardozo is known for his thoughtful, deliberate opinions and
+% is considered to have had an outsize influence on judicial thought.
+% One of the more interesting topics discovered by our model in this
+% collection identified language which was predominantjuly used by Judge
+% Benjamin Cardozo.\footnote{A similar topic was discovered by a dynamic
+%   topic model.}  This topic used phrases such as xxx, xxx, and
+% xxx. The average ...
+ 

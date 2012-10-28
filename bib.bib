@@ -66,7 +66,7 @@ models",
 @inproceedings{bird:2008,
   author         = "Stephen Bird and Robert Dale and Bonnie J. Dorr and Bryan Gibson and Mark T. Joseph and Min-Yen Kan and Dongwon Lee and Brett Powley and Dragomir R. Radev and Yee Fan Tan",
   title          = "The {ACL Anthology} Reference Corpus: A Reference Dataset for bibliographic research",
-  journal        = "Language Resources and Evaluation",
+  booktitle        = "Language Resources and Evaluation",
   year           = "2008",
 } 
 
@@ -80,7 +80,7 @@ models",
 @inproceedings{deitz:2007,
  author = {Dietz, Laura and Bickel, Steffen and Scheffer, Tobias},
  title = {Unsupervised prediction of citation influences},
- booktitle = {ICML},
+ booktitle = {Proceedings of the International Conference on Machine Learning},
  year = {2007},
 }
 
@@ -95,7 +95,7 @@ models",
   author = {Justin Grimmer and Brandon M. Stewart},
   author = "Blei, David M. and Jordan, Michael",
   title = "Modeling annotated data",
-  journal = "26th annual International ACM SIGIR Conference on Research and Development in Information Retrieval",
+  booktitle = "26th annual International ACM SIGIR Conference on Research and Development in Information Retrieval",
   pages = "127-134",
   year = "2003",
 }
@@ -136,7 +136,7 @@ models",
 
 @Article{hoffman:2010,
     author = {Matthew D. Hoffman and David M. Blei and Francis Bach},
-    title = {Online Learning for Latent Dirichlet Allocation},
+    title = {Online Learning for latent {D}irichlet allocation},
     year = {2010},
     journal = "Advances in Neural Information Processing Systems",
 }
@@ -228,7 +228,7 @@ models",
 
 @Article{agarwal:2010,
   author =    "Deepak Agarwal and Bee-Chung Chen",
-  title = "fLDA: matrix factorization through latent dirichlet allocation",
+  title = "{fLDA}: matrix factorization through latent {D}irichlet allocation",
   journal = "Proceedings of the Third ACM International Conference on Web Search and Data Mining",
   year = "2010",
   pages = "91-100"
@@ -245,10 +245,10 @@ models",
   doi = "10.1561/1500000001",
 }
 
-@Article{ramage:2009,
+@InProceedings{ramage:2009,
   author =       "Daniel Ramage and David Hall and Ramesh Nallapati and Christopher D. Manning",
   title =        "Labeled LDA: A supervised topic model for credit attribution in multi-labeled corpora",
-  journal =      "Proceedings of the 2009 Conference on Empirical Methods in Natural Language Processing",
+  booktitle =      "Proceedings of the 2009 Conference on Empirical Methods in Natural Language Processing",
   year =         "2009",
 }
 
@@ -291,7 +291,7 @@ models",
 
 @Article{clinton:2004,
   author =  "Joshua Clinton and Simon Jackman and Douglas Rivers",
-  title =   "The Statistical Analysis of Roll Call Data,",
+  title =   "The Statistical Analysis of Roll Call Data",
   journal = "American Political Science Review",
   volume = "98",
   number = "2",
@@ -305,7 +305,7 @@ models",
   booktitle =    "The New York Times",
   year =         "2010",
   month =        "September 29",
-  note =         {Accessed 17 Jan 2011 at http://www.nytimes.com/2010/09/30/us/politics/-30cong.html},
+  note =         {Available 17 Jan 2011 at {\tt <}\url{http://www.nytimes.com/2010/09/30/us/politics/-30cong.html}{\tt >}},
 }
 
 @incollection{markoff:2011,
@@ -315,7 +315,7 @@ models",
   year =         "2011",
   day = "4",
   month =        "March",
-  note =         {Accessed October 27 2012 at http://www.nytimes.com/2011/03/05/science/05legal.html?pagewanted=all},
+  note =         {Available October 27 2012 at {\tt <}\url{http://www.nytimes.com/2011/03/05/science/05legal.html?pagewanted=all}{\tt >}},
 }
 
 @Article{martin:2002,
@@ -419,54 +419,57 @@ models",
  address = {New York, NY, USA},
 } 
 
-@misc{govtrack:2009,
-  title =       "Govtrack.us",
-  year =         "2010",
-  url =          "http://www.govtrack.us",
-  note =      "Civic Impulse LLC.  {A}vailable http://www.govtrack.us",
-}
-
 @misc{ukrainestate:2012,
-  title =       "State Department website",
+  key = {State Department},
+  title =       "Ukraine",
+  institution =       "State Department website",
   year =         "2012",
-  url =          "http://www.state.gov/r/pa/ei/bgn/3211.htm",
-  note =      "Accessed 21 October 2012."
+  note =      {Available 21 October 2012 at {\tt <}\url{http://www.state.gov/r/pa/ei/bgn/3211.htm}{\tt >}},
+  
 }
 
 @misc{iranstate:2012,
-  title =       "Iran Sanctions: State Department website",
+  key = {State Department},
+  title =       "Iran Sanctions (State Department website)",
+  institution = "State Department Website",
   year =         "2012",
-  url =          "http://www.state.gov/e/eb/esc/iransanctions/index.htm",
-  note =      "Accessed 21 October 2012."
+  note =      {Available 21 October 2012 at {\tt <}\url{http://www.state.gov/e/eb/esc/iransanctions/index.htm}{\tt >}},
+  
 }
 
 @misc{irancia:2012,
-  title =       "Iran, CIA - The World Factbook",
+  key = {CIA Factbook},
+  title =       {{CIA World Factbook page for Iran}},
+  institution = "The {CIA} {W}orld {F}actbook",
   year =         "2012",
-  url =          "http://www.state.gov/e/eb/esc/iransanctions/index.htm",
-  note =      "Accessed 21 October 2012."
+  note =      {Available 21 October 2012 at {\tt <}\url{http://www.state.gov/e/eb/esc/iransanctions/index.htm}{\tt >}},
+  
 }
 
 @misc{nycourts:2012,
-  title =       "Court of Appeals, State of New York",
+  key = {NY Courts},
+  title =       {{New York Court of Appeals Website}},
   year =         "2012",
-  url =          "http://www.nycourts.gov/ctapps/",
+  howpublished = {{\tt <}\url{http://www.nycourts.gov/ctapps/}{\tt >}},
   note =      "Official New York State of Appeals Website. {A}vailable http://www.nycourts.gov/ctapps/",
 }
 
 @misc{national_archives:2012a,
-  title =       "NARA's Pacific Alaska Region (Seattle, WA): Special Events and Workshops",
+  key = {{National Archives}},
+  title =       "National {A}rchives workshop announcement",
   year =         "2012",
-  url =          "http://www.archives.gov/pacific-alaska/seattle/public/workshops.html",
-  note =      "NARA's Pacific Alaska Region (Seattle, WA): citation 12B documents",
+  institution = {National Archives: NARA's Pacific Alaska Region (Seattle, WA)},
+  howpublished = {{\tt <}\url{http://www.archives.gov/pacific-alaska/seattle/public/workshops.html}{\tt >}},
+  annote =      "NARA's Pacific Alaska Region (Seattle, WA): citation 12B documents",
 }
 @misc{national_archives:2012b,
-  title =       "National Archives Offers Summer Institutes For Educators",
+  key = {National Archives},
+  title =       "National {A}rchives press release",
+  institution = "National {A}rchives",
   year =         "2012",
   month =         "7",
   day =         "9",
-  url =          "http://www.archives.gov/press/press-releases/2012/nr12-83.html",
-  note =      "Press release",
+  howpublished = {{\tt <}\url{http://www.archives.gov/press/press-releases/2012/nr12-83.html}{\tt >}},
 }
 
 
@@ -553,45 +556,50 @@ models",
   year = 2012
 }
 
-@misc{{govtrack:2009},
-  name =       "{Govtrack.us}",
-  year =         "Available March 2010",
-  journal =      "Civic Impulse LLC",
-  howpublished = {\url{http://www.govtrack.us}}
+@misc{govtrack:2009,
+  key =       {Govtrack website},
+  title = {Govtrack.us website},
+  year =         "2010",
+  institution =      "Civic Impulse LLC",
+  note = {Available March 2010 at {\tt <}\url{http://www.govtrack.us}{\tt >}}
 }
 
 @misc{beim:2011,
+  key = {Beim correspondence},
   name =       "Deborah {B}eim",
-  title = "Deborah Beim. Personal correspondence",
+  title = "{Deborah Beim. Personal correspondence.}",
   year =         "2011",
-  howpublished = {Personal correspondence}
+  howpublished = {Personal correspondence.}
 }
 
 @misc{googleblog:2008,
+  key = {Google Blog},
   name =       "{We Knew the Web was Big}",
-  journal =       "{The Official Google Blog}",
-  year =         "Available March 2008",
-  howpublished = {\url{http://googleblog.blogspot.com/2008/07/we-knew-web-was-big.html}}
+  title =       "{The Official Google Blog}",
+  year =         "2008",
+  note =         {Available 2012 at {\tt <}\url{http://googleblog.blogspot.com/2008/07/we-knew-web-was-big.html}{\tt >}},
 }
 
 @misc{cow_webpage:2012,
-  name =       "{Correlates of War Homepage}",
-  journal =       "{COW Homepage}",
-  year =         "Available September 2012",
-  howpublished = {\url{http://www.correlatesofwar.org/}},
+  key = {CoW Homepage},
+  title =       "{Correlates of War Homepage}",
+  year = "2012",
+  note =         {Available September 2012 at {\tt <}\url{http://www.correlatesofwar.org/}{\tt >}},
 }
 
 @misc{icow_webpage:2012,
+  key = {ICoW Homepage},
   name =       "{Issue Correlates of War Homepage}",
   journal =       "{The Issue Correlates of War (ICOW) homepage}",
-  year =         "Available September 2012",
-  howpublished = {\url{http://www.paulhensel.org/icow.html}},
+  year = 2012,
+  note =         {Available September 2012 at {\tt <}\url{http://www.paulhensel.org/icow.html}{\tt >}},
 }
 
 @misc{nyca_webpage:2012,
+  key = {NY CA Website},
   name = "New York State Court of Appeals Homepage",
   year = "2012",
-  howpublished = {\url{http://www.nycourts.gov/ctapps/}},
+  note = {Available March 2012 at {\tt <}\url{http://www.nycourts.gov/ctapps/}{\tt >}},
 }
 
 @article{hensel:2001,
@@ -615,7 +623,7 @@ models",
 @misc{crs:2011,
   key =      "Congressional Research Service",
   author =       "",
-  available = "http://www.loc.gov/crsinfo/",
+  note = {Available September 2012 at {\tt <}\url{http://www.loc.gov/crsinfo/}{\tt >}},
   year =         "2011",
 }
 
@@ -637,7 +645,7 @@ models",
 @InProceedings{alvarez:2009,
   author = "Mauricio Alvarez and David Luengo and Neil D. Lawrence",
   title = "Latent Force Models",
-  journal = "Proceedings of the 12th International Conference on
+  booktitle = "Proceedings of the 12th International Conference on
                   Artificial Intelligence and Statistics (AISTATS)",
   year = "2009",
 }
@@ -645,7 +653,7 @@ models",
 @InProceedings{shaparenko:2007,
   author = "Shaparenko, B. and Joachims, T.",
   title = "Information Genealogy: Uncovering the Flow of Ideas in Non-Hyperlinked Document Databases",
-  journal = "Proc. ACM Conference on Knowledge Discovery and Data Mining (KDD)",
+  booktitle = "Proc. ACM Conference on Knowledge Discovery and Data Mining (KDD)",
   year = "2007",
 }
 
@@ -660,7 +668,7 @@ models",
   month =        "October",
 }
 
-@InProceedings{blei:2008,
+@article{blei:2008,
   author = "Blei, David M. and McAuliffe, Jon D.",
   title = "Supervised Topic Models",
   journal = "Advances in Neural Information Processing Systems",
@@ -709,6 +717,7 @@ models",
 }
 
 @Article{Nature.success:1969,
+  key = "Nature",
   journal =      "Nature",
   title =        "How to be Overtaken by Success",
   year =         "1969",
@@ -738,10 +747,11 @@ models",
 }
 
 @misc{NSF.website:2010,
+   key = {NSF Website},
    title = "A Timeline of {NSF} History",
    year = "2010",
-   url = "http://www.nsf.gov/about/history/",
-   note = "[Online; accessed 31-January-2010]",
+   institution = {National Science Foundation},
+   note = {Available January 31 2010 at {\tt <}\url{http://www.nsf.gov/about/history/}{\tt >}},
 }
 
 @Article{brown:1993,
@@ -813,7 +823,7 @@ models",
 @Article{blei:2006,
   author =	 "David Blei and John Lafferty",
   title =	 "Dynamic Topic Models",
-  journal =	 "Proc. of the 23rd ICML",
+  journal =	 "Proceedings of the 23rd International Conference on Machine Learning",
   year =	 "2006",
   annote =       "",
 }
@@ -921,7 +931,7 @@ models",
 
 @inproceedings{mann:2006,
   author = "Gideon Mann and David Mimno and Andrew McCallum",
-  inproceedings = "Joint Conference on Digital Libraries (JCDL)",
+  booktitle = "Joint Conference on Digital Libraries (JCDL)",
   year = "2006",
   title = "Bibliometric Impact Measures Leveraging Topic Analysis",
   location = "Chapel Hill, NC",
@@ -946,14 +956,14 @@ models",
 @inproceedings{qazvinian:2008,
   author =       "Vahed Qazvinian and Dragomir R. Radev",
   title =        "Scientific Paper Summarization Using Citation Summary Networks",
-  book =         "Proceedings of the 22nd International Conference on Computational Linguistics",
+  booktitle =         "Proceedings of the 22nd International Conference on Computational Linguistics",
   pages =        "689-696",
   year =         "2008",
 }
 
 @article{osareh:1996,
   author = "Farideh Osareh",
-  title = "Bibliometrics, Citation Analysis and Co-Citation Analysis: A Review of Literature I",
+  title = "Bibliometrics, Citation Analysis and Co-Citation Analysis: A Review of Literature {I}",
   volume = "46",
   journal = "Libri",
   month = "September",
@@ -1185,7 +1195,7 @@ with a Probabilistic Topic Model}},
 
 @Article{li_pam:2006,
   author =       "Wei Li and Andrew McCallum",
-  title =        "Pachinko Allocation: DAG-Structured Mixture Models of Topic Correlations",
+  title =        "Pachinko Allocation: {DAG}-Structured Mixture Models of Topic Correlations",
   journal =      "Proceedings of the 23 rd International Conference on Machine Luearning",
   year =         "2006",
 }
@@ -1195,6 +1205,14 @@ with a Probabilistic Topic Model}},
   title =        "A Continuous-Time Model of Topic Co-occurence Trends",
   journal =      "Workshop in the Thirteenth Conference on AI (AAAI)",
   year =         "2006",
+}
+
+@Article{paisley:2010,
+  author =       "John Paisley and Sean Gerrish and David Blei",
+  title =        "Dynamic modeling with the collaborative Kalman filter",
+  journal =      "Fifth Annual NYAS Machine Learning Symposium",
+  address = "New York City, New York",
+  year =         "2010",
 }
 
 @Article{gerrish:2009,
@@ -1412,7 +1430,8 @@ with a Probabilistic Topic Model}},
 }
 
 @article{apple:1995,
-    author = {R. W. Apple Jr.},
+    key = {Apple, 1995},
+    author = {R. W. Jr. Apple},
     title = {Clinton's Moscow Visit: A Climate of Mutual Doubt},
     journal = {The New York Times},
     year = {1995},
@@ -1421,7 +1440,8 @@ with a Probabilistic Topic Model}},
 }
 
 @article{cushman:1991,
-    author = {John H. Cushman Jr.},
+    key = {Cushman, 1991},
+    author = {John H. Jr. Cushman},
     title = {War in the Gulf: Sea Mines; Allied Ships Hunt Gulf for Iraqi Mines},
     journal = {The New York Times},
     year = {1991},

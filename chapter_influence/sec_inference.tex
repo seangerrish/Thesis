@@ -3,16 +3,16 @@
 
 Our computational challenge is to compute the posterior distribution
 of the latent variables---the sequences of topics and the per-document
-influence values---conditioned on an observed corpus.  As for simpler
-topic models, this posterior is intractable to compute exactly. We
-employ variational methods---introduced in Chapter 2---to fit this
-posterior.
+influence values---conditioned on observed documents in the corpus.
+As for simpler topic models, this posterior is intractable to compute
+exactly. We therefore employ variational methods---introduced in
+Chapter 2---to fit this posterior.
 
 To apply variational methods, we begin by specifying a variational
 distribution for the DIM posterior.  First, the word assignments $z_n$
 and topic proportions $\theta_d$ are governed by multinomial
 parameters $\phi_d$ and Dirichlet parameters $\gamma_d$, as in
-LDA~\cite{blei:2003}; we refer to these distributions as $q(z_n |
+LDA~\citep{blei:2003}; we refer to these distributions as $q(z_n |
 \phi_n)$ and $q(\theta_d | \gamma_d)$.
 
 The variational distribution for topic trajectories
@@ -20,7 +20,7 @@ $\{\beta_{k,1}, \ldots, \beta_{k,T} \}$ is described by a linear
 Gaussian chain.  It is governed by parameters $\{ \bv_{k,1}, \ldots,
 \bv_{k,T} \}$, which are interpreted as the ``variational
 observations'' of the chain.  These induce a sequence of means $\mv_t$
-and variances $\vv_t$. Blei and Lafferty \cite{blei:2006} call this a ``variational
+and variances $\vv_t$. \cite{blei:2006} call this a ``variational
 Kalman filter.''
 
 Finally, the variational distribution of the document influence value
@@ -58,17 +58,18 @@ Using this variational family, our goal is to maximize the Evidence Lower Bound 
   \label{eq:elbo}
   \ln p(\W) \geq & \mathcal{L}(\bv, \vphi, \gamma) \\
   = & \sum_T \expectq{\ln p(\beta_{t} | \beta_{t-1})} 
-  + \sum_{T} \sum_{D_t} \expectq{\ln p(\ell_{d})} + \expectq{\ln p(\theta_{d} | \alpha)} \label{eq:elbo_line2} \\
+  + \sum_{T} \sum_{D_t} \expectq{\ln p(\ell_{d})} + \expectq{\ln
+    p(\theta_{d} | \alpha)} \label{eq:elbo_line2} \\ 
   & + \sum_{T} \sum_{D_t} \sum_{N_d} \expectq{\ln p( z_n | \theta_d)} + \expectq{\ln p(w_n | z_n, \beta_t)}
   + H(q). \label{eq:elbo_line3}
 \end{align}
 Note also that the variational parameters $\bv, \vphi,$ and $\gamma$
-are present in lines~\ref{eq:elbo_line2} and~\ref{eq:elbo_line3} of
+are implicit in lines~\ref{eq:elbo_line2} and~\ref{eq:elbo_line3} of
 the above equation because they parameterize the variational
-distribution $q$.
+distribution $q$, and the expectation is taken with respect to this distribution.
 
 \subsection*{Optimizing the variational bound}
-This bound is optimized by variational EM, with an update schedule similar to that in Blei and Lafferty \cite{blei:2006}:
+This bound is optimized by variational EM, with an update schedule similar to that in \cite{blei:2006}:
 \begin{enumerate}
 \item For Topic $k=1, \ldots, K$:
   \begin{enumerate}
@@ -77,12 +78,17 @@ This bound is optimized by variational EM, with an update schedule similar to th
 \item For time $t = 1, \ldots, T$:
   \begin{enumerate}
   \item For document $d_{1,t}, \ldots, d_{{D_t}, t}$:
-  \item Update parameters $\ellv_d, \vphi_d$, and $\gamma_d$,
+    \begin{enumerate}
+    \item Update parameters $\vphi_d$, and $\gamma_d$
+      \end{enumerate}
+    \item Update parameters $\ellv_t$ (i.e., update $\ellv_d$ as a
+      block for all documents at time $t$),
     \end{enumerate}
   \end{enumerate}    
 where the variational parameters are optimized sequentially in
 blocks.  These updates are repeated until the relative increase in
-the lower bound is below a threshold.
+the lower bound is below a threshold (we specify this in the
+experiments section).
 
 \paragraph{Topic trajectories.}
 The variational update for $\bv$ is similar to that in
@@ -92,18 +98,18 @@ The variational update for $\bv$ is similar to that in
 \partl{\mathcal{L}}{\bv_{sw}} =
 % From beta generative rule:
    & -  \frac{1}{\sigma^2} \sum_{t=1}^T
-     \left( \mv_{tw} - \mv_{t-1,w} - G_{t-1,w} \right) \\
-   & \hspace{30pt}  \times \left( \partl{\mv_{tw}}{\bv_{sw}}
+     \left( \mv_{tw} - \mv_{t-1,w} - G_{t-1,w} \right) 
+      \left( \partl{\mv_{tw}}{\bv_{sw}}
      - \partl{\mv_{t-1,w}}{\bv_{sw}}
      + G_{t-1,w} \partl{\mv_{t-1,w}}{\bv_{sw}} \right) \\
    & +  \sum_T \left(
        N_{w,t} - N_{t} \zeta_t^{-1}
        \exp( \hat{m}_{\bb_{tw}} + \frac{\tilde{V}_{tw}}{2} ) \right)
-       \partl{\mv_{tw}}{\bv_{sw}} \\
-   & +  \frac{1}{\sigma^2} \sum_{t=1}^T
+       \partl{\mv_{tw}}{\bv_{sw}}  \\
+    & +  \frac{1}{\sigma^2} \sum_{t=1}^T
          \partl{\mv_{t-1,w}}{\bv_{sw}}
-         \left( H_{t-1,w} - G_{t-1,w}^2 \right) \\
-   & +  \frac{1}{\sigma^2} \sum_{t=0}^{T-1}
+         \left( H_{t-1,w} - G_{t-1,w}^2 \right) 
+    +  \frac{1}{\sigma^2} \sum_{t=0}^{T-1}
          \partl{\mv_{tw}}{\bv_{sw}}
          G_{tw} \vv_{tw},
 \end{align*}
@@ -115,14 +121,13 @@ where
  H_{sn} &=& \mathbb{E}_q \big[ \exp(-2 \beta_{s,k,n}) \left( (\W_{s,k,n} \circ z_{s,k,n} ) \ell_{s,k} \right)^2 \big].
 \end{eqnarray*}
 
-We expand $H_t$ in \myapp{docinf_appendix}. Note also
-that we have added the additional variational parameter $\zeta_t$ and
-the term $\partl{\mv_{tn}}{\bv_{sn}}$, which are both described in
-Blei and Lafferty \cite{blei:2006}. The % citet
+Note also that we have added the additional variational parameter
+$\zeta_t$ and the term $\partl{\mv_{tn}}{\bv_{sn}}$, which are both
+described in \cite{blei:2006}. The % citet
 former can be updated once per iteration with $\zeta_t \gets \sum_w
 \exp(\mv_{t,n} + \vv_{t,n}/2)$. The latter can be derived from the
 variational Kalman filter updates (see \myapp{docinf_appendix} and
-Blei and Lafferty \cite{blei:2006}).
+\cite{blei:2006}).
 
 \paragraph{Influence values.}
 In the DIM, changes in a topic's mean parameters are governed by a
@@ -177,7 +182,7 @@ is a $D_t$-dimensional matrix with elements
 \paragraph{Topic proportions and topic assignments.}
 Updates for the variational Dirichlet on the topic proportions
 $\theta_{d,k}$ have a closed-form solution, exactly as in LDA
-\cite{blei:2003}; we omit details here.
+\citep{blei:2003}; we omit details here.
 
 The variational parameter for each word $w_n$'s hidden topic $z_n$ is
 the multinomial $\phi_n$.  We solve for $\phi_{n,k}$ by the

@@ -15,7 +15,7 @@ bodies.
 
 One of these models is the \emph{ideal point model}, a mainstay in
 quantitative political science for analyzing
-votes~\cite{clinton:2004}.  It posits a latent ``political space''
+votes~\citep{clinton:2004}.  It posits a latent ``political space''
 along the real line and assumes each legislator has a position in that
 space -- an assumption very similar to the latent space model
 described in the last chapter.
@@ -51,31 +51,31 @@ These limitations dovetail with increasing access to both public
 records and tools for algorithmic text analysis.  In the past decade,
 the text of congressional bills and other government records has become
 readily available to the broad public and research scientists.
-Websites like \url{www.govtrack.us} \cite{govtrack:2009} collect this
+Websites like \url{www.govtrack.us} collect this
 information, synthesize it, and make it available for researchers and
 the public to better understand both the content and behavior around
-legislative decisionmaking.
+legislative decisionmaking  \citep{govtrack:2009}.
 
 Just as text has become more available in this field in digitized
 formats, tools for text analysis have matured.  Tools which were once
 available only to computational linguistics are becoming more familiar
-to political methodologists \cite{zimmer:2012}.  Topic models have
+to political methodologists \citep{zimmer:2012}.  Topic models have
 evolved from vector-space models such as latent semantic analysis
-\cite{deerwester:1990} into probabilistic topic models
-\cite{hofmann:1999,blei:2003}, which can be used as modules in more
+\citep{deerwester:1990} into probabilistic topic models
+\citep{hofmann:1999,blei:2003}, which can be used as modules in more
 sophisticated statistical models.
 
 In the following sections, we will take advantage of this this broader
 availability of political text and tools for text analysis to address
 the above shortcomings of ideal point models.  We begin by reviewing
 ideal point models and outline their limitations
-\cite{poole:1985,poole:1991,jackman:2001,martin:2002,clinton:2004}.
+\citep{poole:1985,poole:1991,jackman:2001,martin:2002,clinton:2004}.
 After describing ideal point models, we will describe how to combine
 ideal point models with more more recent models of text, such as topic
-models \cite{blei:2003} and text regression \cite{kogan:2009}, to
+models \citep{blei:2003} and text regression \citep{kogan:2009}, to
 enable us to predict votes on previously-unseen bills. We then extend
 the ideal point model using topic models which have been explicitly
-designed to be interpretable \cite{ramage:2009} to describe each
+designed to be interpretable \citep{ramage:2009} to describe each
 lawmaker's preferences about a variety of political issues.
 Throughout, the abstraction of latent variable models will enable us to
 combine these ideas seemlessly.
@@ -103,7 +103,7 @@ described by a latent position $x_u \in \mathbb{R}$ summarizing her
 political preferences.  A lawmaker's (stochastic) voting behavior is
 characterized by the relationship between her position in this space
 and the bill's position
-\cite{poole:1985,poole:1991,jackman:2001,martin:2002,clinton:2004}.
+\citep{poole:1985,poole:1991,jackman:2001,martin:2002,clinton:2004}.
 Given a table of how each lawmaker votes on each bill (known as a roll
 call), we can use ideal point models to infer the latent position of
 each lawmaker.
@@ -124,7 +124,7 @@ reason, lawmakers' positions $x_u$ are often called their \emph{ideal
 
 Reparameterizing, we can write the probability $p(v_{ud} | \bm X_u, \bm \zeta_d,
  \bm \psi_d)$ of an affirmative vote
- \cite{clinton:2004}.  Setting $\bm b+d = 2 (\bm \zeta_d
+ \citep{clinton:2004}.  Setting $\bm b+d = 2 (\bm \zeta_d
  - \bm \psi_d )$ and $a_d = (\bm \psi_d^T \bm \psi_d - \bm \zeta_d^T
  \bm \zeta_d )$, we have
 \begin{equation}
@@ -139,7 +139,7 @@ characterized by specifying its \emph{polarity} $\bm a_d$ and its
 \emph{popularity} $b_d$. \footnote{Popularity is also called
   \emph{difficulty}, and polarity is called \emph{polarity}, in the
   context of educational testing applications of this model
-  \cite{clinton:2004}.  We move away from these terms in favor of more
+  \citep{clinton:2004}.  We move away from these terms in favor of more
   appropriate terms for this application.}  When the popularity of a
 bill $b_d$ is high, nearly everyone votes ``Yes'' on bill $d$; when
 the popularity is low, nearly everyone votes ``No''.  When the
@@ -147,7 +147,7 @@ popularity is near zero, the probability that a lawmaker votes ``Yes''
 depends on how her ideal point $x_u$ interacts with bill polarity
 $a_d$.  We will make the common assumption that the latent variables
 $a_d$, $b_d$, and $x_u$ have standard normal priors
-\cite{clinton:2004}.
+\citep{clinton:2004}.
 
 TODO(sgerrish): introduce the idea of roll-call votes.
 
@@ -290,7 +290,7 @@ of real numbers.
 To these ends, we will describe several models that connect the voting
 patterns of legislators to the original text of bills.  One of these
 models embeds the statistical assumptions of \textit{supervised topic
-  modeling}~\cite{blei:2008} into the ideal point model, where the
+  modeling}~\citep{blei:2008} into the ideal point model, where the
 locations of the bills are predicted from the latent topics in their
 texts. This model---the ideal point topic model---can predict complete
 votes on pending bills and provides a new way of exploring how
@@ -325,7 +325,7 @@ becomes associated with political sentiment.
 
 \textbf{Modeling ideal points with text regression.} We developed two
 predictive ideal-point models which use text
-regression~\cite{kogan:2009}.  For these, we first fit an ideal-point
+regression~\citep{kogan:2009}.  For these, we first fit an ideal-point
 model to a training set of bills and all legislators using the
 variational algorithm described in \mysec{model}.  We then fit ridge
 regression\footnote{Implemented in the ``penalized'' package for R}
@@ -341,8 +341,8 @@ In this section, we connect textual \emph{themes} with bill sentiment.
 We refer to this model as an ideal point topic model (IPTM).
 
 To model themes, we use the assumptions of supervised Latent Dirichlet
-Allocation (sLDA)~\cite{blei:2008}.  As in Latent Dirichlet Allocation
-\cite{blei:2003}, each bill is represented as a mixture of latent
+Allocation (sLDA)~\citep{blei:2008}.  As in Latent Dirichlet Allocation
+\citep{blei:2003}, each bill is represented as a mixture of latent
 topics $\theta_d$, where each of $K$ topics $\beta_k$ is a multinomial
 probability distribution over terms.  For the $n^{th}$ term of bill
 $d$, we draw topic $z_{dn}$ from $\mbox{Mult}(\theta_d)$, and then
@@ -436,7 +436,7 @@ are negative; in another, Republicans are positive, while Democrats
 are negative.  To keep fits of the different models identifiable,
 several researchers have applied nonzero priors over specific
 legislators to encourage the model to prefer one of these modes
-\cite{jackman:2001,clinton:2004,martin:2002}.
+\citep{jackman:2001,clinton:2004,martin:2002}.
 
 In the study in \mysec{experiments}, we anchor four legislators with
 strong priors ($\sigma_d = 10^{-3}$) at ideal points $\pm 4$.  We
@@ -445,7 +445,7 @@ Kennedy (S-Dem) and Waxman (H-Dem) are centered at +4 and Enzi (S-Rep)
 and Donald Young (H-Rep) are centered at -4.\footnote{This value was
 selected to be large yet not completely out of the ordinary.} We
 selected these Senators for consistency with previous
-work~\cite{clinton:2004}.  We selected the Representatives because
+work such as \cite{clinton:2004}.  We selected the Representatives because
 they have held long offices in the House.  Without these sharp priors,
 the model still discovers ideal points which cleanly separate
 political parties but may converge on ``opposite'' modes in different
@@ -460,30 +460,29 @@ expense of predictive performance.
 % % TODO(sgerrish): contrast these with other models of voting.
 
 Ideal point models, a form of spatial voting model, have roots as far
-back as the 1920s \cite{enelow:1984}. They are fit by both
-frequentist~\cite{poole:1985,heckman:1996} and Bayesian
-methods~\cite{jackman:2001,martin:2002,clinton:2004}, have been
-embedded in a time series~\cite{martin:2002,wang:2010}, and have been
+back as the 1920s \citep{enelow:1984}. They are fit by both
+frequentist~\citep{poole:1985,heckman:1996} and Bayesian
+methods~\citep{jackman:2001,martin:2002,clinton:2004}, have been
+embedded in a time series~\citep{martin:2002,wang:2010}, and have been
 developed for higher dimensional political
-spaces~\cite{jackman:2001,heckman:1996}.
+spaces~\citep{jackman:2001,heckman:1996}.
 
 % \nocite{jackman:2001}
 \nocite{johnson:1999ch6}
 
 Topic models have been applied to Senate speeches, such as to discern
 ``the substantive structure of the rhetorical [legislative] agenda''
-\cite{quinn:2006}.  They have also been used with legislative speeches
+\citep{quinn:2006}.  They have also been used with legislative speeches
 to gauge legislators' sentiment toward legislation using roll-calls
-\cite{thomas:2006}.  Modeling sentiment in text is more generally
-discussed in the field of sentiment analysis; see Pang and Lee
-\cite{pang:2008} for a review.
+\citep{thomas:2006}.  Modeling sentiment in text is more generally
+discussed in the field of sentiment analysis; see \cite{pang:2008} for a review.
 
 % DMB-2011: the above explanation is confusing.  how is a document
 % drawn from a mixture of gaussians?  are there topics in their model?
 % SMG: Clarified.
 
 The ideal point topic model relates closely to user-recommendation
-models based on matrix factorization~\cite{salakhutdinov:2008a}.
+models based on matrix factorization~\citep{salakhutdinov:2008a}.
 Matrix factorization methods for recommendation are akin to
 large-scale spatial behavior models (though usually with no
 ``difficulty'' term, which acts as an intercept).  Many of these
@@ -493,14 +492,13 @@ preferences on the same item.
 
 Two works stand out as closely related to this work.  One of these is
 fLDA, which models binary or continuous ratings with user affinity to
-topics \cite{agarwal:2010}.  Another is Wang et
-al. \cite{wang:2010}, who describe a similar application by
-combinating topic models and matrix completion.  Their work also draws
-on ideal point models, models transitions over time, and is designed
-to learn the dimensionality of the latent factors.  Under the
-generative assumptions of their model, bills and matrix cells (e.g.,
-votes) are conditioned on a shared mixture; in our model, votes are
-conditioned on words' topics.
+topics \citep{agarwal:2010}.  Another is \cite{wang:2010}, who
+describe a similar application by combinating topic models and matrix
+completion.  Their work also draws on ideal point models, models
+transitions over time, and is designed to learn the dimensionality of
+the latent factors.  Under the generative assumptions of their model,
+bills and matrix cells (e.g., votes) are conditioned on a shared
+mixture; in our model, votes are conditioned on words' topics.
 
 % \cite{poole:1985} Present a spatial model for analyzing
 %roll-calls.
@@ -564,13 +562,13 @@ conditioned on words' topics.
 Computing the posterior in \myeq{posterior} is intractable.  Posterior
 inference for traditional Bayesian ideal point models is traditionally
 implemented with MCMC methods such as Gibbs sampling
-\cite{johnson:1999ch6,jackman:2001,martin:2002,clinton:2004}.
+\citep{johnson:1999ch6,jackman:2001,martin:2002,clinton:2004}.
 However, in the ideal point topic model, fast Gibbs samplers are
 unavailable because the conditionals needed are not analytically
 computable; an MCMC strategy would require a more complicated sampling
 scheme. We therefore use an alternative algorithm -- which can be applied
 to both the standard ideal point model and the ideal point topic model
--- which uses variational methods \cite{jordan:1999}.
+-- which uses variational methods \citep{jordan:1999}.
 
 Recall from Chapters 2 and 3 that to variational inference requires
 specification of a variational distribution which will serve as a
@@ -580,7 +578,7 @@ proxy for the true posterior.
 % smg: added a note below.  We use a fully-factorized variational
 distribution.  Word assignments $z_{dn}$ and topic proportions
 are governed by multinomial parameters $\phi_d$ and Dirichlet
-parameters $\gamma_d$, as in LDA~\cite{blei:2003}.  The variational
+parameters $\gamma_d$, as in LDA~\citep{blei:2003}.  The variational
 distribution for legislators' ideal points $x_u$; bills' parameters
 $a_d, b_d$; and coefficients $\bm \eta$ are Gaussian with respective
 means $\tau_u$, ${\tilde a}_d$, $\ev$ and variances $\sigma_\tau^2$,
@@ -655,7 +653,7 @@ collection contains 4,447 bills, 1,269 unique legislators, and
 1,837,033 \verb!yea! or \verb!nay! roll-call votes.
 
 To select the vocabulary, we lemmatized the bills with
-Treetagger~\cite{treetagger}.  Then we retained a vocabulary of
+Treetagger~\citep{treetagger}.  Then we retained a vocabulary of
 statistically significant $n$-grams ($1 \le n \le 5$) using likelihood
 ratios.  These $n$-grams were treated as terms.\footnote{When one
   $n$-gram subsumes another, we chose to observe the longer of the
@@ -732,7 +730,7 @@ the $111^{th}$ Congress.  This bill, the \emph{NASA Authorization Act
 of 2010}, was a "compromise between the Obama administration, which
 wants... a commercial space industry in which private companies would
 transport astronauts, and House lawmakers, who wanted... one
-government-owned rocket" \cite{herszenhorn:2010}.  In the house vote
+government-owned rocket" \citep{herszenhorn:2010}.  In the house vote
 (a Senate record was not kept), of 249 Democrats voting on the bill,
 185 voted in favor; of the 173 Republicans, 119 voted in favor.
 Because this bill had mixed but nonpartisan support, the model could
@@ -1033,7 +1031,7 @@ each lawmaker's ideal point can be adjusted for each issue.
     model (left of dashed line) using bills' words $w$ and labeled topics
     $\beta$.  Expected issue vectors $\expectq{\bm \theta | \bm w}$ are then treated as constants
     in the issue model (right of dashed line).
-  Right: Top words from topics fit using labeled LDA \cite{ramage:2009}.
+  Right: Top words from topics fit using labeled LDA \citep{ramage:2009}.
   }
   \vspace{-5pt}
   \label{fig:legis_gm}
@@ -1237,22 +1235,22 @@ ideal point models.
 \myeq{exploratory_ipm_old} adjusts a lawmaker's ideal
 point by using the conditional expectation of a bill's thematic labels
 $\bm \theta_d$ given its words $\bm w_d$.  We estimate this vector
-using labeled latent Dirichlet allocation (LDA)~\cite{ramage:2009}.
+using labeled latent Dirichlet allocation (LDA)~\citep{ramage:2009}.
 
 Labeled LDA is a topic model, a bag-of-words model that assumes a set
 of themes for the collection of bills and that each bill exhibits a
 mixture of those themes.  The themes, called topics, are distributions
-over a fixed vocabulary.  In unsupervised LDA~\cite{blei:2003} they
+over a fixed vocabulary.  In unsupervised LDA~\citep{blei:2003} they
 are learned from the data.  In labeled LDA, they are defined by using
 an existing tagging scheme.  Each tag is associated with a topic; its
 distribution is found by taking the empirical distribution of words
-for documents assigned to that tag.\footnote{Ramage et al.  explore
-  more sophisticated approaches \cite{ramage:2009}, but we found this
+for documents assigned to that tag.\footnote{\cite{ramage:2009} explore
+  more sophisticated approaches, but we found this
   simplified version to work well.}  This gives
 interpretable names (the tags) to the topics.
 
 We used tags provided by the Congressional Research
-Service~\cite{crs:2011}, which provides subject codes for all bills
+Service~\citep{crs:2011}, which provides subject codes for all bills
 passing through Congress.  These subject codes describe the bills
 using phrases which correspond to traditional issues, such as
 \emph{Civil rights} and \emph{National security}. Each bill may cover
@@ -1348,30 +1346,30 @@ v_{ud})$. We summarize all 74 issue labels in \myapp{issue_labels}
 %%        { N_{k} },
 %% \end{equation}
 
-\subsubsection{Related Work.}
+\subsubsection{Related Work}
 
 Item response theory has been used for decades in political science
-\cite{clinton:2004,martin:2002,poole:1985}; see Enelow and Hinich for
-a historical perspective \cite{enelow:1984} and Albert for Bayesian
-treatments of the model \cite{albert:1992}.  Some political scientists
+\citep{clinton:2004,martin:2002,poole:1985}; see Enelow and Hinich for
+a historical perspective \citep{enelow:1984} and Albert for Bayesian
+treatments of the model \citep{albert:1992}.  Some political scientists
 have used higher-dimensional ideal points, where each legislator is
 attached to a vector of ideal points $\bm x_u \in \mathbb{R}^K$ and
 each bill polarization $\bm a_d$ takes the same dimension $K$
-\cite{heckman:1996}. The probability of a lawmaker voting ``Yes'' is
+\citep{heckman:1996}. The probability of a lawmaker voting ``Yes'' is
 $\sigma(\bm x_u^T \bm a_d + b_d)$.  The principle component of ideal
 points explains most of the variance and explains party affiliation.
 However, other dimensions are not attached to issues, and
 interpreting beyond the principal component is painstaking
-\cite{jackman:2001}.
+\citep{jackman:2001}.
 
 Recent work in machine learning has provided joint models of
 legislative text and votes. Gerrish and Blei aimed to predict votes on
-bills which had not yet received any votes \cite{gerrish:2011}.  Their
+bills which had not yet received any votes \citep{gerrish:2011}.  Their
 model fits $a_d$ and $b_d$ using supervised topics, but the underlying
 voting model is one-dimensional: it cannot model individual votes
 better than a one-dimensional ideal point model. Wang et al. created a
 Bayesian nonparametric model of votes and text over time
-\cite{wang:2010}.  These models have different purposes from ours:
+\citep{wang:2010}.  These models have different purposes from ours:
 neither addresses individuals' affinity toward issues.
 
 % dmb: below, this is true, but i think (more importantly) that
@@ -1392,12 +1390,12 @@ neither addresses individuals' affinity toward issues.
 The issue-adjusted model is conceptually more similar to recent
 models for content recommendation. Specifically, Wang and Blei
 describe a method to recommend academic articles to individuals
-\cite{wang:2011}, and Agarwal and Chen propose \emph{fLDA} to match
-users to Web content \cite{agarwal:2010}. Agarwal et al. learn a
+\citep{wang:2011}, and Agarwal and Chen propose \emph{fLDA} to match
+users to Web content \citep{agarwal:2010}. Agarwal et al. learn a
 separate user-item offset $y_{ud}$ and a user-topic affinity which
-interacts with $\expectq{\bm \theta_d | \bm w_d}$ \cite{agarwal:2010}.
-Wang and Blei fit a linear regression, again learning a user-topic
-affinity \cite{wang:2011}.  Our model differs in its introduction of
+interacts with $\expectq{\bm \theta_d | \bm w_d}$ \citep{agarwal:2010}.
+\cite{wang:2011} fit a linear regression, again learning a user-topic
+affinity.  Our model differs in its introduction of
 the polarity $a_d$: lawmakers take a position $z_{uk}$ on issue $k$
 which only creates an affinity toward $k$ if the bill leans the
 correct way.  Finally, we have an explicit goal of interpretability.
@@ -1443,7 +1441,7 @@ by using the observed votes $v$ and bills' issues $\bm \theta_d$ with
 the posterior distribution $p(x, \bm z, a, b | v, \bm \theta).$
 
 Bayesian ideal point models are usually fit with Gibbs sampling
-\cite{johnson:1999ch6,jackman:2001,martin:2002,clinton:2004}. However,
+\citep{johnson:1999ch6,jackman:2001,martin:2002,clinton:2004}. However,
 fast Gibbs samplers are unavailable for our model because the
 conditionals needed are not analytically computable.  We therefore
 estimated the posterior with variational Bayes.
@@ -1469,7 +1467,7 @@ estimated the posterior with variational Bayes.
 Recall that in variational Bayes, we posit a family of distributions
 $\{ q_{\bm \eta} \}$ over the latent variables that is likely to
 contain a distribution similar to the true posterior
-\cite{jordan:1999} and select $\eta$ to minimize the KL divergence between the
+\citep{jordan:1999} and select $\eta$ to minimize the KL divergence between the
 variational and true posteriors.
 %  We illustrate this in
 %Figure~\ref{figure:variational_diagram}.
@@ -1498,7 +1496,7 @@ inference tractable.
 Though simpler than the true posterior, fitted variational
 distributions can be excellent proxies for it. The similarity between
 ideal points fit with variational inference and MCMC has been
-demonstrated in particular \cite{gerrish:2011}.
+demonstrated in particular \citep{gerrish:2011}.
 
 Variational inference usually proceeds by optimizing $\mathcal{L}_{\bm
   \eta} = \expectqarg{ \log p(x, \bm z, a, b, v, \bm \theta) }{\bm
@@ -1508,7 +1506,7 @@ the KL divergence between $q$ and the posterior).  Optimizing this
 bound is challenging when the expectation is not analytical, which
 makes computing the exact gradient $\nabla_{\bm \eta} \mathcal{L}_{\bm
   \eta}$ more difficult.  We optimize this bound with stochastic
-gradient ascent \cite{robbins:1951,bottou:2004}, approximating the
+gradient ascent \citep{robbins:1951,bottou:2004}, approximating the
 gradient with samples from $q_{\bm \eta}$:
 \begin{align}
 \nabla_{\bm \eta} \mathcal{L}_{\bm \eta}
@@ -1587,8 +1585,8 @@ lawmakers' opponents') positions on issues.  Roll calls serve as an
 incontrovertible record for any lawmaker who wants such a record.
 
 We downloaded both roll-call tables and bills from
-\verb!www.govtrack.us!  \citep{{govtrack:2009}}, a nonpartisan website
-which provides records of U.S. Congressional voting.  Not all bills
+\verb!www.govtrack.us!, a nonpartisan website
+which provides records of U.S. Congressional voting \citep{govtrack:2009}.  Not all bills
 were available in text form, but we had over one hundred for each
 Congress.  Votes on bills without text were discarded.  We provide a
 summary of statistics for our datasets in these Congresses in
@@ -1664,7 +1662,7 @@ and traditional ideal points.  We first give a qualitative discussion
 of these differences and follow this with quantitative validation of
 the issue-adjusted model.
 
-\subsubsection{Examples: adjusting for issues.}
+\subsubsection{Examples: adjusting for issues}
 We give a side-by-side comparison of traditional ideal points $x_u$
 and issue-adjusted ideal points $(x_u + \bm z_u^T \bm \theta)$ for the
 ten most-improved bills of Congress 111 (2009-2010) in
@@ -1757,7 +1755,7 @@ Congratulating UMD Men's basketball
 %  \end{center}
 \end{figure}
 
-\subsubsection{A comparison of issue-adjusted ideal points $x_u$ and traditional ideal points.}
+\subsubsection{A comparison of issue-adjusted ideal points $x_u$ and traditional ideal points}
 The traditional ideal point model (\myeq{trad_ipm}) uses one parameter
 per lawmaker---$x_u$---to explain all of her voting behavior.  In
 contrast, the issue-adjusted model (\myeq{exploratory_ipm_old}) uses
@@ -1810,7 +1808,7 @@ than classic ideal points.
 \end{figure}
 
 %\subsection{Evaluation of the predictive distribution $p(v_{ud} | x_u, \bm z_u, a_u, b_u)$}
-\subsubsection{Evaluation of the predictive distribution.}
+\subsubsection{Evaluation of the predictive distribution}
 
 The issue-adjusted model contains the ideal point model as the
 special case $z_{uk}=0, \forall u, k$. Does this greater
@@ -2183,7 +2181,7 @@ finally describe a theory explaining why certain lawmakers have such
 different preferences on procedural issues like \emph{Congressional
   sessions} than substantive issues like as \emph{Finance}.
 
-\subsubsection{Issues improved by issue adjustment.}
+\subsubsection{Issues improved by issue adjustment}
 Those issues which tended to move lawmakers the most (by standard
 deviation of $\hat z_k$) also tended to give issue-adjusted ideal
 points an edge over traditional ideal points.  We measure the
@@ -2253,7 +2251,7 @@ performance.  This effect was common, and it suggests that methods
 which represent bills with fewer issues (such as unsupervised topics)
 may perform better, at the expense of interpretability.
 
-\subsubsection{Understanding legislators' voting amidst party bias.}
+\subsubsection{Understanding legislators' voting amidst party bias}
 \label{sec:party_bias}
 Many lawmakers' issue adjustments can be explained by party
 affiliation (hence, their ideal point).  We illustrate the
@@ -2879,7 +2877,7 @@ rank-and-file members of the party support agenda-setting decisions.
 
 This \emph{procedural cartel theory} has withstood tests in which
 metrics of polarity were found to be \emph{greater} on procedural
-votes than substantive votes \citet{cox:1993,cox:2002,cox:2005}. We
+votes than substantive votes \citep{cox:1993,cox:2002,cox:2005}. We
 note that issue adjustments support this theory in several ways.
 First, lawmakers' systematic bias for procedural issues was
 illustrated and discussed in \mysec{party_bias} (see
@@ -2894,7 +2892,7 @@ polarity and improved prediction on procedural votes (see
 \mysec{performance} and \myfig{bills_parameter_changes}) indicate that
 that issue adjustments for procedural votes are associated with
 \emph{more extreme} party affiliation -- also observed by
-\citet{cox:2002}.
+\cite{cox:2002}.
 
 
 

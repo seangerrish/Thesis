@@ -3,7 +3,7 @@
 \label{section:foreign_relations_supervised_model}
 
 In the last chapter we described a model for identifying influential
-documents.  An important feature of that model was that it was
+documents.  A defining feature of that model was that it was
 unsupervised; only after fitting the model could we compare the
 inferred influence of an article with the number of citations it had
 recieved.  In this section we will take a more direct approach,
@@ -16,32 +16,35 @@ can be described by a vector in some latent space.  The relationship
 between two countries is then determined (up to stochasticity) by the
 relationship between these countries' positions in this latent space
 (models that make this assumption are sometimes referred to as latent
-space models or spatial models).  A spatial a model provides two
-benefits for us. First, it provides interpretability: nations with
+space models or spatial models).
+
+A spatial a model provides us with two benefits. First, it provides
+interpretability: we will define the model so that nations with
 similar positions in this latent space tend to interact more
 positively, while nations further apart tend to have more tension in
-their relationship.  A spatial model also allows us to draw on
-existing work from multidimensional scaling, which has been used
-successfully in both political science \cite{martin:2002,jackman:2001}
-and social network modeling \cite{hoff:2002,chang:2009}.
+their relationship.  Second, it allows us to draw on existing work
+from multidimensional scaling, which has been used successfully in
+both political science \citep{martin:2002,jackman:2001} and social
+network modeling \citep{hoff:2002,chang:2009}.
 
 \subsection{Inferring sentiment from text}
 \label{section:text_regression}
 When a news source discusses the relationship between these nations,
-the author's choice of words $\bm w_d$ reflects the relationship
+the author's choice of words $\bm w_d \in \mathbb{N^+}^V$ reflects the relationship
 between the countries.  We model this sentiment with the text of the
-article $d$.  Using text regression \cite{kogan:2009}, we model
+article $d$.  Using text regression \citep{kogan:2009}, we model
 sentiment using the wordcounts $\bm w_d$ of the article:
 \begin{align}
-  s_d | \bm w_d, \beta \sim \mathcal{N}( \bm w_d^T \beta, \sigma_W^2 ).
+  s_d | \bm w_d, \bm \beta \sim \mathcal{N}( \bm w_d^T \bm \beta,
+  \sigma_W^2 ) \\
+  \bm \beta \sim \mathcal{N}(0, \sigma_\beta^2 ).
   \label{eq:sentiment_text}
 \end{align}
-For the purposes of countries' positions in the latent-space model, we
-will assume that $\beta$ is observed (we describe how to fit $\beta$
-with \myeq{sentiment_text} and human labels in
-Section~\ref{section:mturk}).  In fitting $\beta$, we interpret the
-distribution of $s_d$ as a Gaussian with a mean which depends on the
-text.
+For the remainder of this section, we will assume that $\bm \beta$ is
+observed, and therefore that the distribution of $s_d$ is a Gaussian with mean
+$\bm w_d^T \bm \beta$.  We describe how to fit $\bm \beta$ with
+\myeq{sentiment_text} and human labels in
+Section~\ref{section:mturk}.
 
 \subsection{A temporal model of interaction}
 We formalize the latent space assumption by letting each country $c$
@@ -51,7 +54,10 @@ will be described by a scalar $s_{c_1,c_2} \in \mathbb{R}$.  This
 sentiment is determined by the interaction of their positions:
 $s_{c_1, c_2} = \mathcal{F}(\bm x_{c_1}, \bm x_{c_2})$, for some
 suitable function $\mathcal{F}: \mathbb{R} \times \mathbb{R}
-\rightarrow \mathbb{R}$.
+\rightarrow \mathbb{R}$. When $c_1$ and $c_2$ are similar (as measured
+by $\mathcal{F}$), their sentiment $s_d$ will be positive; if they are
+dissimilar, their sentiment will be negative.  More extreme values
+indicate stronger sentiment.
 
 \begin{figure}
   \center
@@ -59,7 +65,7 @@ suitable function $\mathcal{F}: \mathbb{R} \times \mathbb{R}
   \includegraphics[width=0.5\textwidth]{chapter_foreign_relations/figures/countries_gm.pdf}
   \caption{A time-series model of countries' interactions.
     Pseudo-observations of ``zero'' are added for regularization.
-    Amazon Mechanical Turk labels are used to fit $\beta$, which is
+    Amazon Mechanical Turk labels are used to fit $\bm \beta$, which is
     used to infer unobserved sentiments.}
   \label{fig:fa_gm}
 \end{figure}
@@ -72,37 +78,37 @@ time with the Markov transition
 \begin{align}
   \bar x_{c,t} | \bar x_{c,t-1} \sim \mathcal{N}(\bar x_{c,t-1}, \sigma_{\mbox{\tiny chain}}^2),
 \end{align}
-as shown in Figure~\ref{fig:fa_gm}. At any time $t$, state $c_1$ may interact with state $c_2$ in the following way:
+as shown in Figure~\ref{fig:fa_gm}. At any time $t$, we may observe
+the relationship between states $c_1$ and $c_2$ in an article $d$.  As
+before, the distribution of the sentiment between these countries is
+entirely specified by their positions at this time:
 \begin{align}
   x_{c_1,d} \sim \mathcal{N}(\bar x_{c_1, t}, \sigma_D^2) \nonumber \\
   x_{c_2,d} \sim \mathcal{N}(\bar x_{c_2, t}, \sigma_D^2) \nonumber \\
-  s_d := x_{c_1,d}^T x_{c_2,d}, \label{eq:sentiment_space}
+  s_d := \mathcal{F}(\bm x_{c_1,d}, \bm x_{c_2,d}), \label{eq:sentiment_space}
 \end{align}
 where we interpret $s_d$ as the sentiment between $c_1$ and $c_2$ as
-reflected by article $d$.  When $c_1$ and $c_2$ are similar (as
-measured by their inner product), their sentiment $s_d$ will be
-positive; if they are dissimilar, their sentiment will be negative.
-More extreme values indicate stronger sentiment.
+reflected by article $d$.
 
 For the purposes of countries' positions in the latent-space model,
 however, we will use the symmetry of the Gaussian to model text as if
-it were conditioned on sentiment: $\mathcal{N}(s_d | \bm w_d^T \beta,
-\sigma_w^2) = \mathcal{N}( \bm w_d^T \beta | s_d, \sigma_W^2 )$.  This
+it were conditioned on sentiment: $p(s_d | \bm w_d^T \bm \beta,
+\sigma_W^2) = p( \bm w_d^T \bm \beta | s_d, \sigma_W^2 )$.  This
 allows us to reconcile \myeq{sentiment_text} and
 \myeq{sentiment_space}, so that the distribution of sentiment
 conditioned on text and countries' positions is:
 \begin{align}
-  p(s_d | \bm w_d, \beta, x_{c_1,d}, x_{c_2,d}) & \propto
-  \mathcal{N}(\bm w_d^T \beta | s_d, \sigma_W^2 )
-  \mathcal{N}(x_{c_1,d} | \bar x_{c_1, t}, \sigma_D^2)
-  \mathcal{N}(x_{c_2,d} | \bar x_{c_2, t}, \sigma_D^2) \nonumber \\
+  p(s_d | \bm w_d, \bm \beta, x_{c_1,d}, x_{c_2,d}) & \propto
+  p(\bm w_d^T \bm \beta | s_d, \sigma_W^2 )
+  p(x_{c_1,d} | \bar x_{c_1, t}, \sigma_D^2)
+  p(x_{c_2,d} | \bar x_{c_2, t}, \sigma_D^2) \nonumber \\
   & \hspace{20pt} \mbox{ such that } s_d = \mathcal{F}(x_{c_1,t},
   x_{c_2,t}) \nonumber \\
   & = 
-  \mathcal{N}(\bm w_d^T \beta |
+  p(\bm w_d^T \bm \beta |
     \mathcal{F}(x_{c_1,t}, x_{c_2,t}), \sigma_W^2 )
-  \mathcal{N}(x_{c_1,d} | \bar x_{c_1, t}, \sigma_D^2)
-  \mathcal{N}(x_{c_2,d} | \bar x_{c_2, t}, \sigma_D^2).
+  p(x_{c_1,d} | \bar x_{c_1, t}, \sigma_D^2)
+  p(x_{c_2,d} | \bar x_{c_2, t}, \sigma_D^2).
 \end{align}
 
 % In addition, a UN resolution may come up for vote at any time.  States
@@ -151,16 +157,16 @@ behavior.  While much of this work has been used to model
 parliamentary voting behavior, these techniques have also been used to
 model voting in the UN General Assembly. Gartzke et al., for example,
 use these votes and alliance models to study the nations' affinities
-\cite{gartzke:1998}.
+\citep{gartzke:1998}.
 
 These models have been developed for dyadic data more fully in network
-models such as the latent space model \cite{hoff:2002,sarkar:2005}, in
+models such as the latent space model \citep{hoff:2002,sarkar:2005}, in
 which the probability of a link between two nodes is a function of
 their latent-space distance.  The qualitative relationship of
 entities' dyadic relationships has been more fully developed with text
 by the relational topic model, which uses free text to model the
 relationship between actors in an unsupervised setting
-\cite{chang:2009}.
+\citep{chang:2009}.
 % Supervised topic models
 
 
@@ -187,12 +193,12 @@ x_{c_{d,2},t} | \bar x_{c_{d,1},t}, \bar x_{c_{d,2}, t}, s_{c_{d1},
 
 Our goal in performing EM is to estimate parameters for the model.  Expectation allows us to find a \emph{MAP} estimate by optimizing the lower bound on the data likelihood:
 \begin{align}
-  \mathcal{L}_x = \log p(s_d, \bm w, \beta, x)
-  % & \propto p(s_d | \bm w, \beta, x, \beta) \\
+  \mathcal{L}_x = \log p(s_d, \bm w, \bm \beta, x)
+  % & \propto p(s_d | \bm w, \beta, x, \bm \beta) \\
   & \ge \log \expectq{ \frac{q(\bar x)}{q(\bar x)}
-    p(s_d | \bm w, \beta, x, \beta) } \nonumber \\
+    p(s_d | \bm w, \bm \beta, x) } \nonumber \\
   & \ge \expectq{ q(\bar x)
-    \log \frac{ p(s_d | \bm w, \beta, x, \beta) }{
+    \log \frac{ p(s_d | \bm w, \bm \beta, x) }{
       q(\bar x)} }
 \end{align}
 
@@ -219,7 +225,7 @@ at each time $s=1, \ldots, T$:
 \end{align}
 TODO(sean ): fix this.
 for $t=1, \ldots, T$. The optimal value for $\bar x$ can be found with
-a modified Kalman smoother \cite{kalman:1960}.  This modified Kalman
+a modified Kalman smoother \citep{kalman:1960}.  This modified Kalman
 smoother requires a forward filter step and a backward filter step.
 The forward filter estimates the mean position given all previous
 observations (note that we use $x_{c,d,t}$ to describe the position of
@@ -266,11 +272,12 @@ We find these positions by gradient ascent on each interaction:
 \begin{align}
   & \underset{x_{c_{d,1},t}, x_{c_{d,2},t}}
   {\arg \max}
-  p(\bm w_d^T \beta | \mathcal{F}(x_{c_{d,1},t}, x_{c_{d,2},t}),
+  p(\bm w_d^T \bm \beta | \mathcal{F}(x_{c_{d,1},t}, x_{c_{d,2},t}),
   \expectq{ \bar x_{c_{d,1},t} }, \expectq{ \bar x_{c_{d,2},t} }) \nonumber \\
   & = \underset{x_{c_{d,1},t}, x_{c_{d,2},t}}
   { \arg \max }
-  p(\bm w_d^T \beta | \mathcal{F}(x_{c_{d,1},t}, x_{c_{d,2},t}), \beta)
+  p(\bm w_d^T \bm \beta | \mathcal{F}(x_{c_{d,1},t}, x_{c_{d,2},t}),
+  \bm \beta)
   p(x_{c_{d,1},t} | \expectq{ \bar x_{c_{d,1},t} } )
   p(x_{c_{d,2},t} | \expectq{ \bar x_{c_{d,2},t} } ).
 \end{align}
@@ -309,13 +316,13 @@ paragraphs. We randomly selected 80\% (32,249) distict paragraphs from
 this set as training examples and used the remaining examples to
 evaluate our model.
 
-\subsection{Sentiment labels $s$}
+\subsection{Coding sentiment}
 \label{section:sentiment_models}
 
 We next labeled our training examples with both lay reviewers and
 expert labels, representing opposite ends of the human-label spectrum.
 
-\subsubsection{Amazon Mechanical Turk labels}
+\subsubsection{Novice labels: Amazon Mechanical Turk ratings}
 \label{section:mturk}
 
 \emph{Amazon Mechanical Turk} (AMT) is a crowdsourcing platform which
@@ -335,16 +342,14 @@ are high-quality, these workers are typically not experts.
   \normalsize
 \end{figure*}
 
-To fit the model, we asked \emph{Amazon Mechanical Turk} raters to
+To fit the model, we asked \emph{Amazon Mechanical Turk} workers to
 rate the sentiment between two nations mentioned in the text of a
 paragraph on the scale -5 (mortal enemies), $\ldots$, 5 (very good
 relationship). We illustrate a rating task (as seen by a Mechanical
-Turk worker) in \myfig{mechanical_turk_sample}.
-
-Raters were asked to review a random subset of 3607 paragraphs from
-the original collection.  Before fitting the model, we manually
-disqualified eight raters (out of 85) who consistently performed
-poor ratings.
+Turk worker) in \myfig{mechanical_turk_sample}. Raters were asked to
+review a random subset of 3607 paragraphs from the original
+collection.  Before fitting the model, we manually disqualified eight
+raters (out of 85) who consistently performed poor ratings.
 
 With all rated paragraphs which were not in the test set, we fit the
 coefficients $\bm \beta$ of the text regression discussed in
@@ -357,25 +362,25 @@ paragraphs in \myfig{fr_example_betas} (left).
 \subsubsection{Expert labels: Correlates of War}
 \label{section:correlates_of_war}
 
-We also used a combined set of expert labels based on the Correlates of War \cite{sarkees:2010} and Issue Correlates of War \cite{hensel:2001}.
+We also used a combined set of expert labels based on the Correlates of War \citep{sarkees:2010} and Issue Correlates of War \citep{hensel:2001}.
 \begin{itemize}
   \item The \emph{Correlates of War} project ``seeks to facilitate the
     collection, dissemination, and use of accurate and reliable
     quantitative data in international relations''
-    \cite{cow_webpage:2012}, and it provides labels describing the
+    \citep{cow_webpage:2012}.  The project provides labels describing the
     relationships between pairs of countries from 1823 to 2003.
     At-war is a binary relationship (either countries are at war, or
     they are at peace). We used a list of CoW inter-state wars
     (version 4.0) from 1823 to 2003
-    \cite{sarkees:2010}.
+    \citep{sarkees:2010}.
   \item The \emph{Issue Correlates of War} project ``is a research
     project that is collecting systematic data on contentious issues
-    in world politics'' \cite{icow_webpage:2012}, and they provide
+    in world politics'' \citep{icow_webpage:2012}, and they provide
     expert labels on a variety of inter-state conflicts that \emph{do
       not require militarized conflict}.  However, these issue label
     do require documented evidence of contention between states; such
     issues include maritime and territorial disputes
-    \cite{icow_webpage:2012,hensel:2001}. The Issue Correlates of War
+    \citep{icow_webpage:2012,hensel:2001}. The Issue Correlates of War
     are not part of the same project (or produced by the same
     researchers) as the Correlates of War.
 \end{itemize}
@@ -386,7 +391,7 @@ rating of -5 if they are at war from the Correlates of War codes and
 Issue Correlates of War.\footnote{These values were selected to
   correspond roughly to the Mechanical Turk labels.}.  All other pairs
 of countries were treated as having a rating of 0.1.  As before, we
-fit the text regression parameters $\beta$ using these labels on the
+fit the text regression parameters $\bm \beta$ using these labels on the
 training set and evaluated countries' ratings on the test dataset. We
 illustrate $\bm \beta$ fit to CoW-labeled paragraphs in
 \myfig{fr_example_betas} (left).
@@ -396,38 +401,38 @@ illustrate $\bm \beta$ fit to CoW-labeled paragraphs in
     \includegraphics[width=0.4\textwidth]{chapter_foreign_relations/figures/mturk_sample_words.pdf} &
     \includegraphics[width=0.4\textwidth]{chapter_foreign_relations/figures/cow_sample_words.pdf} \\
     \end{tabular}
-  \caption{Coefficients $\beta_w$ for selected words $w$ fit on text
+  \caption{Coefficients $\bm \beta_w$ for selected words $w$ fit on text
     labeled by Amazon Mechanical Turk workers (left) and Correlates of
     War data (right). Coefficients fit from Mechanical Turk labels are
     more clearly separated than those fit to Correlates of War labels;
     this is likely due to explicit positive sentiment in that dataset.
-    The $x$-axis is $\beta$, and the $y$-axis is used for display (it
+    The $x$-axis is $\bm \beta$, and the $y$-axis is used for display (it
     corresponds to no variable).  Size of each word is proportional to
-    $\sqrt{\mbox{frequency}}$, and color corresponds to $\beta$.}
+    $\sqrt{\mbox{frequency}}$, and color corresponds to $\bm \beta$.}
   \label{fig:fr_example_betas}
 \end{figure}
 
 \subsubsection{Casual vs. expert labels}
-The CoW represent a data source which is fairly different from
+The CoW represent a data source which is modestly related to
 Mechanical Turk ratings. In the NYT dataset, CoW ratings and
 Mechanical Turk ratings were correlated at $\sigma=0.196$.  We can
 better understand the difference between these ratings with some
 examples of paragraphs $d$ having high and low inter-country sentiment
 $s_d$:
 \begin{itemize}
-  \item AMT $= 1$, CoW $=-5$: \begin{quote}As an
+  \item AMT $= 1$, CoW $=-5$: \begin{quote} \emph{As an
     indication of the dangers the damage occurred in waters where
     military spokesmen said no mines had been suspected before but
     where a \textbf{Saudi} officer said today that some 22 were later
-    found. \textbf{Iraq}i mines widely deployed [sic] (February 1991)
-    \cite{cushman:1991}
+    found. \textbf{Iraq}i mines widely deployed [sic]} (February 1991)
+    \citep{cushman:1991}
 \end{quote}
-  \item AMT $ = -5$, CoW $=0.1$: \begin{quote}Not since
+  \item AMT $ = -5$, CoW $=0.1$: \begin{quote}\emph{Not since
     the grim old days of the cold war have relations between the
     \textbf{United States} and \textbf{Russia} been quite as problematic as they
     are this weekend on the eve of president clinton's visit for
     celebrations marking the 50th anniversary of the allied victory in
-    europe in World War II. (May 1995) \cite{apple:1995}
+    europe in World War II.} (May 1995) \citep{apple:1995}
 \end{quote}
 \end{itemize}
 
@@ -566,7 +571,7 @@ x_{c_1}, \bm x_{c_2})$.  We summarize these functions in Table~\ref{table:fr_lin
 \end{figure}
 
 We measured the model's ability to predict inferences from the
-text-based sentiment model $s_d = \bm w_d^T \beta$ for $1 \le
+text-based sentiment model $s_d = \bm w_d^T \bm \beta$ for $1 \le
 \mbox{dim}(\bm z) \le 9$ and report the mean-squared-error (MSE) of
 these predictions in \myfig{fr_supervised_performance}.  We find that
 the the inner-product assumption $\bar z_{c_1}^T \bar z_{c_2}$ alone
@@ -700,7 +705,7 @@ We summarize major events for two of these countries below.
     of the Soviet Union.  The U.S. has given Ukraine over $4.1$
     billion in aid, targeted to ``promote political, security, and
     economic reform and to address urgent social and humanitarian
-    needs'' \cite{ukrainestate:2012}.  In return, Ukrain has been an
+    needs'' \citep{ukrainestate:2012}.  In return, Ukrain has been an
     active member of the UN and has assisted the NATO allies with
     defense aid in Kosovo (1999), Afghanistan (2011), Iraq, the Middle
     East, and Africa.  Ukraine adopted its first post-Soviet
@@ -709,7 +714,7 @@ We summarize major events for two of these countries below.
     were hosted in the U.S. that year).  At the same time, Ukraine has
     been taking acrive steps in eliminating the nuclear weapons
     program it inherited, permanently closing the last operating
-    reactor at the Chornobyl site in 2000 \cite{ukrainestate:2012}.
+    reactor at the Chornobyl site in 2000 \citep{ukrainestate:2012}.
 
     Ukraine's sentiment with Iraq, as inferred from the AMT model, was
     at its lowest in January 1993, January 1998, and again in April
@@ -722,17 +727,17 @@ We summarize major events for two of these countries below.
   \item \textbf{Iran} has had a poor relationship with the United
     States since the U.S. Embassy seizure in 1981.  Between 1987 and
     1988, U.S. and Iranian forces clashed in the Persian Gulf.
-    \cite{irancia:2012}.  Transfers of power have since then increased
+    \citep{irancia:2012}.  Transfers of power have since then increased
     political tension, with the election of a reformist president in
     1997 and a reformist legislature in 2000, followed by conservative
     re-elections starting in 2003 and continuing through 2004.
     Hardliner President President Mahmud Ahmadinejad was inaugurated
-    in August 2005 and re-elected in 2009 \cite{irancia:2012}.
+    in August 2005 and re-elected in 2009 \citep{irancia:2012}.
 
     Ahmadinejad's rule has been met with increasing pressure from
     United Nations countries.  The Council has made successive
     resolutions imposing santions on Iran in 2006, 2007, 2008, and
-    2010 \cite{iranstate:2012}.
+    2010 \citep{iranstate:2012}.
 
     The Mechanical Turk sentiment between Iran and the U.S. has
     clearly dropped in the lead-up to Ahmadinejad's election (see
@@ -763,7 +768,7 @@ supported Iran sanctions.
     intercept/distance link function, with a two-dimensional distance
     space, using CoW labels (top) and AMT labels (bottom).  Sentiment
     between all countries and either Iran or Pakistan was
-    least consistent under CoW vs. AMT. Ukraine was
+    least consistent between CoW and AMT. Ukraine was
     the most consistently represented with these labels.}
 \end{figure}
 

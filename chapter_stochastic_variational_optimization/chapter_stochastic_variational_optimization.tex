@@ -7,7 +7,7 @@ fundamental problem in statistical modeling.  This problem arises in
 posterior inference, for example, where we seek to estimate a
 conditional $p(x | y)$ of latent variables $x$ given observations $y$.
 There are two main classes of solutions---Markov chain Monte Carlo
-(MCMC)~\cite{bishop:2006} and variational methods~\cite{jordan:1999}.
+(MCMC)~\citep{bishop:2006} and variational methods~\citep{jordan:1999}.
 In MCMC, we define a Markov chain whose stationary distribution is the
 target distribution.  We run the chain to try to collect independent
 samples from the stationary distribution, and then usxbe them to form an
@@ -34,7 +34,7 @@ and observed variables (up to a constant factor), the variational
 likelihood $q(x)$ (up to a constant factor), and the derivative of
 $\log q(x)$.  (Note that this derivative can be reused across
 variational inference problems.)  Unlike other automated approaches to
-variational inference \cite{winn:2004}, we have no other restrictions
+variational inference \citep{winn:2004}, we have no other restrictions
 on the model or variational family, e.g., that the hidden variables
 come in conjugate pairs or that the variational distributions are in
 the exponential family.
@@ -54,9 +54,9 @@ the exponential family.
 There have been several recent algorithms that are similar in spirit
 to ours.  Both Carbonetto et al. and Graves perform variational
 inference by taking samples from the variational posterior to estimate
-a gradient \cite{carbonetto:2009, graves:2011}.  Carbonetto et
+a gradient \citep{carbonetto:2009, graves:2011}.  Carbonetto et
 al. assume that the variational distribution comes from the
-exponential family \cite{carbonetto:2009}.  Graves \cite{graves:2011}
+exponential family \citep{carbonetto:2009}.  \cite{graves:2011}
 approximates the first-order gradient for fitting a neural network.
 
 % dmb: for publication, let's remove "significantly".  for the
@@ -67,7 +67,7 @@ approximates the first-order gradient for fitting a neural network.
 % sentences below to the previous paragraph.
 
 Our work significantly expands on this research.  We make weaker
-assumptions than Carbonetto et al. \cite{carbonetto:2009} on the forms
+assumptions than \cite{carbonetto:2009} on the forms
 of $p$ and $q_\theta(x)$.  Our posterior $p(x | y)$ and $q(x)$ must be
 well-behaved---the KL-divergence between $p(x | y)$ and $q(x)$ must
 exist, $\log q_\theta(x)$ must be differentiable almost everywhere,
@@ -98,7 +98,7 @@ the algorithm.
 \subsection{Variational inference}
 
 Variational methods are a fast, deterministic alternative to MCMC for
-approximate inference \cite{jordan:2003,jordan:1999}. Variational
+approximate inference \citep{jordan:2003,jordan:1999}. Variational
 methods posit a parameterized family of distributions $q_{\theta}(x)$
 and try to find the member (i.e., the setting of variational
 parameters $\theta$) that is closest in KL-divergence to the posterior
@@ -140,7 +140,7 @@ gradient with respect to $\theta$. If the variational distribution is
 not conjugate to the joint distribution $p(x, y)$, the expectation
 $\expectq{ \log p(x, y)}$ will not be analytically tractable. We may
 then need to perform further bounds or approximations
-\cite{jaakkola:2000,jordan:1999,bickel:2007,braun:2007}.
+\citep{jaakkola:2000,jordan:1999,bickel:2007,braun:2007}.
 
 
 %%  A Gaussian variational
@@ -178,11 +178,12 @@ development.
 %% p(x, y)}$, which is typically required for variational inference.
 
 \subsection{Stochastic optimization of the variational objective}
+\label{sec:so_algorithm_derivation}
 
 We now describe an alternative method for optimizing the ELBO
 $\mathcal{L}$. We form a noisy estimate of the gradient using
-Monte-Carlo integration \cite{graves:2011,wei:1990,carbonetto:2009},
-and follow it with stochastic optimization~\cite{robbins:1951}.  This
+Monte-Carlo integration \citep{graves:2011,wei:1990,carbonetto:2009},
+and follow it with stochastic optimization~\citep{robbins:1951}.  This
 avoids difficult derivations; we need only evaluate $\log p(x, y)$,
 $q_\theta(x)$, and $\nabla \log q_\theta(x)$.
 
@@ -244,13 +245,13 @@ constant $C$.  This follows because $\expectq{\nabla \log q_\theta(x)}
 constant.
 
 Related estimates of similar gradients have been studied in
-recent work~\cite{carbonetto:2009,graves:2011} and in the context of
-expectation maximization~\cite{wei:1990}.
+recent work~\citep{carbonetto:2009,graves:2011} and in the context of
+expectation maximization~\citep{wei:1990}.
 
 The quality of this estimate depends on the sample size $M$.  A small
 number of samples leads to a fast but crude approximation, while a
 large number of samples will be slower but more accurate.  We will
-explain in Section~\ref{section:minibatch_sampling} how to decrease
+explain in Section~\ref{sec:minibatch_sampling} how to decrease
 the variance of this approximation by using batches of carefully
 selected, non-\emph{iid} samples and provide an experiment to explore
 the effect of sample size.
@@ -277,7 +278,7 @@ distribution $q_\theta(x)$ and evaluate its log and gradient of its
 log---are usually easy.  (And, if not, they can be worked out once and
 then placed in reference for use in many variational algorithms.)  We
 give concrete examples of the gradient of the log for several types of
-distributions in \mysec{gaussian}, \mysec{complicated_posteriors} and
+distributions in \mysec{so_gaussian}, \mysec{complicated_posteriors} and
 in the supplementary materials.
 %\ref{section:dirichlet_multinomial},
 
@@ -298,7 +299,7 @@ distribution:
   \frac{\eta}{n^k} \partlapprox{\mathcal{L}_\theta }{ \theta } \Bigr|_{\theta_{n-1}},
 \end{align}
 where $\eta > 0$ is a learning rate parameter and $k \in (0.5, 1.0]$
-  \cite{carbonetto:2009}. Importantly, the expectation of the
+  \citep{carbonetto:2009}. Importantly, the expectation of the
   stochastic gradient, $\expectd{\partl{f(x_n, \theta)}{\theta}}$, is
   the gradient of the objective (up to a constant factor).
 % Multiple samples $x_1, \ldots, x_M$ are sometimes combined in a
@@ -312,13 +313,13 @@ convergence criterion is met (we give details in the next section).
 In most stochastic optimization settings, the sampling distribution
 $\mathcal{D}$ is stationary, and many theoretical results demonstrate
 when and how stochastic optimization converges to an optimum of the
-objective with this assumption \cite{bottou:2004,robbins:1951}.  We
+objective with this assumption \citep{bottou:2004,robbins:1951}.  We
 violate this assumption because the distribution $q_\theta$ changes in
 each iteration.  Still, we find that this method reliably converges in
 practice.
 
 \subsubsection{Example: Gaussian variational marginal}
-\label{section:gaussian}
+\label{sec:so_gaussian}
 In the next section we will describe ways to improve this gradient
 ascent algorithm (Equation~\ref{eq:svo_update}), but first we
 illustrate this method by estimating an ``unknown'' posterior with a
@@ -440,7 +441,7 @@ gradient, which we can do because we have intimate knowledge of
 $q_{\theta_n}$, and (2) improving step sizes with second-order updates.
 
 \subsubsection{Minibatch sampling}
-\label{section:minibatch_sampling}
+\label{sec:minibatch_sampling}
 The stochastic gradients in Equation~\ref{eq:svo_gradient} were
 estimated with ``minibatches'' of $M$ \emph{iid} samples from $q$.  As
 \myfig{comparision_order_sampling} (top left) shows, the
@@ -455,7 +456,7 @@ By carefully selecting minibatches with non-\emph{iid} samples, we can
 decrease the variance of our estimate of the ELBO $\partl{ \mathcal{L}_\theta
 }{\theta}$.  Quasi-Monte Carlo methods such as the Latin hypercube
 design have been developed for exactly this purpose
-\cite{tang:1993,owen:1998,niederreiter:1992}.
+\citep{tang:1993,owen:1998,niederreiter:1992}.
 
 To sample values from a univariate variational distribution $q$, we
 select $M$ equidistant points from the uniform distribution and pass
@@ -467,7 +468,7 @@ each of the $D$ distributions, randomly permute samples from each
 distribution, and group them into $M$ $D$-variate samples. We increase
 the number of samples as the algorithm converges as described in the
 experiments section
-\cite{wei:1990}. \myfig{comparision_order_sampling} (top
+\citep{wei:1990}. \myfig{comparision_order_sampling} (top
 right) illustrates the effect of quasi-Monte Carlo sampling on
 convergence of SVO.
 
@@ -481,11 +482,11 @@ samples (e.g., updates to variables which are conditionally
 independent), SVO does not require sequential samples.
 
  \subsubsection{Second-order updates}
- \label{section:second_order_updates}
+ \label{sec:second_order_updates}
 
 \begin{figure}
   \begin{tabular}{cc}
-\begin{minipage}{2.4in}
+\begin{minipage}{2.7in}
 \small
 \begin{algorithm}[H]
   % For numbers, add [1] to this.
@@ -508,14 +509,16 @@ independent), SVO does not require sequential samples.
       \STATE Compute $\partl{\log q_{\theta_n}(x_{nm})}{\theta} \bigr|_{\theta_{n-1}}$.
     \setlength{\itemsep}{4pt}
       \STATE Estimate $\partl{\mathcal{L}_\theta}{\theta} \bigr|_{\theta_{n-1}}$
-	using Equation~\ref{equation:svo_gradient}.
+	using \myeq{svo_gradient}.
         \setlength{\itemsep}{4pt}
-      \STATE Update $\theta$, using Equation~\ref{equation:svo_update}:
+      \STATE Update $\theta$, using \myeq{svo_update}:
         \vspace{-5pt}
-	\begin{align*}
+	\[ % 
+        % \begin{align*}
           \theta_n \gets \theta_{n-1} -
           \frac{\eta}{n^k} \partl{\mathcal{L}_\theta}{\theta} 
-        \end{align*}
+%        \end{align*}
+\]
         \setlength{\itemsep}{4pt}
   \ENDWHILE
   \vspace{16pt}
@@ -523,7 +526,7 @@ independent), SVO does not require sequential samples.
 \end{algorithm}
 \end{minipage}
  & 
-\begin{minipage}{2.6in} \small
+\begin{minipage}{2.9in} \small
   \begin{algorithm}[H]
     \begin{algorithmic}
  %\caption*{\hspace{50pt} Second-order SVO}
@@ -537,15 +540,16 @@ independent), SVO does not require sequential samples.
     \STATE Draw samples $x_{n1}, \ldots, x_{nM} \sim q_{\theta_{n - 1}}$ using quasi-Monte Carlo sampling.
     \STATE Compute $\partl{\log q_{\theta_n}(x_{nm})}{\theta} \bigr|_{\theta_{n-1}}$.
     \STATE Compute $\partll{\log q_{\theta_n}(x_{nm})}{\theta} \bigr|_{\theta_{n-1}}$. % for $m = 1 \ldots, M$.
-    \STATE Estimate $\partl{\mathcal{L}_\theta }{\theta} \bigr|_{\theta_{n-1}}$ using Equation~\ref{equation:svo_gradient}.
-    \STATE Estimate $\partll{\mathcal{L}_\theta }{\theta} \bigr|_{\theta_{n-1}}$ using Equation~\ref{equation:empirical_second_order_estimates}.
-    \STATE Update $\theta$, using Equation \ref{equation:second_order_updates}:
+    \STATE Estimate $\partl{\mathcal{L}_\theta }{\theta} \bigr|_{\theta_{n-1}}$ using \myeq{svo_gradient}.
+    \STATE Estimate $\partll{\mathcal{L}_\theta }{\theta} \bigr|_{\theta_{n-1}}$ using \myeq{empirical_second_order_estimates}.
+    \STATE Update $\theta$, using \myeq{second_order_updates}:
         \vspace{-10pt}
-	\begin{align*}
+	% \begin{align*}
+        \[
      	   \displaystyle \theta_n \gets \theta_{n-1} - \left( 
      	\partll{\mathcal{L}_\theta }{\theta}
      	\right)^{-1}
-     	\partl{\mathcal{L}_\theta }{\theta}.  \end{align*}
+     	\partl{\mathcal{L}_\theta }{\theta}.  \] % \end{align*}
     \vspace{-15pt}
     \STATE $n \gets n + 1$ % (until convergence)
     \ENDWHILE
@@ -557,8 +561,8 @@ independent), SVO does not require sequential samples.
 \normalsize
   \caption{First-order SVO (left) and second-order SVO (right). In each, we begin with a variational distribution
     $q_{\theta_0}(x)$ and joint likelihood $p(x, y)$.  }
-    \label{figure:second_order_algorithm}
-    \label{figure:first_order_algorithm}
+    \label{fig:second_order_algorithm}
+    \label{fig:first_order_algorithm}
 \end{figure}
 
 We also note that the step size parameters $\eta$ and $k$ have a large
@@ -566,8 +570,8 @@ impact on convergence to an optimal solution: they must be carefully
 tuned in both stochastic optimization and our algorithm. We circumvent
 the challenge of selecting step size with second-order updates, which
 are sometimes used in stochastic optimization
-\cite{robbins:1951,bottou:2004} and were used by
-\citet{carbonetto:2009} and \citet{wei:1990}.  To derive the
+\citep{robbins:1951,bottou:2004} and were used by
+\cite{carbonetto:2009} and \cite{wei:1990}.  To derive the
 second-order updates, we make a Taylor approximation of the
 variational objective $\mathcal{L}_\theta$
 (Equation~\ref{eq:stochastic_traditional_variational_objective}) around the
@@ -599,10 +603,10 @@ The estimate of the optimum is then
   \label{eq:second_order_updates}
 \end{align}
 This algorithm is summarized in
-\myfig{second_order_algorithm}, and it can be used instead
+\myfig{second_order_algorithm} (right), and it can be used instead
 of the first-order algorithm
-(\myfig{first_order_algorithm}), just as in stochastic
-optimization \cite{bottou:2004}.  The results of applying this
+(\myfig{first_order_algorithm} (left)), just as in stochastic
+optimization \citep{bottou:2004}.  The results of applying this
 algorithm to the synthetic dataset described in the last section is
 shown in \myfig{comparision_order_sampling} (bottom two
 panels).  Second order methods can help to avoid both high variance in
@@ -615,6 +619,24 @@ optimization, which means that this approach can converge more
 reliably than stochastic optimization by using more (and better)
 samples during the final updates.  It also means that a tunable
 learning rate is no longer necessary.
+
+\subsubsection{Decreasing variance of the gradient}
+\label{sec:setting-c}
+
+In \mysec{so_algorithm_derivation}, we noted that $C$ can be
+set arbitrarily without changing $\textstyle \mathbb{E}_{q} [ {\tilde
+  \nabla \cal{L}_{\theta}} ]$.  However, changing $C$ does affect the
+variance of $\tilde \nabla \cal{L}_{\theta}$, and we can set it to
+minimize this variance. Specifically, we set
+\begin{equation}                                                                      
+  C = \frac{\sum_M                                                                       
+    (\partl{ \log q(x_m)}{})^2 ( \log p(x_m, y) - \log q(x_m) ) } {                          
+    \sum_M (\partl{\log q(x_m)}{})^2}.                                                                    
+\end{equation}
+This minimizes the variance of the estimate of the gradient; we find
+that it works well in practice.  If the gradient of $\log p(x, y)$ is
+available to the user, he may also use this to improve the estimated
+gradient, as described in \S A.2.
 
 \subsection{Multivariate distributions}
 Most interesting latent-variable models are multivariate, so we now describe
@@ -638,7 +660,7 @@ variational posteriors.
 SVO differs from traditional stochastic optimization in several
 important ways.  We draw a contrast from methods which optimize a
 variational lower bound with \emph{iid} training examples
-\cite{hoffman:2010} from an unknown distribution; we optimize the
+\citep{hoffman:2010} from an unknown distribution; we optimize the
 probability distribution with respect to which we are taking an
 expectation.  Further, the samples we use to optimize this bound are
 drawn from this distribution.  This is not the case for stochastic
@@ -653,7 +675,7 @@ Many of these improvements do not apply in the general stochastic
 optimization setting.
 
 \paragraph{Stochastic sampling with variational inference.}
-\citet{carbonetto:2009} used stochastic optimization in an approach
+\cite{carbonetto:2009} used stochastic optimization in an approach
 conceptually very similar to ours.  They sample from the variational
 posterior and use importance sampling along with second-order updates
 to estimate a similar gradient.  They further
@@ -668,12 +690,12 @@ approximable with Monte-Carlo methods.  We further require that (1)
 $\log q_\theta(x)$ be differentiable almost everywhere and (2)
 $q_\theta$ have finite variance.
 
-\citet{carbonetto:2009} used importance sampling to approximate a
+\cite{carbonetto:2009} used importance sampling to approximate a
 gradient and require learning rates to be carefully set.  We address
 both of these by using the sampling methods discussed in
-Section~\ref{section:minibatch_sampling}.
+Section~\ref{sec:minibatch_sampling}.
 
-\citet{wei:1990} use Monte-Carlo sampling to perform the E-step of EM
+\cite{wei:1990} use Monte-Carlo sampling to perform the E-step of EM
 using a finite-sum approximation of an integral. While they
 explicitly outline the gradient and Hessian of the expectation, they
 never use these values.
@@ -690,21 +712,18 @@ never use these values.
 \section{Empirical study}
 
 In this section we studied SVO in the synthetic toy example of
-\mysec{stochastic_optimization_var_obj}, Bayesian logistic regression,
+\mysec{so_gaussian}, Bayesian logistic regression,
 probit ideal point models, and the switching Kalman filter.  We
 compared SVO to MCMC, classical variational inference, and an
 ``oracle'' sampler (when one was available).
 % We implementated
 % experiments in Python using the \verb!numpy! and \verb!scipy!
 % modules. 
-Source code for these experiments, including a general-use
-Python module, is available (anonymously) at
-\url{https://sourceforge.net/projects/variational/files/}
 
 \subsection{Univariate examples}
-\label{section:univariate_example}
+\label{sec:univariate_example}
 We return to the toy example presented in
-\mysec{stochastic_optimization_var_obj} and compare our estimates of
+\mysec{so_gaussian} and compare our estimates of
 the posterior mean for second-order SVO with two sampling methods. As
 before, we assume that the synthetic dataset has a posterior
 distribution that is a logistic distribution with mean $\nu=5$ and
@@ -715,7 +734,7 @@ $\log p(x, y)$ available to SVO.
 \textbf{Second-order SVO.}  We used second-order SVO
 (\myfig{second_order_algorithm}) with quasi-Monte Carlo samples.  We
 assessed convergence using the method described in
-\mysec{stochastic_optimization_var_obj}, tracking an exponential
+\mysec{so_gaussian}, tracking an exponential
 moving average of the ELBO $\mathcal{L}$ and doubling sample size each time
 the moving average was low.  We illustrate SVO's estimate of the mean
 as a function of the number of samples (and evaluations of the joint)
@@ -791,11 +810,11 @@ approaches the posterior mean much more quickly than the MH estimate.
 \begin{figure*}
   \center
   \begin{tabular}{c}
-    \begin{minipage}{5.7in}{
+    \begin{minipage}{28.7in}{
         \center \irtdata }
     \end{minipage}
     \\
-    \begin{minipage}{5.7in}{
+    \begin{minipage}{28.7in}{
         \center \changepointdata }
     \end{minipage}
   \end{tabular}
@@ -846,13 +865,13 @@ sampler, an estimate of the mean takes much longer to converge than
 univariate SVO.
 
 \subsection{Probit regression and ideal points}
-\label{section:probit_regression}
+\label{sec:probit_regression}
 We next studied SVO for approximating a complex posterior in a large
 high-dimensional model.
 
 We fit a matrix of U.S. lawmakers' votes using Item Response Theory
 (IRT), a class of models frequently used in political science
-\cite{poole:1991,martin:2002,albert:1992}.  IRT is used to position
+\citep{poole:1991,martin:2002,albert:1992}.  IRT is used to position
 each lawmaker $l$ in a latent space with positions $x_l \in
 \mathbb{R}$; these positions are often studied by political scientists
 to understand the lawmakers' political preferences.  Lawmakers'
@@ -860,11 +879,11 @@ positions interact with latent bill variables $a_d, b_d \in
 \mathbb{R}$; all latent variables take a standard normal prior.  The
 probability of lawmaker $l$ voting ``Yes'' on bill $d$ is then given
 by $p(v_{ld} = \mbox{Yes}) = \mbox{probit}(x_l a_d + b_d)$
-\cite{clinton:2004}.
+\citep{clinton:2004}.
 
 \textbf{Experiments.}  Political methodologists usually implement
-these models with MCMC methods \cite{albert:1992} (a variational
-implementation was introduced in \cite{gerrish:2011}, although that
+these models with MCMC methods \citep{albert:1992} (a variational
+implementation was introduced by \cite{gerrish:2011}, although that
 used the logistic response). We fit these models with MCMC,
 traditional variational Bayes, and SVO.  We chose fully-factorized
 Gaussian posterior distributions.
@@ -873,7 +892,7 @@ Gaussian posterior distributions.
 % \]
 
 We can use an auxiliary random variable to yield a fast Gibbs sampler
-and a variational algorithm \cite{armagan:2011} (this is not possible
+and a variational algorithm \citep{armagan:2011} (this is not possible
 with a logistic response).  We fit the posterior with these algorithms
 as well as with second-order SVO.
 
@@ -906,7 +925,7 @@ variational Bayes estimates is explained by the auxiliary variable.)
 % between gibbs and gibbs500k.
 
 \subsection{Switching Kalman filter}
-\label{section:switching_kalman_filter}
+\label{sec:switching_kalman_filter}
 We next illustrate this method in the task of identifying change
 points---positions of large changes---in a time-series dataset.  To
 this end, we assume a series of real-valued observations $y_{1:T}$
@@ -914,7 +933,7 @@ arising from underlying means $\mu_{1:T}$.  These means transition
 with low variance but occasionally make a large transition.  These changes
 are characterized by random switch variates, $c_t \in \{ 0, 1 \}$,
 which may indicate a large transition ($c_t=1$) with low probability. This
-distribution---a switching Kalman filter \cite{murphy:1998}---has the
+distribution---a switching Kalman filter \citep{murphy:1998}---has the
 density
 \begin{align}
   \vspace{-14pt}
@@ -927,7 +946,7 @@ is the probability of a change point, with $p(c_i) = 0.001$. While the
 conditional distributions are conjugate (enabling fast Gibbs
 samplers), there is no analytical solution to describe the posterior
 distribution, so variational approximations are sometimes used
-\cite{ghahramani:1996,murphy:1998}.  (The derivation of the
+\citep{ghahramani:1996,murphy:1998}.  (The derivation of the
 variational inference algorithm in \cite{ghahramani:1996} was 2.5
 pages.)
 
@@ -937,9 +956,9 @@ q(c_t | \bar c_t) q(\mu_t | \bar \mu_t)$ of Bernoulli and Gaussian variational
 distributions. We fit this model to a set of 809 measurements taken
 during the drilling of a well using nuclear magnetic resonance
 (NMR). The well log data were ``used to interpret the geophysical
-structure of the rock surrounding the well'' \cite{adams:2007} and
+structure of the rock surrounding the well'' \citep{adams:2007} and
 have been studied previously using change point models
-\cite{ruanaidh:1996,adams:2007}. We illustrate these data (along with
+\citep{ruanaidh:1996,adams:2007}. We illustrate these data (along with
 SVO posterior means) in \myfig{switching_kalman_filter}. We fixed the
 variances and $\pi$ by a-priori estimation for the well data before
 fitting any models.
@@ -974,7 +993,7 @@ posteriors, illustrating the inherent bias in variational methods.
 %\end{table}
 
 \subsection{Alternative variational distributions: Laplace variational posterior}
-\label{section:complicated_posteriors}
+\label{sec:complicated_posteriors}
 We have discussed variational Gaussian and multinomial posteriors,
 which are both commonly used in variational inference.  But SVO opens
 the door to many kinds of variational distributions, as all we require

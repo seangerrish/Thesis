@@ -29,14 +29,14 @@ Instead it infers a qualitative relationship between countries -- a
 relationship which we can attempt to interpret post-hoc.  The
 significance of this approach is that it infers a relationship between
 countries based more on the discussion of these countries than
-explicit labels.  Particularly, if there is a relationship which was
+explicit labels.  Particularly, if there is a relationship which has
 been overlooked by historians, then we might be able to learn it.
 
 In the remainder of this section we will outline a probabilistic model
 for inferring sentiment between pairs of countries.  We will outline
 the key assumptions of this model -- first, a language model inspired
 by the \emph{Networks Uncovered by Bayesian Inference} model
-\cite{chang:2009nubbi}; and second, a spatial model of dyadic
+\citep{chang:2009nubbi}; and second, a spatial model of dyadic
 relationships. We will then describe inference for this model, and
 finally provide an empirical analysis of this model.
 
@@ -71,7 +71,7 @@ Pairs of countries interact according to the dyadic relationship
 \end{align}
 where each country $c$ has an additional intercept $r_c$ and
 $\sigma(s)$ is the logistic function $\frac{\exp(s)}{1 + \exp(s)}$.
-We illustrate this graphically in \myfig{dyadic_chain}.  As in the
+We illustrate this graphically in \myfig{dynamic_dyadic_chain}.  As in the
 last section, we use the extra variables $x$ instead of $\bar x$ for
 computational convenience because we can estimate the time-series
 average $\bar x$ in closed form with a Kalman smoother.
@@ -121,16 +121,17 @@ the relationship between them.
 We therefore keep $(N_c + 2 + 1)$ topics---topics $\beta_{C,1},
 \ldots, \beta_{C,{N_c}}$ for each of the $N_c$ countries, exactly two
 sentiment topics $\beta_{S,0}, \beta_{S,1}$, and a single, global
-background topic $\beta_{B0}$ \cite{chemudugunta:2009}.  We assume, as in LDA, that a document
-about the United States and Iran is a mixture of topics; in contrast
-to LDA, however, we constrain this document's topics to be exactly the four
-topics enumerated above: $\beta_{C,\mbox{\tiny Iran}}$,
-$\beta_{C,\mbox{\tiny United States}}$, $\beta_{B,0}$, and either
-$\beta_{S,0}$ or $\beta_{S,1}$ (we describe below how to make the
-choice between $\beta_{S,0}$ and $\beta_{S,1}$).  A document about
-Hungary and Germany, in contrast, would be a mixture of the topics
-$\beta_{C,\mbox{\tiny Germany}}$, $\beta_{C,\mbox{\tiny Hungary}}$,
-$\beta_{B,0}$, and either $\beta_{S,0}$ or $\beta_{S,1}$.
+background topic $\beta_{B0}$ \citep{chemudugunta:2009}.  We assume,
+as in LDA, that a document about the United States and Iran is a
+mixture of topics; in contrast to LDA, however, we constrain this
+document's topics to be exactly the four topics enumerated above:
+$\beta_{C,\mbox{\tiny Iran}}$, $\beta_{C,\mbox{\tiny United States}}$,
+$\beta_{B,0}$, and either $\beta_{S,0}$ or $\beta_{S,1}$ (we describe
+below how to make the choice between $\beta_{S,0}$ and $\beta_{S,1}$).
+A document about Hungary and Germany, in contrast, would be a mixture
+of the topics $\beta_{C,\mbox{\tiny Germany}}$, $\beta_{C,\mbox{\tiny
+    Hungary}}$, $\beta_{B,0}$, and either $\beta_{S,0}$ or
+$\beta_{S,1}$.
 
 Once these topics are fixed for a document, the language model
 proceeds as with LDA for each word: each word in the document comes
@@ -202,7 +203,7 @@ The binary relational language model is founded on ideas discussed by
 several recent models.  Chang et al. developed a model to describe the
 relationships between ``entities'' (e.g., countries) with a similar
 assumption of entity-specific and relationship-specific topics
-\cite{chang:2009nubbi}.  For concreteness, we describe their work in
+\citep{chang:2009nubbi}.  For concreteness, we describe their work in
 the context of our work, by using ``country'' where they used the
 abstract term ``entity''.  In Chang et al.'s \emph{Networks Uncovered
   by Bayesian Inference} (Nubbi) model, each country had its own
@@ -216,16 +217,16 @@ Nubbi inferred relationships between countries by finding similar
 topic weights between documents. In contrast, we use sentiment to
 select between topics, with an ``upstream'' model in which actors are
 embedded in a latent space. This idea of merging topics at different
-levels of a hierarchy has also been explored by Chemudugunta et
-al. \cite{chemudugunta:2009}.  Neither of these approaches included a
+levels of a hierarchy has also been explored by
+\cite{chemudugunta:2009}.  Neither of these approaches included a
 switch variable for selecting between topics.
 
 The idea of associating language with sentiment has been explored in
 considerable detail lately.  Some of the most successful supervised
 approaches handle this with regression methods such as text regression
-\cite{kogan:2009}.
+\citep{kogan:2009}.
 
-Supervised topic models \cite{blei:2008} offer a fully probabilistic
+Supervised topic models \citep{blei:2008} offer a fully probabilistic
 generative model of documents which have an attached label.  A key
 assumption behind supervised topics is that the model can learn topics
 that capture the underlying sentiment.  Supervised topic models do
@@ -305,7 +306,7 @@ $\expect{\kappa_d}$ and $\expect{z_n}$.  This means that each
 interaction is manifested as a mixture $\expect{\kappa_d}$ of
 sentiment, and the observed words are treated as mixtures $\expect{\bm
   z_d}$ of topics.  We estimate countries' mean positions $\bar \hat
-x$ using a Kalman filter \cite{kalman:1960} as in the last section.
+x$ using a Kalman filter \citep{kalman:1960} as in the last section.
 This inference step is exactly as in the last section.
 
 
@@ -391,7 +392,7 @@ documents and xxxx test documents.
 \subsubsection*{Topics}
 We first summarize a set of topics inferred by the unsupervised
 sentiment model to the entire NYT corpus.
-Figure~\ref{table:fr_unsupervised_topics} lists the most-likely words
+\mytab{fr_unsupervised_topics} lists the most-likely words
 from sample of topics fit to these twenty years of articles.
 
 \paragraph{State-specific topics $\beta_{C,\cdot}$.}  The

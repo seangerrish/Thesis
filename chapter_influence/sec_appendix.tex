@@ -104,7 +104,7 @@
 % \begin{document}
 % \section{Appendix}
 
-\section{Variational posterior and evidence lower bound}
+% \section{Variational posterior and evidence lower bound}
 \label{sec:docinf_appendix}
 In this section, we describe the evidence lower bound and expand its
 terms to derive the variational updates for \mychap{influence}.  The
@@ -145,7 +145,7 @@ We can expand~\ref{eq:l_prob} as:
 \end{align}
 
 Equation~\ref{eq:z_prob} can be expanded as demonstrated in
-the original LDA algorithm \cite{blei:2003}:
+the original LDA algorithm \citep{blei:2003}:
 \begin{align}
   \expectq{ \log \prod_T \prod_{D_t} \prod_{N_{d_t}} p(z_n | \theta_{d_t}) }
   & = \sum_T \sum_{D_t} \sum_{N_{d_t}} \expectq{ \log p( \z_{d_t} | \theta_{d_t} ) }  \\  \nonumber

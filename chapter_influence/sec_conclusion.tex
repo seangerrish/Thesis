@@ -36,16 +36,16 @@ These results demonstrate not just that the model is correlated with
 citations; it also suggests that the model provides qualitatively
 \emph{different} information than citations.
 
+\subsection{Avenues for future work}
 The DIM could be made more realistic and more powerful in many ways.
 In one variant, individual documents might have their own ``windows''
 of influence.  Other improvements may change the way ideas themselves
 are represented, e.g. as atomic units, or \emph{memes}
-\cite{leskovec:2009}.  Further variants might differently model the
+\citep{leskovec:2009}.  Further variants might differently model the
 flow of ideas, by modeling topics as birth and death processes, using
-latent force models \cite{alvarez:2009}, or by tracking influence
-\emph{between} documents, building on the ideas of Shaparenko and
-Joachims~\cite{shaparenko:2007} or Dietz et
-al~\cite{dietz:2007}. % citet
+latent force models \citep{alvarez:2009}, or by tracking influence
+\emph{between} documents, building on the ideas of
+\cite{shaparenko:2007} or \cite{dietz:2007}. % citet
 
 I also believe that it would be useful to better understand models like
 the DIM in the context of traditional metrics of influence, such as
@@ -54,21 +54,29 @@ data.  Having a better understanding of when this model and
 established metrics differ will uncover where our metric may provide
 new information that is not yet captured by existing statistics.
 
+\subsection{Next steps}
 The work presented in this chapter assumes that the collection of
 documents is described by a set of themes, and that these themes
 evolve over time.  It describes each document using a mixture over
 themes and a vector describing its influence on each of those themes.
 This provides a sense of the current of ideas coursing through a
-collection of documents.  A limitation of this approach is that it does not
-provide explicit detail of the underlying elements \emph{within} this
-story.  Short of post-hoc analysis of word frequencies, we do not have a sense for whether
+collection of documents.
 
-In the next chapter I will address some of these shortcomings by
-explicitly modeling the ``story'' within a collection of text
-documents.  This approach will use some of the same ideas from this
-chapter, including the evolution of set of latent variables over time
-using hidden Markov models.  However, I will also introduce a way to
-model the dyadic relationships between countries over time.
+A limitation of this approach is that it does not provide explicit
+detail of the underlying elements \emph{within} this story.  Short of
+post-hoc analysis of word frequencies, we do not have a sense for
+whether how individual ideas within the corpus interact.
+
+In the next chapter I will address describe a model to explore some of
+these shortcomings by explicitly modeling the ``story'' within a
+collection of text documents.  This approach will use some of the same
+ideas from this chapter.  Specifically, I will assume that a
+collection of text documents serve as a window into underlying
+structure within the collection of documents.  Again, I will encode
+assumptions about the collection by explicitly modeling them with
+latent random variables, linked by a time-series model.  By modeling
+the interaction of character-nations within the collection explicitly,
+and applying posterior inference, we will learn a story about them.
 
 %\section{Acknowledgements}
 %The author would like to thank XXXX XXX, XXX XXX, and XXX XXX for

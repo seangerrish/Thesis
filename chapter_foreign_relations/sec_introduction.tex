@@ -23,14 +23,14 @@ nation can be summarized by its position in a latent space, so that
 the sentiment between two nations is determined (up to stochasticity)
 by the relationship between their positions in this latent space.  By
 making this assumption, we will gain two benefits: the ability to
-interpret these countries' positions, since they provide meaningful
-summaries of these countries' positions; and the ability to make
-predictions about the relationships between countries, based on their
-latent positions. While the last chapter's Document Influence Model
-allowed us to describe themes over time and individual documents'
-influence on these themes, the assumptions we will make in this
-chapter allow us to create a more rich story about specific
-entities---countries---over time.
+interpret these countries' positions, since they provide statistically
+meaningful summaries of these countries' positions; and the ability to
+make predictions about the relationships between countries, based on
+their latent positions. While the last chapter's Document Influence
+Model allowed us to describe themes over time and individual
+documents' influence on these themes, the assumptions we will make in
+this chapter allow us to create a more rich story about the
+interaction of specific textual entities---countries---over time.
 
 % We infer sentiment with the supervision of voting on UN resolutions.
 % Learning sentiment based on voting patterns provides an objective
@@ -41,23 +41,24 @@ entities---countries---over time.
 
 \subsection*{Organization of this chapter}
 
-In the next two sections we will develop two computational models that
+In the next two sections we will develop several computational models that
 link the text of a news source to the relationships between countries.
 
 We begin with a model which infers these relationships by using using
 two sources of labels about the sentiment between pairs of countries.
 We will develop a set of spatio-temporal assumptions that allow us to
 describe the sentiment between countries by inspecting their relative
-positions in a latent space.  We will demonstrate that modeling
-countries with this model allows us to create a history of foreign
-relations over time.  Importantly, we will show that the latent-space
-assumption allows us to better represent the sentiment observed
-between countries than a text-only model would allow.
+positions in a latent space (and, inversely, to interpret their
+positions based on observed sentiment).  We will demonstrate that
+modeling countries with this model allows us to create a history of
+foreign relations over time.  Importantly, we will demonstrate that
+the sentiment inferred from two very different sources of sentiment
+labels leads to strikingly similar measures of sentiment.
 
-After developing a supervised model, we invert this question and ask:
+After developing this supervised model, we invert this question and ask:
 what sentiment is implied by the text alone of news articles?  To
-answer this question, we will develop an unsupervised model of the
-relationship between countries to to qualitatively describe these
+answer this question, we describe an unsupervised model of the
+relationship between countries to qualitatively describe these
 relationships.  We then demonstrate a connection between the
 unsupervised relationships and the sentiment labels we had used for
 the supervised model.

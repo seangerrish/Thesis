@@ -131,12 +131,12 @@ The pipeline has several important steps.
     model is re-evaluated.
 
     Model criticism can take many forms, including prior and posterior
-    checks \cite{box:1980,gelman:1996} and measures of the model's
+    checks \citep{box:1980,gelman:1996} and measures of the model's
     ability to predict held-out observations. We will primarily focus
     on evaluating models based on external measures, although we will
     also include internal metrics such as the predictive
     distribution. When appropriate, we will also incorporate standard
-    metrics for topic model evaluation \cite{wallach:2009}.
+    metrics for topic model evaluation \citep{wallach:2009}.
   
   \item \textbf{Conclusions.} Finally, the practitioner may draw
     conclusions from the model.  In our case, this leads to two
@@ -165,10 +165,9 @@ The pipeline has several important steps.
     completeness, we note that many researchers create tools to
     display information meaningfully to -- and elicit interaction with
     -- users.  Well-known sources for display of this information
-    include Tufte \cite{tufte:2001} and Wilkinson
-    \cite{wilkinson:2005}, while visualization tools for models like
-    those in this work have been developed by Chaney and Blei
-    \cite{chaney:2012}.
+    include \cite{tufte:2001} and \cite{wilkinson:2005}, while
+    visualization tools for models like those in this work have been
+    developed by \cite{chaney:2012}.
 
 \end{enumerate}
 
@@ -211,7 +210,7 @@ $p$ is a probability distribution, it satisfies
 For $p$ to be useful, we typically will make distributional
 assumptions about it.  We often describe assumptions about
 factorization using a \emph{directed graphical model} (sometimes
-called a Bayesian network) \cite{pearl:1985}.\footnote{Undirected
+called a Bayesian network) \citep{pearl:1985}.\footnote{Undirected
   graphical models are also useful.  Here we focus on undirected
   graphical models.}  A graphical model is a directed, acyclic graph
 $G = (V, E)$ in which vertices $V=1, \ldots, M = M_x + M_y$ index
@@ -272,9 +271,9 @@ One of the most useful assumptions we can make about a probability
 distribution is conditional independence between groups of random
 variables.  Given random variables $Z_1, Z_2$, and $Z_3$, we say that
 $Z_1$ is conditionally independent of $Z_2$ given $Z_3$ if $p(Z_1, Z_2
-| Z_3) = p(Z_1 | Z_3) p(Z_2 | Z_3)$ \cite{bishop:2006}.  Conditional
+| Z_3) = p(Z_1 | Z_3) p(Z_2 | Z_3)$ \citep{bishop:2006}.  Conditional
 independence statements about distributions can often be inferred from
-these distributions' factorizations \cite{bishop:2006} and become
+these distributions' factorizations \citep{bishop:2006} and become
 important when one implements a probabilistic model or makes
 predictions with one.
 
@@ -347,7 +346,7 @@ latent-variable models.  Several of the most compelling motivations are:
 
 \subsubsection{Latent Dirichlet Allocation}
 We will capture the gist of documents using the topic model Latent
-Dirichlet Allocation \cite{blei:2003}.  Latent Dirichlet allocation
+Dirichlet Allocation \citep{blei:2003}.  Latent Dirichlet allocation
 (LDA) posits a set of $K$ \emph{topics} $\beta_1, \ldots, \beta_K$ to
 formalize what we mean by the \emph{gist} of a document.  LDA
 describes each document $d$ as a mixture $\bm \theta_d$ of $K$ topics, where $\sum_K \theta_{dk} = 1$ and $\theta_{dk} > 0
@@ -454,12 +453,12 @@ sections.
   multidimensional scaling}
 
 Two of the most common primitives in latent-variable models are matrix
-factorization \cite{salakhutdinov:2008a} and multidimensional scaling,
+factorization \citep{salakhutdinov:2008a} and multidimensional scaling,
 which describe relationships between pairs of items, or dyads. We
 first discuss a specific application of matrix factorization called
 item response theory (IRT), which has been used for decades in
 political science
-\cite{clinton:2004,martin:2002,poole:1991,enelow:1984,albert:1992}.
+\citep{clinton:2004,martin:2002,poole:1991,enelow:1984,albert:1992}.
 
 In IRT, we have two types of objects, and we would like to make
 predictions about pairs of them.  Each of these objects -- suppose
@@ -504,7 +503,7 @@ which the scalar logistic function $\sigma(s) = \frac{\exp(s)}{1 +
 A wide variety of researchers have used formulations like this for
 applications such as recommendation and representing the votes of
 lawmakers
-\citet{wang:2011,salakhutdinov:2008a,poole:1985,poole:1991,clinton:2004}. In
+\citep{wang:2011,salakhutdinov:2008a,poole:1985,poole:1991,clinton:2004}. In
 later chapters, we will use it for models of legislative voting.
 
 Sometimes these pairs of items that interact in dyads are of the same
@@ -515,20 +514,18 @@ be represented in the same latent, interpretable space.  In this case,
 we will still model each country with a latent position vector $\bm
 x_u$, and we will model their interaction as above, with
 \[
-  p(v | \bm x_i, \bm x_j) = \sigma(\bm x_i^T \bm x_j).
+  p(v | \bm x_i, \bm x_j) = \sigma(\bm x_i^T \bm x_j),
 \]
-An alternative formulation of the relationship between pairs of items
-uses their Euclidean distance in this latent space:
+for a suitable distribuiton $\sigma$.  We will also frame their
+relationship using their Euclidean distance
+in this latent space:
 \[
   p(v | \bm x_i, \bm x_j) = \sigma(\bm \beta w_{ij} - || \bm x_i - \bm x_j ||_2),
 \]
 where $w_{ij}$ are observed covariates about the dyad and $\bm \beta$
-is hidden along with $\bm x$ \cite{hoff:2002}.  In this latent-space
-formulation and the probabilistic matrix factorization model above,
-the logistic repsonse is arbitrary; we will use both a logistic
-response and a normally-distributed response. Both of these
-formulations allow us to model interaction between pairs of objects of
-the same type.
+is hidden along with $\bm x$ \citep{hoff:2002}. Both of these
+formulations will allow us to develop a model of foreign relations in
+\mychap{foreign_relations}.
 
 % Recent 
 %   - relevant sources
@@ -538,10 +535,12 @@ the same type.
 %   - inference (stochastic)
 
 \subsection{Hidden Markov Models and Kalman Filters}
-We now turn briefly to abstractions for time-series data.  Consider a
-typical scenario: a sequence of observations $Y_1, \ldots, Y_T$ are
-observed at times $t=1, \ldots, t=T$.  In a \emph{hidden Markov model}
-(HMM), we assume that these observations can be explained by a hidden set of states $X_1, \ldots, X_T$.  The model factorizes as
+We now turn briefly to abstractions for time-series data. One of the
+simplest assumptions about a time-series colleciton is that we have a
+sequence of observations $Y_1, \ldots, Y_T$ observed at times $t=1,
+\ldots, t=T$.  In a \emph{hidden Markov model} (HMM).  We assume that
+these observations can be explained by a hidden set of states $X_1,
+\ldots, X_T$, which are temporally linked.  The model factorizes as
 \begin{align}
   p(Y_1, \ldots, Y_T, X_1, \ldots, X_T) = p(X_1) p(Y_1 | X_1) \times \prod_{t=2, \ldots, T} p(X_t | X_{t-1}) p(Y_t | X_t)
 \end{align}
@@ -553,11 +552,14 @@ HMM.  Importantly, inference in these models is very efficient because
 the set of conditional independencies yields a tree: inference can
 usually be reduced to an application of a forward-backward algorithm,
 especially when the conditional distribution of each variable given
-its neighbor is conjugate.  One of the most famous examples of a
-hidden Markov model is the Kalman filter, which assumes linear (or
-quadratic) transitions between the states $X$ and Gaussian noise:
-$p(Y_t | X_t) \propto \mathcal{N}(X_t, \sigma^2)$ for some variance
-$\sigma^2$.
+its neighbor is conjugate (even when this is not the case, recent
+methods provide approximate ways to infer an HMM (Paisley, Gerrish,
+and Blei 2010).
+\nocite{paisley:2010})
+One of the most famous examples of a hidden Markov model is the Kalman
+filter, which assumes linear (or quadratic) transitions between the
+states $X$ and Gaussian noise: $p(Y_t | X_t) \propto \mathcal{N}(X_t,
+\sigma^2)$ for some variance $\sigma^2$.
 \begin{figure}
   \begin{center}
   \includegraphics[width=0.6\textwidth]{chapter_introductory_material/figs/hmm_gm.pdf}
@@ -566,22 +568,30 @@ $\sigma^2$.
   \label{fig:hmm_gm}
 \end{figure}
 
-It is worth pointing out that many language models \emph{do}
-incorporate the order of words.  Part-of-speech taggers, for example,
-often use hidden Markov model assumptions, treating words as observed
-and part-of-speech as tags.  While these assumptions are useful for
-some applications, we will use the bag-of-words assumption described
-in \mysec{text_intro}. We will use hidden Markov models in other ways,
-however.
+We will these time-series abstractions in modeling time-series
+collections of documents.  In these collections, the assumption of a
+hidden, evolving state will allow us to perform inference efficiently
+while inferring a sequence of states which can be interpreted---for
+example, we will use this to model themes which evolve over time in
+Chapter 2 and to infer countries' positions about foreign policy
+issues in Chapter 3.
+
+We have discussed text and time-series assumptions, which are often
+seen together in the context of natural language processing.  We will
+not use time-series assumptions at the level of syntactic language
+modeling.  While sequential modeling is useful for many NLP tasks, we
+will not use them in this work, instead deferring to the bag-of-words
+assumption described in \mysec{text_intro}.
 
 % TODO(sgerrish): cite Kalman.
 
 \section{Posterior inference and model evaluation}
 One of the most fundamental problems in statistical machine learning
 is that of estimating the values of latent random variables $X$ in a
-statistical model, given observed random variables $Y$.  In this work, we will
-focus on estimates of the posterior distribution $p(x | y) =
-\frac{p(x, y)}{p(y)}$.
+statistical model, given observed random variables $Y$ (i.e., data).
+In this thesis, we will frequently need to estimate the posterior distribution
+$p(x | y) = \frac{p(x, y)}{p(y)}$.  In this section I outline
+several common methods for estimating this posterior.
 
 \subsection{MAP estimation}
 One of the simplest estimates of the value of a random variable is the \emph{maximum-a-posteriori} (MAP) estimate.  The MAP estimate $\hat X$ is defined to be the most-likely value of the random variable:
@@ -605,7 +615,7 @@ We briefly review the key components of Markov Chain Monte Carlo
 (MCMC) estimation.  We will not go into detail about MCMC in this work
 except to build up to (and draw a contrast with) variational methods,
 which are introduced in the next section. Readers unfamiliar with MCMC
-can refer to a standard text such as Bishop et al. \cite{bishop:2006}.
+can refer to a standard text such as \cite{bishop:2006}.
 
 % Markov Chain Monte-Carlo methods provide non-independent samples from
 % a posterior.  These samples are unbiased, and, when the number of
@@ -642,7 +652,7 @@ indicates that there is an inefficiency in the inference pipeline.
 
 Variational methods address some of the shortcomings of MCMC by
 providing a fast, deterministic alternative to MCMC
-\cite{jordan:2003,jordan:1999}. These algorithms have been
+\citep{jordan:2003,jordan:1999}. These algorithms have been
 successfully applied to many kinds of topic models, where corpus size
 and vocabulary dimension are large.  We review the key ideas of
 variational inference here for use in later chapters.
@@ -673,7 +683,7 @@ common assumption is that the posterior is fully-factorized into
 simple marginal distributions; such an assumption is known as
 \emph{naive mean-field variational inference}. Though simpler, the
 fitted variational distributions are found to be good proxies for the
-true posterior~\cite{jordan:1999,gerrish:2011}.
+true posterior~\citep{jordan:1999,gerrish:2011}.
 
 \begin{figure}
   \center
@@ -685,15 +695,15 @@ true posterior~\cite{jordan:1999,gerrish:2011}.
     divergence) to the true posterior.}
 \end{figure}
 For example, a multivariate posterior $p(x | Y), x \in \mathcal{R}^D$
-might be represented by the product $q(x_{1:D}) = \prod_D \mathcal{N}(x_d | \mu_d,
-\sigma_d^2)$ of $D$ Gaussian distributions. and a Dirichlet
-distribution might represent a multinomial random variable
-\cite{bishop:2006}.  In the case of Latent Dirichlet Allocation, for
-example, Blei et al. assume that the indicators $z_n$ can be
-described by a fully-factorized product of multinomial distributions,
-and they assume that the topics $\beta$ and mixture proportions
-$\theta$ can be represented by a fully-factorized product of Dirichlet
-distributions \cite{blei:2003}.
+might be represented by the product $q(x_{1:D}) = \prod_D
+\mathcal{N}(x_d | \mu_d, \sigma_d^2)$ of $D$ Gaussian distributions,
+and a multinomial posterior might be represented by a Dirichlet
+distribution \citep{bishop:2006}.  In the case of Latent Dirichlet
+Allocation, for example, \cite{blei:2003} assume that the indicators
+$z_n$ can be described by a fully-factorized product of multinomial
+distributions, and they assume that the posterior distribution of
+topics $\beta$ and mixture proportions $\theta$ can be represented by
+a fully-factorized product of Dirichlet distributions.
 
 Once a family is selected, the bound in
 Equation~\ref{equation:traditional_variational_objective} is evaluated
@@ -701,7 +711,7 @@ symbolically, as a practitioner fully expands $\expectq{ \log p(x, y)
   - \log q_\theta(x)}$ and (usually) its gradient. As we will show in
 subsequent chapters, this bound may itself be bounded or approximated
 with a Taylor approximation such as the delta method
-\cite{bickel:2007,braun:2007}. These simplifying assumptions -- an
+\citep{bickel:2007,braun:2007}. These simplifying assumptions -- an
 approximate, fully factorized posterior with further simplifying
 bounds -- make it possible to express the lower bound in terms of the
 variational parameters $\theta$.  The practitioner then uses these
@@ -710,12 +720,12 @@ gradient ascent algorithm.
 
 The role of variational inference in statistical machine learning will
 become more clear as we develop several algorithms using these methods
-over the next two chapters.  We also introduce an alternative
+over the next few chapters.  We will also introduce an alternative
 method for performing variational inference in
 Appendix~\ref{chapter:stochastic_variational_optimization}.  This
-alternative method removes the onus of deriving new variational
-updates from the practitioner, making it easy to perform rapid model
-development on simple models.
+alternative method removes the onus of deriving new variational update
+equations, making it easy for the practitioner to perform rapid model
+development on a range of models.
 
 % \subsection{Stochastic optimization}
 %   - examples
@@ -724,10 +734,11 @@ development on simple models.
 %   - examples
 \subsection{Model evaluation}
 After a model has been fit with an approach such as variational
-inference, it is important to evaluate the model, as alluded to in
-\mysec{data_analysis_pipeline}.  In general, practitioners will have
-different goals in modeling data, so they will have different goals in
-model evaluation.  However, several standard approaches exist.
+inference, it is important to evaluate the model (see again the data
+analysis pipeline in \mysec{data_analysis_pipeline}).  In general,
+different practitioners will have different goals in modeling data, so
+they will have different goals in model evaluation.  However, several
+standard approaches exist.
 
 \subsubsection{Likelihood of training data $Y_1, \ldots,
   Y_{N_{\mbox{\small obs}}}$}
@@ -785,19 +796,21 @@ partitions, and evaluated on the omitted partition.  Such a model has
 the benefit that all of the data is used for training and evaluation.
 
 \subsubsection{Relationship with external data}
-One of the final 
+In this thesis we will use external data sources to validate the
+results of our model.  External data sources are useful because they
+can confirm a model's assumptions or 
 
 \section{Using these tools to understand influence and decisionmaking}
 
-The tools outlined in this chapter cover only the tip of the iceberg
-of tools used by statistical machine learning researchers (and this is
-only a subset of all machine learning researchers).  However, they
-will serve as important building blocks for future chapters.  In the
-next chapter we will use some of these ideas as we return to the
-original questions that motivated this thesis: how can we understand
-patterns of behavior in society using text?  How do documents interact
-with one another, and how can we use them to tell us how people
-interact with the world?
+The ideas outlined in this chapter cover only the tip of the iceberg
+of the set of tools used by statistical machine learning researchers
+(and this is only a subset of all machine learning researchers).
+However, they will serve as important building blocks for future
+chapters.  In the next chapter we will use some of these ideas as we
+return to the original questions that motivated this thesis: how can
+we understand patterns of behavior in society using text?  How do
+documents interact with one another, and how can we use them to tell
+us how people interact with the world?
 
 We will use the tools discussed in the preceeding sections to shed
 light on these questions, and we will do this with exactly the
@@ -810,6 +823,6 @@ In the next chapter we will return to a fundamental challenge in
 managing the huge volumes of text now inundating researchers and
 companies: how to find the most important and influential documents in
 a collection.  As we will show in the next chapter, a latent-variable
-treatment of this question will allow us to make our assumptions (and
-the resulting conclusions) explicit.
-
+treatment of this question will allow us to make our assumptions
+explicit.  This in turn will in turn make the subsequent analysis
+straightforward.
