@@ -101,6 +101,15 @@
   \@abstract
   \clearpage
   }
+ \newcommand*{\makenotation}{
+   \newpage
+   \addcontentsline{toc}{section}{Notation}
+   \begin{center}
+   \Large \textbf{Notation}
+   \end{center}
+   \@notation
+   \clearpage
+   }
 \def\makeacknowledgements{
   \ifx\@acknowledgements\undefined
   \else
@@ -147,6 +156,7 @@
 \setlength{\textheight}{9in}
 \setlength{\textwidth}{6in}
 \long\def\abstract#1{\gdef\@abstract{#1}}
+\long\def\notation#1{\gdef\@notation{#1}}
 \AtBeginDocument{\begincmd}
 \endinput
 %% 
