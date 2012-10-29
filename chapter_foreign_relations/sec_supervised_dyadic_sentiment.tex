@@ -504,10 +504,22 @@ sentiment was not reflected in the CoW labels -- which defaulted to
 %%   \hline
 %%   mean($\{s_d\}_d$) & 0.1036 & - & - & - & - & - & - \\
 %%   \hline
-\begin{tabular}{m{2cm}cc}
-  \tiny{Correlates of War} \vspace{10pt} & \includegraphics[height=0.25\textheight]{chapter_foreign_relations/figures/008_static_model_results.pdf} & \includegraphics[height=0.25\textheight]{chapter_foreign_relations/figures/009_dynamic_model_results.pdf} \\
-  \tiny{Mechanical Turk} \vspace{10pt} & \includegraphics[height=0.25\textheight]{chapter_foreign_relations/figures/010_static_model_results.pdf} & \includegraphics[height=0.25\textheight]{chapter_foreign_relations/figures/010_dynamic_model_results.pdf}
-  \\ & Static & Dynamic (Interaction over time) \\
+\begin{tabular}{|c|c|c|}
+\hline
+  \begin{minipage}{2cm}  \vspace{-3cm} \textbf{Correlates} \\ \textbf{of War}
+    \vspace{4cm} \end{minipage}
+  & \includegraphics[height=0.27\textheight]{chapter_foreign_relations/figures/008_static_model_results.pdf}
+  & \includegraphics[height=0.27\textheight]{chapter_foreign_relations/figures/009_dynamic_model_results.pdf}
+  \\
+\hline
+  \begin{minipage}{2cm} \vspace{-7cm} \textbf{Mechanical} \\
+    \textbf{Turk} \end{minipage}
+  & \includegraphics[height=0.27\textheight]{chapter_foreign_relations/figures/010_static_model_results.pdf}
+  & \includegraphics[height=0.27\textheight]{chapter_foreign_relations/figures/010_dynamic_model_results.pdf}
+  \\
+\hline
+ & \textbf{Static} & \textbf{Dynamic (interaction over time)} \\
+\hline
 \end{tabular}
   \label{fig:fr_supervised_performance}
    \caption{The dyadic sentiment model captures text well . Each
@@ -576,21 +588,23 @@ text-based sentiment model $s_d = \bm w_d^T \bm \beta$ for $1 \le
 these predictions in \myfig{fr_supervised_performance}.  We find that
 the the inner-product assumption $\bar z_{c_1}^T \bar z_{c_2}$ alone
 is poor because it provides no natural natural way to model countries that are
-in conflict with many other countries (to model this, we
-would require $\bar x_c$ for that country to have large magnitude,
-and for other countries to have $\bar x_c$ with large magnitude
-but opposite direction; this becomes difficult without requiring many
-dimensions).
+in conflict with some countries a large amount and with other
+countries a small amount.
 
-If the inner-product model is endowed with the intercepts $y_{c_1},
-y_{c_2}$, however, its predictive performance increases substantially.
-Both the \verb!intercept / inner product! and
-\verb!intercept / distance! link functions perform very well, because
-they can use intercepts to explain how conflict-prone a country is;
-and they can use $\bm \bar z$ to explain how each country interacts
-with others.  Interestingly, the \verb!distance! link function is able
-to model data well with many dimensions without an indication that the
-model overfits (we only measured this up to 9 dimensions).
+When the inner-product link function and the distance link function
+are endowed with the intercepts $y_{c_1}, y_{c_2}$, their performance
+improves substantially: they consistently represent inter-countries'
+sentiment better than other models, with the
+\verb!intercept / inner product!  model consistently outperforming
+\verb!intercept / distance! for most values of the latent-space
+dimension $P$. This improvement is largely because intercepts enable
+these models to explain how conflict-prone a country is. At the same
+time, they can use $\bm \bar z$ to explain how each country interacts
+with others; both \verb!intercept / inner product! and
+\verb!intercept / distance! outperform \verb!intercept! for most
+values of $P$.  Interestingly, the \verb!distance! link function is
+able to model data well as $P$ grows large without an indication that
+the model overfits (we only measured this up to 9 dimensions).
 
 \paragraph{The benefit in adding a time-series assumption.}
 
@@ -762,7 +776,7 @@ supported Iran sanctions.
     \includegraphics[width=1\textwidth]{chapter_foreign_relations/figures/012_fr_cow_mutual_sentiment_with_us.pdf}
     \includegraphics[width=1\textwidth]{chapter_foreign_relations/figures/012_fr_mturk_mutual_sentiment_with_us.pdf}
   \label{fig:country_positions_over_time}
-  \caption{Selected countries' relationship with the United States
+  \caption{Selected countries' relationships with the United States
     over time.  Each line in the plot above represents a specific
     country's relationship with the United states inferred with the
     intercept/distance link function, with a two-dimensional distance
