@@ -1,6 +1,6 @@
 \documentclass[table]{puthesis}
 
-%\usepackage{xcolor}
+\usepackage{xcolor}
 %\usepackage[table]
 \usepackage{graphicx}
 \usepackage{amsmath}
@@ -8,13 +8,15 @@
 \usepackage{bm}
 \usepackage{natbib}
 
+
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{url}
+%\usepackage{hyperref}
 
 \def\NoNumber#1{{\def\alglinenumber##1{}\State #1}\addtocounter{ALG@line}{-1}}
 
-%\usepackage[bookmarks=false]{hyperref}
+%\usepackage[bookmarks=false,colorlink=false,urlcolor=blue,linkcolor=blue]{hyperref}
 % Packages hyperref and algorithmic misbehave sometimes.  We can fix
 % this with the following command.
 \newcommand{\theHalgorithm}{\arabic{algorithm}}
@@ -50,6 +52,15 @@
 \newcommand{\vd}{\sigma^2_{d}}
 \newcommand{\ev}{\bm \hat \eta}
 
+% \hypersetup{ 
+%    pdfauthor={Your Name},
+%    colorlinks=true,
+%    linkcolor=darkblue,
+%    filecolor=darkgreen,
+%    urlcolor=darkred,
+%    citecolor=darkblue
+%  }
+
 \author{Sean M. Gerrish}
 \advisor{David M. Blei}
 \title{Applications of Latent Variable Models in Modeling Influence and Decision Making}
@@ -61,15 +72,6 @@
 }
 
 \dedication{This thesis is dedicated to Kimberly Misa Gerrish, 1984-2009.}
-
-% \hypersetup{ 
-%   pdfauthor={Your Name},
-%   colorlinks,
-% %  linkcolor=darkblue,
-% %  filecolor=darkgreen,
-% %  urlcolor=darkred,
-% %  citecolor=darkblue
-% }
 
 \begin{document}
 
@@ -98,6 +100,11 @@ The work here represents expanded versions of the following publications and pre
 The current presentation attempts to provide deeper and broader
 understanding to the reader of the above work.
 
+\newpage
+\input{notation.tex}
+
+\newpage
+
 \input{chapter_introduction/introduction.tex}
 
 \input{chapter_introductory_material/introductory_material.tex}
@@ -115,7 +122,8 @@ understanding to the reader of the above work.
 \input{chapter_conclusions/chapter_conclusions.tex}
 %\input{chapter_tweets/chapter_tweets.tex}
 
-\appendix{Optimizing the variational bound stochastically}
+\appendix
+%\appendix{Optimizing the variational bound stochastically}
 \input{chapter_stochastic_variational_optimization/chapter_stochastic_variational_optimization.tex}
 
 %\appendix{Supplementary materials}

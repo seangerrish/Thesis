@@ -1,25 +1,131 @@
 \chapter{Conclusions}
 
-- review what we discussed
-  - model of influence
-  - foreign relations
-  - models of legislative voting
-    - prediction
-    - understanding issues
-  - Finally, provided a tool in \myapp{stochastic_variational_optimization}.
+In the past five chapters we introduced several models to address
+important problems in social science research.  We accomplished this
+by framing our assumptions as latent variable models, using data
+sources to estimate the values of the latent random variables, and
+empirically validating these models.  Throughout, we repeatedly made
+use of a small set of statistical primitives.
+
+% - review what we discussed
+%   - model of influence
+%   - foreign relations
+%   - models of legislative voting
+%     - prediction
+%     - understanding issues
+%   - Finally, provided a tool in \myapp{stochastic_variational_optimization}.
+ 
+We introduced the reader to these primitives in
+\mychap{introductory_material}.  Having been developed over the past
+century, these ideas were sufficient to provide the majority of the
+scaffolding for our assumptions.  The most important of these
+assumptions were models for text analysis, including topic models and
+text regression, which have seen huge advances in the past two
+decades.  We also used hidden-Markov models for time-series applications
+and latent-spatial assumptions to model interaction between pairs of items.
+
+In \mychap{influence} we explored the problem of finding influential
+documents in text corpora which have evolved over time.  This problem
+affects a wide range of fields, with concrete motivations in both
+academia and industry.  We introduced a model which uses the change in
+language to find documents which use language that becomes more
+popular over time in a field.  We then fit this model to four corpora:
+three scientific journals and a corpus of legal opinions. We
+consistently found a correlation between our measure of influence and
+unseen citation counts for these corpora, and we explored several
+anecdotal examples within these collections.
+
+We then used some of the same time-series assumptions to build a
+recent history of the sentiment between nations in
+\mychap{foreign_relations}.  To do this, we encoded assumptions about
+how nations interact into a dyadic model of the sentiment between two
+nations.  We defined the sentiment between nations using hand-labeled
+codes from both experts and novices.  Upon fitting this model, we
+discovered that the sentiment between nations predicted by this model
+was extraordinarily correlated between a model fit with expert labels
+and a model fit with novice labels.
+
+In Chapters~\ref{chapter:predicting_votes}
+and~\ref{chapter:issue_adjustments}, we used primitives from text
+analysis to improve the ideal point model, a well-known dyadic model
+of legislative voting. Using models of text, we first constructed
+models to enable us to predict lawmakers' votes on unseen documents.
+We demonstrated that such models allow us to accurately predict
+lawmakers' votes on unseen bills.
+
+We then made ideal point models more interpretable by extending it to
+incorporate lawmakers' positions on different issues.  We then used
+supervised topic models to assign interpretable labels to bills and
+fit lawmakers' positions.  We demonstrated that, in doing this, we
+were able to improve the ideal point model's representation of heldout
+votes while providing an interpretable description of each lawmaker.
 
 \section{Latent variable models for understanding the social sciences}
-- The core themes are outlined in the preliminary material:
-  - text.
-  - latent variable models and posterior inference
-  - time-series models
-  - 
+The core tools we used to build the models in these chapters were
+outlined in the introductory materials chapter.  By framing our
+questions as latent-variable models, we were able to use a handful of
+``statistical primitives'' to encode our assumptions, make
+predictions, and interpret hidden random variables.  These primitives
+again were tools for text data, including bag-of-words models like
+latent Dirichlet allocation \citep{blei:2006} and text regression
+\citep{kogan:2009}.  The time-series primitive we used was that
+of a hidden Markov model.  Finally, we modeled interactions between
+pairs of items -- whether they were a pair of warring nations or lawmakers and
+bills -- using simple distributions over pairs of variables with
+well-defined distributions.
 
-\section{The role of text in these communities}
-- refer to grimmer's paper
-  - 
-  - 
-  - 
+Our ability to use these primitives has been made possible by several
+recent advances in the past few decades.  These include the wider
+availability of documents in digital form -- including the text of
+millions of academic articles on sites like JSTOR (\url{www.jstor.org}), millions of
+newspaper articles like the New York Times, and billions of government
+records such as those on independent sites like Govtrack
+(\url{www.govtrack.us}) and government sites like the National
+Archives (\url{www.archives.gov}).
 
-\section{Future directions}
+Just as these corpora have become more widely available, the tools for
+gleaning information from them have continued to improve.  These
+include first Judea Pearl's abstraction of graphical models,
+which now allow us to piece together latent variable models as easily
+as chilren build cars from Legos\texttrademark \citep{pearl:1985}.  Since graphical
+models have become mainstream, old primitives such as HMMs have been
+ported to this paradigm, while new primitives such as LDA and text
+regression have been developed within this paradigm.
+
+At the same time, the statistical tools for fitting these models has
+continued to improve, as tools such as variational inference improve
+model runtime and tools like stochastic variational optimization
+(which I introduce in \myapp{stochastic_variational_optimization})
+decrease model development time. Finally, Moore's law now
+enables us to fit these models on larger and larger collections of
+data, as the speed and memory of researchers' workstations allows us
+to process millions of observations per minute.
+
+\section{Future work}
+The conclusion section of each chapter in this thesis describes future
+research directions for the work in that chapter.  In this section I
+outline high-level work I see ahead for this research community
+around the themes discussed in this thesis.
+
+The explosion of text data and tools for working with text suggest
+that fundamental research will continue around model building,
+primitive development, and posterior inference.  As this happens,
+analysis and model-building will become easier for the casual
+``practitioner''.  As we researchers better understand how to abstract
+away details about inference without compromising the quality of
+posterior estimation and without compromising data integrity, it will
+become our responsibility to develop tools for data practitioners.
+
+The primitives I have recapitulated throughout this thesis are only a
+handful of the primitives available to practitioners.  I have focused
+on these primitives because they are simple enough to recur frequently
+while still retaining enough power to provide meaningful utility to
+practitioners.  There exist a variety of other primitives for
+researchers working with text, including alternative
+models of documents and alternative models for time-series analysis.
+While books such as \cite{bishop:2006} describe many of these
+abstractions from a machine learning perspective, I expect many of these
+abstractions to receive explicit attention in future resources for
+practitioners in fields outside of machine learning.
+
 

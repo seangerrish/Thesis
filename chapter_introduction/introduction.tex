@@ -89,9 +89,10 @@ webpages per \emph{day} \citep{googleblog:2008}.
 time-series observations.  Timestamps are one of the simplest types of
 metadata to attach to digital collections because they are described
 by a single scalar and because they are inexpensive and widely
-available.  In addition, the dimension of time is especially
-interesting to researchers because it is helpful in framing questions
-about causation and prediction.
+available.  Despite this, the dimension of time provides rich insight
+and a useful historical perspective into collections of documents.  It
+is especially interesting to researchers because it is helpful in
+framing questions about causation and prediction.
 
 \paragraph{Dyadic observations.}  Dyadic relationships are one of the
 simplest ways to represent more complicated phenomena in a collection
@@ -105,11 +106,11 @@ for these cases is very similar.
 
 The deluge of information available to researchers means that
 researchers cannot spend long looking over any document.  For example,
-a researcher drawing conclusions about patterns governing the
-relationships between pairs of countries, based on mentions of pairs
-of countries in the \emph{New York Times}, would need to spend every
-day of an entire year, twenty-four hours per day, two minutes per
-mention, to code the 300,200 interactions per pair of countries.  A
+a graduate student studying patterns governing the relationships
+between pairs of countries, based on mentions of pairs of countries in
+the \emph{New York Times}, would need to spend every day of an entire
+year, twenty-four hours per day, to code the 300,200 interactions per
+pair of countries (at two minutes per article).  A
 \emph{computational} treatment is therefore necessary if researchers
 intend to handle large collections of data.
 
@@ -117,10 +118,9 @@ In each of the models we will consider, the basic unit of analysis
 lives in an extremely high-dimensional space.  For example, treating
 text documents as bags of words still leaves the researcher with
 thousands of dimensions, and lawmakers described by their votes are
-still described by these thousands of
-dimensions.% \cite{changrtl:2009}.
-In addition to text, another recurring theme in this thesis is that
-these high-dimensional observations can be described by much
+still described by these thousands of dimensions.  In addition to
+text, another recurring theme in this thesis is that these
+high-dimensional observations can be described by much
 lower-dimensional summaries without losing much of the relevant
 information.
 
@@ -167,20 +167,20 @@ Perhaps more importantly, the reader will be prepared to design his or
 her own latent-variable model for similar applications.
 
 To this end, I will provide a lower level of detail about
-latent-variable models in the early chapters of this thesis when it is
-appropriate to help the reader understand the material.  I provide
-preliminary material in Chapter 2, outlining the statistical
-``primitives'' that I will use as building blocks in later chapters.
-These primitives include the basic statistical tools for working with
-text data, time-series data, and dyadic data.  This chapter also
-provides a high-level introduction to the tools we will use for
-Bayesian inference.
+latent-variable models in the early chapters of this thesis than
+normally expected in a doctoral thesis when it may help the casual
+reader to understand the material.  I provide preliminary material in
+Chapter 2, outlining the statistical ``primitives'' that I will use as
+building blocks in later chapters.  These primitives include the basic
+statistical tools for working with text data, time-series data, and
+dyadic data.  This chapter also provides a high-level introduction to
+the tools we will use for Bayesian inference.
 
 \paragraph{Identifying influential documents.} In \mychap{influence} I
 introduce a model for discovering important and influential documents
-in a collection of documents which has grown over time.  In
-collections of legal opinions, one of the most common questions posed
-by jurists\footnote{In political science, the word ``jurist'' often
+in a corpus which has grown over time.  In collections of legal
+opinions, one of the most common questions posed by
+jurists\footnote{In political science, the word ``jurist'' often
   refers to a judge, as opposed to a member of the public who votes on
   the outcome of a trial.} is, ``which legal opinions have set the
 most precedent?''  This question plays a central role among
@@ -216,25 +216,32 @@ in modeling various social science phenomena.
 \paragraph{Inferring lawmakers' preferences.}
 
 In Chapters~\ref{chapter:predicting_votes}
-and~\ref{chapter:issue_adjustments} I will extend existing spatial
-models to better understand how congresspersons interact with bills.
-I begin with a model which is able to predict how lawmakers will vote
-on previously-unseen bills in \mychap{predicting_votes}, where I will
+and~\ref{chapter:issue_adjustments} I will again use spatial models
+for dyadic interaction to better understand how congresspersons vote
+with bills.  I will address two important limitations of ideal point
+models (the state-of-the-art in spatial voting models) by using the
+text of bills.  One of these limitations is that ideal points cannot
+be used to predict lawmakers' votes on heldout bills.  In
+\mychap{predicting_votes}, I will introduce several models for
+predicting votes by lawmakers on previously-unseen bills.  I will
 demonstrate that we can predict lawmakers' votes with high accuracy
-given the text of the bills on which they vote.
+given their prior voting record and the text of the bills on which
+they vote.
 
-For those congresspersons not predicted well by the text model, I will
-extend existing spatial models to better understand how Congressmen
-feel about different issues in \mychap{issue_adjustments}.  I will
-describe a method for inferring the legislative issues defining an
-item of legislation and demonstrate that legislators' votes can be
-better understood by describing their positions on different issues.
+In \mychap{issue_adjustments} I will address a second shortcoming of
+existing models: the limitation of a one-dimensional latent space.  I
+will do this by using a topic model to identify those issues up for
+vote in an item of legislation.  I will demonstrate that legislators'
+votes can be better modeled and better understood by describing these
+lawmakers' positions on different issues.
 
-These models contrast with those in chapters 3 and 4 in that I ignore
-documents' timestamps.  I will use some of the same ideas from Chapter
-4, in which we we assume that pairs of items interact (in this case a
-lawmaker and a bill), and that text documents attached to those
-interactions can provide insight into the interaction.
+These models contrast with those in Chapters 3 and 4 in that I ignore
+documents' timestamps.  However, I will use many of the same ideas
+from these earlier chapters, including mixed-membership models of text
+and latent-space models, in which we we assume that pairs of items
+interact (in this case a lawmaker and a bill), and that text documents
+attached to those interactions can provide insight into the
+interaction.
 
 \paragraph{Additional materials.}
 In Appendix~\ref{chapter:stochastic_variational_optimization} I

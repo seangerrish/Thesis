@@ -36,17 +36,45 @@ described in this work.
       \hline
       \textbf{Variable} & \textbf{Description} \\
       \hline
-      $d$ & Document (subscript) \\
-      $\theta_d$ & Topic mixture for document $d$ \\
-      $z_n$ & $K-$variate topic indicator for term $n$ \\
-      $w$ & A collection of words, as in a document \\
-      $\alpha$ & Dirichlet parameter for LDA \\
-      $u$ & Person, e.g., a lawmaker (subscript) \\
-      $x_u$ & An ideal point indicating an individual's sentiment \\
+      \multicolumn{2}{|c|}{\textbf{Constants}} \\
+      \hline
+      $C$ & Number of nation-states \\
+      $D$ & Number of documents \\
+      $K$ & Number of topics \\
+      $N$ & Number of words (e.g., in a document) \\
+      $P$ & Dimension of a generic latent space \\
+      $T$ & Number of discrete time ``epochs'' \\
+      $V$ & Number of words (e.g., in the vocabulary) \\
+      \hline
+      \multicolumn{2}{|c|}{\textbf{Subscripts}} \\
+      \hline
+      $c$ & Country or nation-state \\
+      $d$ & Document \\
+      $k$ & Topic \\
+      $t$ & Time \\
+      $u$ & Person, e.g., a lawmaker \\
+      \hline
+      \multicolumn{2}{|c|}{\textbf{Random variables}} \\
+      \hline
+      $a_d$ & Document $d$'s polarization \\
+      $b_d$ & Document $d$'s popularity \\
+      $s_d$ or $s_{c_1, c_2}$ & The sentiment between two nations \\
+      $v_{ud}$ & Lawmaker $u$'s vote on item $d$ \\
+      $\bm w_d$ & A collection of words, as in a document $d$ \\
+      $x_u$ & An ideal point for lawmaker $u$ \\
+      $x_c$ & Position for country $c$ during interaction \\
+      $\bar x_c$ & Mean position for country $c$ \\
       $X$ & A generic hidden random variable \\
       $Y$ & A generic observed random variable \\
-      $a_d$ & A document's polarization \\
-      $b_d$ & A document's popularity \\
+      $z_n$ & $K-$variate topic indicator for term $n$ \\
+      $\bm z_u (\bm z_{uk})$ & Lawmaker $u$'s position (on issue $k$) \\
+      $\alpha$ & Dirichlet parameter for LDA \\
+      $\bm \beta$ & Coefficients of words in text regression \\
+      $\beta (\beta_t)$ & LDA topics (at time $t$) \\
+      $\eta$ & Regression coefficient for sLDA \\
+      $\theta_d$ & Topic mixture for document $d$ \\
+      \hline
+      \multicolumn{2}{|c|}{\textbf{Variational parameters}} \\
       \hline
       $\gamma_d$ & Variational parameter for document mixture $\theta_d$ \\
       $\bv_t$ & Variational parameter for topic chain $\beta_t$ \\
@@ -55,6 +83,9 @@ described in this work.
       $\tilde a_d$ & Variational parameter for polarity $a_d$ \\
       $\tilde b_d$ & Variational parameter for popularity $b_d$ \\
       $\tilde x_u$ & Variational parameter for lawmaker ideal point $x_u$ \\
+      $\lambda_{d,i}$ & Variational mean of bill parameters $a_d, b_d$
+      \\
+      $\tau_{d,i}$ & Variational mean of lawmaker ideal point $x_u$ \\
       \hline
     \end{tabular}
   \end{center}
@@ -122,7 +153,7 @@ The pipeline has several important steps.
   to this stage of the process as \emph{fitting a model},
   \emph{performing inference}, and \emph{fitting the posterior}.  This
   steps also represents a significant contribution of our work, in
-  chapters 3-5 and Appendix A.
+  chapters 3-6 and Appendix A.
 
   \item \textbf{Model evaluation.} The goals of this stage are to
     evaluate performance of the model and to criticize the model.

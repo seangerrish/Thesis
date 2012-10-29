@@ -1,4 +1,4 @@
-\chapter{Models of Spatial Voting and text}
+\chapter{Predicting Legislative Votes with Text Models}
 \label{chapter:predicting_votes}
 
 In the United States, as in many Western democracies, laws are made by
@@ -8,7 +8,7 @@ supports or rejects the proposed legislation.
 
 Legislative behavior centers around these votes, and capturing
 regularity in these votes to characterize patterns of lawmakers'
-behavior is one of the main goals of quantitative political science.
+behavior is a common goal of quantitative political science.
 Voting behavior exhibits enough regularity that simple statistical
 models easily capture the broad political structure of legislative
 bodies.
@@ -16,9 +16,8 @@ bodies.
 One of these models is the \emph{ideal point model}, a mainstay in
 quantitative political science for analyzing
 votes~\citep{clinton:2004}.  It posits a latent ``political space''
-along the real line and assumes each legislator has a position in that
-space -- an assumption very similar to the latent space model
-described in the last chapter.
+along the real line and assumes each lawmaker has a position in that
+space; bills take a position in a related latent space. 
 %% The legislator's position is
 %% called an \textit{ideal point} because it represents the state of the
 %% world that maximizes her utility. The model assumes that whether a
@@ -30,22 +29,32 @@ described in the last chapter.
 %%   testing \cite{lord:1980}.  Each bill also has another variable, the
 %%   \textit{difficulty}, which is described below but omitted in the
 %% introduction.}
-A lawmaker's probability of voting \verb!Yes! on
+A lawmaker's probability of voting \verb!Yea! on
 pending legislation is then characterized by her position on this real
-line and parameters specific to that legislation.  With these
-assumptions (which we outline in more detail below), political
-scientists use observed roll call data to infer lawmakers' political
+line and parameters specific to that legislation.
+With these assumptions (which we outline in more detail below), political 
+scientists use observed roll call data to infer lawmakers' political 
 preferences.
 
-\section*{Text and voting}
-However, ideal point models fall short in at least two ways, for
-reasons we will outline in the next section.  First, these methods do
-not provide not \emph{predictive} models: while they can be used to
-model the bills that have been voted on, they cannot be used to
-predict lawmakers' votes on new bills.  Second, lawmakers do not fit
-neatly into the assumptions made by such models.  These models
-summarize lawmakers with broad strokes, and their unique positions on
-individual issues cannot be easily recovered.
+\subsection*{Using text to predict future votes}
+These models are attractive for many reasons: they are simple, and
+they can represent lawmakers' votes surprisingly well.  Because
+lawmakers vote in consistent patterns, these models simply
+\emph{work}.  Further, just as we saw with the last chapter's spatial
+models, ideal point models can be used to interpret lawmakers'
+positions on the political spectrum and to represent votes
+meaningfully.\footnote{The interpretation of a lawmaker's latent
+  position and a bill's position in the same space are slightly more
+  nuanced than the last chapter.  We clarify this relatinoship in the
+  next section.}
+ 
+However, ideal point models fall short in some very important ways.
+One of the most glaring limitations of these models is that they are
+not \emph{predictive} models: while they can be used to model the
+bills that have been voted on, they cannot be used to predict
+lawmakers' votes on new bills.  (A second limitation of these models
+is that lawmakers do not fit neatly into the assumptions made by such
+models.  We address this limitation in the next chapter.)
 
 These limitations dovetail with increasing access to both public
 records and tools for algorithmic text analysis.  In the past decade,
@@ -65,36 +74,64 @@ evolved from vector-space models such as latent semantic analysis
 \citep{hofmann:1999,blei:2003}, which can be used as modules in more
 sophisticated statistical models.
 
-In the following sections, we will take advantage of this this broader
-availability of political text and tools for text analysis to address
-the above shortcomings of ideal point models.  We begin by reviewing
-ideal point models and outline their limitations
+In the next two chapters, we will take advantage of this this broader
+availability of digitized text collectinos and tools for text analysis
+to address the above shortcomings of ideal pointmodels.  We begin this
+chapter by reviewing ideal point models
 \citep{poole:1985,poole:1991,jackman:2001,martin:2002,clinton:2004}.
 After describing ideal point models, we will describe how to combine
 ideal point models with more more recent models of text, such as topic
 models \citep{blei:2003} and text regression \citep{kogan:2009}, to
-enable us to predict votes on previously-unseen bills. We then extend
-the ideal point model using topic models which have been explicitly
-designed to be interpretable \citep{ramage:2009} to describe each
-lawmaker's preferences about a variety of political issues.
-Throughout, the abstraction of latent variable models will enable us to
-combine these ideas seemlessly.
-
-In the latter section of this chapter, we will also motivate an
-alternative algorithm for variational inference that will allow
-practitioners to iterate more quickly with their modeling assumptions.
+enable us to predict votes on previously-unseen bills.  Through this
+chapter and the next, the abstraction enabled by latent variable
+models will enable us to address these shortcomings of ideal point
+models with intuitive solutions.
 
 % \section*{Legislative voting in Western Democracies}
 \section{The Ideal Point Model}
 \label{sec:model}
-
-\paragraph{Ideal points}
 
 %% We first review ideal point models of legislative roll call data,
 %% which are widely used by political methodologists.  In the subsequent
 %% two sections we will discuss ways to extend these models both to
 %% predict how lawmakers will vote on unseen documents and to account for
 %% how legislators vote on specific issues.
+
+Legislative behavior centers around the votes made by lawmakers.
+These votes are captured during \textit{roll call votes}, public
+records of lawmakers' votes on pending legislation.  We can represent
+these votes as a matrix, with lawmakers in the rows and proposed
+legislation in the columns.  We illustrate a sample of roll call votes
+for the United States Senate in \myfig{roll_call_table}.
+\begin{figure}[b]
+  \center
+%  \begin{tabular}{|c|c|c|c|c|c|}
+  \textbf{Example roll call votes}
+  \begin{tabular}{cccccc}
+   \hline
+   \hline
+%   \small \textbf{Lawmaker} & \small  & \small  & \small  & \small  & \small  \\
+   \small Lawmaker & \multicolumn{5}{c}{\small Item of legislation} \\
+   \hline
+   \small Bill & \small  \small S. 3930 & \small  H.R. 5631 & \small  H.R. 6061 & \small  H.R. 5682 & \small  S. 3711 \\
+   \small Mitch McConnell (R) & \small  \small Yea & \small  Yea & \small  Yea & \small  Yea & \small  Yea \\
+   \small Olympia Snowe (R) & \small   & \small  Yea & \small  Yea & \small  Yea & \small  Nay \\
+   \small John McCain (R) & \small  Yea & \small  Yea & \small  Yea & \small  Yea & \small  Yea \\
+   \small Patrick Leahy (D) & \small  Nay & \small  Yea & \small  Nay & \small  Nay & \small  Nay \\
+   \small Paul Sarbanes (D) & \small  Nay & \small  Yea & \small  Nay & \small  Yea & \small  Nay \\
+   \small Debbie Stabenow (D) & \small  Yea & \small  Yea & \small  Yea & \small  Yea & \small  Yea \\
+   \hline
+ \end{tabular}
+ \caption{A sample roll-call matrix illustrating lawmakers' votes on
+   items of legislation.  These votes are from the Senate in the 109th
+   Congress (2005-2006).  The party of each Senator -- (D)emocrat or
+   (R)epublican -- is provided in parentheses. The matrix of roll
+   calls is sometimes incomplete (see Snowe's vote on S. 3930, for
+   example). }
+  \label{fig:roll_call_table}
+\end{figure}
+
+\subsection{Ideal points}
 
 Ideal point models are based on item response theory, a statistical
 theory that models how members of a population judge a set of items.
@@ -104,31 +141,29 @@ political preferences.  A lawmaker's (stochastic) voting behavior is
 characterized by the relationship between her position in this space
 and the bill's position
 \citep{poole:1985,poole:1991,jackman:2001,martin:2002,clinton:2004}.
-Given a table of how each lawmaker votes on each bill (known as a roll
-call), we can use ideal point models to infer the latent position of
-each lawmaker.
 
-Any proposed item of legislation $d$ would, if passed, move the
-current state of the world from the status quo $\bm \zeta_d \in
+In fact, we can motivate ideal points with explicit behavioral
+assumptions.  Following the treatment in \cite{clinton:2004}, we
+assume that a proposed item of legislation $d$ would, if passed, move
+the current state of the world from the status quo $\bm \zeta_d \in
 \mathbb{R}^p$ to a new location $\bm \psi_d \in \mathbb{R}^p$.
 Lawmaker $u$ observes the utility of each of these positions based on
 her ideal point $\bm x_u \in \mathbb{R}^p$ with noisy quadratic loss
 $|| \bm \zeta_d - \bm x_u ||^2 + \varepsilon_1$ and $|| \bm \psi_d -
 \bm x_u ||^2 + \varepsilon_2$, where $\varepsilon_1, \varepsilon_2$
 follow an extreme value distribution.  She will cast a vote toward
-whichever outcome maximizes her utility.  These positions
-therefore represent each lawmaker's ideal ``state of the world''
-(where passage of a bill moves this state of the world).  For this
-reason, lawmakers' positions $x_u$ are often called their \emph{ideal
-  points}.
+whichever outcome maximizes her utility.  These positions therefore
+represent each lawmaker's ideal ``state of the world'' (where passage
+of a bill moves this state of the world).  For this reason, lawmakers'
+positions $x_u$ are often called their \emph{ideal points}.
 
 Reparameterizing, we can write the probability $p(v_{ud} | \bm X_u, \bm \zeta_d,
  \bm \psi_d)$ of an affirmative vote
- \citep{clinton:2004}.  Setting $\bm b+d = 2 (\bm \zeta_d
+ \citep{clinton:2004}.  Setting $\bm b_d = 2 (\bm \zeta_d
  - \bm \psi_d )$ and $a_d = (\bm \psi_d^T \bm \psi_d - \bm \zeta_d^T
  \bm \zeta_d )$, we have
 \begin{equation}
-  p(v_{ud} = \textbf{Yes} | \bm a_d, b_d, \bm x_u) = \sigma ( \bm x_u^T \bm a_d + b_d ),
+  p(v_{ud} = \textbf{Yea} | \bm a_d, b_d, \bm x_u) = \sigma ( \bm x_u^T \bm a_d + b_d ),
   \label{eq:trad_ipm}
 \end{equation}
 where $\sigma(s)$ is the logistic function $\frac{\exp(s)}{1 +
@@ -141,21 +176,18 @@ characterized by specifying its \emph{polarity} $\bm a_d$ and its
   context of educational testing applications of this model
   \citep{clinton:2004}.  We move away from these terms in favor of more
   appropriate terms for this application.}  When the popularity of a
-bill $b_d$ is high, nearly everyone votes ``Yes'' on bill $d$; when
-the popularity is low, nearly everyone votes ``No''.  When the
-popularity is near zero, the probability that a lawmaker votes ``Yes''
+bill $b_d$ is high, nearly everyone votes ``Yea'' on bill $d$; when
+the popularity is low, nearly everyone votes ``Nay''.  When the
+popularity is near zero, the probability that a lawmaker votes ``Yea''
 depends on how her ideal point $x_u$ interacts with bill polarity
 $a_d$.  We will make the common assumption that the latent variables
 $a_d$, $b_d$, and $x_u$ have standard normal priors
 \citep{clinton:2004}.
 
-TODO(sgerrish): introduce the idea of roll-call votes.
-
-Given a matrix of votes, we can infer the ideal point of each
-lawmaker.  Not surprisingly, ideal points fit to a set of roll-call
-votes model lawmakers' political preferences intuitively.  
-\myfig{example_ideal_points} illustrates that ideal points
-fit to the U.S. House of Representatives from 2009-2010 clearly
+Given a matrix of votes, we use posterior inference to estimate the
+ideal point of each lawmaker, which reveal their intuitive political
+preferences.  \myfig{example_ideal_points} illustrates that ideal
+points fit to the U.S. House of Representatives from 2009-2010 clearly
 separate lawmakers by their political party.  In U.S. politics, these
 inferred positions correspond to the commonly-known political
 spectrum: right-wing lawmakers are at one extreme, and left-wing
@@ -174,11 +206,11 @@ lawmakers are at the other. % \myfig{classic_ideal_point}
 %% One-dimensional ideal point models posit an \textit{ideal point} $x_u
 %% \in \mathbb{R}$ for each lawmaker $u$.  Each bill $d$ is characterized
 %% by its \textit{polarity} $a_d$ and its \textit{popularity} $b_d$.\footnote{These are sometimes called the \emph{discrimination} and \emph{difficulty}, respectively.}  The
-%% probability that lawmaker $u$ votes ``Yes'' on bill $d$ is given by
+%% probability that lawmaker $u$ votes ``Yea'' on bill $d$ is given by
 %% the logistic regression
 %% \begin{equation}
 %%   \label{eq:trad_ipm}
-%%   p(v_{ud} = \textrm{yes} \g x_u, a_d, b_d) =
+%%   p(v_{ud} = \textrm{yea} \g x_u, a_d, b_d) =
 %%   \sigma(x_u a_d + b_d),
 %% \end{equation}
 %% where $\sigma(s) = \frac{\exp(s)}{1 + \exp(s)}$ is the logistic
@@ -250,15 +282,14 @@ lawmakers are at the other. % \myfig{classic_ideal_point}
 %% is only one part of a richer record which includes bill texts,
 %% speeches, press releases, public plans, and other items.  
  
-In this section, we extend ideal point models to include other
-information.  Specifically, we will use the text of bills to estimate
-a bill's polarity and popularity.  This gives a new way of exploring
-and analyzing the government record and, further, gives a useful
-predictor of government.  While traditional methods can only fill in
-missing votes, we develop tools that can predict how legislators will
-vote on a new bill. This is the first work to study predictive
-accuracy of votes on new bills, where we use a spatialx voting model as
-a ``cold'' prediction mechanism.
+In this section, we extend ideal point models to use the text of bills
+to estimate a bill's polarity and popularity.  This gives a new way of
+exploring and analyzing the government record and, further, gives a
+useful predictor of government.  While traditional methods can only
+fill in missing votes, we develop tools that can predict how lawmakers
+will vote on a new bill. This is the first work to study predictive
+accuracy of votes on new bills, where we use a spatialx voting model
+as a ``cold'' prediction mechanism.
 
 % \begin{figure}[t]
 %   \includegraphics[width=0.45\textwidth]
@@ -279,16 +310,15 @@ a ``cold'' prediction mechanism.
 % DMB-2011: above, we need a citation for the psychometrics model.
 % SMG: Done.
 As predictive models, ideal point models suffer from a fundamental
-limitation: they are dyadic models in which models of the votes alone.
-
-Consequently, they can be used to fill in missing votes but cannot
-predict how legislators will vote on future legislation.  Further,
-they provide no insight into what drives voting patterns---the
-political activity of the legislature is summarized with two columns
-of real numbers.
+limitation: they are dyadic models in which the votes for any bill
+arrive at the same time.  Consequently, they can be used to fill in
+individual missing votes but cannot predict how lawmakers will vote on future
+legislation.  Further, they provide no insight into what drives voting
+patterns---the political activity of the legislature is summarized
+with two columns of real numbers.
 
 To these ends, we will describe several models that connect the voting
-patterns of legislators to the original text of bills.  One of these
+patterns of lawmakers to the original text of bills.  One of these
 models embeds the statistical assumptions of \textit{supervised topic
   modeling}~\citep{blei:2008} into the ideal point model, where the
 locations of the bills are predicted from the latent topics in their
@@ -326,14 +356,13 @@ becomes associated with political sentiment.
 \textbf{Modeling ideal points with text regression.} We developed two
 predictive ideal-point models which use text
 regression~\citep{kogan:2009}.  For these, we first fit an ideal-point
-model to a training set of bills and all legislators using the
+model to a training set of bills and all lawmakers using the
 variational algorithm described in \mysec{model}.  We then fit ridge
 regression\footnote{Implemented in the ``penalized'' package for R}
-(\verb!LARS!) and Lasso
-\footnote{implemented with the ``lars'' package for R} (\verb!L2!) to
-these bills' parameters $a_d, b_d$ using a vector of their
-$n$-gram\footnote{See \mysec{experiments} for details.}  counts $\bm
-w_{d}$ as covariates.
+(\verb!LARS!) and Lasso\footnote{implemented with the ``lars'' package
+  for R} (\verb!L2!) to these bills' parameters $a_d, b_d$ using a
+vector of their $n$-gram\footnote{See \mysec{experiments} for
+  details.}  counts $\bm w_{d}$ as covariates.
 
 \textbf{Modeling ideal points with supervised topics.} The text
 regression models link individual words or phrases to bill sentiment.
@@ -435,10 +464,10 @@ mode, Democrats tend to have positive ideal points, while Republicans
 are negative; in another, Republicans are positive, while Democrats
 are negative.  To keep fits of the different models identifiable,
 several researchers have applied nonzero priors over specific
-legislators to encourage the model to prefer one of these modes
+lawmakers to encourage the model to prefer one of these modes
 \citep{jackman:2001,clinton:2004,martin:2002}.
 
-In the study in \mysec{experiments}, we anchor four legislators with
+In the study in \mysec{experiments}, we anchor four lawmakers with
 strong priors ($\sigma_d = 10^{-3}$) at ideal points $\pm 4$.  We
 select two congresspersons from each chamber and two from each party:
 Kennedy (S-Dem) and Waxman (H-Dem) are centered at +4 and Enzi (S-Rep)
@@ -473,7 +502,7 @@ spaces~\citep{jackman:2001,heckman:1996}.
 Topic models have been applied to Senate speeches, such as to discern
 ``the substantive structure of the rhetorical [legislative] agenda''
 \citep{quinn:2006}.  They have also been used with legislative speeches
-to gauge legislators' sentiment toward legislation using roll-calls
+to gauge lawakers' sentiment toward legislation using roll-calls
 \citep{thomas:2006}.  Modeling sentiment in text is more generally
 discussed in the field of sentiment analysis; see \cite{pang:2008} for a review.
 
@@ -579,7 +608,7 @@ proxy for the true posterior.
 distribution.  Word assignments $z_{dn}$ and topic proportions
 are governed by multinomial parameters $\phi_d$ and Dirichlet
 parameters $\gamma_d$, as in LDA~\citep{blei:2003}.  The variational
-distribution for legislators' ideal points $x_u$; bills' parameters
+distribution for lawmakers' ideal points $x_u$; bills' parameters
 $a_d, b_d$; and coefficients $\bm \eta$ are Gaussian with respective
 means $\tau_u$, ${\tilde a}_d$, $\ev$ and variances $\sigma_\tau^2$,
 $\sigma_{\tilde a}^2$, $\sigma_\eta^2$. The variational distribution is
@@ -600,10 +629,10 @@ some of the random variables, but we must use gradient ascent on $a_d,
 b_d,$ and $x_u$.  We give further details of the variational inference
 algorithm in \myapp{iptm_app_variational_inference}.
 
-\textbf{Prediction} After they are fit to legislators' votes and bill
+\textbf{Prediction} After they are fit to lawmakers' votes and bill
 text, the variational parameters $\tau$, $\ev$, and $\beta$ can be
-used to estimate the vote of each legislator on a \emph{new} bill $d$
-using its text.  To predict whether legislator $u$ votes \verb!yea! on
+used to estimate the vote of each lawmaker on a \emph{new} bill $d$
+using its text.  To predict whether lawmaker $u$ votes \verb!yea! on
 $d$, the per-word parameters $\phi_n$ of $d$ are estimated using the
 topics $\beta$. Once $\phi$ has been estimated, the probability of a
 \verb!yea! vote is given by $p(v_{ud} = \verb!yea!)  = \sigma(\tau_u
@@ -616,7 +645,7 @@ fit $\ev$ with no regularization after the model has converged.  This
 gives slightly better results which are more robust to parameter
 selection.
 
-\section*{An empirical analysis}
+\section{An empirical analysis}
 
 \begin{figure}
 \label{fig:log_likelihood}
@@ -649,8 +678,8 @@ resolutions, and only votes regarding the legislation as a whole
 (as opposed to, e.g., amendments of the legislation). We downloaded
 the data from Govtrack, an independent Website which provides
 comprehensive legislative information to the public.  Our
-collection contains 4,447 bills, 1,269 unique legislators, and
-1,837,033 \verb!yea! or \verb!nay! roll-call votes.
+collection contains 4,447 bills, 1,269 unique lawmakers, and
+1,837,033 \verb!yea! or \verb!Nay! roll-call votes.
 
 To select the vocabulary, we lemmatized the bills with
 Treetagger~\citep{treetagger}.  Then we retained a vocabulary of
@@ -663,7 +692,7 @@ $n$-gram if it accounted for more than 0.2\% of all tokens or fewer
 than than 0.001\% of all tokens.  After this process, our vocabulary
 contained 4,743 unique $n$-grams.
 
-We used the anchor legislators described in \mysec{model}.  We ran
+We used the anchor lawmakers described in \mysec{model}.  We ran
 variational inference until the change in increase in the objective
 function was less than 0.01\%.
 
@@ -686,7 +715,7 @@ the data.
   \center
   \includegraphics[width=0.9\textwidth]{chapter_predicting_votes_with_text/figures/134_64_topic_plot.pdf}
   \caption{Topics can be visualized in the same latent political space
-    as legislators and bills.  This plot shows selected topics by
+    as lawmakers and bills.  This plot shows selected topics by
     coefficients $\ev$, for a 64-topic model ($\ev$s are normalized by
     mean and variance).  Two topics (\emph{people, month, recognize, ...}
     and \emph{clause, motion, chair, ...}) with difficulty 4.68 and
@@ -738,13 +767,13 @@ not represent it well, with only 72\% of votes correctly predicted.
 
 \subsection*{Checking the ideal points}
 We can also use the in-sample fit to assess the quality of the ideal
-points of the legislators.  In classical ideal point modeling, this is
+points of the lawmakers.  In classical ideal point modeling, this is
 done via in-sample accuracy: How well does the model explain the
 observed votes?
 
-The average per-legislator accuracy in the in-sample fit was 96\%
-(only 10\% of legislators had accuracy lower than 90\%).  As expected,
-accuracy increases with more votes ($\rho=0.51$).  Among legislators
+The average per-lawmaker accuracy in the in-sample fit was 96\%
+(only 10\% of lawmakers had accuracy lower than 90\%).  As expected,
+accuracy increases with more votes ($\rho=0.51$).  Among lawmakers
 with over 100 votes, only two stand out. Donald Young (713 votes;
 accuracy 0.83) had a pre-defined ideal point (see \mysec{model}). Ron
 Paul, a Republican in the $111^{th}$ Congress, was also poorly
@@ -773,7 +802,7 @@ corpus were \verb!yea! votes, this presents a more reasonable overall
 baseline than random guessing (at 50\%).  We call this model the
 \verb!yea!  model.  The second baseline fit a logistic regression
 trained for members of each party (with a separate one for mixed or
-independent legislators), with terms as covariates.  This baseline
+independent lawmakers), with terms as covariates.  This baseline
 (implemented with the R \verb!glm! library) used too much memory to
 use more than 800 terms and therefore led to results worse than the
 \verb!yea!  baseline.
@@ -807,3 +836,50 @@ predicted 88.1\% of votes; their log-likelihood was identical.
 With these models, one could predict 31,000 to 55,000 votes
 above the baseline, \emph{based only on the text of the bills}.  The
 simpler of the two models, \verb!L2!, performs better at prediction.
+
+\section{Conclusions and limitations of these models}
+
+We have developed several models associating the text of legislation
+to lawmakers' voting patterns.  These models provide a way of
+exploring large collections of legislative data and predicting the
+votes of new bills.  The text-regression models and the ideal point
+topic model have incorporated bill texts into the simplest kind of
+ideal point model of roll call data.  Still, these models have only
+scratched the surface of this field.
+
+Though we were motivated by (and focused on) political science data,
+we note that these models are among several (as, e.g.,
+\cite{agarwal:2010}) that can be applied in a variety of collaborative
+filtering settings.  They provide a way to model a collection of users
+and their decisions about collections of textual items.
+
+One of the central advantages of latent-variable models is their
+modularity.  Because we have modeled the text of legislation as a
+vector of topics (or a vector of word counts), it is straightforward
+to incorporate other elements of the legislative process, such as
+speech transcripts \cite{quinn:2006,thomas:2006} or bill sponsor, into
+this model's supervision.  This could improve both the predictive
+power and exploratory capabilities of the ideal point topic model.
+The modularity of latent-variable models allows us to swap in modeling
+assumptions for each of these types of data.
+ 
+However, even optimal features for prediction would be limited by the
+power of the downstream model for lawmakers' votes on bills.  Here we
+have studied multiple topics with a one-dimensional political space.
+As noted in \mysec{experiments}, this is a predictive bottleneck. (The
+``true'' number of dimensions is debatable---\cite{heckman:1996}
+argued that there are at least 6 statistically significant dimensions
+in roll-call data, while \cite{jackman:2001} barely found more than
+one.)  One solution is to increase the dimension of the lawmaker and
+bill variables or use a mixture model as in \citet{wang:2010}, which
+can increase the strength of the model at the expense of
+interpretability.
+
+An alternative solution is to model individual lawmakers' affinities
+to issues, using ideas explored by \cite{agarwal:2010} and
+\cite{wang:2011} for matching users with text content.  We will use
+these ideas in the following chapter, where we explicitly model
+lawmakers' positions on a variety of issues.  This will allow us to
+represent lawmakers' votes better than an ideal point model while
+providing an interpretable window into individual lawmakers' voting
+behavior.

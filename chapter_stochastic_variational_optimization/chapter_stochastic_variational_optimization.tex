@@ -17,12 +17,13 @@ family that is ``closest'' to the true posterior.  This turns the
 problem of inference into one of optimization.
 
 Deriving and implementing a variational inference algorithm can be
-painstaking.  It involves defining the variational family, forming an
-objective function, taking derivatives with respect to the variational
-parameters, and running an optimization algorithm.  In this paper, we
-present an alternative algorithm for variational inference.  Our
-algorithm circumvents many of the challenges to using variational
-inference by optimizing the variational objective function
+painstaking, as evidenced in the tedious update equations in
+Appendix~\ref{chapter:supplementary_materials}.  It involves defining the variational
+family, forming an objective function, taking derivatives with respect
+to the variational parameters, and running an optimization algorithm.
+In this paper, we present an alternative algorithm for variational
+inference.  Our algorithm circumvents many of the challenges to using
+variational inference by optimizing the variational objective function
 stochastically.
 
 To do this, we form the derivative of the variational objective as an
@@ -177,7 +178,7 @@ development.
 %% We will avoid requiring the symbolic expansion of $\expectq{\log
 %% p(x, y)}$, which is typically required for variational inference.
 
-\subsection{Stochastic optimization of the variational objective}
+\subsection{An algorithm for stochastic optimization of the variational objective}
 \label{sec:so_algorithm_derivation}
 
 We now describe an alternative method for optimizing the ELBO
@@ -432,7 +433,7 @@ in Equations~\ref{eq:gaussian_mean_gradient}
 and~\ref{eq:gaussian_variance_gradient}; the other steps are
 mechanical.
 
-\subsection{Improving performance}
+\subsection*{Improving performance}
 
 The algorithm described above lays the foundation for our approach.  We
 now make several adjustments to complete the algorithm.  These
@@ -654,7 +655,7 @@ remaining hidden variables fixed.  To represent the distributions of
 variables in $x_i$'s Markov blanket, SVO uses samples from their
 variational posteriors.
 
-\subsection{Related work}
+\subsection*{Related work}
 
 \paragraph{Stochastic optimization.}
 SVO differs from traditional stochastic optimization in several
