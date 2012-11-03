@@ -7,16 +7,21 @@ discuss two models designed to infer the relationships between pairs
 of countries.
 
 \subsection*{Text and latent spaces}
-The unit of analysis in this chapter will be paragraphs from news
-articles---one of the the smallest units of discussion about a pair of
-countries; and we will use some of the same ideas presented in the
-last chapter to model this text: mixed-membership models of each
-document.  An advantage of a text-based approach to history is that we
-can incorporate information from all articles of a given collection
-with modest computational cost.  This means that historians and
-political scientists can then search and review thousands of
-historical documents to identify forgotten or overlooked incidents in
-history.
+The basic unit of analysis in this chapter will be paragraphs of text
+from newspaper articles which discuss pairs of countries.  We choose
+paragraphs because they are small enough to have a single concrete
+idea, while being large enough to describe interesting relationships.
+
+We will use some of the same ideas presented in the last chapter to
+model the text of these paragraphs, but we will use concepts from
+Chapter 2 to model relationships between pairs of countries.  This
+will allow us to model the history of countries over time.  An
+advantage of a text-based approach to history is that we can
+incorporate information from all articles of a given collection with
+modest computational cost.  This means that historians and political
+scientists can then search and review thousands of historical
+documents at the push of a button---or identify forgotten and
+overlooked incidents in history.
 
 An important additional assumption that we will make is that each
 nation can be summarized by its position in a latent space, so that
@@ -27,9 +32,9 @@ interpret these countries' positions, since they provide statistically
 meaningful summaries of these countries' positions; and the ability to
 make predictions about the relationships between countries, based on
 their latent positions. While the last chapter's Document Influence
-Model allowed us to describe themes over time and individual
+Model allowed us to discover themes which evolved over time and individual
 documents' influence on these themes, the assumptions we will make in
-this chapter allow us to create a more rich story about the
+this chapter will allow us to create a more rich story about the
 interaction of specific textual entities---countries---over time.
 
 % We infer sentiment with the supervision of voting on UN resolutions.
@@ -45,18 +50,20 @@ In the next two sections we will develop several computational models that
 link the text of a news source to the relationships between countries.
 
 We begin with a model which infers these relationships by using using
-two sources of labels about the sentiment between pairs of countries.
-We will develop a set of spatio-temporal assumptions that allow us to
-describe the sentiment between countries by inspecting their relative
-positions in a latent space (and, inversely, to interpret their
-positions based on observed sentiment).  We will demonstrate that
-modeling countries with this model allows us to create a history of
-foreign relations over time.  Importantly, we will demonstrate that
-the sentiment inferred from two very different sources of sentiment
-labels leads to strikingly similar measures of sentiment.
+two sources of labels about the sentiment between pairs of countries:
+expert labels and labels assigned by lay paid ``workers''.  To design
+this model, we will develop a set of spatio-temporal assumptions that
+allow us to describe the sentiment between countries by inspecting
+their relative positions in this latent space (and, inversely, to
+interpret their positions based on observed sentiment).  We will
+demonstrate that modeling countries with this model allows us to
+create a history of foreign relations over time.  Importantly, we will
+demonstrate that the sentiment inferred from two very different
+sources of sentiment labels leads to strikingly similar measures of inter-state
+sentiment.
 
-After developing this supervised model, we invert this question and ask:
-what sentiment is implied by the text alone of news articles?  To
+After developing this supervised model, we invert this question and
+ask: what sentiment is implied by the text alone of news articles?  To
 answer this question, we describe an unsupervised model of the
 relationship between countries to qualitatively describe these
 relationships.  We then demonstrate a connection between the
