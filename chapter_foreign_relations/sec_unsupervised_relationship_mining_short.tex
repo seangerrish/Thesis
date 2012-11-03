@@ -7,7 +7,7 @@
 %     - Trade
 %     - Culture and society
 
-The preceding approach has limitations, however.  First, sentiment
+The preceding approach has limitations.  First, sentiment
 labels measure only one kind of interaction: whether countries are at
 war or peace.  In reality, relationships between countries may be
 characterized in many ways, some of which are independent of whether
@@ -21,9 +21,9 @@ limited, or (as we saw before), the labels may be noisy.
 % unsupervised relationships
 %   - We will use a modul much like RTM
 %   - RTM is ...
-In this section we will describe a model for inferring relationships
-between countries in an unsupervised fashion.  This model serves as an
-alternative to the model in the last section in that it requires no
+In this section we will briefly describe a model for inferring
+relationships between countries in an unsupervised fashion.  This
+model is based on the model in the last section, but it requires no
 explicit labels of the relationship between pairs of countries.
 Instead it infers a qualitative relationship between countries -- a
 relationship which we can attempt to interpret post-hoc.  The
@@ -40,54 +40,14 @@ by the \emph{Networks Uncovered by Bayesian Inference} model
 relationships. We will then describe inference for this model, and
 finally provide an empirical analysis of this model.
 
-This section necessarily represents a cursory investigation of
-unsupervised sentiment analysis.
+This section necessarily represents a very cursory look at
+unsupervised sentiment analysis.  Because there are many parts to the
+model, we focus on the \verb!intercept/distance! link function defined
+in \mytab{fr_link_functions}.  As our goal is to qualitatively observe
+the inferred sentiment topic, we will focus on that and skip a
+rigorous analysis of this model's performance.
 
 \subsection{A model of unsupervised foreign relations}
-% The assumptions are as follows:
-%   - Each country is associated with a background distribution
-%   - Each interaction is described by:
-%     - words related to either country
-%     - miscellaneous words
-%     - words about the relationship between the two countries
-In the supervised foreign relations discourse model, our aim is to
-characterize the relationship between two countries by inspecting the
-language used to describe them.  This model comprises two pieces: a
-language model for describing the language used to discuss countries;
-and a time-series spatial model to describe the relationship between
-pairs of countries.  We will begin by outlining the spatial sentiment
-model, which will be familiar to readers from the last section.  We
-then describe the language model, which is similar to LDA.  We then
-describe how these two models are connected.
-
-\subsubsection*{Dynamic spatial model}
-The assumptions for interaction between countries in the unsupervised
-model are similar to those we used in the supervised model from the
-last section.  Each country is characterized by a position $\bar
-x_{ct}$ which drifts over time in some latent space $\mathbb{R^d}$.
-Pairs of countries interact according to the dyadic relationship
-\begin{align}
-  x_{c_1,d} | \bar x_{c_1,t} & \sim \mathcal{N}(\bar x_{c_1, t}, \sigma_s^2) \nonumber \\
-  x_{c_2,d} | \bar x_{c_2,t} & \sim \mathcal{N}(\bar x_{c_2, t}, \sigma_s^2) \nonumber \\
-  s_d | x_{c_1,d}, x_{c_2,d}, r_{c_1,d}, r_{c_2,d} & = \log( || x_{c_1,d} - x_{c_2,d} ||_2^2 + 1), \nonumber \\
-  \kappa_d | s_d & \sim \sigma(s_d),
-\end{align}
-where each country $c$ has an additional intercept $r_c$ and
-$\sigma(s)$ is the logistic function $\frac{\exp(s)}{1 + \exp(s)}$.
-We illustrate this graphically in \myfig{dynamic_dyadic_chain}.  As in the
-last section, we use the extra variables $x$ instead of $\bar x$ for
-computational convenience because we can estimate the time-series
-average $\bar x$ in closed form with a Kalman smoother.
-
-Also as before, we attach an intercept $\bar r_{c_2}$ to each country
-to model each country's typical interaction style.  This gives us the augmented model
-\begin{align}
-  r_{c_1,d} | \bar r_{c_1} & \sim \mathcal{N}(\bar r_{c_1}, \sigma_r^2) \nonumber \\
-  r_{c_2,d} | \bar r_{c_2} & \sim \mathcal{N}(\bar r_{c_2}, \sigma_r^2) \nonumber \\
-  s_d | x_{c_1,d}, x_{c_2,d}, r_{c_1,d}, r_{c_2,d} & = \log( || x_{c_1,d} - x_{c_2,d} ||_2^2 + 1)  + r_{c_1} + r_{c_2} \nonumber \\
-  \kappa_d | s_d & \sim \sigma(s_d)
-\end{align}
-We illustrate this sentiment model graphically in \myfig{dynamic_dyadic_chain}.
 
 The sentiment parameter $\kappa_d$ will become important when we link
 this sentiment model to text.  Intuitively, if two countries are far
@@ -182,7 +142,7 @@ begin by specifying the global topics.
 \item Next, draw the global topic mixture $\theta \sim \mbox{Dir}(1, 1, 1, 1)$.
 
 \item Finally, draw documents. \\
-For document $d=1, \ldots, D$, each representing interactions between pairs of countries $c_{d_1},c_{d_2}$:
+For document $d=1, \ldots, D$, each representing interactions between pairs of countries $c_{d,1},c_{d,2}$:
   \begin{enumerate}
     \item Draw sentiment index $\kappa_d \sim \sigma(s_d)$
     \item For word $n = 1, \ldots, N_d$:
@@ -190,8 +150,8 @@ For document $d=1, \ldots, D$, each representing interactions between pairs of c
       \item Draw $z_{n} \sim \mbox{Mult}(\theta_d$).
       \item Switch($z_n$):
       \begin{itemize}
-        \item If $z_n = (1, 0, 0, 0)$, draw $w_n \sim \beta_{\mbox{C},c_{d_1}}$.
-        \item If $z_n = (0, 1, 0, 0)$, draw $w_n \sim \beta_{\mbox{C},c_{d_2}}$.
+        \item If $z_n = (1, 0, 0, 0)$, draw $w_n \sim \beta_{\mbox{C},c_{d,1}}$.
+        \item If $z_n = (0, 1, 0, 0)$, draw $w_n \sim \beta_{\mbox{C},c_{d,2}}$.
         \item If $z_n = (0, 0, 1, 0)$, draw $w_n \sim \beta_{\mbox{B},0}$.
         \item If $z_n = (0, 0, 0, 1)$, draw $w_n \sim \beta_{\mbox{S},\kappa_d}$.
       \end{itemize}
@@ -203,18 +163,15 @@ We illustrate the combined model in
 
 \subsubsection{Related work}
 The binary relational language model is founded on ideas discussed by
-several recent models.  Chang et al. developed a model to describe the
-relationships between ``entities'' (e.g., countries) with a similar
-assumption of entity-specific and relationship-specific topics
-\citep{chang:2009nubbi}.  For concreteness, we describe their work in
-the context of our work, by using ``country'' where they used the
-abstract term ``entity''.  In Chang et al.'s \emph{Networks Uncovered
-  by Bayesian Inference} (Nubbi) model, each country had its own
-country-specific topic, which was active when that country is
-discussed.  An additional mixture of topics was then used to describe
-the relationship between countries.  Nubbi was then be used to infer
-relationships between countries that have been tagged in a collection
-of text documents.
+several recent models.  \cite{chang:2009nubbi} developed a model to
+describe the relationships between ``entities'' (e.g., countries) with
+a similar assumption of entity-specific and relationship-specific
+topics. In \cite{chang:2009nubbi}'s \emph{Networks Uncovered by Bayesian
+  Inference} (Nubbi) model, each entity had its own entity-specific
+topic, which was active when that country is discussed.  An additional
+mixture of topics was then used to describe the relationship between
+countries.  Nubbi was then be used to infer relationships between
+countries that have been tagged in a collection of text documents.
 
 Nubbi inferred relationships between countries by finding similar
 topic weights between documents. In contrast, we use sentiment to
@@ -224,23 +181,22 @@ levels of a hierarchy has also been explored by
 \cite{chemudugunta:2009}.  Neither of these approaches included a
 switch variable for selecting between topics.
 
-The idea of associating language with sentiment has been explored in
-considerable detail lately.  Some of the most successful supervised
-approaches handle this with regression methods such as text regression
-\citep{kogan:2009}.
-
-Supervised topic models \citep{blei:2008} offer a fully probabilistic
-generative model of documents which have an attached label.  A key
-assumption behind supervised topics is that the model can learn topics
-that capture the underlying sentiment.  Supervised topic models do
-this by assuming that the distribution of documents' sentiment
-parameters $s_d$ are fully specified given their words' topic indices
-$\bm z_d$ and regression coefficients $p(s_d | \bm z_d, \bm \eta)$.
-This requires that $p(s_d | \bm w_d, \bm \eta, \bm \beta)$ they are
-fully specified given the text of documents and $\eta$. This means
-that the topics learned by a standard LDA algorithm will differ from
-those learned by a supervised LDA algorithm, because they adjust to
-explain documents' sentiment.
+As noted in the last section, the idea of associating language with
+sentiment has been explored in considerable detail lately.  Some of
+the most successful supervised approaches handle this with regression
+methods such as text regression \citep{kogan:2009}. Supervised topic
+models \citep{blei:2008} offer a fully probabilistic generative model
+of documents which have an attached label.  A key assumption behind
+supervised topics is that the model can learn topics that capture the
+underlying sentiment.  Supervised topic models do this by assuming
+that the distribution of documents' sentiment parameters $s_d$ are
+fully specified given their words' topic indices $\bm z_d$ and
+regression coefficients $p(s_d | \bm z_d, \bm \eta)$.  This requires
+that $p(s_d | \bm w_d, \bm \eta, \bm \beta)$ they are fully specified
+given the text of documents and $\eta$. This means that the topics
+learned by a standard LDA algorithm will differ from those learned by
+a supervised LDA algorithm, because they adjust to explain documents'
+sentiment.
 
 The unsupervised sentiment model is similar to supervised LDA in that
 the topics adjust as the underlying sentiment parameter $s_d$ differs.
@@ -331,12 +287,22 @@ $\expect{z_n}$, to perform EM.  The goal of performing EM is to optimize the bou
   \log p(\bm w_d | \bm \beta, s_d)
   & \ge \log \expectq{ \frac{q(\kappa_d, \bm z_d)}{q(\kappa_d, \bm z_d)} p(\bm w_d | \bm \kappa_d, \bm z_d, \bm \beta, s_d) } \\
 %  & = \expectq{ \frac{ q(\kappa_d) }{ q(\kappa_d) } \log \frac{ p(\bm w_d | \bm \kappa_d, \bm z_d) }{ q(\kappa_d) } } \\
-  & \ge \expectq{ q(\kappa_d, \bm z_d) \log \frac{p(\bm w_d | \bm \kappa_d, \bm z_d, \bm \beta, s_d)}{q(\kappa_d, \bm z_d)} }
+  & \ge \expectq{ q(\kappa_d, \bm z_d) \log \frac{p(\bm w_d | \bm
+      \kappa_d, \bm z_d, \bm \beta, s_d)}{q(\kappa_d, \bm z_d)} } \\
+  & = \expectq{ p(\bm w_d | \bm \kappa_d, \bm z_d, \bm \beta, s_d)}
+  - H(q(\kappa_d, \bm z_d))
+\label{eq:fr_em_motivation}
 \end{align}
 on the likelihood of documents, where we specify $q(\bm \kappa_d, \bm
 z_d)$ to be the factorized distribution $q(\bm \kappa_d) q(\bm z_d)$
 and write the expectations $q(\bm \kappa_{d} = 1) = \expectq{\bm
   \kappa_d}$, $q(\bm z_{dn}=1) = \expectq{(\bm z_{d,n})}$.
+
+As an aside, note the similarity between \myeq{fr_em_motivation} and
+the variational objective (\myeq{traditional_variational_objective}).
+MAP inference using EM can be interpreted as variational inference, in
+which we use point estimates for many of the random variables and
+distributions to represent the remaining variables.
 
 Letting $S_0$ and $S_1$ index the sentiment word-topic distributions,
 and letting $S$ index the sentiment topic in the topic indicators $z$,
@@ -565,13 +531,5 @@ Neither of these was statistically noteworthy ($p=0.15,0.16$).
 \caption{Per-country topics ($\beta_{C,\cdot}$), a background topics ($\beta_{B,0}$), and the two interaction topics ($\beta_{S,0}, \beta_{S,1}$).}
 \label{fig:fr_unsupervised_topics}
 \end{figure}
-
-\subsubsection*{Quantitative evaluation}
-\paragraph{Perplexity}
-% comparison with LDA, for a variety of topics.
-% comparison with 
-\paragraph{Sentiment}
-
-\paragraph{Relationship between sentiment and third-party sentiment}
 
 

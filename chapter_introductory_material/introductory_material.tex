@@ -634,18 +634,20 @@ this family that is closest in KL-divergence to the true posterior
 $p(x | y)$:
 \begin{align}
   \arg \min_{\theta} \mbox{KL}(q_\theta || p) = \arg \min_{\theta} \int_x q_\theta(x) \log \frac{q_\theta(x)}{p(x | y)} dx.
-  \label{equation:variational_objective}
+  \label{eq:variational_objective}
 \end{align}
 Finding the optimal variational distribution $q_\theta$ is equivalent
 to optimizing an ``evidence lower bound'' (ELBO) ($\mathcal{L}_\theta$) on
 the data likelihood
 \begin{eqnarray}
-  \log p(y) \ge \expectq{\log p(x, y) - \log q_\theta(x)}
-  =: \mathcal{L}_\theta,
-  \label{equation:traditional_variational_objective}
+  \log p(y) \ge & \expectq{\log p(x, y) - \log q_\theta(x)} \\
+  = & \expectq{\log p(x, y)} - H(q_\theta(x)) \\
+  =:&  \mathcal{L}_\theta,
+  \label{eq:traditional_variational_objective}
 \end{eqnarray}
-where the slack of the bound is equal to the KL divergence from
-Equation~\ref{equation:variational_objective}.
+where $H(q_\theta(x))$ is the entropy of that distribution and the
+slack of the bound is equal to the KL divergence from
+Equation~\ref{eq:variational_objective}.
 
 The family is chosen by the practitioner to make the resulting
 algorithm tractable and to capture the parameters of interest. A
@@ -676,7 +678,7 @@ topics $\beta$ and mixture proportions $\theta$ can be represented by
 a fully-factorized product of Dirichlet distributions.
 
 Once a family is selected, the bound in
-Equation~\ref{equation:traditional_variational_objective} is evaluated
+Equation~\ref{eq:traditional_variational_objective} is evaluated
 symbolically, as a practitioner fully expands $\expectq{ \log p(x, y)
   - \log q_\theta(x)}$ and (usually) its gradient. As we will show in
 subsequent chapters, this bound may itself be bounded or approximated

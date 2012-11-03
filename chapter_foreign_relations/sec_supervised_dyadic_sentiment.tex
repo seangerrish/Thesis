@@ -94,12 +94,46 @@ This sentiment is determined by the interaction of their positions:
   \bm x_{c_2,d} \sim \mathcal{N}(\bm \bar x_{c_2, 0}, \sigma_D^2) \nonumber \\
   s_d := \mathcal{F}(\bm x_{c_1,d}, \bm x_{c_2,d}), \label{eq:sentiment_space}
 \end{align}
-for some suitable function $\mathcal{F}: \mathbb{R} \times \mathbb{R}
+for some suitable function $\mathcal{F}: \mathbb{R}^p \times \mathbb{R}^p
 \rightarrow \mathbb{R}$ (see \mytab{fr_link_functions} for examples of
 $\mathcal{F}$).  We have also introduced the auxiliary random
 variables $x_{c_1}$ and $x_{c_2}$, which can be interpreted as
 per-interaction positions.  We include them for algebraic convenience
 which will be evident later.
+
+\begin{figure}
+  \center
+\begin{tabular}{|l|l|m{3.9cm}|}
+      \hline
+      Description & $\mathcal{F}(\bm x_1, \bm x_2)$ & where ... \\
+      \hline
+      distance & $-\log(|| \bm z_{1} - \bm
+      z_{2} ||_2^2 + 1)$ & $\bm z_{1} = \bm x_{1,2:D}, \bm z_2 = \bm x_{1,2:D}$ \\
+      \hline
+      inner product & $\bm z_{1}^T \bm z_{2}$ & $\bm z_{1} = \bm
+      x_{1},$ $\bm z_2 = \bm x_{2}$ \\
+      \hline
+      intercept & $y_1 + y_2$ & $y_1 = x_{1,1}, y_2 = x_{2,1}$ \\
+      \hline
+      intercept/inner product & $y_1 + y_2 + \bm z_{1}^T \bm
+     z_{2}$ & $y_1 = x_{1,1}, y_2 = x_{2,1},$ \\
+    & & $\bm z_{1}
+     = \bm x_{1,2:D}, \bm z_2 = \bm x_{2,2:D}$ \\
+      \hline
+     intercept/distance & $y_1 + y_2 - \log(|| \bm z_{1} - \bm
+     z_{2} ||_2^2 + 1)$ & $y_1 = x_{1,1}, y_2 = x_{2,1},$ \\
+     & & $\bm z_{1}
+     = \bm x_{1,2:D}, \bm z_2 = \bm x_{2,2:D}$ \\
+     \hline
+    \end{tabular} \\
+\label{fig:fr_link_functions}
+\caption{Link functions $\mathcal{F}: \mathbb{R}^p \times \mathbb{R}^p
+  \rightarrow \mathbb{R}$.  Intercept link functions introduce
+  per-country intercepts that indicate how prone a country is to war;
+  distance link functions are based on the distance between countries'
+  vectors; and inner-product link functions represent sentiment as a
+  function of countries' political ``orientations''.}
+\end{figure}
 
 If $\mathcal{F}$ is continuous and $c_1$ and $c_2$ are similar (as
 measured by the distance between $\bm \bar x_{c_1}$ and $\bm \bar
@@ -118,6 +152,7 @@ which has been used successfully in both political science
 \citep{hoff:2002,chang:2009}.
 
 \subsection{A temporal model of interaction}
+\label{sec:fr_time_series_model}
 \begin{figure}
   \center
   \vspace{-55pt}
@@ -669,86 +704,74 @@ text regression.
 We made the latter choice so we could analyze the text regression part
 of the model separately from the latent-space assumption (analyzing
 them together would make it difficult to discern the effect of each
-model).  The text-regression model for CoW labels predicted heldout
-labels with a mean-squared error of XXX. The text-regression model for
-AMT predicted heldout labels with mean-squared error of XXX.  While
-these are relatively large, they were better than a baseline
-prediction of ZZZ and ZZZ respectively.  Weights learned for these
-models are illustrated in \myfig{fr_example_betas}.
+model).
+
+\paragraph{Text regression.} The text-regression model for CoW labels
+predicted heldout labels with MSE $0.98$, compared with $1.02$ if we
+estimate using the empirical mean $\bar s=-0.21$ of training
+examles. The text-regression model for AMT predicted heldout labels
+with MSE of $6.37$, compared with $6.78$ under the empirical mean.  We
+ignored words 
+
+While these errors are very large compared to the variance of the
+sentiment label, the scale of these errors is a result of the small
+number of training examples, the large number of features (1998 in
+each case, and the sparsity of these features).  Still, we find that
+the coefficients $\bm \beta_{\mbox{\tiny CoW}}, \bm \beta_{\mbox{\tiny
+    AMT}}$ learned from the respective CoW and AMT labels are
+subjectively meaningful.  We illustrate the coefficients fit with
+these labels in \myfig{fr_example_betas}.  The coefficients $\bm
+\beta_{\mbox{\tiny CoW}}$ and $\bm \beta_{\mbox{\tiny AMT}}$ are
+correlated at $\sigma=0.18$.
 
 \paragraph{Static latent space.}
-We first evaluate the latent-space assumption described in
-\mysec{fr_latent_space_model}.  Under this model, countries'
-interactions can be summarized by their positions in a latent space
-which does not change over time.  The sentiment between countries
-interacting in document $d$ is $s_d = \mathcal{F}(x_{c_1}, x_{c_2})$,
-with $x_c \sim \mathcal{N}(\bar x_c, \sigma_D^2)$.
+With the text model in place, we next turn to evaluating the
+latent-space assumption.  To do this, we hold fixed the coefficients
+$\bm \beta_{\mbox{\tiny CoW}}, \bm \beta_{\mbox{\tiny AMT}}$.  This
+makes the mean $\bm \beta^T \bm w_d$ of sentiment $s_d$ available to
+the latent-space models.
 
-We tested this assumption for the five link functions $\mathcal{F}(\bm
-x_{c_1}, \bm x_{c_2})$ summarized in \mytab{fr_link_functions}.
-\begin{figure}
-  \center
-\begin{tabular}{|l|l|m{3.9cm}|}
-      \hline
-      Description & $\mathcal{F}(\bm x_1, \bm x_2)$ & where ... \\
-      \hline
-      distance & $-\log(|| \bm z_{1} - \bm
-      z_{2} ||_2^2 + 1)$ & $\bm z_{1} = \bm x_{1,2:D}, \bm z_2 = \bm x_{1,2:D}$ \\
-      \hline
-      inner product & $\bm z_{1}^T \bm z_{2}$ & $\bm z_{1} = \bm
-      x_{1},$ $\bm z_2 = \bm x_{2}$ \\
-      \hline
-      intercept & $y_1 + y_2$ & $y_1 = x_{1,1}, y_2 = x_{2,1}$ \\
-      \hline
-      intercept/inner product & $y_1 + y_2 + \bm z_{1}^T \bm
-     z_{2}$ & $y_1 = x_{1,1}, y_2 = x_{2,1},$ \\
-    & & $\bm z_{1}
-     = \bm x_{1,2:D}, \bm z_2 = \bm x_{2,2:D}$ \\
-      \hline
-     intercept/distance & $y_1 + y_2 - \log(|| \bm z_{1} - \bm
-     z_{2} ||_2^2 + 1)$ & $y_1 = x_{1,1}, y_2 = x_{2,1},$ \\
-     & & $\bm z_{1}
-     = \bm x_{1,2:D}, \bm z_2 = \bm x_{2,2:D}$ \\
-     \hline
-    \end{tabular} \\
-\label{fig:fr_link_functions}
-\caption{Link functions $\mathcal{F}: \mathbb{R}^P \times \mathbb{R}^P
-  \rightarrow \mathbb{R}$.  Intercept link functions introduce
-  per-country intercepts that indicate how prone a country is to war;
-  distance link functions are based on the distance between countries'
-  vectors; and inner-product link functions represent sentiment as a
-  function of countries' political ``orientations''.}
-\end{figure}
+We first check the assumptions described in
+\mysec{fr_latent_space_model}, which models countries' pairwise
+sentiment but does not assume that they change over time.  We predict
+the sentiment between countries interacting in document $d$ to be
+$\bar s_d = \mathcal{F}(\bm \bar x_{c_1}, \bm \bar x_{c_2})$ and
+evaluated the latent-space assumption based on its ability to
+reproduce predictions from the text-based sentiment model $s_d = \bm
+w_d^T \bm \beta$.
 
-We measured the model's ability to predict inferences from the
-text-based sentiment model $s_d = \bm w_d^T \bm \beta$ for $1 \le
-\mbox{dim}(\bm z) \le 9$ and report the mean-squared-error (MSE) of
-these predictions in \myfig{fr_supervised_performance}.  We find that
-the the inner-product assumption $\bar z_{c_1}^T \bar z_{c_2}$ alone
-is poor because it provides no natural natural way to model countries that are
-in conflict with some countries a large amount and with other
-countries a small amount.
+We evaluated this model for the five link functions $\mathcal{F}(\bm
+x_{c_1}, \bm x_{c_2})$ summarized in \mytab{fr_link_functions} and for
+a range of dimensions $p = \mbox{dim}(\bm z) = 1, \ldots, 9$.  We
+report the MSE for this range of experiments
+\myfig{fr_supervised_performance}.
 
+We find that the the inner-product assumption $\bm \bar z_{c_1}^T \bm \bar
+z_{c_2}$ alone is poor because it provides no natural natural way to
+model countries which are in frequent conflict with others.
 When the inner-product link function and the distance link function
 are endowed with the intercepts $y_{c_1}, y_{c_2}$, their performance
 improves substantially: they consistently represent inter-countries'
 sentiment better than other models, with the
 \verb!intercept/inner product!  model consistently outperforming
 \verb!intercept/distance! for most values of the latent-space
-dimension $P$. This improvement is largely because intercepts enable
-these models to explain how conflict-prone a country is. At the same
-time, they can use $\bm \bar z$ to explain how each country interacts
-with others; both \verb!intercept / inner product! and
-\verb!intercept/distance! outperform \verb!intercept! for most
-values of $P$.  Interestingly, the \verb!distance! link function is
-able to model data well as $P$ grows large without an indication that
+dimension $p$. This improvement appears to be largely because
+intercepts enable these models to explain how conflict-prone a country
+is. At the same time, they can use $\bm \bar z$ to explain how each
+country interacts with others; both \verb!intercept / inner product!
+and \verb!intercept/distance! outperform \verb!intercept! for most
+values of $p$.  Interestingly, the \verb!distance! link function is
+able to model data well as $p$ grows large without an indication that
 the model overfits (we only measured this up to 9 dimensions).
 
 \paragraph{The benefit in adding a time-series assumption.}
 We can add more flexibility to this model -- and an ability to model
-much more interesting behavior -- by adding a time dimension, allowing
-$\bar x_c$ to drift over time for each country $c$.  We illustrate
-these results in \myfig{fr_supervised_performance}.
+much more interesting behavior -- by extending it to the time-series
+domain as described in \mysec{fr_time_series_model}.  Under this
+assumption, we allow $\bm \bar x_c$ to drift over time for each
+country $c$.  Again we fit the model to a range of latent-space
+dimensions $p = 1 \ldots 9$. We illustrate these results in
+\myfig{fr_supervised_performance}.
 
 The inner product model again performed poorly, often worse than the
 baseline model.  Adding an intercept term harms performance for the
@@ -758,11 +781,11 @@ Mechanical Turk labels.
 
 We note that the time-series models performed better than the static
 model for the CoW labels but \emph{not} for the Mechanical Turk
-labels.  One theory is that the formal relationships between countries
--- as determined by expert labels -- is indeed changing over time;
-while the lay relationships between these countries -- as determined
-by lay interpretations of countries' relationships -- remains more
-static over time.
+labels.  One possible explanation is that the formal relationships
+between countries -- as accurately represented by expert labels -- is
+indeed changing over time; while the lay relationships between these
+countries -- as determined by lay interpretations of countries'
+relationships -- remains more static over time.
 
 \paragraph{Improvement due to zero-reversion regularization}
 A further explanation for the decrease in performance for the
@@ -779,7 +802,7 @@ by grid search for these models at $3$ dimensions.
 \subsubsection{A closer look}
 What relationships between nations does this model infer?  Because the
 relationships between countries are treated as functions of their
-positions $\bm x \in \mathbb{R}^P$, we can interpret these countries'
+positions $\bm x \in \mathbb{R}^p$, we can interpret these countries'
 positions $\bm x$ as summaries of countries' geopolitical
 orientations.  We illustrate the positions of selected countries in
 \myfig{fr_intercept_distance_positions}.
@@ -795,7 +818,7 @@ orientations.  We illustrate the positions of selected countries in
     issue-adjusted model for articles labeled with Amazon Mechanical
     Turk (left) and Correlates of War (right).  Countries' positions
     were inferred with the intercept / distance model, with distance
-    dimension $P$=2.  Intercepts are illustrated by color.}
+    dimension $p$=2.  Intercepts are illustrated by color.}
   \label{fig:fr_intercept_distance_positions}
 \end{figure}
 
