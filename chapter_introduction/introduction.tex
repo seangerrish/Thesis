@@ -1,19 +1,21 @@
 \chapter{Quantitative methods for social research in the digital age}
 
 Quantitative social scientists often attempt to understand the
-behavior of political entities.  The digital age has brought to these
-researchers a deluge of digital records---particularly in the form of
-text.  This avalanche of data provides more information to these
-scientists than they have had in the history of mankind.  Researchers
-are now able to pore over digital copies of all legally binding
-opinions written by United States Supreme Court Justices, or the text
-of thousands of bills voted on by members of Congress.  Even these
-numbers are dwarfed by the hundreds of thousands of newspaper articles
-written about the international relations.  Unfortunately, this flood
-of information obscures the very insights these researchers aim to
-discover.  Researchers trying to make sense of these collections are
-subject to the high costs of time spent poring over these collections
-in search of the few key insights.
+behavior of political entities, and digital records are one of the
+most useful resources available to them.  The digital age has brought
+to these researchers a deluge of these records---particularly in the
+form of text.  This avalanche of data provides more information to
+these scientists than they have had in the history of mankind.
+
+Researchers are now able to pore over digital copies of all legally
+binding opinions written by United States Supreme Court Justices, or
+the text of thousands of bills voted on by members of Congress.  Even
+these numbers are dwarfed by the hundreds of thousands of newspaper
+articles and blog posts written each day about the events happening in
+the world.  Unfortunately, this flood of information obscures the very
+insights these researchers aim to discover.  Researchers trying to
+make sense of these collections are subject to the high costs of time
+spent poring over these collections in search of the few key insights.
 
  % example questions: how to find phenomena in collections of text
  % how to 
@@ -25,32 +27,26 @@ in search of the few key insights.
 % tweets -- as a result.  Information influences everything we say,
 % think, and do.
 The goal of this thesis is to describe several new statistical models
-to illustrate this -- and at the same time to provide tools for data
-consumers, practitioners, and researchers\footnote{Throughout this
-  work, I will refer to (data) consumers, practitioners, and
-  researchers.  Consumers are those who use processed results from
-  data analysis in some form but do not interact directly with the
-  data itself (for example, consumers may be directors in governments
-  or companies who make decisions based on these data).  Practitioners
-  are those who apply existing methods for data analysis, possibly
-  tweaking or combining these methods to answer specific questions
-  (such as database engineers or lab assistants). Researchers are
-  those who research entirely new methods for data analysis.  Note
-  that a social scientist may be a researcher in his or her field but
-  a practitioner in the field of data analysis.} to better
-understanding society through collections of text documents.  I will
-focus on three high-level research questions that dovetail off one
-another to illustrate the flexibility and interpretability of latent
-variable models in large-scale settings.
+that are now available for data practitioners and the consumers of that
+data\footnote{By a (data) practitioner, I am referring to anyone who
+  applies existing methods for data analysis, possibly tweaking or
+  combining these methods to answer specific questions (such as
+  database engineers or lab assistants). This contrasts with
+  fundamental researchers, who research entirely new methods or tools
+  for data analysis.  A social scientist may be a researcher
+  in his or her field but a practitioner in the field of data
+  analysis.} to better understanding society through collections of
+text documents.  I will focus on three high-level research questions
+that dovetail off one another to illustrate the flexibility and
+interpretability of latent variable models in large-scale settings.
 
-An implicit premise of this thesis is that these complex but
-interpretable patterns are ubiquitous in collections of text
-documents, and that these patterns be discovered automatically to
-describe decisions and behavior of actors in these collections.  I will
-ground this discussion with the development of several specific models
-but take the position throughout this thesis that these methods draw
-from a suite of common tools which can be used again and again to
-construct models to address alternative questions.
+An implicit premise of this thesis is that patterns are ubiquitous in
+collections of text documents, and that these patterns can be
+discovered automatically to describe decisions and behavior of actors
+in these collections.  I will ground this discussion with the
+development of several specific statistical models, but I will stress
+throughout this thesis that these methods frequently draw from a suite
+of common tools which can be used again and again to construct models.
 
 \section*{The deluge of information and some statistical tools}
 
@@ -66,12 +62,11 @@ and understanding it.  Fortunately for scholars, these data follow
 recurring patterns which make statistical modeling possible. In this
 thesis, I will focus on three specific patterns:
 
-\paragraph{Text data.} This thesis will focus largely on text data.
-Text data is the low-hanging fruit of most social science research
-questions.  It is ubiquitous because it can---indeed, it must---be
-easily created, digitized, and stored. One of the central themes of
-this thesis is that text data serve as an observation of the story
-underlying decisions and politics.
+\paragraph{Text data.} Text data is the low-hanging fruit of most
+social science research questions.  It is ubiquitous because it
+can---indeed, it must---be easily created, digitized, and stored. Text
+data serve as an observation which we can use to better understand the
+story underlying decisions and politics.
 
 Just as text data is invaluable to researchers, the rate of growth of
 these text collections is staggering.  A single newspaper like the
@@ -79,18 +74,19 @@ these text collections is staggering.  A single newspaper like the
 decade.  Of the National Archive's collection, billions of its
 documents are text
 \citep{national_archives:2012a,national_archives:2012b}.  The rate of
-growth for the World Wide Web is even more staggering.  As far back as
-2008, the Internet was already growing at a rate of several billion
-webpages per \emph{day} \citep{googleblog:2008}.
+growth of sources like the World Wide Web is even more tremendous.  As
+far back as 2008, the Internet was already growing at a rate of
+several billion webpages per \emph{day} \citep{googleblog:2008}.
 
 \paragraph{Time-series collections.}  Many datasets comprise
 time-series observations.  Timestamps are one of the simplest types of
 metadata to attach to digital collections because they are described
 by a single scalar and because they are inexpensive and widely
-available.  Despite this, the dimension of time provides rich insight
-and a useful historical perspective into collections of documents.  It
-is especially interesting to researchers because it is helpful in
-framing questions about causation and prediction.
+available.  In spite of its simplicity, the addition of a time
+variable to statistical models can provide rich insight and a useful
+historical perspective into collections of documents.  It is
+especially interesting to researchers because it is helpful in framing
+questions about causation, prediction, and influence.
 
 \paragraph{Dyadic observations.}  Dyadic relationships are one of the
 simplest ways to represent more complicated phenomena in a collection
@@ -107,37 +103,39 @@ researchers want broad coverage over the available sources, they
 cannot spend long looking over any single document.  For example, a
 graduate student studying patterns governing the relationships between
 pairs of countries, based on mentions of pairs of countries in the
-\emph{New York Times}, would need to spend every day of an entire
-year, twenty-four hours per day, to code the 300,200 interactions per
-pair of countries (at two minutes per article).  A
-\emph{computational} treatment is therefore necessary if researchers
-intend to handle large collections of data.
+last twenty years of the \emph{New York Times}, would need to spend
+every day of an entire year, twenty-four hours per day, to code the
+300,200 interactions per pair of countries (at two minutes per
+article).  A \emph{computational} treatment is therefore necessary if
+researchers intend to handle large collections of data.
 
-In each of the models we will consider, the basic unit of analysis
-lives in an extremely high-dimensional space.  For example, treating
-text documents as bags of words still leaves the researcher with
-thousands of dimensions, and lawmakers described by their votes are
-still described by these thousands of dimensions.  In addition to
-text, another recurring theme in this thesis is that these
-high-dimensional observations can be described by much
-lower-dimensional summaries without losing much of the relevant
-information.
+% In each of the models we will consider, the basic unit of analysis
+% lives in an extremely high-dimensional space.  For example, treating
+% text documents as bags of words still leaves the researcher with
+% thousands of dimensions, and lawmakers described by their votes are
+% still described by these thousands of dimensions.  In addition to
+% text, another recurring theme in this thesis is that these
+% high-dimensional observations can be described by much
+% lower-dimensional summaries without losing much of the relevant
+% information.
 
-Computational approaches lend themselves to \emph{statistical}
-representations of these data because they provide an explicit way to
-formalize our assumptions.  Statistical representations are also
-convenient because computers can be programmed to speak in this
-language. Specifically, I will use probabilistic models to encode
-these statistical assumptions.  I will frequently use the paradigm of
+Statistical representations of these data will be useful because they
+provide an explicit way to formalize our assumptions.  We are
+fortunate that computers can be programmed to speak in this language,
+because they are the only means by which we can achieve broad
+understanding of large collections of text documents.
+
+In this thesis, I will use probabilistic models to encode these
+statistical assumptions.  I will frequently use the paradigm of
 graphical models \citep{pearl:1985} to encode and describe our
 assumptions.  Because these statistical methods provide directed
 summaries, they can serve as optical lenses for researchers to analyze
-entire collections of documents.  I illustrate this with a cartoon in
+entire collections of documents, which I illustrate as a cartoon in
 \myfig{person_data_lens}.  Statistical methods enable researchers to
 describe arbitrarily complex transformations of data with arbitrarily
-complex lenses, but I will demonstrate that a wide array of models can
-be created by nesting and re-using modules across different
-applications.
+complex lenses.  Because of the simplicity of each of these lenses, I
+we will find that a wide array of models can be created by nesting and
+re-using modules across different applications.
 
 \begin{figure}
   \center
@@ -167,44 +165,44 @@ her own latent-variable model for similar applications.
 
 To this end, I will provide a lower level of detail about
 latent-variable models in the early chapters of this thesis than
-normally expected in a doctoral thesis when it may help the casual
-reader to understand the material.  I provide preliminary material in
-Chapter 2, outlining the statistical ``primitives'' that I will use as
-building blocks in later chapters.  These primitives include the basic
-statistical tools for working with text data, time-series data, and
-dyadic data.  This chapter also provides a high-level introduction to
-the tools we will use for Bayesian inference.
+normally expected in a doctoral thesis when it may help a reader
+unfamiliar with this subject to understand the material.  I provide
+preliminary material in Chapter 2, outlining the statistical
+``primitives'' that I will use as building blocks in later chapters:
+tools for working with text data, time-series data, and dyadic data.
+This chapter also provides a high-level introduction to the algorithms
+we will use for Bayesian inference.
 
-\paragraph{Identifying influential documents.} In \mychap{influence} I
-introduce a model for discovering important and influential documents
-in a corpus which has grown over time.  In collections of legal
-opinions, one of the most common questions posed by
-jurists\footnote{In political science, the word ``jurist'' often
-  refers to a judge, as opposed to a member of the public who votes on
-  the outcome of a trial.} is, ``which legal opinions have set the
-most precedent?''  This question plays a central role among
-researchers and archivists in fields outside of law and even motivated
-the algorithm behind Larry Page and Sergey Brin's PageRank algorithm,
-which recursively measures the influence of Webpages, as measured by
-the hyperlinks between Webpages
-\citep{garfield:1992,brin:1998,garfield:2002}.  In many real-world
-scenarios, however, explicit citations or hyperlinks are missing, and
-researchers only see the most basic metadata: documents' timestamps.
-I will validate this model on a set of several datasets, including
-several collections of academic articles and a set of opinions written
-by judges in the New York Appellate Courts system.
+\paragraph{Identifying influential documents.} After introducing the
+foundations of this thesis, I begin with a question about the broad
+strokes painted by a document collection. In \mychap{influence}, I
+look at a common challenge in analyzing text collections: that of
+finding the most important and influential documents in a corpus which
+has grown over time.  This is a challenge in understanding collections
+of academic articles, legal opinions, email archives, and many other
+collections. This question even motivated the algorithm behind Larry
+Page and Sergey Brin's PageRank algorithm, which recursively measures
+the influence of Webpages, as measured by the hyperlinks between
+Webpages \citep{garfield:1992,brin:1998,garfield:2002}.  Unlike Web
+pages and academic articles, of course, exlicit citations or
+hyperlinks are unavailable, and researchers only see the most basic
+metadata: documents' timestamps.  To this end, I will introduce a
+model for discovering the most influential documents in such a
+collection. I will validate this model on a set of several datasets,
+including several collections of academic articles and a set of
+opinions written by judges in the New York Appellate Courts system.
 
 \paragraph{Inferring history from a collection of newspaper articles.}
-In \mychap{foreign_relations} I outline a model to address the question
-posed above, to better understand the relationships between countries
-over time.  I will fit this to a collection of New York Times articles
-and demonstrate that this method discovers a more sophisticated latent
-story among documents, by developing a model of the relationships
-between countries over time.  As with the method in Chapter 3, this
-collection has only the text of these articles, which I augment with
-external information.  In this chapter I also incorporate important
-ideas from the field of dyadic spatial models, which can play a role
-in modeling various social science phenomena.
+In \mychap{foreign_relations} I will zoom in a bit to consider the
+story within a collection of documents and outline a model to better
+understand the relationships between pairs of countries over time.  I
+will fit this to a collection of \emph{New York Times} articles and
+demonstrate that this method discovers a more sophisticated latent
+story among documents than in Chapter 3.  As with the method in Chapter
+3, this collection has only the text of these articles, which I
+augment with external information.  In this chapter I also incorporate
+important ideas from the field of dyadic spatial models, which can
+play a role in modeling various social science phenomena.
 
 % I will describe a method to discover
 % which documents are influential on the development of a collection of
@@ -215,21 +213,20 @@ in modeling various social science phenomena.
 \paragraph{Inferring lawmakers' preferences.}
 
 In Chapters~\ref{chapter:predicting_votes}
-and~\ref{chapter:issue_adjustments} I will again use spatial models
-for dyadic interaction to better understand how congresspersons vote
-with bills.  I will address two important limitations of ideal point
-models (the state-of-the-art in spatial voting models) by using the
-text of bills.  One of these limitations is that ideal points cannot
-be used to predict lawmakers' votes on heldout bills.  In
-\mychap{predicting_votes}, I will introduce several models for
-predicting votes by lawmakers on previously-unseen bills.  I will
-demonstrate that we can predict lawmakers' votes with high accuracy
-given their prior voting record and the text of the bills on which
-they vote.
+and~\ref{chapter:issue_adjustments} I will continue zooming in to
+better understand how congresspersons vote with bills.  I will address
+two important limitations of ideal point models (the state-of-the-art
+in spatial voting models) by using the text of bills.  One of these
+limitations is that ideal points cannot be used to predict lawmakers'
+votes on heldout bills.  In \mychap{predicting_votes}, I will
+introduce several models for predicting votes by lawmakers on
+previously-unseen bills.  I will demonstrate that we can predict
+lawmakers' votes with high accuracy given their prior voting record
+and the text of the bills on which they vote.
 
 In \mychap{issue_adjustments} I will address a second shortcoming of
-existing models: the limitation of a one-dimensional latent space.  I
-will do this by using a topic model to identify those issues up for
+ideal point models: the limitation of a one-dimensional latent space.
+I will do this by using a topic model to identify those issues up for
 vote in an item of legislation.  I will demonstrate that legislators'
 votes can be better modeled and better understood by describing these
 lawmakers' positions on different issues.
@@ -237,7 +234,7 @@ lawmakers' positions on different issues.
 These models contrast with those in Chapters 3 and 4 in that I ignore
 documents' timestamps.  However, I will use many of the same ideas
 from these earlier chapters, including mixed-membership models of text
-and latent-space models, in which we we assume that pairs of items
+and latent-space models, in which I assume that pairs of items
 interact (in this case a lawmaker and a bill), and that text documents
 attached to those interactions can provide insight into the
 interaction.
@@ -250,3 +247,5 @@ stand-alone contribution of this thesis, making a quantitative rather
 than a substantive contribution.  I provide additional supplementary
 information for these chapters in
 Appendix~\ref{chapter:supplementary_materials}.
+
+Now let s
