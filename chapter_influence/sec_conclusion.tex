@@ -5,13 +5,14 @@
 
 Traditional bibliometrics like citations are widely used for
 understanding collections of text documents.  Much of the past work
-for identifying influential documents focuses on predicting citations
-for corpora which have citations, while the DIM is developed for
-time-series corpora without bibliometrics.  We have demonstrated
-measured consistency with citations with the model, but the
-information provided by the model transcends this: the influence score
-has anecdotally been demonstrated to provide qualitatively different
-information than citations.
+for identifying influential documents focuses on measuring or
+predicting citations for corpora which have citations.  In this
+chapter we described the DIM, which is developed for time-series
+corpora without bibliometrics.  We have demonstrated measured
+consistency with citations with the model, controlling for confounders
+like document length.  However, the information provided by the model
+transcends this: the influence score has anecdotally been demonstrated
+to provide qualitatively different information than citations.
 
 Based only on the changing statistics of the language in a corpus, we
 computed a measure of influence that is significantly related to
@@ -47,7 +48,7 @@ latent force models \citep{alvarez:2009}, or by tracking influence
 \emph{between} documents, building on the ideas of
 \cite{shaparenko:2007} or \cite{dietz:2007}. % citet
 
-I also believe that it would be useful to better understand models like
+We also believe that it would be useful to better understand models like
 the DIM in the context of traditional metrics of influence, such as
 academic citations, and other metrics of influence, such as usage
 data.  Having a better understanding of when this model and
@@ -62,21 +63,23 @@ themes and a vector describing its influence on each of those themes.
 This provides a sense of the current of ideas coursing through a
 collection of documents.
 
-A limitation of this approach is that it does not provide explicit
-detail of the underlying elements \emph{within} this story.  Short of
-post-hoc analysis of word frequencies, we do not have a sense for
-whether how individual ideas within the corpus interact.
+A limitation of this approach is that it provides too broad a view of
+a corpus: it does not provide explicit detail of the underlying story
+\emph{within} a collection.  This model describes a corpus as a
+collection of topics, and it describes documents as mixtures of themes
+and influence weights, but it does not provide any further sense of a
+story which changes over time.
 
-In the next chapter I will address describe a model to explore some of
-these shortcomings by explicitly modeling the ``story'' within a
-collection of text documents.  This approach will use some of the same
-ideas from this chapter.  Specifically, I will assume that a
-collection of text documents serve as a window into underlying
-structure within the collection of documents.  Again, I will encode
-assumptions about the collection by explicitly modeling them with
-latent random variables, linked by a time-series model.  By modeling
-the interaction of character-nations within the collection explicitly,
-and applying posterior inference, we will learn a story about them.
+In the next chapter we will discuss a model to explore some of these
+shortcomings by explicitly modeling the ``story'' within a collection
+of text documents.  This approach will use some of the same ideas from
+this chapter.  Again we will assume that a collection of text
+documents serve as a window into the events within the collection of
+historical documents, and again we will encode assumptions by
+explicitly modeling them with latent random variables, linked by a
+time-series model.  Howver, by modeling the interactions of entities
+within the collection explicitly, and applying posterior inference, we
+will learn a story about them.
 
 %\section{Acknowledgements}
 %The author would like to thank XXXX XXX, XXX XXX, and XXX XXX for

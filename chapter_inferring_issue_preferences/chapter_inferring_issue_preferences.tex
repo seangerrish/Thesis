@@ -3,7 +3,8 @@
 
 In the last chapter we introduced several models for predicting lawmakers' votes on previously-unseen bills.  One limitation of these models---and standard ideal point models in general---is that they were designed around a one-dimensional latent space: lawmakers are described by a single number, and the predictive performance of these models is bottlenecked by lawmakers for whom a single number is not sufficient.
 
-Indeed, there are some votes that traditional ideal point model in \myeq{trad_ipm} fails to capture.  For example, Ronald Paul, Republican representative from Texas, and Dennis Kucinich, Democratic representative from Ohio, are poorly modeled by ideal points because they diverge from the left-right spectrum on issues like foreign policy. Because some lawmakers deviate from their party on certain substantive issues, their positions on these issues are not captured by ideal point models.
+Indeed, there are some votes that the traditional ideal point given in
+\myeq{trad_ipm} fails to capture.  For example, Ronald Paul, Republican representative from Texas, and Dennis Kucinich, Democratic representative from Ohio, are poorly modeled by ideal points because they diverge from the left-right spectrum on issues like foreign policy. Because some lawmakers deviate from their party on certain substantive issues, their positions on these issues are not captured by ideal point models.
 
 % dmb: give examples above
 %
@@ -33,18 +34,20 @@ In this chapter we will develop the \emph{issue-adjusted ideal point model}, a l
 
 In the following sections, we develop our model and describe an
 approximate posterior inference algorithm based on variational
-methods.  We analyze six Congresses (12 years) of legislative data
-from the United States Congress.  We finally show that our model gives
-a better fit to legislative data and provides an interesting
-exploratory tool for analyzing legislative behavior.
+methods.  We will again analyze six Congresses (12 years) of
+legislative data from the United States Congress.  We finally show
+that our model gives a better fit to legislative data and provides an
+interesting exploratory tool for analyzing legislative behavior.
 
-An additional contribution of this chapter is that we will also motivate an alternative algorithm for variational inference (which we fully describe in \myapp{stochastic_variational_optimization}) that will allow practitioners to iterate more quickly with their modeling assumptions.
+An additional contribution of this chapter is that we will also
+motivate an alternative algorithm for variational inference (which we
+fully describe in \myapp{stochastic_variational_optimization}) that
+will allow practitioners to iterate more quickly with their modeling
+assumptions.
 
 \section{A model of exceptional voting patterns}
 %\pagecolor{yellow}
 \label{sec:exceptional_model}
-
-\subsection{Limitations of ideal point models.}
 
 A one-dimensional ideal point model fit to the House of
 Representatives from 2009-2010 correctly models 98\% of all lawmakers'
@@ -82,27 +85,26 @@ Their location among the other lawmakers changes with different bills.
   \label{fig:moving_ideal_points}
 \end{figure}
 
-Lawmakers do not vote randomly, however.  They vote consistently
-within individual areas of policy, such as foreign policy and
-education.  Paul consistently votes against United States involvement
-in foreign military engagements, a position that contrasts with other
-Republicans.  Democratic representatives from New York are more likely
-to hold conservative positions on financial services regulation, even
-though they vote Democratically on social issues.
+These lawmakers do not change their positions randomly.  They vote
+consistently within individual areas of policy, such as foreign policy
+and education.  Paul consistently votes against United States
+involvement in foreign military engagements, a position that contrasts
+with other Republicans.  Democratic representatives from New York are
+more likely to hold conservative positions on financial services
+regulation, even though they vote Democratically on social issues.
 
 We refer to voting behavior like this as \emph{issue voting}.  An
 \emph{issue} is any federal policy area, such as ``financial
 regulation,'' ``foreign policy,'' ``civil liberties,'' or
 ``education,'' on which lawmakers are expected to take positions.
 Lawmakers' positions on these issues will often diverge from their
-traditional left/right stances.  The model we will develop captures
-this, as illustrated in \myfig{moving_ideal_points}; for
-example, Charles Djou is more similar to Republicans on
-\emph{Taxation} (right) and more similar to Democrats on \emph{Health}
-(left), while Ronald Paul is more Republican-leaning on \emph{Health}
-and less extreme on \emph{Taxation}. The model we will introduce uses
-lawmakers' votes and the text of bills to model deviations like this,
-on a variety of issues.
+traditional left/right stances.  The model we develop in this chapter
+captures this intuition, which we illustrated in
+\myfig{moving_ideal_points}.  Charles Djou is more similar
+to Republicans on \emph{Taxation} (right) and more similar to
+Democrats on \emph{Health} (left), while Ronald Paul is more
+Republican-leaning on \emph{Health} and less extreme on
+\emph{Taxation}.
 
 % dmb: move this to later.  i think this is done.
 
@@ -129,11 +131,6 @@ on a variety of issues.
 % explicitly labeled issues. Assuming a mixture $\bm \theta_d \in [0,
 % 1]^K$ (with $\sum_{k=1}^K \theta_{d,k} = 1),$ of issues attached to
 % each document, this motivates a tentative model of the form
-
-We now describe a new model of lawmaker behavior that takes into
-account both the content of the bills and the voting patterns of the
-lawmakers.  We build on the ideal point model so that
-each lawmaker's ideal point can be adjusted for each issue.
 
 %\begin{wrapfigure}{r}{0.5\textwidth}
 \begin{figure}

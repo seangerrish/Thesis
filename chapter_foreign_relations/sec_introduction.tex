@@ -1,7 +1,7 @@
 In this chapter we will use the text of newspaper articles to infer a
 history of the relationships between different nations.  An assumption
-of our work is that the tension between two nations -- or a warm and
-robust relationship between them -- is reflected by the language that
+of our work is that the tension between two nations---or a warm and
+robust relationship between them---is reflected by the language that
 is used to discuss them.  In developing this assumption, we will
 discuss two models designed to infer the relationships between pairs
 of countries.
@@ -9,8 +9,9 @@ of countries.
 \subsection*{Text and latent spaces}
 The basic unit of analysis in this chapter will be paragraphs of text
 from newspaper articles which discuss pairs of countries.  We choose
-paragraphs because they are small enough to have a single concrete
-idea, while being large enough to describe interesting relationships.
+paragraphs because they are small enough to have just one or two
+concrete ideas but large enough to describe interesting
+relationships.
 
 We will use some of the same ideas presented in the last chapter to
 model the text of these paragraphs, but we will use concepts from
@@ -50,17 +51,17 @@ In the next two sections we will develop several computational models that
 link the text of a news source to the relationships between countries.
 
 We begin with a model which infers these relationships by using using
-two sources of labels about the sentiment between pairs of countries:
-expert labels and labels assigned by lay paid ``workers''.  To design
-this model, we will develop a set of spatio-temporal assumptions that
-allow us to describe the sentiment between countries by inspecting
-their relative positions in this latent space (and, inversely, to
-interpret their positions based on observed sentiment).  We will
-demonstrate that modeling countries with this model allows us to
-create a history of foreign relations over time.  Importantly, we will
-demonstrate that the sentiment inferred from two very different
-sources of sentiment labels leads to strikingly similar measures of inter-state
-sentiment.
+two sources of labels about the the relationship, or sentiment,
+between pairs of countries: expert labels and labels assigned by lay
+paid ``workers''.  To design this model, we will develop a set of
+spatio-temporal assumptions that allow us to describe the sentiment
+between countries by inspecting their relative positions in this
+latent space (and, inversely, to interpret their positions based on
+observed sentiment).  We will demonstrate that modeling countries in
+this way allows us to create a history of foreign relations over time.
+Importantly, we will demonstrate that the sentiment inferred from two
+very different sources of sentiment labels leads to strikingly similar
+measures of inter-state sentiment.
 
 After developing this supervised model, we invert this question and
 ask: what sentiment is implied by the text alone of news articles?  To

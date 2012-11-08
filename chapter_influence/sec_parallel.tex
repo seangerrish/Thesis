@@ -67,7 +67,7 @@ that we cannot simply estimate the optimal influence of documents
 independently in $W$ different workers because it is not guaranteed to
 improve the variational objective.  In a worst-case scenario, updating
 $\ellv_t$ in parallel for all times $t=1, \ldots, T$ might result in
-over-estimating $\ellv_t$, thus over-explaining influence.
+over-estimating $\ellv_t$, over-explaining influence.
 
 We address this with \textbf{parallel update dampening}.  In parallel
 update dampening, we use the fact that documents have been partitioned into
@@ -105,6 +105,6 @@ or, equivalently,
  \ellv^{\mbox{\tiny new}}_{d,k} \gets \ellv^{\mbox{\tiny old}}_{d,k} + \frac{1}{W} (\ellv^{\mbox{\tiny worker}}_{d,k} - \ellv^{\mbox{\tiny old}}_{d,k}).
 \]
 
-We note again that we can only guarantee that parallel update
+We stress again that we can only guarantee that parallel update
 dampening increases the variational objective because the objective is
 concave in the parameter $\ellv$.

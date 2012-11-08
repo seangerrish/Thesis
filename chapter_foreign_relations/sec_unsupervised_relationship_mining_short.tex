@@ -11,11 +11,11 @@ The preceding approach has limitations, of course.  First, sentiment
 labels measure only one kind of interaction: whether countries are at
 war or peace.  In reality, relationships between countries may be
 characterized in many ways, some of which are independent of the $[
-war, peace ]$ dimension.  For example, the relationship between coutries
-may be characterized by trade in goods, or by the exchange of culture
-and society.  Another limitation to a supervised sentiment model is
-that labels of the sentiment between countries may be unavailable or
-limited, or (as we saw before), the labels may be noisy.
+war, peace ]$ dimension.  For example, the relationship between
+coutries may be characterized by trade in goods, or by the exchange of
+culture and ideas.  Another limitation to a supervised sentiment model
+is that labels of the sentiment between countries may be unavailable
+or limited, or (as we saw before), the labels may be noisy.
 
 % in this section, we will describe a model which will allow us to discover
 % unsupervised relationships
@@ -42,7 +42,7 @@ By fitting the unsupervised model, we learn which words are
 most-likely in each of these topics.  With these assumptions, we
 inferred a set of topics using the same NYT corpus for the supervised
 sentiment model.  \mytab{fr_unsupervised_topics} lists the most-likely
-words from sample of topics fit to these twenty years of articles.
+words from a sample of topics fit to these twenty years of articles.
 
 \paragraph{State-specific topics $\beta_{C,\cdot}$.}  The
 state-specific topics describe words used when one of these countries

@@ -11,55 +11,68 @@ fitting a model with labels \emph{defined} to represent the
 information that we seek: whether there is a positive or negative
 relationship between pairs of countries.
 
-In outlining this model, we will discuss the two important assumptions
-made in this paper: first, that there is a relationship between text
-and the sentiment between pairs of countries; and second, that there
-is a way to model the sentiment between countries by modeling
-countries as vectors in a latent space.  After this we adjust the
-model to extend it to the time-series domain.
+In outlining this model, we will provide more detail into the two
+assumptions made in this chapter: first, that there is a relationship
+between text and the sentiment between pairs of countries; and second,
+that we can model the sentiment between countries by representing
+these countries as vectors in a latent space.  After describing these
+assumptions we adjust the model to extend it to the time-series
+domain.
 
 \subsection{Inferring sentiment from text}
-\label{section:text_regression}
-The first key assumption that we make in this chapter is that when a
-news source discusses the relationship between these nations, the
-author's choice of words $\bm w_d \in \mathbb{N^+}^V$ reflects the
-relationship between the countries.  This then means that we can
-represent this relationship with a latent variable model.  Consider,
-for example, the following passages (emphasis added by me):
-\begin{itemize}
-\item \begin{quote} ``In Government and opposition circles
-      questions have swirled about how a \textbf{Palestinian} truck laden with
-      explosives could have sailed past \textbf{Israeli} soldiers stationed at
-      Gaza Strip checkpoints.  Some news reports said the vehicle had
-      the required Israeli permits.'' \emph{Failed Truck-Bomb Plot Chills
-      Israel-P.L.O. Autonomy Talks} \citep{nyt_haberman:1995}
-  \end{quote}
-\item \begin{quote} ``The leaders of \textbf{Egypt} and
-    \textbf{Jordan} too have invested their prestige in the peace plan
-    and would rejoice in private to see Islamic militants crushed.''
-    \emph{Middle East Talks are Effort to Aid Peres and Arafat}
-    \citep{nyt_jehl:1996}
-    \end{quote}
-\end{itemize}
-In the first passage, Israel and Palestine have a tense relationship,
-as suggested by the author's choice of the words ``explosives'',
-``questions'', and even ``required''.  In the second passage, the
-relationship---while not fabulous---is certainly more
-positive, as suggested by words such as ``invested'', ``peace'', and
-``rejoice''.
+\label{sec:text_regression}
+The first assumption that we make in this chapter is that the
+relationship between pairs of countries can be described by (at least) a
+one-dimensional sentiment $s \in \mathbb{R}$, and that when a news
+source discusses these countries, the author's choice of words $\bm
+w_d$ reflects the relationship between them.
+Consider, for example, the relationship between Israel and Palestine
+in the following passage (emphasis added by me):
+\begin{quote} ``In Government and opposition circles
+  questions have swirled about how a \textbf{Palestinian} truck laden with
+  explosives could have sailed past \textbf{Israeli} soldiers stationed at
+  Gaza Strip checkpoints.  Some news reports said the vehicle had
+  the required Israeli permits.'' \emph{Failed Truck-Bomb Plot Chills
+    Israel-P.L.O. Autonomy Talks} \citep{nyt_haberman:1995}
+\end{quote}
+Israel and Palestine have a tense relationship, as suggested by the
+author's choice of the words ``explosives'', ``questions'', and even
+``required''.  This relationship is negative, so let's say that the
+sentiment between them is $-3$. Now consider the
+following passage about Egypt and Jordan:
+\begin{quote} ``The leaders of \textbf{Egypt} and
+  \textbf{Jordan} too have invested their prestige in the peace plan
+  and would rejoice in private to see Islamic militants crushed.''
+  \emph{Middle East Talks are Effort to Aid Peres and Arafat}
+  \citep{nyt_jehl:1996}
+\end{quote}
+The relationship between Egypt and Jordan---while not fabulous---is
+certainly more positive, as suggested by words such as ``invested'',
+``peace'', and ``rejoice''.  Let's say that the sentiment between
+Egypt and Jordan is 0.5.
 
-\paragraph{Paragraphs of text as a unit of analysis.} We will use
-paragraphs of text which mention exactly two countries as the basic
-unit of analysis in this chapter.\footnote{We provide more detail
-  about tagging countries in the experiments section.}  Paragraphs of
-text (like the two above) are small enough to contain simple ideas yet
-large enough to discuss complete ideas---appropriate also for
-discussing the relationship between pairs of countries.
+The numbers -3 and 0.5 are of course arbitrary, but they convey some
+sense of the relationship, or ``sentiment'', between a pair of
+countries.  Our intuition is that the words selected by authors when
+describing pairs of countries often provide a direct indication of the
+sentiment between these countries, and that we can estimate this
+sentiment for a new snippet of text (up to a constant) with the right
+model.
 
-We will model the relationship between text and sentiment with a
-relatively simple model called text regression \citep{kogan:2009}.  In
-text regression, we model sentiment using the wordcounts $\bm w_d$ of
-each article:
+To do this, we will use paragraphs of text which mention a pair of
+countries as the basic unit of analysis in this chapter.  We will
+assign labels to enough of these paragraphs to fit a text-based
+model, and then we will use a \footnote{We provide more detail about tagging countries in the
+  experiments section.}  Paragraphs of text (like the two above) are
+small enough to contain simple ideas yet large enough to discuss
+complete ideas---appropriate also for discussing the relationship
+between pairs of countries.
+
+To relate an author's text to the sentiment between countries, we use
+a model called text regression \citep{kogan:2009}.  In text
+regression, we model the sentiment $s_d$in document $d$ using a linear
+combination of the wordcounts $\bm w_d \in \mathbb{N^+}^V$ of each
+article:
 \begin{align}
   s_d | \bm w_d, \bm \beta \sim \mathcal{N}( \bm w_d^T \bm \beta,
   \sigma_W^2 ) \nonumber \\
@@ -67,39 +80,33 @@ each article:
   \label{eq:sentiment_text}
 \end{align}
 For the remainder of this section, we will assume that $\bm \beta$ is
-observed, and therefore that the distribution of $s_d$ is a Gaussian with mean
+observed, so that the $s_d$ is normally distributed with mean
 $\bm w_d^T \bm \beta$.  We describe how to fit $\bm \beta$ with
 \myeq{sentiment_text} and human labels in
 Section~\ref{section:mturk}.
 
 \subsection{Modeling interations with a latent space}
 \label{sec:fr_latent_space_model}
-The second important assumption we make in this chapter is that each
+The second major assumption we make in this chapter is that each
 country can be described by a vector in some latent space, and that
 the relationship between two countries is determined (up to
-stochasticity) by the relationship between these countries' positions
-in this latent space (this assumption is variously known as a latent
-space assumption or multidimensional scaling).
-
-We formalize the latent space assumption by letting each country $c$
-take a position $\bm \bar x_{c,0} \in \mathbb{R}^p$ in a space of
-latent political sentiment. As noted above, the sentiment of the
-relationship between these two countries $c_1, c_2$ is described by
-the scalar $s_{c_1,c_2} \in \mathbb{R}$.  During an interaction
-between countries $c_1$ and $c_2$ which is described by document $d$,
-we will assume that this interaction has sentiment $s_d$ between them.
-This sentiment is determined by the interaction of their positions:
+stochasticity) by the relationship between these countries' vectors.
+We formalize this assumption by letting each country $c$ take a
+position $\bm \bar x_{c,0} \in \mathbb{R}^p$. As above, the sentiment
+of the relationship between these two countries $c_1, c_2$ is
+described by the scalar $s_{c_1,c_2} \in \mathbb{R}$.  This sentiment
+is determined by the interaction of their positions:
 \begin{align}
   \bm x_{c_1,d} \sim \mathcal{N}(\bm \bar x_{c_1, 0}, \sigma_D^2) \nonumber \\
   \bm x_{c_2,d} \sim \mathcal{N}(\bm \bar x_{c_2, 0}, \sigma_D^2) \nonumber \\
   s_d := \mathcal{F}(\bm x_{c_1,d}, \bm x_{c_2,d}), \label{eq:sentiment_space}
 \end{align}
-for some suitable function $\mathcal{F}: \mathbb{R}^p \times \mathbb{R}^p
-\rightarrow \mathbb{R}$ (see \mytab{fr_link_functions} for examples of
-$\mathcal{F}$).  We have also introduced the auxiliary random
-variables $x_{c_1}$ and $x_{c_2}$, which can be interpreted as
-per-interaction positions.  We include them for algebraic convenience
-which will be evident later.
+for some suitable function $\mathcal{F}: \mathbb{R}^p \times
+\mathbb{R}^p \rightarrow \mathbb{R}$ (see \mytab{fr_link_functions}
+for examples of $\mathcal{F}$).  We have also introduced the auxiliary
+random variables $x_{c_1}$ and $x_{c_2}$, which can be interpreted as
+per-interaction positions.  We include them for the algebraic
+convenience noted later in this section.
 
 \begin{figure}
   \center
@@ -138,10 +145,10 @@ which will be evident later.
 If $\mathcal{F}$ is continuous and $c_1$ and $c_2$ are similar (as
 measured by the distance between $\bm \bar x_{c_1}$ and $\bm \bar
 x_{c_2}$), then $c_1$ and $c_2$ will interact with other countries in
-similar ways.  Most importantly, by selecting $\mathcal{F}$
-carefully, we can ensure that $\mathcal{F}(x_{c_1}, x_{c_2}) \ll 0$
-indicates a poor relationship between $c_1$ and $c_2$, while
-$\mathcal{F} \gg 0$ indicates a positive relationship.
+similar ways.  Further, by selecting $\mathcal{F}$ carefully, we can
+ensure that $\mathcal{F}(x_{c_1}, x_{c_2}) \ll 0$ indicates a poor
+relationship between $c_1$ and $c_2$, while $\mathcal{F} \gg 0$
+indicates a positive relationship.
 
 A spatial a model provides us with two benefits. First, it provides
 interpretability: we can summarize countries' relationships with other
@@ -149,13 +156,14 @@ countries succinctly with their positions $\bar x_c$.  Second, this
 allows us to draw on existing work from multidimensional scaling,
 which has been used successfully in both political science
 \citep{martin:2002,jackman:2001} and social network modeling
-\citep{hoff:2002,chang:2009}.
+\citep{hoff:2002,chang:2009}.  We will empirically validate this model
+later, but first we extend it to the time-series domain.
 
 \subsection{A temporal model of interaction}
 \label{sec:fr_time_series_model}
 \begin{figure}
   \center
-  \vspace{-55pt}
+%  \vspace{-55pt}
   \includegraphics[width=0.5\textwidth]{chapter_foreign_relations/figures/countries_gm.pdf}
   \caption{A time-series model of countries' interactions.
     Pseudo-observations of ``zero'' are added for regularization.
@@ -186,35 +194,34 @@ entirely specified by their positions at this time:
 where we interpret $s_d$ as the sentiment between $c_1$ and $c_2$ as
 reflected by article $d$ (which appeared at time $t_d$).
 
-\paragraph{Regularization.} We add two additional notes to this mode
-To complete this model, we add a standard normal prior to the ends of
-the chain (i.e., $p(\bm \bar x_{c, 0}) = p(\bm \bar x_{c,T}) =
-\mathcal{N}(0, 1)$ for all countries $c$).  We also add an additional
-regularization term which we call zero-reversion.  This term manifests
-itself as observations $p(x | \bm \bar x_{c, t}) = \mathcal{N}(0,
-\sigma_{\mbox{\tiny zero}}^2)$ for all times $t = 0, \ldots, T$ and
-all countries $c$.  The role of this regularization term is to enable .
-
-For the purposes of countries' positions in the latent-space model,
-however, we will use the symmetry of the Gaussian to model text as if
-it were conditioned on sentiment: $p(s_d | \bm w_d^T \bm \beta,
-\sigma_W^2) = p( \bm w_d^T \bm \beta | s_d, \sigma_W^2 )$.  This
-allows us to reconcile \myeq{sentiment_text} and
-\myeq{sentiment_space}, so that the distribution of sentiment
-conditioned on text and countries' positions is:
+We reconcile $p(s_d | \bm w, \bm \beta)$ (see \myeq{sentiment_text})
+with \myeq{sentiment_space} by recalling that $\bm \beta$ is treated as
+constant once it is initially fit.  This means that the joint distribution
+of countries' sentiment is
 \begin{align}
-  p(s_d | \bm w_d, \bm \beta, x_{c_1,d}, x_{c_2,d}) & \propto
-  p(\bm w_d^T \bm \beta | s_d, \sigma_W^2 )
-  p(x_{c_1,d} | \bar x_{c_1, t}, \sigma_D^2)
-  p(x_{c_2,d} | \bar x_{c_2, t}, \sigma_D^2) \nonumber \\
-  & \hspace{20pt} \mbox{ such that } s_d = \mathcal{F}(x_{c_1,t},
-  x_{c_2,t}) \nonumber \\
-  & = 
-  p(\bm w_d^T \bm \beta |
-    \mathcal{F}(x_{c_1,t}, x_{c_2,t}), \sigma_W^2 )
-  p(x_{c_1,d} | \bar x_{c_1, t}, \sigma_D^2)
-  p(x_{c_2,d} | \bar x_{c_2, t}, \sigma_D^2).
+  p(s_d, \bm x_{c_1,d}, \bm x_{c_2,d} | \bm w_d, \bm \beta, \bm \bar
+  x_{c_1, d}, \bm \bar x_{c_2, d}) & \nonumber \\
+  & \hspace{-110pt} \propto
+  p( \mathcal{F}(\bm x_{c_1,t}, \bm x_{c_2,t}) | \bm w_d, \bm \beta)
+  \times p(\bm x_{c_1,d} | \bm \bar x_{c_1, t} )
+  \times p(\bm x_{c_2,d} | \bm \bar x_{c_2, t} ) \nonumber \\
+  & \hspace{-110pt} =
+  \mathcal{N}( \mathcal{F}(\bm x_{c_1,t}, \bm x_{c_2,t}) |
+  \bm w_d^T \bm \beta, \sigma_W^2 )
+  \times \mathcal{N}(\bm x_{c_1,d} | \bm \bar x_{c_1, t}, \sigma_D^2)
+  \times \mathcal{N}(\bm x_{c_2,d} | \bm \bar x_{c_2, t}, \sigma_D^2).
 \end{align}
+
+\paragraph{Regularization and zero-reversion.} To complete this model,
+we add a standard normal prior to the ends of the chain, so that, for
+all countries $c$, $p(\bm \bar x_{c, 0}) = p(\bm \bar x_{c,T}) =
+\mathcal{N}(0, 1)$.  We also add an additional regularization term
+which we call zero-reversion.  This term manifests itself as
+observations $p(x | \bm \bar x_{c, t}) = \mathcal{N}(0,
+\sigma_{\mbox{\tiny zero}}^2)$ for all times $t = 0, \ldots, T$ and
+all countries $c$.  Zero-reversion can be motivated anecdotally by
+noting that, in the absence of views, we can assume that countries
+tend to have neutral interaction with other countries.
 
 % In addition, a UN resolution may come up for vote at any time.  States
 % cast a vote based on their current positions:
@@ -232,23 +239,22 @@ conditioned on text and countries' positions is:
 %   \label{fig:countries_by_ip}
 % \end{wrapfigure}
 
-\paragraph{A brief comment on notation.} Before proceeding to
-inference and the experimental validation of this model, we pause to
-summarize our use of notation.  In this chapter, we will use notation
-flexibly when it is convenient.  The typical unit of discussion will
-be the $d$th document occurring at time $t$.  The $d$th document
-discusses two countries, $c_1$ and $c_2$; these define a tuple $(\{
-c_1, c_2 \}, d, t)$ (where the set $\{ c_1, c_2 \} = \{ c_2, c_1 \}$).
-We will generally use $d$ to index documents, $t$ to index time, and
-$c$ to index a country.  When document $d$ is given, we may refer to
-its time as $t_d$ (which is unique) or to the two interacting
-countries as $c_{d,1},c_{d,2}$ or $c_1,c_2$.  Alternatively, we may
-refer to the documents in which a country $c$ appears as $d_{c,1},
-\ldots, d_{c,D}$.  As another example, we may describe a country's
-position $x_{(c_1,d,t)}$ variously as $x_{c_{d,1}}$, $x_{d,1}$, or even $x_c$
-if the context is clear. Finally, the sentiment between two countries
-might be variously described as $s_d$, $s_{c_1,c_2}$, $s_{d,t}$, or
-$s_{c_1,c_2,d,t}$.
+\paragraph{A brief comment on notation.} Before we describe how to fit
+this model, we pause to summarize our use of notation.  In this
+chapter, we will use notation flexibly when it is convenient.  The
+typical unit of discussion will be the $d$th document occurring at
+time $t$.  The $d$th document discusses two countries, $c_1$ and
+$c_2$; these define a tuple $(\{ c_1, c_2 \}, d, t)$ (where the set
+$\{ c_1, c_2 \} = \{ c_2, c_1 \}$).  We will generally use $d$ to
+index documents, $t$ to index time, and $c$ to index a country.  When
+document $d$ is given, we may refer to its time as $t_d$ (which is
+unique) or to the two interacting countries as $c_{d,1},c_{d,2}$ or
+$c_1,c_2$.  Alternatively, we may refer to the documents in which a
+country $c$ appears as $d_{c,1}, \ldots, d_{c,D}$.  As another
+example, we may describe a country's position $x_{(c_1,d,t)}$
+variously as $x_{c_{d,1}}$, $x_{d,1}$, or even $x_c$ if the context is
+clear. Finally, the sentiment between two countries might be variously
+described as $s_d$, $s_{c_1,c_2}$, $s_{d,t}$, or $s_{c_1,c_2,d,t}$.
 
 \subsection{Related work}
 
@@ -256,7 +262,7 @@ The field of sentiment analysis has received considerable attention in
 the last couple of decades and is used in a variety of industry
 fields, ranging from automated trading strategies to restaurant
 recommendation sites.  Models in which individual words are assigned a
-weight are common; see \cite{pang:2008} provide a review of recent
+weight are common; \cite{pang:2008} provide a review of recent
 developments in this field.  See \cite{taddy:2012} for a model which
 uses inverse regression on wordcounts for results which compare
 favorably with alternatives.
@@ -302,13 +308,12 @@ relationships between entities.
 
 \subsection{Inference}
 \label{sec:fr_inference}
-We fit the \emph{MAP} objective of this probabilistic model.  This has
-the benefit of both clean exposition and simple implementation, and it
-can be interpreted as a form of unregularized variational inference.
-We optimize the \emph{MAP} objective in this model using an
-expectation maximization (EM) algorithm, which is simplified because
-we have designed the probabilistic objective to make inference
-particularly manageable.
+We fit the \emph{MAP} objective of this probabilistic model.  By using
+a MAP estimate, we will avoid the tedious derivations from the last
+chapter.  Further, the MAP estimate can be interpreted as a form of
+unregularized variational inference.  We optimize the \emph{MAP}
+objective in this model using an expectation maximization (EM)
+algorithm.
 
 \subsubsection{An expectation maximization algorithm}
 The MAP solution to this problem corresponds to an
@@ -339,22 +344,26 @@ variable $\bm \bar x_{c,t}$ in the M step.
 % objective; making a point estimate of $\expect{\bar \bm x}$ results in
 % a degenerate entropy, leaving us with the original objective 
 
-\paragraph{M Step.} In the M step, we seek to estimate the mean
-$\expect{\bm \bar x_{c,t}} | x, \beta, s$ of each country $c$'s
-position.  Because the Markov blanket of each variable $\bm \bar
-x_{c,t}$ is specified by Gaussian distributions, we have that, at the
-optimum,
+\paragraph{M Step.} In the M step, we seek to estimate the mean $\bm
+\bar x_{c,t} | x, \beta, s$ of each country $c$'s position.  Because
+the Markov blanket of each variable $\bm \bar x_{c,t}$ is specified by
+Gaussian distributions, we have that $\underset{\bm \bar x} { \arg
+  \max }\hspace{3pt} p( \bar x | x ) = \expect{x | x}$.  More
+generally, this expectation is the optimal value of $\bm \bar x$ given
+the other variables:
 \begin{align}
-\bm \bar x | x, \beta, s = \expect{x} | x, \beta, s
-  = \underset{\bm \bar x} { \arg \max }\hspace{3pt} p(s, x, \beta, \bm \bar x),
+  \underset{\bm \bar x} { \arg \max }\hspace{3pt} p(s, x, \bm \bar x |
+  \bm \beta, \bm w),
+  = \underset{\bm \bar x} { \arg \max }\hspace{3pt} p( \bar x,  x )
+  = \underset{\bm \bar x} { \arg \max }\hspace{3pt} p( \bar x | x )
+  = \expect{\bm \bar x | x}.
 \end{align}
-which means that finding the optimal value of $\bm \bar x | s, x,
-\beta$ is equivalent to estimating this expectation of $x_t$.  We can
-estimate $\bm \bar x | s, x, \beta = \expect{x} | x, s, \beta$ using a
-modified Kalman smoother \cite{kalman:1960}.  This step differs from a
-standard Kalman smoother in that we have no observations $x | \bm \bar
-x$ on some dates and multiple observations $x | \bm \bar x$ on other
-dates.
+We can estimate $\bm \bar x | s, x, \bm \beta, \bm w = \expect{x} | x$
+using a variant of the traditional Kalman smoother
+\citep{kalman:1960}, where we treat $x$ as observations of the hidden
+state $\bm \bar x$.  This step differs from a standard Kalman smoother
+in that we have no observations on some dates and multiple
+observations on other dates.
 
 \paragraph{Kalman updates.} As with a standard Kalman smoother, the
 modified Kalman smoother requires a forward filter step and a backward
@@ -402,34 +411,30 @@ position $x_{c_{d,1}} | \bm \bar{x}_{c,d,t}, x_{c_{d,2}}, s_d, \bm
 w_d$ during interaction $d$ given its expected mean $\bm \bar
 x_{c_{d,1},t_d}$ and the text $\bm w_d$ describing this interaction,
 \emph{and} given the other country's position for this interaction.
-Assuming that this country is indexed by $c_1$ in each document, we
+Assuming that this country is indexed by $c_{d,1}$ in each document $d$, we
 find these positions by gradient ascent on each interaction:
 \begin{align}
   x_{c_{d, 1}, t} & \gets \underset{ x }
   {\arg \max}\hspace{3pt}
-  p(\bm w_d^T \bm \beta | \mathcal{F}(x, x_{c_{d,2},t}),
-  \bm \bar x_{c_{d,1},t} ) \nonumber \\
+  p(x, x_{c_{d,2},t}, \bm \bar x_{c_{d,1},t_d} | \bm w_d, \bm \beta) \nonumber \\
   & = \underset{x}
   { \arg \max }\hspace{3pt}
-  p(\bm w_d^T \bm \beta | \mathcal{F}(x, x_{c_{d,2},t}),
-  \bm \beta)
-  p(x | \bar x_{c_{d,1},t} ),
+  \mathcal{N}( \mathcal{F}(x, x_{c_{d,2},t}) | \bm w_d^T \bm \beta,
+  \sigma_W^2 )
+  \mathcal{N}( x | \bm \bar x_{c_{d,1},t_d}, \sigma_D^2 ),
 \end{align}
-where the last term is given by the distribution
-\myeq{fr_interaction_position_given_mean}.  For convenience, we
-iterate between updating $x_{\{c,\cdot\}}$ for all interactions
-involving country $c$ and updating $\bm \bar x_{c,t}$ with the M step
-for all times $t$.
+For convenience, we iterate between updating $x_{\{c,\cdot\}}$ for all
+interactions involving country $c$ and updating $\bm \bar x_{c,t}$
+with the M step for all times $t$.
 
 \subsection{Empirical studies: comparisons with ground truth}
 We now turn to an experimental analysis of this model.  Our goal in
 this analysis is to demonstrate first that the model captures
 statistically meaningful patterns in a time-series collection of
 newspaper documents and second that it can provide a meaningful view
-into countries' relationships with one another.
-
-We first describe the two label types we have used to define sentiment $s_d$
-within this model and the newspaper archive to which we fit this
+into countries' relationships with one another. We first describe the
+two distinct label types that we used to define sentiment $s_d$ for
+this model and summarize the newspaper archive to which we fit this
 model.  We then evaluate the model's ability to infer the
 relationships between countries and compare results from models
 inferred with the two different label types.
@@ -446,10 +451,10 @@ countless other world events.
 \paragraph{Data preparation.}
 We used articles from the Foreign, Business, Financial, and Magazine
 desks of the newspaper during this period. As noted in
-\mysec{text_regression}, we split this collection into paragraphs
-defined by Times editors and used the subset of paragraphs which
-discuss exactly two nations as ``documents'' $d$.  This resulted in
-257,472 paragraphs.  We then defined a vocabulary to be those words
+\mysec{text_regression}, we split this collection into paragraphs,
+which were defined by Times editors, and selected the subset of paragraphs
+which discuss exactly two nations as ``documents'' $d$.  This resulted
+in 257,472 paragraphs.  We then defined a vocabulary to be those words
 which satisfied three criteria:
 \begin{itemize}
   \item Appeared at least twenty times,
@@ -458,9 +463,9 @@ which satisfied three criteria:
 \end{itemize}
 
 This resulted in a vocabulary of 5,958 words, mentioned in 40,356
-paragraphs. We randomly selected 80\% (32,249) distinct paragraphs
-from this set as training examples and used the remaining examples to
-evaluate our model.
+paragraphs. We randomly selected 80\% of these paragraphs (32,249) as
+training examples and used the remaining examples to evaluate our
+model.
 
 \subsection{Coding sentiment}
 \label{section:sentiment_models}
@@ -469,7 +474,7 @@ We next estimated $\bm \beta$ by fitting ridge regression on a subset
 of the training examples.  We labeled training examples with
 information from both inexperienced ``workers'' and ``expert labels'',
 representing vastly different ends of the label spectrum (as we will
-see, they result in strikingly similar results).
+see, however, they result in strikingly similar predictions).
 
 \subsubsection{Novice labels: Amazon Mechanical Turk ratings}
 \label{section:mturk}
@@ -479,7 +484,7 @@ provides a \emph{requestor} (the author of this thesis) with access to
 thousands of \emph{workers} who perform simple tasks over the
 Internet.  Although the requestor can use tests to ensure that workers
 are high-quality, as well as reject the work of low-quality workers,
-these workers are typically not experts.
+these workers are very much non-experts.
 
 \begin{figure*}
   \setlength\fboxsep{0pt}
@@ -501,7 +506,7 @@ review a random subset of 3607 paragraphs like this from the original
 collection.  Before fitting the model, we manually disqualified eight
 raters (out of 85) who consistently performed poor ratings.
 
-With all rated paragraphs which were not in the test set, we fit the
+With all rated paragraphs which were in the training set, we fit the
 coefficients $\bm \beta$ of the text regression discussed in
 Section~\ref{section:model}.  This coefficient was then treated as
 constant in the joint model in Figure~\ref{fig:fa_gm} to allow us to
@@ -572,34 +577,32 @@ CoW-labeled paragraphs in \myfig{fr_example_betas} (left).
 \subsubsection{Casual vs. expert labels}
 The CoW represent a data source which is modestly related to
 Mechanical Turk ratings. In the NYT dataset, CoW ratings and
-Mechanical Turk ratings were correlated at $\sigma=0.196$.  We can
-better understand the difference between these ratings with some
-examples of paragraphs $d$ having high and low inter-country sentiment
-$s_d$:
+Mechanical Turk ratings were correlated at $\sigma=0.196$.  To
+illustrate the difference between these ratings, consider the
+following two examples:
 \begin{itemize}
-  \item AMT $= 1$, CoW $=-5$: \begin{quote} \emph{As an
+  \item AMT rating$= 1$, CoW rating$=-5$:
+\begin{quote} 
+  \emph{As an
     indication of the dangers the damage occurred in waters where
     military spokesmen said no mines had been suspected before but
     where a \textbf{Saudi} officer said today that some 22 were later
-    found. \textbf{Iraq}i mines widely deployed [sic]} (February 1991)
-    \citep{cushman:1991}
+    found. \textbf{Iraq}i mines widely deployed [sic]} (Cushman, February 1991).
+  \nocite{cushman:1991}
 \end{quote}
-  \item AMT $ = -5$, CoW $=0.1$: \begin{quote}\emph{Not since
+This example outlines a limitation in our modeling
+assumptions: a single paragraph is sometimes too small a unit of
+discussion.  Here Mechanical Turk workers likely missed
+the larger context of the article about the Gulf war (including the
+article's title, \emph{War in the Gulf: Sea Mines; Allied Ships Hunt
+  Gulf for Iraqi Mines}).
+\item AMT rating$ = -5$, CoW rating$=0.1$: \begin{quote}\emph{Not since
     the grim old days of the cold war have relations between the
     \textbf{United States} and \textbf{Russia} been quite as problematic as they
     are this weekend on the eve of president clinton's visit for
     celebrations marking the 50th anniversary of the allied victory in
-    europe in World War II.} (May 1995) \citep{apple:1995}
+    europe in World War II} (Apple, May 1995). \nocite{apple:1995}
 \end{quote}
-\end{itemize}
-
-The first of these examples outlines a limitation in our modeling
-assumptions: a single paragraph is sometimes too small a unit of
-discussion.  In this example, Mechanical Turk workers likely missed
-the larger context of the article about the Gulf war (including the
-article's title, \emph{War in the Gulf: Sea Mines; Allied Ships Hunt
-  Gulf for Iraqi Mines}).
-
 The second example represents a limitation of both data sources.  The
 two Mechanical Turk ratings of -5 were clearly too strong, as the
 countries are not at war; but AMT workers likely based their rating in
@@ -607,8 +610,9 @@ part on the reference to World War II (the instructions provided to
 MTurk workers suggest that a rating of -3 or -1 would have been more
 appropriate).  In 1995, the United States and Russia were not at war
 and had no documented territorial conflicts.  This means that this
-sentiment was not reflected in the CoW labels -- which defaulted to
-0.1.
+sentiment was not reflected in the CoW labels -- so their sentiment
+defaulted to 0.1.
+\end{itemize}
 
 \label{section:experiments}
 

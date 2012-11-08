@@ -150,7 +150,8 @@ re-using modules across different applications.
     models serve as lenses which can be nested, adjusted, and
     custom-designed to glean latent structure from large or complex
     datasets.  Our statistical assumptions define the shape and
-    optical characteristics of these lenses.}
+    optical characteristics of these lenses, and fortunately many of
+    these lenses can be re-used.}
   \label{fig:person_data_lens}
 \end{figure}
 
@@ -213,16 +214,17 @@ play a role in modeling various social science phenomena.
 \paragraph{Inferring lawmakers' preferences.}
 
 In Chapters~\ref{chapter:predicting_votes}
-and~\ref{chapter:issue_adjustments} I will continue zooming in to
-better understand how congresspersons vote with bills.  I will address
-two important limitations of ideal point models (the state-of-the-art
-in spatial voting models) by using the text of bills.  One of these
-limitations is that ideal points cannot be used to predict lawmakers'
-votes on heldout bills.  In \mychap{predicting_votes}, I will
-introduce several models for predicting votes by lawmakers on
-previously-unseen bills.  I will demonstrate that we can predict
-lawmakers' votes with high accuracy given their prior voting record
-and the text of the bills on which they vote.
+and~\ref{chapter:issue_adjustments} I will take an even closer look at
+how documents to better understand how congresspersons vote on
+bills.  I will address two important limitations of ideal point models
+(the state-of-the-art in spatial voting models) by using the text of
+bills.  One of these limitations is that ideal points cannot be used
+to predict lawmakers' votes on heldout bills.  In
+\mychap{predicting_votes}, I will introduce several models for
+predicting votes by lawmakers on previously-unseen bills.  I will
+demonstrate that we can predict lawmakers' votes with high accuracy
+given their prior voting record and the text of the bills on which
+they vote.
 
 In \mychap{issue_adjustments} I will address a second shortcoming of
 ideal point models: the limitation of a one-dimensional latent space.
@@ -247,5 +249,3 @@ stand-alone contribution of this thesis, making a quantitative rather
 than a substantive contribution.  I provide additional supplementary
 information for these chapters in
 Appendix~\ref{chapter:supplementary_materials}.
-
-Now let s

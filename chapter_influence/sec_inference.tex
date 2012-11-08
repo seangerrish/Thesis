@@ -8,6 +8,13 @@ As for simpler topic models, this posterior is intractable to compute
 exactly. We therefore employ variational methods---introduced in
 Chapter 2---to fit this posterior.
 
+Before proceeding further, we note that this section is particularly
+dense, in part because variational methods require laborious algebra.
+We will use variational methods again in Chapter 5, but we introduce a
+method in \myapp{stochastic_variational_optimization} to
+mitigate some of the pain of variational inference.  We we apply this
+in Chapter 6.
+
 To apply variational methods, we begin by specifying a variational
 distribution for the DIM posterior.  First, the word assignments $z_n$
 and topic proportions $\theta_d$ are governed by multinomial
@@ -87,7 +94,7 @@ This bound is optimized by variational EM, with an update schedule similar to th
   \end{enumerate}    
 where the variational parameters are optimized sequentially in
 blocks.  These updates are repeated until the relative increase in
-the lower bound is below a threshold (we specify this in the
+the lower bound is below a threshold (which we specify in the
 experiments section).
 
 \paragraph{Topic trajectories.}
