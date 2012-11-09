@@ -67,20 +67,20 @@ thesis focuses on those steps which are colored blue):
 \item \textcolor{blue}{\textbf{Modeling assumptions.}} Once we have
   established a set of questions and available data, we define a set
   of assumptions that will allow us to capture statistics of interest.
-  When we analyze lawmakers' issue preferences, for example, we will
-  make assumptions about how lawmakers feel about issues and how they
-  interact with bills.  We will encode these assumptions by specifying
-  them with random variables.
+  % When we analyze lawmakers' issue preferences, for example, we will
+  % make assumptions about how lawmakers feel about issues and how they
+  % interact with bills.  We will encode these assumptions by specifying
+  % them with random variables.
 
   This step arguably allows the practitioner wide latitude in defining
   variables of interest.  In following chapters, we will spend a lot
   of time discussing modeling assumptions, and they compose one of the
   biggest contributions of this work.
 
-  Just as the \textbf{Data} step is limited by the questions we are
-  asking, the, our decisions in the \textbf{Model assumptions} step
-  are informed by limitations in the tools available for performing
-  inference and the ease of subsequent data analysis.
+  % Just as the \textbf{Data} step is limited by the questions we are
+  % asking, the, our decisions in the \textbf{Model assumptions} step
+  % are informed by limitations in the tools available for performing
+  % inference and the ease of subsequent data analysis.
 
   \item \textcolor{blue}{\textbf{Model implementation.}} In this stage, the model is
   defined, and the practitioner must encode these modeling assumptions
@@ -96,47 +96,49 @@ thesis focuses on those steps which are colored blue):
     modeling assumptions are adjusted, the model is refit, and the
     model is re-evaluated.
 
-    Model criticism can take many forms, including prior and posterior
-    checks \citep{box:1980,gelman:1996} and measures of the model's
-    ability to predict held-out observations. We will primarily focus
-    on evaluating models based on external measures, although we will
-    also include internal metrics such as the predictive
-    distribution. When appropriate, we will also incorporate standard
-    metrics for topic model evaluation.  While model criticism has
-    happened during the process of research, we will spend time at the
-    end of each chapter describing ways in which a model could be
-    improved. \nocite{wallach:2009}
+    % Model criticism can take many forms, including prior and posterior
+    % checks \citep{box:1980,gelman:1996} and measures of the model's
+    % ability to predict held-out observations. We will primarily focus
+    % on evaluating models based on external measures, although we will
+    % also include internal metrics such as the predictive
+    % distribution. When appropriate, we will also incorporate standard
+    % metrics for topic model evaluation.  While model criticism has
+    % happened during the process of research, we will spend time at the
+    % end of each chapter describing ways in which a model could be
+    % improved. \nocite{wallach:2009}
   
   \item \textbf{Conclusions.} Finally, the practitioner may draw
     conclusions from the model.  In our case, this leads to two
-    applications: \emph{exploration} and \emph{prediction}.  Models
-    built for exploration can be used to answer potential \emph{future}
-    questions about the data with the guidance of a human (``Which
-    lawmakers are most right-wing on foreign policy?  How does Ron
-    Paul feel about Taxation?'').  Models
-    build for prediction can be used to draw specific inferences about
-    unseen or future information (``How will Ron Paul vote on the
-    pending taxation bill?'').
+    applications: \emph{exploration} and \emph{prediction}.  
 
-    It is worth pointing out the other types of conclusions that one
-    may draw in this stage, but which we will not discuss. Some
-    researchers may define their models with very specific questions
-    in mind (``Has Ronald Paul sided more with Democrats than
-    Republicans on wartime spending since the 2003 Iraq invasion?'').
-    Others may draw causal conclusions (``The Iraq War caused Ronald
-    Paul to favor wartime spending less''). These are interesting
-    questions with fascinating solutions, but they require domain
-    knowledge which we will not assume.
+    % Models
+    % built for exploration can be used to answer potential \emph{future}
+    % questions about the data with the guidance of a human (``Which
+    % lawmakers are most right-wing on foreign policy?  How does Ron
+    % Paul feel about Taxation?'').  Models
+    % build for prediction can be used to draw specific inferences about
+    % unseen or future information (``How will Ron Paul vote on the
+    % pending taxation bill?'').
 
-    Finally, it is worth noting that exploratory analysis is a large
-    field of study.  We will focus on modeling assumptions and
-    immediate corollaries that we can draw from the data.  For
-    completeness, we note that many researchers create tools to
-    display information meaningfully to---and elicit interaction
-    with---users.  Well-known sources for display of this information
-    include \cite{tufte:2001} and \cite{wilkinson:2005}, while
-    visualization tools for models like those in this work have been
-    developed by \cite{chaney:2012}.
+    % It is worth pointing out the other types of conclusions that one
+    % may draw in this stage, but which we will not discuss. Some
+    % researchers may define their models with very specific questions
+    % in mind (``Has Ronald Paul sided more with Democrats than
+    % Republicans on wartime spending since the 2003 Iraq invasion?'').
+    % Others may draw causal conclusions (``The Iraq War caused Ronald
+    % Paul to favor wartime spending less''). These are interesting
+    % questions with fascinating solutions, but they require domain
+    % knowledge which we will not assume.
+
+    % Finally, it is worth noting that exploratory analysis is a large
+    % field of study.  We will focus on modeling assumptions and
+    % immediate corollaries that we can draw from the data.  For
+    % completeness, we note that many researchers create tools to
+    % display information meaningfully to---and elicit interaction
+    % with---users.  Well-known sources for display of this information
+    % include \cite{tufte:2001} and \cite{wilkinson:2005}, while
+    % visualization tools for models like those in this work have been
+    % developed by \cite{chaney:2012}.
 
 \end{enumerate}
 
@@ -234,15 +236,15 @@ variables are shaded and hidden random variables are unshaded.
   \label{fig:bagofwords_lda_gm}
 \end{figure}
 
-One of the most useful assumptions we can make about a probability
-distribution is conditional independence between groups of random
-variables.  Given random variables $Z_1, Z_2$, and $Z_3$, we say that
-$Z_1$ is conditionally independent of $Z_2$ given $Z_3$ if $p(Z_1, Z_2
-| Z_3) = p(Z_1 | Z_3) p(Z_2 | Z_3)$ \citep{bishop:2006}.  Conditional
+We will sometimes point out conditional independence between groups of
+random variables.  Given random variables $Z_1, Z_2$, and $Z_3$, we
+say that $Z_1$ is conditionally independent of $Z_2$ given $Z_3$ if
+$p(Z_1, Z_2 | Z_3) = p(Z_1 | Z_3) p(Z_2 | Z_3)$.  Conditional
 independence statements about distributions can often be inferred from
-these distributions' factorizations \citep{bishop:2006} and become
-important when one implements a probabilistic model or makes
-predictions with one.
+these distributions' factorizations and become important when one
+implements a probabilistic model or makes predictions with
+one. Conditional independence will permeate much of what we discuss in
+this thesis.
 
 Before proceeding further, it is worth noting the benefits in using
 latent-variable models.  Several of the most compelling motivations are:
@@ -263,6 +265,9 @@ latent-variable models.  Several of the most compelling motivations are:
   there are many widely supported packages for fitting these
   models.  Practitioners no longer need to be experts in
   statistics to correctly apply many of these tools.
+\item Implementation convenience.  Latent-variable models provide
+  explicit objective functions.  Once a latent-variable model is
+  selected, implementing and fitting it is often much simpler.
 \end{enumerate}
 
   The risk with applying latent-variable models is that the

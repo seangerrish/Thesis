@@ -8,13 +8,13 @@
 %     - Culture and society
 
 The preceding approach has limitations, of course.  First, sentiment
-labels measure only one kind of interaction: whether countries are at
-war or peace.  In reality, relationships between countries may be
+labels measure only one kind of interaction: whether nations are at
+war or peace.  In reality, relationships between nations may be
 characterized in many ways, some of which are independent of the $[
 war, peace ]$ dimension.  For example, the relationship between
 coutries may be characterized by trade in goods, or by the exchange of
 culture and ideas.  Another limitation to a supervised sentiment model
-is that labels of the sentiment between countries may be unavailable
+is that labels of the sentiment between nations may be unavailable
 or limited, or (as we saw before), the labels may be noisy.
 
 % in this section, we will describe a model which will allow us to discover
@@ -33,10 +33,12 @@ the appendix for a fuller description of these assumptions.
 \subsubsection*{Topics}
 A key assumption behind the unsupervised sentiment model is that each
 document can be described by a mixture of four topics.  Two of these
-topics correspond to the two countries discussed in the paragraph
-(there are $C$ of these topics, one for each country).  A third topic
-is a ``background'' topic, and the fourth topic is one of two
-sentiment topics.
+topics correspond to the two nations discussed in the paragraph (there
+are $C$ of these topics, one for each nation).  A third topic is a
+``background'' topic, and the fourth topic is one of two sentiment
+topics.  This sentiment topic is linked to a distance-based
+latent-space model exactly as in the last section, but with a binary
+sentiment indicator instead of a real-valued sentiment.
 
 By fitting the unsupervised model, we learn which words are
 most-likely in each of these topics.  With these assumptions, we
@@ -45,18 +47,18 @@ sentiment model.  \mytab{fr_unsupervised_topics} lists the most-likely
 words from a sample of topics fit to these twenty years of articles.
 
 \paragraph{State-specific topics $\beta_{C,\cdot}$.}  The
-state-specific topics describe words used when one of these countries
+state-specific topics describe words used when one of these nations
 is mentioned in text.  Many of these topics are intuitive: ``oil''
 shows up in the Iran topic, and ``drug'' is the top word in the Mexico
-topic.  As these countries are mentioned in a major U.S. news source,
+topic.  As these nations are mentioned in a major U.S. news source,
 the topics are sometimes biased toward ideas specific to the
-U.S. relationship with these countries (for example, ``border'' and
+U.S. relationship with these nations (for example, ``border'' and
 ``traffickers'' in the Mexico topic).  The U.S. topic contains phrases
 specific to policy and leadership.
 
 While these topics are intuitive, they serve little role in analyzing
 this collection.  From a modeling perspective, they serve as a
-``sponge'' to explain away words commonly used to describe a country,
+``sponge'' to explain away words commonly used to describe a nation,
 especially when those words might otherwise be interpreted to refer to
 a specific relationship.
 
@@ -66,7 +68,7 @@ one of the most prominent directions of variance in the text of
 paragraphs corresponds to the sentiment that we have been measuring.
 
 Again using the convention that $\kappa_d=1$ indicates \emph{negative}
-sentiment between countries, the negative-sentiment topic
+sentiment between nations, the negative-sentiment topic
 $\beta_{S,1}$ matches our intuition: it contains words typically
 associated with conflict: \emph{military, officials, soldiers, killed,
   troops}, and \emph{police} are among the top words. On the other
@@ -75,7 +77,7 @@ are associated more with economics: \emph{million, percent, people,
   billion, oil}, and \emph{officials}.
 
 Are these words the same words that tend to be associated with expert
-labels of sentiment?  The answer is a definitive yes.  To quantify this, we used
+labels of sentiment?  To quantify this, we used
 coefficients from the text regression fit to Mechanical Turk ratings
 in the last section.  Among the top 12 words in this topic (shown in
 \mytab{fr_unsupervised_topics}), we estimated the average coefficient
@@ -96,13 +98,13 @@ Neither of these was statistically noteworthy ($p=0.15,0.16$).
 % billion & killed \\
 % oil & troops \\
 % officials & police \\
-% country & forces \\
+% nation & forces \\
 
 % What do the topics look like?
 %  background topic?
 
 \begin{figure}
-%         Country
+%         Nation
 % 2   united_states
 % 3            iran
 % 4           japan
@@ -115,13 +117,13 @@ Neither of these was statistically noteworthy ($p=0.15,0.16$).
 %                                                                                             Topics
 % 2   officials,military,official,policy,political,support,government,meeting,leaders,administration
 % 3                             nuclear,war,program,weapons,officials,arms,oil,hostages,gulf,uranium
-% 4               trade,economic,countries,officials,market,economy,world,military,companies,markets
-% 8                      trade,country,free,province,border,agreement,speaking,percent,law,officials
+% 4               trade,economic,nations,officials,market,economy,world,military,companies,markets
+% 8                      trade,nation,free,province,border,agreement,speaking,percent,law,officials
 % 13               rights,human,trade,relations,officials,nuclear,visit,political,democracy,economic
-% 17               forces,weapons,military,troops,officials,government,security,war,chemical,country
+% 17               forces,weapons,military,troops,officials,government,security,war,chemical,nation
 % 24                     police,people,province,peace,killed,political,bomb,control,violence,killing
-% 31          officials,government,authorities,intelligence,week,people,minister,colony,time,country
-% 243             war,political,officials,country,people,military,international,peace,confirmed,week
+% 31          officials,government,authorities,intelligence,week,people,minister,colony,time,nation
+% 243             war,political,officials,nation,people,military,international,peace,confirmed,week
 % mexico: drug,officials,border,law,enforcement,traffickers,agents,police,authorities,trade,cocaine,illegal
   \center
 \begin{tabular}{|c|c|}
@@ -170,8 +172,8 @@ Neither of these was statistically noteworthy ($p=0.15,0.16$).
   \textbf{Israel ($\beta_{C,\mbox{\tiny Israel}}$)} \\
 % Iran: nuclear,war,program,weapons,officials,arms,oil,hostages,gulf,uranium
 % China: rights,human,trade,relations,officials,nuclear,visit,political,democracy,economic
-% india: nuclear,countries,border,weapons,tests,talks,nations,military,state,territory,war,militants
-% pakistan: nuclear,weapons,military,officials,terrorism,border,war,government,aid,support,countries,militants
+% india: nuclear,nations,border,weapons,tests,talks,nations,military,state,territory,war,militants
+% pakistan: nuclear,weapons,military,officials,terrorism,border,war,government,aid,support,nations,militants
 % mexico: drug,officials,border,law,enforcement,traffickers,agents,police,authorities,trade,cocaine,illegal
 % israel: peace,territories,occupied,talks,officials,negotiations,agreement,state,settlement,security,settlements,violence
   \hline
@@ -195,8 +197,8 @@ Neither of these was statistically noteworthy ($p=0.15,0.16$).
   \textbf{China ($\beta_{C,\mbox{\tiny China}}$)} \\
 % Iran: nuclear,war,program,weapons,officials,arms,oil,hostages,gulf,uranium
 % China: rights,human,trade,relations,officials,nuclear,visit,political,democracy,economic
-% india: nuclear,countries,border,weapons,tests,talks,nations,military,state,territory,war,militants
-% pakistan: nuclear,weapons,military,officials,terrorism,border,war,government,aid,support,countries,militants
+% india: nuclear,nations,border,weapons,tests,talks,nations,military,state,territory,war,militants
+% pakistan: nuclear,weapons,military,officials,terrorism,border,war,government,aid,support,nations,militants
 % mexico: drug,officials,border,law,enforcement,traffickers,agents,police,authorities,trade,cocaine,illegal
   \hline
   officials & nuclear & rights \\
@@ -211,6 +213,6 @@ Neither of these was statistically noteworthy ($p=0.15,0.16$).
   administration & uranium & economic \\
   \hline
 \end{tabular}
-\caption{Per-country topics ($\beta_{C,\cdot}$), a background topics ($\beta_{B,0}$), and the two interaction topics ($\beta_{S,0}, \beta_{S,1}$).}
+\caption{Per-nation topics ($\beta_{C,\cdot}$), a background topics ($\beta_{B,0}$), and the two interaction topics ($\beta_{S,0}, \beta_{S,1}$).}
 \label{fig:fr_unsupervised_topics}
 \end{figure}

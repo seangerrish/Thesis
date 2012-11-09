@@ -1,7 +1,7 @@
 \chapter{Lawmakers' issue preferences in the U.S. Congress}
 \label{chapter:issue_adjustments}
 
-In the last chapter we introduced several models for predicting lawmakers' votes on previously-unseen bills.  One limitation of these models---and standard ideal point models in general---is that they were designed around a one-dimensional latent space: lawmakers are described by a single number, and the predictive performance of these models is bottlenecked by lawmakers for whom a single number is not sufficient.
+In the last chapter we introduced several models for predicting lawmakers' votes on previously-unseen bills.  One limitation of these models---and one-dimensional ideal point models in general---is that they were designed around a restrictive latent space: lawmakers are described by a single number, and the predictive performance of these models is bottlenecked by lawmakers for whom a single number is not sufficient.
 
 Indeed, there are some votes that the traditional ideal point given in
 \myeq{trad_ipm} fails to capture.  For example, Ronald Paul, Republican representative from Texas, and Dennis Kucinich, Democratic representative from Ohio, are poorly modeled by ideal points because they diverge from the left-right spectrum on issues like foreign policy. Because some lawmakers deviate from their party on certain substantive issues, their positions on these issues are not captured by ideal point models.
@@ -54,13 +54,14 @@ Representatives from 2009-2010 correctly models 98\% of all lawmakers'
 votes on training data. But it only captures 83.3\% of Baron Hill's
 (D-IN) votes and 80.0\% of Ronald Paul's (R-TX) votes.  Why is this?
 
-The ideal point model assumes that lawmakers are ordered.  Each bill
-$d$ splits them at a \emph{cut point} $-\frac{b_d}{a_d}$.  Lawmakers
-to one side of the cut point are more likely to support the bill, and
-lawmakers to the other side are likely to reject it.  For lawmakers
-like Paul and Hill, this assumption is too strong because
-their voting behavior does not fit neatly into a single ordering.
-Their location among the other lawmakers changes with different bills.
+The ideal point model assumes that lawmakers are ordered.  Each bill $d$,
+described by polarization $a_d$ and popularity $b_d$, splits them
+at a \emph{cut point} $-\frac{b_d}{a_d}$.  Lawmakers to one side of
+the cut point are more likely to support the bill, and lawmakers to
+the other side are likely to reject it.  For lawmakers like Paul and
+Hill, this assumption is too strong because their voting behavior does
+not fit neatly into a single ordering.  Their location among the other
+lawmakers changes with different bills.
 % \begin{figure}
 %   \begin{center}
 %     \vspace{-10pt}
@@ -86,12 +87,13 @@ Their location among the other lawmakers changes with different bills.
 \end{figure}
 
 These lawmakers do not change their positions randomly.  They vote
-consistently within individual areas of policy, such as foreign policy
-and education.  Paul consistently votes against United States
-involvement in foreign military engagements, a position that contrasts
-with other Republicans.  Democratic representatives from New York are
-more likely to hold conservative positions on financial services
-regulation, even though they vote Democratically on social issues.
+consistently within individual areas of policy, such as financial
+regulation and education.  Paul consistently votes against United
+States involvement in foreign military engagements, a position that
+contrasts with other Republicans.  Democratic representatives from New
+York are more likely to hold conservative positions on financial
+services regulation, even though they vote Democratically on social
+issues.
 
 We refer to voting behavior like this as \emph{issue voting}.  An
 \emph{issue} is any federal policy area, such as ``financial
@@ -536,15 +538,16 @@ However, other dimensions are not attached to issues, and
 interpreting beyond the principal component is painstaking
 \citep{jackman:2001}.
 
-Recent work in machine learning has provided joint models of
-legislative text and votes. Gerrish and Blei aimed to predict votes on
-bills which had not yet received any votes \citep{gerrish:2011}.  Their
-model fits $a_d$ and $b_d$ using supervised topics, but the underlying
-voting model is one-dimensional: it cannot model individual votes
-better than a one-dimensional ideal point model. Wang et al. created a
-Bayesian nonparametric model of votes and text over time
-\citep{wang:2010}.  These models have different purposes from ours:
-neither addresses individuals' affinity toward issues.
+Note that our goal in this chapter is fundamentally different than it
+was in the last chapter. The last chapter describes how to predict
+votes on bills which had not yet received any votes.  Those models fit
+$a_d$ and $b_d$ using supervised topics, but the underlying voting
+model is one-dimensional: it cannot model individual votes better than
+a one-dimensional ideal point model. Along the same lines, Wang et
+al. created a Bayesian nonparametric model of votes and text over time
+\citep{wang:2010}. Predicting votes on new bills is a non-goal in this
+chapter, in contrast to these related works (which do not model
+individuals' affinity toward issues).
 
 % dmb: below, this is true, but i think (more importantly) that
 % there's no notion of issue in these models.
@@ -672,16 +675,17 @@ distributions can be excellent proxies for it. The similarity between
 ideal points fit with variational inference and MCMC has been
 demonstrated in particular \citep{gerrish:2011}.
 
-Variational inference usually proceeds by optimizing $\mathcal{L}_{\bm
-  \eta} = \expectqarg{ \log p(x, \bm z, a, b, v, \bm \theta) }{\bm
-  \eta} - \expectqarg{ \log q_{\bm \eta}(x, \bm z, a, b) }{\bm \eta}$,
-with gradient or coordinate ascent (this is equivalent to optimizing
-the KL divergence between $q$ and the posterior).  Optimizing this
-bound is challenging when the expectation is not analytical, which
-makes computing the exact gradient $\nabla_{\bm \eta} \mathcal{L}_{\bm
-  \eta}$ more difficult.  We optimize this bound with stochastic
-gradient ascent \citep{robbins:1951,bottou:2004}, approximating the
-gradient with samples from $q_{\bm \eta}$:
+As seen in Chapters 2, 3 and 5, variational inference usually proceeds by
+optimizing $\mathcal{L}_{\bm \eta} = \expectqarg{ \log p(x, \bm z, a,
+  b, v, \bm \theta) }{\bm \eta} - \expectqarg{ \log q_{\bm \eta}(x,
+  \bm z, a, b) }{\bm \eta}$, with gradient or coordinate ascent.
+Optimizing this bound is challenging when the expectation is not
+analytical, which makes computing the exact gradient $\nabla_{\bm
+  \eta} \mathcal{L}_{\bm \eta}$ more difficult.  In this chapter we
+will take a different approach, by optimizing this
+bound with stochastic gradient ascent
+\citep{robbins:1951,bottou:2004}, approximating the gradient with
+samples from $q_{\bm \eta}$:
 \begin{align}
 \nabla_{\bm \eta} \mathcal{L}_{\bm \eta}
   \approx \frac{1}{M} \sum_{y_m \sim q_{\bm \eta}}
@@ -724,7 +728,7 @@ algorithm, along with an empirical analysis of it, in
 %% parameters and repeating until convergence. Further details are provided in the supplementary materials.
         
 
-\section{An empirical analysis}
+\section{Understanding twelve years of U.S. congressional votes}
 \label{sec:empirical_analysis}
 
 In this section we will summarize the data on which we fit the
@@ -834,13 +838,12 @@ words to algorithmically define topics and assign issue weights to
 bills as described in \mysec{lda}.
 
 \subsection*{Identification}
-The issue-adjusted ideal point model is under-specified in
-several ways.  It is well known that the signs of ideal points $x_u$
-and bill polarities $a_d$ are arbitrary, for example, because $x_u a_d
-= (-x_u)(-a_d)$. This leads to a multimodal posterior
-\citep{jackman:2001}.  We address this by flipping ideal points (and
-bill polarities) if necessary to make Republicans positive and
-Democrats negative.
+We discussed in \mysec{pv_identification} the ways in which the ideal
+point model is under-specified.  The issue-adjusted ideal point model
+has similar identification nuances.  We address this by flipping ideal
+points (and bill polarities) if necessary to make Republicans positive
+and Democrats negative.  As with the ideal point model, this does not
+affect model performance.
 
 \subsection*{Traditional ideal points vs. issue-adjusted ideal points}
 
@@ -875,9 +878,6 @@ used instead of their traditional ideal points.
   better-divided by issue-adjusted ideal points.}
   \label{fig:issue_adjustments}
   %\begin{center}
-  \rowcolors{1}{gray!30}{}
-  \setlength{\extrarowheight}{1.5pt}
-  \renewcommand{\arraystretch}{1.5}
   \hspace{-40pt} \begin{tabular}{|p{4.3cm}|c|c|}
 \hline
 \textbf{Bill description}
@@ -3139,8 +3139,26 @@ that issue adjustments for procedural votes are associated with
 
 \section*{Conclusions}
 
-In the last two chapters we addressed two important shortcomings of ideal point models: their inability to predict votes on previously-unseen bills and their inability to represent lawmakers with nontrivial voting behavior. In this chapter we addressed the latter limitation by developing and studying the issue-adjusted ideal point model, a model designed to tease apart lawmakers' preferences from their general political positions.  This is a model of roll-call data that captures how lawmakers vary, issue by issue, and it gives a new way to explore legislative data.  On a large data set of legislative history, we demonstrated that it is able to represent votes better than a classic ideal point model and illustrated its use as an exploratory tool.
+In the last two chapters we took a closer look at the decisionmaking
+process in the U.S. by addressing two important shortcomings of ideal point models:
+their inability to predict votes on previously-unseen bills and their
+inability to represent lawmakers with nontrivial voting behavior. In
+this chapter we addressed the latter limitation by developing and
+studying the issue-adjusted ideal point model, a model designed to
+tease apart lawmakers' preferences from their general political
+positions.  This is a model of roll-call data that captures how
+lawmakers vary, issue by issue, and it gives a new way to explore
+legislative data.  On a large data set of legislative history, we
+demonstrated that it is able to represent votes better than a classic
+ideal point model and illustrated its use as an exploratory tool.
 
 This work could be extended in several ways.  One of the most natural way is to incorporate lawmakers' stated positions on issues -- which may differ from how they actually vote on these issues; in preliminary analyses, we have found little correlation to external sources.  We might also study lawmakers' activities outside of voting to understand their issue positions.  For example, lawmakers' fund-raising by industry area might (or might not) be useful in predicting their positions on different issues.  Additional work includes modeling how lawmakers' positions on issues change over time, by incorporating time-series assumptions as in \cite{martin:2002}.
 
-The ideal point model introduced in the last chapter represents one of the simplest models of dyadic data.  By framing it as a latent variable model as in \cite{clinton:2004}, we were able to address two important shortcomings of ideal points.  Just as in previous chapters, limitations were addressed by incorporating simple text primitives used in previous chapters.
+The ideal point model introduced in the last chapter represents one of
+the simplest models of dyadic data.  By framing it as a latent
+variable model as in \cite{clinton:2004}, we were able to use it as a
+modular piece of larger latent-variable models.  By combining it with
+other modules for analyzing text data, including latent Dirichlet
+allocation and text regression, we were able to address two important
+shortcomings of ideal points.  As in chapters 3 and 4, this allowed us
+to explicitly state nontrivial assumptions in interesting ways.
