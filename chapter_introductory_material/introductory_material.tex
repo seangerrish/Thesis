@@ -20,7 +20,7 @@ building blocks in later chapters.
 
 \section{Standards and naming conventions}
 We begin by outlining naming and variable conventions in this work.
-Random variables and their instantiations are given by roman or greek
+Random variables and their instantiations are given by Roman or Greek
 characters; the role of a variable will typically be evident from its
 context.  Multivariate random variables such as vectors are given by
 boldface, and collections of random variables are sometimes given by
@@ -45,7 +45,7 @@ clarity, the shape of such variables will be understood from context.
 \label{sec:data_analysis_pipeline}
 We will develop the ideas outlined in the last chapter by using the
 ``data analysis pipeline'' illustrated in
-\myfig{data_analysis_pipeline}.\footnote{This pipelne is very much
+\myfig{data_analysis_pipeline}.\footnote{This pipeline is very much
   inspired by discussions with David Blei, and I imagine he should get
   credit for it.} This pipeline, which is driven by a specific question
 about a set of data, serves as a recipe for answering questions about
@@ -256,7 +256,7 @@ latent-variable models.  Several of the most compelling motivations are:
   in the dataset can be encoded as a random variable in a
   probabilistic model.  Relationships
   found within datasets can be likewise encoded
-  explicity. \label{lvm:matching}
+  explicitly. \label{lvm:matching}
 \item Modularity. Parts of these models can be re-used across
   different models.  This leads to efficient transfer of resources
   and common paradigms.
@@ -290,7 +290,7 @@ latent-variable models.  Several of the most compelling motivations are:
 
 % \subsection{Latent-variable models of text}
   
-  Text data is extremly high-dimensional.  A large collection of
+  Text data is extremely high-dimensional.  A large collection of
   documents represented by a sequence $\bm w_n$ of words is unweildly
   for even the most powerful computer.  A number of tools have been
   developed over the past several decades to simply find the
@@ -345,7 +345,7 @@ random variables:
     \end{enumerate}
 \end{enumerate}
 The parameter $\alpha > 0$ above is a Dirichlet prior (it is often set by
-topic model researchers to $1/K$).  The distribtion $\mbox{Dir}(\alpha_1, \ldots, \alpha_M)$ refers to the Dirichlet distribution.  Its density is given by
+topic model researchers to $1/K$).  The distribution $\mbox{Dir}(\alpha_1, \ldots, \alpha_M)$ refers to the Dirichlet distribution.  Its density is given by
 \begin{align}
   p(x_1, \ldots, x_M | \alpha_1, \ldots, \alpha_M) =
   \frac{\large \Gamma \left( \sum_{i=1}^M \alpha_i \right)}
@@ -492,7 +492,7 @@ x_u$, and we will model their interaction as above, with
 \[
   p(v | \bm x_i, \bm x_j) = \sigma(\bm x_i^T \bm x_j),
 \]
-for a suitable distribuiton $\sigma$.  We will also frame their
+for a suitable distribution $\sigma$.  We will also frame their
 relationship using their Euclidean distance
 in this latent space:
 \[
@@ -788,7 +788,7 @@ the model is can produce new, useful results.\footnote{This was
 find this, for example, when we compare influence scores learned from
 our model in Chapter 3 with citation counts.
 
-\section{Using these tools to understand influence and decisionmaking}
+\section{Using these tools to understand influence and decision-making}
 
 The ideas outlined in this chapter cover only the tip of the iceberg
 of tools used by statistical machine learning researchers
@@ -800,7 +800,7 @@ we understand patterns of behavior in society using text?  How do
 documents interact with one another, and how can we use them to tell
 us how people interact with the world?
 
-We will use the tools discussed in the preceeding sections to shed
+We will use the tools discussed in the preceding sections to shed
 light on these questions, and we will do this with exactly the
 data-analysis recipe that we outlined in
 \mysec{data_analysis_pipeline}.  This recipe involves defining a question,

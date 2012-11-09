@@ -53,7 +53,7 @@ is simple: topics drift in discrete steps over time.  At each
 statistical model as in \cite{blei:2006}.  First let
 $V$ be the number of words in a vocabulary and consider the natural
 parameters $\beta_t$ of a term distribution at time $t$, where the
-probability of a word $w$ is given by the softmax transformation of
+probability of a word $w$ is given by the soft-max transformation of
 the unconstrained vector,
 \begin{equation}
   \label{eq:softmax}
@@ -188,7 +188,7 @@ is assigned to topic $k$ and we have dropped the index $t$ on $z$ and
 $w$.  The graphical model is illustrated \myfig{gm} (b).
 
 Although we presented our model in this section with influence
-spanning one year, we also adapted it to accomodate an ``influence
+spanning one year, we also adapted it to accommodate an ``influence
 envelope'', where an article's influence spans $W$ years.  This
 provides a more realistic model of influence \citep{porter:2005}, but
 it complicates the inference algorithm and may not be necessary, as we

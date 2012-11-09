@@ -37,7 +37,7 @@ models can be used to interpret lawmakers' positions on the political
 spectrum and to represent votes meaningfully.\footnote{The
   interpretation of a lawmaker's latent position and a bill's position
   in the same space are slightly more nuanced than the last chapter.
-  We clarify this relatinoship in the next section.}  However, ideal
+  We clarify this relationship in the next section.}  However, ideal
 point models have certain limitations.  One important limitation of
 these models is that they are not \emph{predictive} models: while they
 can be used to model the bills that have been voted on, they cannot be
@@ -68,7 +68,7 @@ Websites like the Library of Congress's \url{thomas.loc.gov} release
 this information to the public, and sites like \url{www.govtrack.us}
 collect this information, synthesize it, and make it available for
 researchers and the public to better understand both the content and
-behavior around legislative decisionmaking \citep{govtrack:2009}.
+behavior around legislative decision-making \citep{govtrack:2009}.
 
 Just as text has become more available in this field in digitized
 formats, tools for text analysis have matured.  Tools which were once
@@ -80,8 +80,8 @@ evolved from vector-space models such as latent semantic analysis
 sophisticated statistical models.
 
 In the next two chapters, we will take advantage of this this broader
-availability of digitized text collectinos and tools for text analysis
-to address the above shortcomings of ideal pointmodels.  We begin this
+availability of digitized text collections and tools for text analysis
+to address the above shortcomings of ideal point models.  We begin this
 chapter by reviewing ideal point models
 \citep{poole:1985,poole:1991,jackman:2001,martin:2002,clinton:2004}.
 After describing ideal point models, we will describe how to combine
@@ -410,7 +410,7 @@ Our goal in fitting this model is to uncover the posterior
 which can then be used in exploratory or predictive tasks.
 Conditioned on these variables, our analysis proceeds with the
 posterior distribution of the ideal points, polarities and
-difficuties, topics, and coefficients. Computing the posterior exactly
+difficulties, topics, and coefficients. Computing the posterior exactly
 is intractable, so we use variational inference to approximate it.  We
 describe this in further detail in \mysec{inference}.
 
@@ -501,7 +501,7 @@ spaces~\citep{jackman:2001,heckman:1996}.
 Topic models have been applied to Senate speeches, such as to discern
 ``the substantive structure of the rhetorical [legislative] agenda''
 \citep{quinn:2006}.  They have also been used with legislative speeches
-to gauge lawakers' sentiment toward legislation using roll-calls
+to gauge lawmakers' sentiment toward legislation using roll-calls
 \citep{thomas:2006}.  Modeling sentiment in text is more generally
 discussed in the field of sentiment analysis; see \cite{pang:2008} for a review.
 
@@ -521,7 +521,7 @@ preferences on the same item.
 Two works stand out as closely related to this work.  One of these is
 fLDA, which models binary or continuous ratings with user affinity to
 topics \citep{agarwal:2010}.  Another is \cite{wang:2010}, who
-describe a similar application by combinating topic models and matrix
+describe a similar application by combining topic models and matrix
 completion.  Their work also draws on ideal point models, models
 transitions over time, and is designed to learn the dimensionality of
 the latent factors.  Under the generative assumptions of their model,

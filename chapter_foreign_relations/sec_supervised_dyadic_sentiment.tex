@@ -6,7 +6,7 @@ In the last chapter we described a model for identifying influential
 documents.  A defining feature of that model was that it was
 unsupervised; only after fitting the model could we compare the
 inferred influence of an article with the number of citations it had
-recieved.  In this section we will take a more direct approach,
+received.  In this section we will take a more direct approach,
 fitting a model with labels \emph{defined} to represent the
 information that we seek: whether there is a positive or negative
 relationship between pairs of nations.
@@ -84,7 +84,7 @@ $\bm w_d^T \bm \beta$.  We describe how to fit $\bm \beta$ with
 \myeq{sentiment_text} and human labels in
 Section~\ref{section:mturk}.
 
-\subsection{Modeling interations with a latent space}
+\subsection{Modeling interactions with a latent space}
 \label{sec:fr_latent_space_model}
 The second assumption we make in this chapter is that each nation can
 be described by a vector in some latent space, and that the
@@ -294,7 +294,7 @@ relationship between actors in an unsupervised setting
 The areas of sentiment analysis and dyadic models have been combined
 in recent work focused on content recommendation and unsupervised
 network discovery.  Recommendation systems have been specialized to
-items with text for recommmending content such as Web content
+items with text for recommending content such as Web content
 \citep{agarwal:2010} and academic journals \citep{wang:2011}; both of
 these applications used latent Dirichlet allocation for modeling text.
 \cite{chang:2009} has also used unsupervised topic models to discover
@@ -481,10 +481,10 @@ see, however, they result in strikingly similar predictions).
 \subsubsection{Novice labels: Amazon Mechanical Turk ratings}
 \label{section:mturk}
 
-\emph{Amazon Mechanical Turk} (AMT) is a crowdsourcing platform which
-provides a \emph{requestor} (the author of this thesis) with access to
+\emph{Amazon Mechanical Turk} (AMT) is a crowd-sourcing platform which
+provides a \emph{requester} (the author of this thesis) with access to
 thousands of \emph{workers} who perform simple tasks over the
-Internet.  Although the requestor can use tests to ensure that workers
+Internet.  Although the requester can use tests to ensure that workers
 are high-quality, as well as reject the work of low-quality workers,
 these workers are very much non-experts.
 
@@ -601,9 +601,9 @@ article's title, \emph{War in the Gulf: Sea Mines; Allied Ships Hunt
 \item AMT rating$ = -5$, CoW rating$=0.1$: \begin{quote}\emph{Not since
     the grim old days of the cold war have relations between the
     \textbf{United States} and \textbf{Russia} been quite as problematic as they
-    are this weekend on the eve of president clinton's visit for
+    are this weekend on the eve of president Clinton's visit for
     celebrations marking the 50th anniversary of the allied victory in
-    europe in World War II} (Apple, May 1995). \nocite{apple:1995}
+    Europe in World War II} (Apple, May 1995). \nocite{apple:1995}
 \end{quote}
 The second example represents a limitation of both data sources.  The
 two Mechanical Turk ratings of -5 were clearly too strong, as the
@@ -715,7 +715,7 @@ difficult to discern the effect of each model).
 \paragraph{Text regression.} The text-regression model for CoW labels
 predicted heldout labels with MSE $0.98$, compared with $1.02$ if we
 estimate using the empirical mean $\bar s=-0.21$ of training
-examles. The text-regression model for AMT predicted heldout labels
+examples. The text-regression model for AMT predicted heldout labels
 with MSE of $6.37$, compared with $6.78$ under the empirical mean.
 
 While these errors are very large compared to the variance of the
@@ -859,7 +859,7 @@ Spearman rank correlation coefficient
 \end{align*}
 between all pairs of nations $c_1, c_2$ in the set $C$ of
 nations. The two-dimensional \verb!intercept/distance! models have
-a spearman rank correlation coefficient of $\sigma=0.900$.  Of course,
+a Spearman rank correlation coefficient of $\sigma=0.900$.  Of course,
 these $|C| \choose{2}$ distances are far from independent, and a
 single outlier in each model could skew the correlation.  To mitigate
 any such effect, we also measured the average correlation coefficient
@@ -895,16 +895,16 @@ We summarize major events for two of these nations below.
     of the Soviet Union.  The U.S. has given Ukraine over $4.1$
     billion in aid, targeted to ``promote political, security, and
     economic reform and to address urgent social and humanitarian
-    needs'' \citep{ukrainestate:2012}.  In return, Ukrain has been an
+    needs'' \citep{ukrainestate:2012}.  In return, Ukraine has been an
     active member of the UN and has assisted the NATO allies with
     defense aid in Kosovo (1999), Afghanistan (2011), Iraq, the Middle
     East, and Africa.  Ukraine adopted its first post-Soviet
     constitution June 28, 1996, the same year taking part in the
     Olympics for the first time as an independent nation (the Olympics
     were hosted in the U.S. that year).  At the same time, Ukraine has
-    been taking acrive steps in eliminating the nuclear weapons
+    been taking active steps in eliminating the nuclear weapons
     program it inherited, permanently closing the last operating
-    reactor at the Chornobyl site in 2000 \citep{ukrainestate:2012}.
+    reactor at the Chernobyl site in 2000 \citep{ukrainestate:2012}.
 
     Ukraine's sentiment with Iraq, as inferred from the AMT model, was
     at its lowest in January 1993, January 1998, and again in April
@@ -926,7 +926,7 @@ We summarize major events for two of these nations below.
 
     Ahmadinejad's rule has been met with increasing pressure from
     United Nations nations.  The Council has made successive
-    resolutions imposing santions on Iran in 2006, 2007, 2008, and
+    resolutions imposing sanctions on Iran in 2006, 2007, 2008, and
     2010 \citep{iranstate:2012}.
 
     The Mechanical Turk sentiment between Iran and the U.S. has
