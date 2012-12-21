@@ -79,7 +79,7 @@ evolved from vector-space models such as latent semantic analysis
 \citep{hofmann:1999,blei:2003}, which can be used as modules in more
 sophisticated statistical models.
 
-In the next two chapters, we will take advantage of this this broader
+In the next two chapters, we will take advantage of this broader
 availability of digitized text collections and tools for text analysis
 to address the above shortcomings of ideal point models.  We begin this
 chapter by reviewing ideal point models
@@ -355,11 +355,11 @@ becomes associated with political sentiment.
 predictive ideal-point models which use text
 regression~\citep{kogan:2009}.  For these, we first fit an ideal-point
 model to a training set of bills and all lawmakers using the
-variational algorithm described in \mysec{model}.  We then fit ridge
+variational algorithm described in \mysec{model}.  We then fit Lasso
 regression\footnote{Implemented in the ``penalized'' package for R}
-(\verb!LARS!) and Lasso\footnote{implemented with the ``lars'' package
-  for R} (\verb!L2!) to these bills' parameters $a_d, b_d$ using a
-vector of their $n$-gram\footnote{See \mysec{experiments} for
+(\verb!LARS!)\footnote{implemented with the ``lars'' package for R}
+and Ridge regression (\verb!L2!) to these bills' parameters $a_d, b_d$
+using a vector of their $n$-gram\footnote{See \mysec{experiments} for
   details.}  counts $\bm w_{d}$ as covariates.
 
 \textbf{Modeling ideal points with supervised topics.} The text
@@ -390,10 +390,10 @@ response variable is the 2-component vector of bill variables $(a_d,
 b_d)$.  The distribution of the response is a linear model whose
 covariates are the empirical distribution of the topics $\bm z_d$ for the
 bill,
-\begin{eqnarray*}
+\begin{align*}
   a_d &\sim& {\cal N}(\bm \eta_a^\top \bm \bar{z}_d, \sigma_d^2) \nonumber \\
-  b_d &\sim& {\cal N}(\bm \eta_b^\top \bm \bar{z}_d, \sigma_d^2), \nonumber \\
-\end{eqnarray*}
+  b_d &\sim& {\cal N}(\bm \eta_b^\top \bm \bar{z}_d, \sigma_d^2), \nonumber
+\end{align*}
 where $\bar{z}_d = (1/N) \sum_n z_{dn}$.  This setting is more complex
 than the original sLDA model: the response variables are
 \textit{hidden}---they are not observed directly, but are used
@@ -598,19 +598,20 @@ scheme. We therefore use an alternative algorithm -- which can be applied
 to both the standard ideal point model and the ideal point topic model
 -- which uses variational methods \citep{jordan:1999}.
 
-Recall from Chapters 2 and 3 that to variational inference requires
+Recall from Chapters 2 and 3 that variational inference requires
 specification of a variational distribution which will serve as a
-proxy for the true posterior.
+proxy for the true posterior distribution.
 % dmb: make it clear that we use a fully-factorized variational
 % distribution.
 % smg: added a note below.  We use a fully-factorized variational
-distribution.  Word assignments $z_{dn}$ and topic proportions
-are governed by multinomial parameters $\phi_d$ and Dirichlet
-parameters $\gamma_d$, as in LDA~\citep{blei:2003}.  The variational
-distribution for lawmakers' ideal points $x_u$; bills' parameters
-$a_d, b_d$; and coefficients $\bm \eta$ are Gaussian with respective
-means $\tau_u$, ${\tilde a}_d$, $\ev$ and variances $\sigma_\tau^2$,
-$\sigma_{\tilde a}^2$, $\sigma_\eta^2$. The variational distribution is
+Word assignments $z_{dn}$ and topic proportions are governed by
+multinomial parameters $\phi_d$ and Dirichlet parameters $\gamma_d$,
+as in LDA~\citep{blei:2003}.  The variational distribution for
+lawmakers' ideal points $x_u$; bills' parameters $a_d, b_d$; and
+coefficients $\bm \eta$ are Gaussian with respective means $\tau_u$,
+${\tilde a}_d$, ${\tilde b}$, $\ev$ and variances $\sigma_\tau^2$,
+$\sigma_{\tilde a}^2$, $\sigma_{\tilde b}^2$, and $\sigma_\eta^2$. The
+variational distribution is
 \begin{align}
 \label{eq:var_post}
 q(\tau, & \sigma_\tau, {\tilde a}, \sigma_{\tilde a}, \phi, \theta) =
@@ -671,7 +672,7 @@ demonstrate how the ideal point topic model can be used to explore
 legislative data; then we evaluate the models' generalization
 performance in predicting votes from bill texts.
 
-We collected roll-coll votes for Congressional sessions 106 through
+We collected roll-call votes for Congressional sessions 106 through
 111 (January 1997 to January 2011).  We used votes about bills and
 resolutions, and only votes regarding the legislation as a whole
 (as opposed to, e.g., amendments of the legislation). We downloaded
@@ -680,16 +681,16 @@ comprehensive legislative information to the public.  Our
 collection contains 4,447 bills, 1,269 unique lawmakers, and
 1,837,033 \verb!yea! or \verb!Nay! roll-call votes.
 
-To select the vocabulary, we lemmatized the bills with
-Treetagger~\citep{treetagger}.  Then we retained a vocabulary of
-statistically significant $n$-grams ($1 \le n \le 5$) using likelihood
-ratios.  These $n$-grams were treated as terms.\footnote{When one
-  $n$-gram subsumes another, we chose to observe the longer of the
-  two}  We removed $n$-grams occurring in fewer than 0.2\% of all
-bills and more than 15\% of bills.  We also removed an
-$n$-gram if it accounted for more than 0.2\% of all tokens or fewer
-than than 0.001\% of all tokens.  After this process, our vocabulary
-contained 4,743 unique $n$-grams.
+To select the vocabulary, we lemmatized (i.e., normalized the forms
+of) words in the bills with Treetagger~\citep{treetagger}.  Then we
+retained a vocabulary of statistically significant $n$-grams ($1 \le n
+\le 5$) using likelihood ratios.  These $n$-grams were treated as
+terms.\footnote{When one $n$-gram subsumes another, we chose to
+  observe the longer of the two} We removed $n$-grams occurring in
+fewer than 0.2\% of all bills and more than 15\% of bills.  We also
+removed an $n$-gram if it accounted for more than 0.2\% of all tokens
+or fewer than than 0.001\% of all tokens.  After this process, our
+vocabulary contained 4,743 unique $n$-grams.
 
 We used the anchor lawmakers described in \mysec{model}.  We ran
 variational inference until the change in increase in the objective
@@ -806,7 +807,7 @@ trained for members of each party (with a separate one for mixed or
 independent lawmakers), with terms as covariates.  This baseline
 (implemented with the R \verb!glm! library) used too much memory to
 use more than 800 terms and therefore led to results worse than the
-\verb!yea!  baseline.
+\verb!yea!  baseline.  We believe that a better baseline could be used.
 
 For each 2-year period (called a Congress), the bills were partitioned
 into 6 folds.  For each model, we iteratively (1) remove a fold, (2)

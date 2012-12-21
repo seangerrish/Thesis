@@ -44,11 +44,13 @@ The three scientific corpora we analyzed were the \emph{ACL
   Science}, and the journal \emph{Nature} (we discuss the New York
 Courts in a later section).  For each corpus, we removed short
 documents, terms that occurred in too few documents, and terms that
-occurred in too many documents.  We also removed terms whose
+occurred in too many documents (by thresholds).  We also removed terms whose
 statistics did not vary over the course of the collection, as such
 terms would not be useful for assessing change in language (a sample
 of such non-varying terms from \emph{Nature} is ``ordinarily'',
-``shake'', ``centimetre'', ``traffic'', and ``themselves'').
+``shake'', ``centimetre'', ``traffic'', and ``themselves''). By
+applying these filters, we retained the most interesting words from
+the perspective of a time-series analysis.
 
 \textbf{ACL Anthology.} The \emph{Association for Computational
   Linguistics Anthology} is a digital collection of publications about
@@ -112,17 +114,20 @@ relationship between the posterior influence values of each article
 $\ellv_d$ and its citation count $c_d$.
 
 We first aggregate the influence values across topics.  Recall that
-each document has an influence value for each topic.  For each word,
-we compute its expected posterior influence score, with the
-expectation taken with respect to its (random) topic assignment.  We
-then sum these values over all words in the document,
+each document has an influence value $\ellv$ for each topic.  For the
+$n$th word of document $d$, we compute its expected posterior
+influence score, with the expectation taken with respect to its
+(random) topic assignment $z$.  Omitting time indices, this is
+$\textrm{E}[z_{d,n} \cdot \ellv_d]$.
+We then sum these values over all words in the document,
 \begin{equation}
   f(\ellv_d) = \sum_{n=1}^{N_d} \textrm{E}[z_{d,n} \cdot \ellv_d].
   \label{eq:score}
 \end{equation}
 This weights each word by the influence associated with its assigned
-topic.  (Using the maximum value of influence across topics yielded
-similar results.)
+topic.  When we are done with it, $f(\ellv_d)$ provides a metric for
+influence which is topic-independent.  (Using the maximum value of
+influence across topics yielded similar results.)
 
 % dmb: below, i commented out this paragraph.  this seemed like it
 % shouldn't be there anymore since you added a part about the new
@@ -187,7 +192,7 @@ similar results.)
 aggregated posterior influence score of \myeq{score} and citation
 counts.  The DIM posterior---which is estimated only from the texts of
 the articles---has a positive correlation to the number of citations.
-All of these numbers were found significant up to $p<1e-4$, using
+All of these numbers were found significant up to $p < 10^{-4}$, using
 permutation tests on the influence scores.
 
 Correlation goes up when we model multiple topics within a corpus.
@@ -355,7 +360,7 @@ for postgraduate education
 \citep{Nature.success:1969}. \textit{Overtaken by Success} provides few
 research resources to researchers, which may explain lack of citation
 information. Instead, it presciently discusses a paradigm shift in a
-topic about science, industry, research, and education: ''The record
+topic about science, industry, research, and education: ``The record
 of the hearings [on the bill] is not merely an indication of the way
 the wind is blowing but an important guide to some of the strains
 which are now accumulating within the system of higher education...''
@@ -387,7 +392,7 @@ prominent words in the topic.
 The New York Appellate Court system hears appeals cases within the
 state of New York.  This court ``was established to articulate
 statewide principles of law in the context of deciding particular
-lawsuits.''  \citep{nyca_webpage:2012}, acting as a form of ``Supreme
+lawsuits'' \citep{nyca_webpage:2012}, acting as a form of ``Supreme
 Court'' for the state of New York.  Judges who hear these cases make
 decisions about the cases and write opinions summarizing their
 reasoning for these decisions.  These decisions and opinions are
@@ -404,10 +409,11 @@ explicit and well-formatted, their citations do not make this
 distinction machine-readable, making large-scale analyses difficult
 without expensive hand-coding. Second, lawmakers may have different
 reasons for citing opinions; it has been hypothesized by some
-political methodologists that researchers do not cite dissenting
-opinions because dissenting opinions are considered to hold little if
-any legal sway; citing dissenting opinions is therefore seen as a sign
-of weakness \citep{beim:2011}.
+political methodologists (people who use formal and quantitative
+methods to study political science) that researchers do not cite
+dissenting opinions because dissenting opinions are considered to hold
+little if any legal sway; citing dissenting opinions is therefore seen
+as a sign of weakness \citep{beim:2011}.
 
 We analyzed this collection, splitting 9,266 appellate court cases into
 10,618 distinct opinions, written by judges representing the majority

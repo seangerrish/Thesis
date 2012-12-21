@@ -47,11 +47,12 @@ words is fixed \citep{blei:2003,deerwester:1990,hofmann:1999}. The DTM
 introduced a Markov chain of term distributions to capture
 probabilities that drift over the course of the collection.  The idea
 is simple: topics drift in discrete steps over time.  At each
-``epoch'', some number of documents are generated based on topics \emph{at that epoch}.
+``epoch'', some number of documents are generated based on topics
+\emph{at that epoch}.
 
 \paragraph{Drifting Topics.} We can formalize these assumptions in a
 statistical model as in \cite{blei:2006}.  First let
-$V$ be the number of words in a vocabulary and consider the natural
+$V$ be the number of terms in a vocabulary and consider the natural
 parameters $\beta_t$ of a term distribution at time $t$, where the
 probability of a word $w$ is given by the soft-max transformation of
 the unconstrained vector,
@@ -85,7 +86,7 @@ are generated according to the generative model
   \begin{enumerate}
   \item For topics $k=1, \ldots, K$:
     \begin{enumerate}
-    \item Draw topics $\beta_{k,t} \g \beta_{k,t-1} \sim \mathcal{N}(\beta_{k,t}, \sigma^2 I)$
+    \item Draw topics $\beta_{k,t} \g \beta_{k,t-1} \sim \mathcal{N}(\beta_{k,t-1}, \sigma^2 I)$
     \end{enumerate}
   \item For document $d=1, \ldots, D_t$:
     \begin{enumerate}
@@ -93,7 +94,7 @@ are generated according to the generative model
     \item For term $n=1, \ldots, N$:
       \begin{enumerate}
       \item Draw topic indicator $z_n \sim \mbox{Mult}(\theta_d)$.
-      \item Draw word $w_n$ according to \myeq{softmax}.
+      \item Draw the word for the $n$th term in document $d$ according to \myeq{softmax}.
       \end{enumerate}
     \end{enumerate}
   \end{enumerate}
@@ -114,10 +115,10 @@ influential).  The text of documents will provide a window into these
 underlying patterns.
 
 In our model, each article is assigned a normally distributed
-\textit{influence score} $\ell_d$, which is a scalar value that
-describes the influence that article $d$ has on the topic.  The higher
-the influence, the more the words of the article affect how the topic
-drifts.
+\textit{influence score} $\ell_{td}$, which is a scalar value that
+describes the influence that the $d$th article at time $t$ has on the
+topic.  The higher the influence, the more the words of the article
+affect how the topic drifts.
 
 This is encoded in the time series model.  The more influential a
 document is, the more its words ``nudge'' the topic's natural
@@ -128,14 +129,35 @@ parameters at the next time step,
     \beta_{t+1} \g & \beta_t, (w, \ell)_{t,1:D} \sim
     \mathcal{N}\left(
       \beta_{t} +
-      \exp(-\beta_t) \sum_d w_{d,t} \ell_{t,d},
+      \exp(-\beta_t) \sum_{d=1}^{D_t} \sum_{n=1}^{N_d} w_{t,d} \ell_{t,d},
       \sigma^2 I
-    \right).
+    \right),
   \end{split}
 \end{equation}
-The words of an article with a high influence will have a higher
-expected probability in the next epoch; the words of an article
-with zero influence will not affect the next epoch.
+where the exponential $\exp(\beta_t)$ is a vector containing the
+exponentiated elements of $\beta_t$. The words of an article with a
+high influence will have a higher expected probability in the next
+epoch; the words of an article with zero influence will not affect the
+next epoch.
+
+The form of \myeq{logistic-normal-influence} is no accident.
+Specifically, we use this equation to enforce that the increase in
+words' probability at each time $t$ be proportional to the number
+of words across the corpus, as well as proportional to the
+influence $\ell_{t,d}$ of each document.
+
+We illustrate this further by motivating the $\exp(\beta)$ with an
+appeal to the chain rule of calculus.  Writing the unit change
+$\Delta_t = \sum_d w_{t,d} \ell_{t,d}$ for brevity, we have:
+  \begin{align}
+    \exp(\beta_t) = \exp(\beta_{t-1}) + \Delta_t \nonumber
+    & \iff 1 = \exp(\beta_{t-1} - \beta_{t}) + \exp(-\beta_t) \Delta_t \nonumber \\
+    & \iff 1 - \exp(-\beta_t) \Delta_t = \exp(\beta_{t-1} - \beta_{t}) \nonumber \\
+    & \iff \log(1 - \exp(-\beta_t) \Delta_t) = \beta_{t-1} - \beta_t \nonumber \\
+    & \iff \beta_t = \beta_{t-1} - \log(1 - \exp(-\beta_t) \Delta_t) \nonumber \\
+  \end{align}
+When $\exp(-\beta_t) \Delta_t$ is small, we have that $\beta_t \approx
+\beta_{t-1} + \exp(-\beta_t) \Delta_t$.
 
 % smg: Do you think the reader will understand the role of this term?
 % The $\exp(-\beta_t)$ term makes influence meaningful in the space of
@@ -178,14 +200,14 @@ assigned to it,
     \beta_{k,t+1} & \g \beta_{k,t}, (w, \ell, z)_{t,1:D} \sim
     \mathcal{N}\left(
       \beta_{k,t} +
-      \exp(-\beta_{k,t}) \sum_{d} \ell_{d,k} \sum_n w_{d,n} z_{d,n,k},
+      \exp(-\beta_{k,t}) \sum_{d=1}^{D_t} \ell_{t,d,k} \sum_n w_{t,d,n} z_{t,d,n,k},
       \sigma^2 I
     \right).
   \end{split}
 \end{equation}
-Here, $z_{d,n,k}$ is the indicator that the $n$th word in document $d$
-is assigned to topic $k$ and we have dropped the index $t$ on $z$ and
-$w$.  The graphical model is illustrated \myfig{gm} (b).
+Here, $z_{t,d,n,k}$ is the indicator that the $n$th word in the $d$th
+document at time $t$ is assigned to topic $k$.  We illustrate the
+graphical model for this distribution in \myfig{gm} (b).
 
 Although we presented our model in this section with influence
 spanning one year, we also adapted it to accommodate an ``influence

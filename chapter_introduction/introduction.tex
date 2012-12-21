@@ -35,7 +35,7 @@ data\footnote{By a (data) practitioner, I am referring to anyone who
   fundamental researchers, who research entirely new methods or tools
   for data analysis.  A social scientist may be a researcher
   in his or her field but a practitioner in the field of data
-  analysis.} to better understanding society through collections of
+  analysis.} to better understand society through collections of
 text documents.  I will focus on four high-level research questions
 that dovetail off one another to illustrate the flexibility and
 interpretability of latent variable models in large-scale settings.
@@ -88,13 +88,14 @@ historical perspective into collections of documents.  It is
 especially interesting to researchers because it is helpful in framing
 questions about causation, prediction, and influence.
 
-\paragraph{Dyadic observations.}  Dyadic relationships are one of the
-simplest ways to represent more complicated phenomena in a collection
-of data. In later chapters we will use spatial models to represent
-interactions between lawmakers and bills (i.e., how congresspersons voted
-on bills) and between countries (i.e., countries' sentiment
-toward one another).  As we will show, the underlying representation
-for these cases is very similar.
+\paragraph{Relational observations.}
+One of the simplest ways to represent more complicated phenomena is to
+use the interaction between pairs of items.  We will refer to such
+pairs (and their relationships) as \emph{dyadic}. In later chapters we
+will use spatial models to represent interactions between lawmakers
+and bills (i.e., how congresspersons voted on bills) and between
+countries (i.e., countries' sentiment toward one another).  As we will
+show, the underlying representation for these cases is very similar.
 
 \subsection*{The role of statistical machine learning}
 
@@ -133,7 +134,7 @@ summaries, they can serve as optical lenses for researchers to analyze
 entire collections of documents, which I illustrate as a cartoon in
 \myfig{person_data_lens}.  Statistical methods enable researchers to
 describe arbitrarily complex transformations of data with arbitrarily
-complex lenses.  Because of the simplicity of each of these lenses, I
+complex lenses.  Because of the simplicity of each of these lenses,
 we will find that a wide array of models can be created by nesting and
 re-using modules across different applications.
 
@@ -160,9 +161,9 @@ re-using modules across different applications.
 \section*{Organization}
 
 By the end of this thesis, the reader should have a better
-understanding of several new models available to social scientists.
-Perhaps more importantly, the reader will be prepared to design his or
-her own latent-variable model for similar applications.
+understanding of several new models that I have designed for to social
+scientists.  Perhaps more importantly, the reader will be prepared to
+design his or her own latent-variable model for similar applications.
 
 To this end, I will provide a lower level of detail about
 latent-variable models in the early chapters of this thesis than
@@ -215,9 +216,9 @@ play a role in modeling various social science phenomena.
 
 In Chapters~\ref{chapter:predicting_votes}
 and~\ref{chapter:issue_adjustments} I will take an even closer look at
-how documents to better understand how congresspersons vote on
+how documents can be used to better understand how congresspersons vote on
 bills.  I will address two important limitations of ideal point models
-(the state-of-the-art in spatial voting models) by using the text of
+(the state of the art in spatial voting models) by using the text of
 bills.  One of these limitations is that ideal points cannot be used
 to predict lawmakers' votes on heldout bills.  In
 \mychap{predicting_votes}, I will introduce several models for

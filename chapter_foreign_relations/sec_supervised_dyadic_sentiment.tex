@@ -24,10 +24,12 @@ domain.
 The first assumption that we make in this chapter is that the
 relationship between pairs of nations can be described by (at least) a
 one-dimensional sentiment $s \in \mathbb{R}$, and that when a news
-source discusses these nations, the author's choice of words $\bm
-w_d$ reflects the relationship between them.
-Consider, for example, the relationship between Israel and Palestine
-in the following passage (emphasis added by me):
+source discusses these nations, the author's choice of words $\bm w_d$
+reflects the relationship between them.  Consider, for example, the
+relationship between the state of Israel and Palestine in the
+following passage (emphasis added by me):\footnote{The statehood of
+  Palestine is disputed.  We considered a collection of of states and
+  territories.}
 \begin{quote} ``In Government and opposition circles
   questions have swirled about how a \textbf{Palestinian} truck laden with
   explosives could have sailed past \textbf{Israeli} soldiers stationed at
@@ -151,7 +153,7 @@ ensure that a poor relationship ($\mathcal{F}(x_{c_1}, x_{c_2}) \ll
 between $\bm \bar x_{c_1}$ and $\bm \bar x_{c_2}$, such as a large
 distance.
 
-A spatial a model provides us with two benefits. First, it provides
+A spatial model provides us with two benefits. First, it provides
 interpretability: we can summarize nations' relationships with other
 nations succinctly with their positions $\bar x_c$.  Second, this
 allows us to draw on existing work from multidimensional scaling,
@@ -176,8 +178,7 @@ later, but first we extend it to the time-series domain.
 Foreign relations are not static; nations' alliances and preferences
 change over time with the evolution of economies, technology, and
 culture.  Therefore we make this a fully temporal model by
-allowing each nation's mean position $\bar x_{c,t}$ to drift over
-time with the Markov transition
+allowing each nation's mean position (formerly $\bar x_{c}$) to take a position at each time $t$.  We assume that $x$ drifts with the Markov transition
 \begin{align}
   \label{eq:fr_interaction_position_given_mean}
   \bar x_{c,t} | \bar x_{c,t-1} \sim \mathcal{N}(\bar x_{c,t-1},
@@ -218,12 +219,13 @@ we add a standard normal prior to the ends of the chain, so that, for
 all nations $c$, $p(\bm \bar x_{c, 0}) = p(\bm \bar x_{c,T}) =
 \mathcal{N}(0, 1)$.  We also add an additional regularization term
 which we call zero-reversion.  This term manifests itself as
-observations $p(x | \bm \bar x_{c, t}) = \mathcal{N}(0,
-\sigma_{\mbox{\tiny zero}}^2)$ for all times $t = 0, \ldots, T$ and
-all nations $c$.  Zero-reversion can be motivated anecdotally by
-noting that, in the absence of news, we can assume that nations tend
-to have neutral interaction with other nations.  We find that for
-certain link functions $\mathcal{F}$ it improves empirical
+artificial observations of zero coming from the hidden Markov model.
+In the joint distribution, this is an additional product
+$\prod_{c=1}^C \prod_{t=0}^T \mathcal{N}(0 | \bar x_{c,t},
+\sigma_{\mbox{\tiny zero}}^2)$.  Zero-reversion can be motivated
+anecdotally by noting that, in the absence of news, we can assume that
+nations tend to have neutral interaction with other nations.  We find
+that for certain link functions $\mathcal{F}$ it improves empirical
 performance.
 
 % In addition, a UN resolution may come up for vote at any time.  States
@@ -267,7 +269,7 @@ fields, ranging from automated trading strategies to restaurant
 recommendation sites.  Models in which individual words are assigned a
 weight are common; \cite{pang:2008} provide a review of recent
 developments in this field.  See \cite{taddy:2012} for a model which
-uses inverse regression on wordcounts for results which compare
+uses inverse regression on word counts for results which compare
 favorably with alternatives.
 
 % Democracy, Political Similarity, and International Alliances, 1816-1992
@@ -297,8 +299,9 @@ network discovery.  Recommendation systems have been specialized to
 items with text for recommending content such as Web content
 \citep{agarwal:2010} and academic journals \citep{wang:2011}; both of
 these applications used latent Dirichlet allocation for modeling text.
-\cite{chang:2009} has also used unsupervised topic models to discover
-relationships between entities.
+Chang and Blei \citep{chang:2009,chang:2009nubbi} have also
+used unsupervised topic models to discover relationships between
+entities.
 % Supervised topic models
 
 
@@ -319,7 +322,7 @@ objective in this model using an expectation maximization (EM)
 algorithm.
 
 \subsubsection{An expectation maximization algorithm}
-The MAP solution to this problem corresponds to an
+The MAP solution to this problem can be approximated using an
 expectation-maximization (EM) algorithm because of the way we have
 specified $p(x_{c,d} | \bm \bar x_{c, t_d})$.  This makes inference
 much simpler and allows us to take advantage of a Kalman smoother.
@@ -506,7 +509,8 @@ relationship). We illustrate a rating task (as seen by a Mechanical
 Turk worker) in \myfig{mechanical_turk_sample}. Raters were asked to
 review a random subset of 3607 paragraphs like this from the original
 collection.  Before fitting the model, we manually disqualified eight
-raters (out of 85) who consistently performed poor ratings.
+raters (out of 85) who performed poorly (as measured
+by inconsistency with other raters).
 
 With all rated paragraphs which were in the training set, we fit the
 coefficients $\bm \beta$ of the text regression discussed in
@@ -536,7 +540,7 @@ of War \citep{sarkees:2010} and Issue Correlates of War
     project that is collecting systematic data on contentious issues
     in world politics'' \citep{icow_webpage:2012}, and they provide
     expert labels on a variety of inter-state conflicts that \emph{do
-      not require militarized conflict}.  However, these issue label
+      not require militarized conflict}.  However, these issue labels
     do require documented evidence of contention between states; such
     issues include maritime and territorial disputes
     \citep{icow_webpage:2012,hensel:2001}. The Issue Correlates of War
@@ -558,7 +562,7 @@ power of the results below.
 As before, we fit the text regression parameters $\bm \beta$ using
 these labels on the training set and evaluated nations' ratings on
 the test dataset. We illustrate the coefficient $\bm \beta$ fit to
-CoW-labeled paragraphs in \myfig{fr_example_betas} (left).
+CoW-labeled paragraphs in \myfig{fr_example_betas} (right).
 
 \begin{figure}
   \begin{tabular}{cc}
@@ -737,8 +741,8 @@ makes the mean $\bm \beta^T \bm w_d$ of sentiment $s_d$ available to
 the latent-space models.
 
 We first check the assumptions described in
-\mysec{fr_latent_space_model}, which models nations' pairwise
-sentiment but does not assume that they change over time.  We predict
+\mysec{fr_latent_space_model}, which model nations' pairwise
+sentiment but do not assume that they change over time.  We predict
 the sentiment between nations interacting in document $d$ to be
 $\bar s_d = \mathcal{F}(\bm \bar x_{c_1}, \bm \bar x_{c_2})$ and
 evaluated the latent-space assumption based on its ability to
@@ -748,13 +752,13 @@ w_d^T \bm \beta$.
 We evaluated this model for the five link functions $\mathcal{F}(\bm
 x_{c_1}, \bm x_{c_2})$ summarized in \mytab{fr_link_functions} and for
 a range of dimensions $p = \mbox{dim}(\bm z) = 1, \ldots, 9$.  We
-report the MSE for this range of experiments
+report the MSE for this range of experiments in
 \myfig{fr_supervised_performance} and compare these models with a
-baseline model, which uses the empirical mean of the 
+baseline model, which uses the empirical mean of the ratings.
 
 We find that the the
 \verb!inner product!  assumption $\bm \bar z_{c_1}^T \bm \bar z_{c_2}$
-alone is poor because it provides no natural natural way to model
+alone is poor because it provides no natural way to model
 nations which are in frequent conflict with others.  When the
 \verb!inner product! link function and the \verb!distance! link
 function are endowed with the intercepts $y_{c_1}, y_{c_2}$, their
@@ -871,7 +875,7 @@ any such effect, we also measured the average correlation coefficient
 \end{align*}
 which was \emph{even higher}, at $\sigma=0.901$. Recall that this is
 higher than the correlation coefficient between the original labels
-($\sigma=0.196$) -- an effect possible possible because these models
+($\sigma=0.196$) -- an effect possible because these models
 remove noise.
 
 Under the second metric of correlation, most per-nation correlations
@@ -885,14 +889,14 @@ than Eritrea, which was 0.62 but accounted for 0.2\% of documents).
 
 \paragraph{Mutual sentiment with the United States and differences
  between CoW and AMT model fits.}
-We illustrate mutual sentiment with the United states for a selection
+We illustrate mutual sentiment with the United States for a selection
 of these nations over time in \myfig{nation_positions_over_time}.
 To estimate the sentiment in these plots, we fit the
 \verb!intercept/distance! model with $\mbox{dim}(\bm z) = 2$.
 We summarize major events for two of these nations below.
 \begin{itemize}
   \item \textbf{Ukraine} was emancipated in 1991 with the dissolution
-    of the Soviet Union.  The U.S. has given Ukraine over $4.1$
+    of the Soviet Union.  The U.S. has given Ukraine over \$$4.1$
     billion in aid, targeted to ``promote political, security, and
     economic reform and to address urgent social and humanitarian
     needs'' \citep{ukrainestate:2012}.  In return, Ukraine has been an
@@ -921,11 +925,11 @@ We summarize major events for two of these nations below.
     political tension, with the election of a reformist president in
     1997 and a reformist legislature in 2000, followed by conservative
     re-elections starting in 2003 and continuing through 2004.
-    Hardliner President President Mahmud Ahmadinejad was inaugurated
+    Hardliner President Mahmud Ahmadinejad was inaugurated
     in August 2005 and re-elected in 2009 \citep{irancia:2012}.
 
     Ahmadinejad's rule has been met with increasing pressure from
-    United Nations nations.  The Council has made successive
+    the United Nations.  The Council has made successive
     resolutions imposing sanctions on Iran in 2006, 2007, 2008, and
     2010 \citep{iranstate:2012}.
 

@@ -315,3 +315,41 @@ h(s) := & \left( \exp(-2 \mv_{s,k} + 2 \vv_{s,k}) + \exp(-2 \mv_{s,k} + \vv_{s,k
 \end{align*}
 
 % \end{document}
+\subsection{Topic trajectories.}
+The variational update for $\bv$ is similar to that in
+\cite{blei:2006}. For each topic, we update the variational Kalman   % citet
+``observations'' by applying gradient ascent:
+\begin{align*}
+\partl{\mathcal{L}}{\bv_{sw}} =
+% From beta generative rule:
+   & -  \frac{1}{\sigma^2} \sum_{t=1}^T
+     \left( \mv_{tw} - \mv_{t-1,w} - G_{t-1,w} \right) 
+      \left( \partl{\mv_{tw}}{\bv_{sw}}
+     - \partl{\mv_{t-1,w}}{\bv_{sw}}
+     + G_{t-1,w} \partl{\mv_{t-1,w}}{\bv_{sw}} \right) \\
+   & +  \sum_T \left(
+       N_{w,t} - N_{t} \zeta_t^{-1}
+       \exp( \hat{m}_{\bb_{tw}} + \frac{\tilde{V}_{tw}}{2} ) \right)
+       \partl{\mv_{tw}}{\bv_{sw}}  \\
+    & +  \frac{1}{\sigma^2} \sum_{t=1}^T
+         \partl{\mv_{t-1,w}}{\bv_{sw}}
+         \left( H_{t-1,w} - G_{t-1,w}^2 \right) 
+    +  \frac{1}{\sigma^2} \sum_{t=0}^{T-1}
+         \partl{\mv_{tw}}{\bv_{sw}}
+         G_{tw} \vv_{tw},
+\end{align*}
+where
+\begin{eqnarray*}
+%\mbox{where} \\
+ G_{sn} &=& \expectq{\exp(-\beta_{s,k,n} ) ( \W_{s,k,n} \circ
+  z_{s,k,n} ) \ell_{s,k}} \\
+ H_{sn} &=& \mathbb{E}_q \big[ \exp(-2 \beta_{s,k,n}) \left( (\W_{s,k,n} \circ z_{s,k,n} ) \ell_{s,k} \right)^2 \big].
+\end{eqnarray*}
+
+Note also that we have added the additional variational parameter
+$\zeta_t$ and the term $\partl{\mv_{tn}}{\bv_{sn}}$, which are both
+described in \cite{blei:2006}. The % citet
+former can be updated once per iteration with $\zeta_t \gets \sum_w
+\exp(\mv_{t,n} + \vv_{t,n}/2)$. The latter can be derived from the
+variational Kalman filter updates (see \myapp{docinf_appendix} and
+\cite{blei:2006}).

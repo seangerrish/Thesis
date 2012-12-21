@@ -57,7 +57,7 @@ thesis focuses on those steps which are colored blue):
 \item \textbf{Questions.} One of the first, most critical steps is
   defining the question at hand.  In our case, the questions include
   ``Which articles in a given collection are the most influential?''
-  and ``How will the Florida Senator vote on pending legislation?''.
+  and ``How will the Florida Senator vote on pending legislation?''
 
 \item \textcolor{blue}{\textbf{Data.}} At the same time we are
   formulating questions, we must also understand which data is
@@ -72,10 +72,11 @@ thesis focuses on those steps which are colored blue):
   % interact with bills.  We will encode these assumptions by specifying
   % them with random variables.
 
-  This step arguably allows the practitioner wide latitude in defining
-  variables of interest.  In following chapters, we will spend a lot
-  of time discussing modeling assumptions, and they compose one of the
-  biggest contributions of this work.
+  This step arguably allows the practitioner (i.e., someone designing,
+  fitting, and analyzing a model) wide latitude in defining variables
+  of interest.  In following chapters, we will spend a lot of time
+  discussing modeling assumptions, and they compose one of the biggest
+  contributions of this work.
 
   % Just as the \textbf{Data} step is limited by the questions we are
   % asking, the, our decisions in the \textbf{Model assumptions} step
@@ -87,7 +88,7 @@ thesis focuses on those steps which are colored blue):
   into an algorithm and run that algorithm.  We will variously refer
   to this stage of the process as \emph{fitting a model},
   \emph{performing inference}, and \emph{fitting the posterior}.  This
-  steps also represents a significant contribution of our work, in
+  step also represents a significant contribution of our work, in
   Chapters 3-6 and \myapp{stochastic_variational_optimization}.
 
   \item \textbf{Model evaluation.} The goals of this stage are to
@@ -109,7 +110,8 @@ thesis focuses on those steps which are colored blue):
   
   \item \textbf{Conclusions.} Finally, the practitioner may draw
     conclusions from the model.  In our case, this leads to two
-    applications: \emph{exploration} and \emph{prediction}.  
+    applications: \emph{exploration} and \emph{prediction}.  Note that
+    this step may better hang off of \emph{model implementation}.
 
     % Models
     % built for exploration can be used to answer potential \emph{future}
@@ -145,8 +147,8 @@ thesis focuses on those steps which are colored blue):
 \begin{figure}
   \center \includegraphics[width=0.4\textwidth]{chapter_introductory_material/figs/model_pipeline.pdf}
   \caption{A data analysis pipeline.  In this work, we make
-    contributions in the areas of \textbf{Modeling assumptions},
-    \textbf{Model implementation}, and \textbf{Model revision}.  We
+    contributions in the areas of \textbf{modeling assumptions},
+    \textbf{model implementation}, and \textbf{model revision}.  We
     will focus on applications which use text data.}
   \label{fig:data_analysis_pipeline}
 \end{figure}
@@ -164,8 +166,8 @@ benefits, which we outline at the end of this section.  First, we
 formalize a \emph{latent variable model}.  A latent variable model can
 be fully specified with
 \begin{itemize}
-  \item A set of latent random variables $X_1, \ldots, X_{M_1}$ ($X_{1:M_x}$ for shorthand);
-  \item A set of observed random variables $Y_1, \ldots, Y_{M_2}$ ($Y_{1:M_y}$ for shorthand);
+  \item A set of latent random variables $X_1, \ldots, X_{M_x}$ ($X_{1:M_x}$ for shorthand);
+  \item A set of observed random variables $Y_1, \ldots, Y_{M_y}$ ($Y_{1:M_y}$ for shorthand);
   \item A joint probability distribution $p(X_{1:M_x}, Y_{1:M_y})$.
 \end{itemize}
  As $p$ is a probability distribution, it satisfies
@@ -177,7 +179,7 @@ For $p$ to be useful, we typically will make distributional
 assumptions about it.  We often describe assumptions about
 factorization using a \emph{directed graphical model} (sometimes
 called a Bayesian network) \citep{pearl:1985}.\footnote{Undirected
-  graphical models are also useful.  Here we focus on undirected
+  graphical models are also useful.  Here we focus on directed
   graphical models.}  A graphical model is a directed, acyclic graph
 $G = (V, E)$ in which vertices $V=1, \ldots, M = M_x + M_y$ represent
 random variables and edges connote dependence.
@@ -190,7 +192,7 @@ definition of a graphical model, a probability distribution described
 by a graphical model $G$ can be factorized as
 \begin{align}
   p(Z_1, \ldots, Z_M) = \prod_{i=1, \ldots, M} p_\theta(Z_i |
-  \pi_G(Z_i) ).
+  \{ Z_j : j \in \pi_G(i) \} ).
 \label{eq:gm_definition}
 \end{align}
 Note that there is a many-to-many relationship between graphical
@@ -207,17 +209,18 @@ discuss formally.
 
 Conventionally, a graphical model $G$ is often drawn as a
 block-and-arrow diagram, where we write out the graph with each random
-variable (vertex) drawn as a circle and each edge edge drawn as an
+variable (vertex) drawn as a circle and each edge drawn as an
 arrow.  An additional convention in these diagrams is that boxes, or
 \emph{plates}, represent replication (with the number of replications
 shown in a corner of the plate). In the graphical model shown in
-\myfig{bagofwords_lda_gm} (right), for example, the corresponding
-factorization is
+\myfig{bagofwords_lda_gm} (right), for example, one corresponding
+factorization (remember that there are many) is
 \begin{align}
   \prod_K p(\beta_k) \times \prod_{d=1,\ldots,D} p(\theta_d | \alpha) \prod_{n=1,\ldots,N_d} p(z_n | \theta_d) p(w_n | z_n, \beta_{z_n}),
 \end{align}
 where we have used the further convention that observed random
-variables are shaded and hidden random variables are unshaded.
+variables are shaded and hidden random variables are unshaded.  Later
+in this section we will describe this exact model in more detail.
 
 \begin{figure}
   \begin{center}
@@ -240,11 +243,11 @@ We will sometimes point out conditional independence between groups of
 random variables.  Given random variables $Z_1, Z_2$, and $Z_3$, we
 say that $Z_1$ is conditionally independent of $Z_2$ given $Z_3$ if
 $p(Z_1, Z_2 | Z_3) = p(Z_1 | Z_3) p(Z_2 | Z_3)$.  Conditional
-independence statements about distributions can often be inferred from
-these distributions' factorizations and become important when one
-implements a probabilistic model or makes predictions with
-one. Conditional independence will permeate much of what we discuss in
-this thesis.
+independence statements about distributions can be inferred from these
+distributions' factorizations (or from the graph itself) and become
+important when one implements a probabilistic model or makes
+predictions with one. Conditional independence will permeate much of
+what we discuss in this thesis.
 
 Before proceeding further, it is worth noting the benefits in using
 latent-variable models.  Several of the most compelling motivations are:
@@ -261,9 +264,9 @@ latent-variable models.  Several of the most compelling motivations are:
   different models.  This leads to efficient transfer of resources
   and common paradigms.
 \item Existing toolbox of statistical tools. There is a large and
-  growing body of literature around how to fit these models, and
-  there are many widely supported packages for fitting these
-  models.  Practitioners no longer need to be experts in
+  growing body of literature around how to fit these models, and there
+  are many widely supported packages for fitting these models
+  \cite{bishop:2006}.  Practitioners no longer need to be experts in
   statistics to correctly apply many of these tools.
 \item Implementation convenience.  Latent-variable models provide
   explicit objective functions.  Once a latent-variable model is
@@ -286,7 +289,7 @@ latent-variable models.  Several of the most compelling motivations are:
   are becoming more proficient with tools for text analysis.
   \cite{grimmer:submitted} provides an excellent overview of methods
   for analyzing text for social scientists; we will summarize several
-  like methods here.
+  such methods here.
 
 % \subsection{Latent-variable models of text}
   
@@ -304,16 +307,16 @@ latent-variable models.  Several of the most compelling motivations are:
   use ``information'' in a very loose sense).  At the same time, this
   assumption still allows us to capture the ``gist'' of a document
   very well. One of the simplest bag-of-words models is the unigram
-  model. In the unigram model, every word is assumed to come from the
+  model. In the unigram model, every word is assumed to come from
   some multinomial distribution $\beta$ over the vocabulary:
   \begin{align*}
-    p(w_{11}, \ldots, w_{ND}) = p(\beta) \prod_D \prod_{N_d} p(w_{nd} |
+    p(w_{11}, \ldots, w_{ND}) = p(\beta) \prod_{d=1}^D \prod_{n=1}^{N_d} p(w_{n,d} |
   \beta),
 \end{align*}
   where $D$ is the number of documents and $N_d$ is the number of
   words in document $d$.
   We illustrate this model graphically in
-  \myfig{bagofwords_lda_gm} (A).  The bag-of-words assumption in
+  \myfig{bagofwords_lda_gm} (left).  The bag-of-words assumption in
   particular is illustrated by the model's agnostic treatment of the
   order between words: these words are fully exchangeable within each
   document.
@@ -324,8 +327,8 @@ Dirichlet Allocation \citep{blei:2003}.  Latent Dirichlet allocation
 (LDA) posits a set of $K$ \emph{topics} $\beta_1, \ldots, \beta_K$ to
 formalize what we mean by the \emph{gist} of a document.  LDA
 describes each document $d$ as a mixture $\bm \theta_d$ of $K$ topics,
-where $\sum_K \bm \theta_{dk} = 1$ and $\bm \theta_{dk} > 0
-\forall d,k$.
+where $\sum_{k=1}^K \bm \theta_{dk} = 1$ and $\bm \theta_{dk} > 0$ 
+for all $d,k$.
 
 Formally, we can represent this using a \emph{generative process} for
 the creation of documents.  The generative process can be interpreted as
@@ -333,14 +336,14 @@ a recipe for creating the observations---documents, in our case---in a
 way that fully specifies the joint probability distribution of all
 random variables:
 \begin{enumerate}
-  \item Draw topics $\beta_1, \ldots, \beta_K \sim \mbox{Dir}(\eta)$.
+  \item Draw topics $\bm \beta_1, \ldots, \bm \beta_K \sim \mbox{Dir}(\eta)$.
     \item For document $d=1, \ldots, D$:
     \begin{enumerate}
     \item Draw topic mixture $\bm \theta_d \sim \mbox{Dir}(\alpha, \ldots, \alpha)$.
     \item For term $n=1, \ldots, N$:
       \begin{enumerate}
       \item Draw topic indicator $z_n \sim \mbox{Mult}(\bm \theta_d)$.
-      \item Draw word $w_n \sim \mbox{Mult}(\beta_{z_n})$.
+      \item Draw word $w_n \sim \mbox{Mult}(\bm \beta_{z_n})$.
       \end{enumerate}
     \end{enumerate}
 \end{enumerate}
@@ -354,14 +357,15 @@ topic model researchers to $1/K$).  The distribution $\mbox{Dir}(\alpha_1, \ldot
 \end{align}
 We illustrate the graphical model for LDA in \myfig{bagofwords_lda_gm}.  Given the graphical model, we can immediately write the joint distribution of a collection of $D$ documents as
 \begin{align}
-  p(\beta_k, \bm \theta, \bm Z, \bm W | \alpha) = 
+  p(\bm \beta_k, \bm \theta, \bm Z, \bm W | \alpha) = 
   \prod_K p(\bm \beta_k)
-  \prod_D p(\bm \theta_d) \prod_N p(z_n | \bm \theta_d) p(w_n | z_n, \beta_{z_n}) d\beta d\bm \theta dz,
+  \prod_D p(\bm \theta_d) \prod_N p(z_n | \bm \theta_d) p(w_{n,d} | z_n, \bm \beta_{z_n}),
 \end{align}
-where $p(\beta_k)$ and $p(\bm \theta_d)$ are understood to be conditioned
-on $\eta$ and $\alpha$ respectively (we treat $\alpha, \eta$ as
+where $W$ represents the collection of all random variables $w_{n,d}$,
+and where $p(\bm \beta_k)$ and $p(\bm \theta_d)$ are understood to be conditioned
+on $\eta$ and $\alpha$ respectively.  We treat $\alpha, \eta$ as
 hyperparameters and omit them so they're not confused with random
-variables).
+variables.
 
 In the vast majority of cases, the practitioner observes the words of
 a set of documents and seeks to learn the topics that describe these
@@ -404,13 +408,13 @@ distribution
   p(\beta, \bm \theta, \bm Z | \bm W) = \frac{p(W | \beta, \bm \theta, \bm Z) p(\beta, \bm \theta, \bm Z)}{p(\bm W)}.
 \end{align}
 
-This conditional distribution is impossible to compute because of the
+This conditional distribution is impossible to compute efficiently because of the
 intractable normalizing constant
 \begin{align} 
   p(\bm W) = & 
   \int_{\beta_k} p(\beta_k)
   \prod_D \int_{\bm \theta_d} p(\bm \theta_d | \alpha) 
-  \prod_{n=1}^N \sum_K p(z_n | \bm \theta_d) p(w_n | z_n, \beta_{z_n}) d\beta d\bm \theta dz.
+  \prod_{n=1}^N \sum_K p(z_{n,d}=k | \bm \theta_d) p(w_n | z_{n,d}=k, \beta_k) d\beta d\bm \theta dz.
 \end{align}
 This intractability is common during posterior inference.  In
 \mysec{variational_inference} we will see details on ways to get around
@@ -426,12 +430,12 @@ this intractable integral by approximating the posterior \cite{blei:2003}.
 \subsection{Matrix factorization, latent space models, and
   multidimensional scaling}
 
-Two of the most common primitives in latent-variable models are matrix
-factorization \citep{salakhutdinov:2008a} and multidimensional scaling,
-which describe relationships between pairs of items, or dyads. We
-first discuss a specific application of matrix factorization called
-item response theory (IRT), which has been used for decades in
-political science
+Two of the most common primitives in latent-variable models are
+probabilistic matrix factorization \citep{salakhutdinov:2008a} and
+multidimensional scaling, which describe relationships between pairs
+of items, or \emph{dyads}. We first discuss a specific application of
+matrix factorization called item response theory (IRT), which has been
+used for decades in political science
 \citep{clinton:2004,martin:2002,poole:1991,enelow:1984,albert:1992}.
 
 In IRT, we have two types of objects, and we would like to make
@@ -441,12 +445,18 @@ real-valued random variables: lawmaker $u \in \{ u=1, \ldots, U \}$
 has a latent value $X_u \in \mathbb{R}$, and each bill $d \in \{ 1,
 \ldots, D \}$ has two latent values $A_d,B_d \in \mathbb{R}$.  We make
 predictions about pairs of them by introducing the likelihood function
-$p(V_{ud} | X_u, A_d, B_d) = \sigma( x_u a_d + b_d )$, where
+$p(V_{ud}=1 | X_u, A_d, B_d) = \sigma( x_u a_d + b_d )$, where
 $\sigma(s) = \frac{\exp(s)}{ 1 + \exp(s) }$.  We illustrate this
 graphically in \myfig{irt_gm}.
 
-More formally, we can say that the matrix $\{V\}_{ud}$ of boolean
-outcomes (for example, votes) is represented with the matrix product
+In this model, $b_d$ serves as an intercept describing whether the
+bill is popular or unpopular, independent of the lawmaker voting on
+it.  $a_d$ serves as an indication of how polarizing the bill is, and
+$x_u$ interacts with $a_d$ to describe the lawmaker's position on bill
+$d$.  We will look at this model in more detail later.
+
+More formally, we can write $\{V\}_{ud}$ as a matrix of probabilities
+that boolean random variables (e.g., votes) are true, factorized as
 \begin{align}
   \hat \sigma \left( \left[ \begin{array}{cc}
     x_1 & 1 \\
@@ -484,25 +494,25 @@ later chapters, we will use it for models of legislative voting.
 
 Sometimes these pairs of items that interact in dyads are of the same
 ``type'', and we wish to model them in the same latent space.  Instead
-of bills and lawmakers interacting, for example, we will also consider
+of bills and lawmakers interacting, for example, we will consider in Chapter 4
 pairs of countries that interact, and we wish for these countries to
 be represented in the same latent, interpretable space.  In this case,
 we will still model each country with a latent position vector $\bm
 x_u$, and we will model their interaction as above, with
 \[
-  p(v | \bm x_i, \bm x_j) = \sigma(\bm x_i^T \bm x_j),
+  p(v | \bm x_i, \bm x_j) = \sigma(v | \bm x_i^T \bm x_j, 1),
 \]
 for a suitable distribution $\sigma$.  We will also frame their
 relationship using their Euclidean distance
 in this latent space:
 \[
-  p(v | \bm x_i, \bm x_j) = \sigma(\bm \beta w_{ij} - \log(|| \bm x_i
-  - \bm x_j ||_2^2 + 1)),
+  p(v | \bm x_i, \bm x_j) = \sigma(v | \bm \beta w_{ij} - \log(|| \bm x_i
+  - \bm x_j ||_2^2 + 1), 1),
 \]
 where $w_{ij}$ are observed covariates about the dyad and $\bm \beta$
-is hidden along with $\bm x$ \citep{hoff:2002}. Both of these
-formulations will allow us to develop a model of foreign relations in
-\mychap{foreign_relations}.
+is hidden along with $\bm x$ \citep{hoff:2002}. We will motivate these
+expressions and others like them when we develop a model of
+foreign relations in \mychap{foreign_relations}.
 
 % Recent 
 %   - relevant sources
@@ -515,7 +525,7 @@ formulations will allow us to develop a model of foreign relations in
 We now turn briefly to abstractions for time-series data. One of the
 simplest assumptions about a time-series collection is that we have a
 sequence of observations $Y_1, \ldots, Y_T$ observed at times $t=1,
-\ldots, t=T$.  In a \emph{hidden Markov model} (HMM).  We assume that
+\ldots, T$.  In a \emph{hidden Markov model} (HMM).  We assume that
 these observations can be explained by a hidden set of states $X_1,
 \ldots, X_T$, which are temporally linked.  The model factorizes as
 \begin{align}
@@ -531,7 +541,7 @@ usually be reduced to an application of a forward-backward algorithm,
 especially when the conditional distribution of each variable given
 its neighbor is conjugate (even when this is not the case, methods
 such as Paisley, Gerrish, and Blei (2010) provide approximate ways to
-perform inference on non-tree graphical models \nocite{paisley:2010})
+perform inference on non-tree graphical models \nocite{paisley:2010}.
 One of the most famous algorithms for inferring the states of a hidden
 Markov model is the Kalman filter, which assumes linear (or quadratic)
 transitions between the states $X$ and Gaussian noise: $p(Y_t | X_t)
@@ -570,12 +580,14 @@ $p(x | y) = \frac{p(x, y)}{p(y)}$.  In this section we outline
 several common methods for estimating this posterior.
 
 \subsection{MAP estimation}
-One of the simplest estimates of the value of a random variable is the \emph{maximum-a-posteriori} (MAP) estimate.  The MAP estimate $\hat X$ is defined to be the most-likely value of the random variable:
+One of the simplest estimates of the value of a random variable is the
+\emph{maximum-a-posteriori} (MAP) estimate.  The MAP estimate $\hat X$
+is defined to be the most-likely value of the random variable:
 \begin{align}
-  \hat X = \arg \max_x p(X=x | Y) = \arg \max_x \frac{p(X=x | Y) p(Y)}{p(Y)} = \arg_x \max p(X=x, Y).
+  \hat X = \arg \max_x p(X=x | Y) = \arg \max_x \frac{p(X=x | Y) p(Y)}{p(Y)} = \arg \max_x p(X=x, Y).
 \end{align}
 
-The MAP estimate can typically found by performing gradient or
+The MAP estimate can typically be found by performing gradient or
 coordinate ascent on $p(X, Y)$ with respect to $X$ (this is because
 the normalizer $p(Y)$ is not a function of $X$).  Because MAP
 estimates can be fast to estimate, they can shorten the development
@@ -612,7 +624,7 @@ time, will accurately represent $p(x | y)$.
 MCMC methods are used widely, but they have limitations.
 One of these limitations is runtime: while one may need $N$ \emph{iid}
 samples from a distribution $p(x | y)$ to estimate its mean and
-variance, he typically needs many more MCMC samples to estimate these
+variance, she typically needs many more MCMC samples to estimate these
 statistics.  A poorly-chosen proposal distribution can affect runtime,
 as a Markov chain needs more samples to converge. MCMC algorithms can
 also suffer from memory bottlenecks, as samples are stored and
@@ -698,11 +710,12 @@ This process, and the role of variational inference in statistical
 machine learning will become more clear as we develop several
 algorithms using these methods over the next few chapters.
 
-We have not yet described the downfall to variational inference: with
+We have not yet described a limitation of variational inference: with
 each new set of model assumptions, variational inference requires that
 the variational lower bound $\mathcal{L}$ be algebraically evaluated,
-which decreases model iteration.  We will also introduce an
-alternative method for performing variational inference in
+which is a significant time investment by a practitioner for each new
+model she creates.  We will also introduce an alternative method for
+performing variational inference in
 Appendix~\ref{chapter:stochastic_variational_optimization}.  This
 alternative method removes the onus of deriving new variational update
 equations, making it easy for the practitioner to perform rapid model
@@ -714,15 +727,20 @@ development on a range of models.
 % \subsection{Posterior Predictive Checks}
 %   - examples
 \subsection{Model evaluation}
+
 After a model has been fit with an approach such as variational
 inference, it is important to evaluate the model (see again the data
-analysis pipeline in \mysec{data_analysis_pipeline}).  In general,
-different practitioners will have different goals in modeling data, so
-they will have different goals in model evaluation.  However, several
-standard approaches exist.
+analysis pipeline in \mysec{data_analysis_pipeline}).  The goal of
+model evaluation is to evaluate performance of the model and to
+criticize the model.  The criticism may warrant model revision, in
+which case the modeling assumptions are adjusted, the model is refit,
+and the model is re-evaluated.
 
-\subsubsection{Likelihood of training data $Y_1, \ldots,
-  Y_{N_{\mbox{\small obs}}}$}
+In general, different practitioners will have different goals in
+modeling data, so they will have different goals in model evaluation.
+However, several standard approaches exist.
+
+\subsubsection{Likelihood of training data}
 We first describe one of the simplest metrics of how well a model is
 fit: its ability to model training data $Y_{\mbox{\small obs},1},$
 $\ldots,$ $Y_{\mbox{\small obs},N_{\mbox{\tiny obs}}}$.  Like before,
@@ -754,7 +772,7 @@ measure the ``flexibility'' of a model.
 
 \subsubsection{Likelihood of heldout observations $Y_1, \ldots,
   Y_{N_{\mbox{\small heldout}}}$}
-One of the most common metrics of a model is its ability to model
+A common measure of a model is its ability to represent
 unseen, heldout observations $Y_{\mbox{\small hdt},1},$ $\ldots,$
 $Y_{\mbox{\small hdt},N_{\mbox{\tiny hdt}}}$ given a set of ``training''
   observations $Y_{\mbox{\small h},1},$ $\ldots,$ $Y_{\mbox{\small
@@ -765,12 +783,15 @@ $Y_{\mbox{\small hdt},N_{\mbox{\tiny hdt}}}$ given a set of ``training''
   p(Y_{\mbox{\small hdt},1}, \ldots, Y_{\mbox{\small hdt},N_{\mbox{\tiny hdt}}}
   | Y_{\mbox{\small obs},1}, \ldots, Y_{\mbox{\small obs}, N_{\mbox{\tiny obs}}})
 \end{align*}
-of these observations. When these observations are conditionally
-independent given the observed data (nearly always the case), the
-log-likelihood can be written $\sum_{n=1}^{N_{\mbox{\tiny hdt}}} \log
-  p(Y_{\mbox{\small hdt},n} | Y_{\mbox{obs},1}, \ldots, Y_{\mbox{\small obs},N_{\mbox{obs}}})$.
+of these observations, where we condition on the observed data because
+a ``fit'' model effectively captures the information in these
+observations.  When these observations are conditionally independent
+given the observed data (nearly always the case), the log-likelihood
+can be written $\sum_{n=1}^{N_{\mbox{\tiny hdt}}} \log
+p(Y_{\mbox{\small hdt},n} | Y_{\mbox{obs},1}, \ldots, Y_{\mbox{\small
+    obs},N_{\mbox{obs}}})$.
 
-When training data is scarce, practitioners often use leave-one-out
+When training data is scarce, practitioners often use $k$-fold
 cross-validation.  Cross-validation requires that the training data be
 partitioned into $K$ equal-size parts $P_1, \ldots, P_K$, fit $K$
 times on each of the $K - 1$ subsets which omit exactly one of the
@@ -780,10 +801,10 @@ the benefit that all of the data is used for training and evaluation.
 \subsubsection{Relationship with external data}
 In this thesis we will use external data sources to validate the
 results of our model.  External data sources are useful because they
-can confirm a model's assumptions.  When a model's inferences do *not*
+can confirm a model's assumptions.  When a model's inferences do not
 correspond with a secondary data source, then this can also be useful,
 because it can be used to inform model development or to confirm that
-the model is can produce new, useful results.\footnote{This was
+the model can produce new, useful results.\footnote{This was
   pointed out in a helpful discussion with Matthew Salganik.}  We will
 find this, for example, when we compare influence scores learned from
 our model in Chapter 3 with citation counts.
