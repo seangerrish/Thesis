@@ -1,5 +1,0 @@
-\beamer@endinputifotherversion {3.07pt}
-\beamer@sectionintoc {1}{Topic Models and LDA}{9}{0}{1}
-\beamer@sectionintoc {2}{Model}{9}{0}{2}
-\beamer@sectionintoc {3}{Appendix}{49}{0}{3}
-\beamer@subsectionintoc {4}{2}{Heuristic solution}{66}{0}{3}
