@@ -337,12 +337,10 @@ contained in $\bm x_1$ and $\bm x_2$.
  \item Randomly select 3607 paragraphs discussing pairs of 245
    countries and territories. \\
   \item Label each of these paragraphs' sentiment. \\
-  \item Hold out 42 random pairs of countries (244 paragraphs) for
-    testing. \\
-  \item Fit sentiment model parameters $\beta$ on the training
+  \item Fit sentiment model parameters $\beta$ on a set of training
     paragraphs. \\
   \item Fit the spatial sentiment model with these parameters on
-    257,472 paragraphs from 1988 to 2008. (We used MAP.)
+    47,105 paragraphs from 1988 to 2008 (MAP estimation) \\
 %  \item Evaluate model sentiment prediction on the heldout 244 test
 %    paragraphs.
  \end{itemize}
@@ -903,6 +901,7 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
     \center
     \textbf{The U.S. Senate} \\
   \center
+\hspace{-14pt}
   \begin{tabular}{ccccc}
     \hline
     \hline
@@ -919,7 +918,7 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
 %  \end{minipage}
   \\
   \center
-  \hspace{19pt}
+  \hspace{45pt}
 \begin{minipage}{4.5in}
   \center
   \textbf{The House of Representatives} \\
@@ -940,6 +939,24 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
 %  \end{tabular}
   \end{tabular}
   \end{minipage}
+}
+
+\frame {
+  \frametitle{Posterior estimation - variational inference}
+  \begin{itemize}
+    \item As before, we only observe some data (votes and issue
+      vectors). \\
+      \vspace{10pt}
+    \item We must estimate the posterior distribution $p(x_u, \bm
+      z_u, a_d, b_d | \theta_d, v_{ud})$. \\
+      \vspace{10pt}
+    \item We used variational inference to do this. \\
+      \vspace{10pt}
+    \item Variational inference posits that the posterior can be
+      described well by a simplified family of probability
+      distributions (which is tractable). \\
+      \vspace{10pt}
+  \end{itemize}
 }
 
 \frame {
@@ -1304,11 +1321,17 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
 }
 
 \frame {
-  \frametitle{Interesting directions}
-  We've talked about some new models for finding patterns in collections of text data:
+  \frametitle{Review}
+  We discussed:
+  \vspace{20pt}
   \begin{itemize}
-  \item A method to map the interactions of countries through time
-  \item A way to discover the issues driving lawmakers' votes
+  \item Latent-space models of foreign relations
+  \item A method for discovering the issues driving lawmakers' votes
+  \vspace{20pt}
+  \item A method for discovering influential documents over time
+  \item A way to predict lawmakers' votes on bills we have never seen
+    before
+  \item Stochastic optimization of the variational bound
   \end{itemize}
 }
 
@@ -1316,10 +1339,12 @@ Jounson and Albert, 1999 & Clinton et al., 2004 & \\
   \frametitle{Funding}
   Funding
   \begin{itemize}
-    \item Google
     \item National Science Foundation
     \item Office of Naval Research
-    \item Yahoo!
+    \item Yahoo! (CS department computers)
+    \item Princeton Graduate School
+    \item Facebook (travel)
+    \item Google (travel)
     \end{itemize}
     % Advising and mentorship
     % \begin{itemize}
