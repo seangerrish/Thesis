@@ -9,7 +9,7 @@ knowledge in the machine learning community; when the foundational
 work is beyond the scope of this introduction, we will provide
 references to well-known resources in the community.
 
-In this chapter we will outline the basic methodology for
+In this chapter, we will outline the basic methodology for
 probabilistic modeling in datasets.  We begin by discussing a ``data
 analysis pipeline'' so the reader will understand what is meant by
 phrases like ``the data'', ``fit the model'', and ``heldout
@@ -44,10 +44,10 @@ clarity, the shape of such variables will be understood from context.
 \subsection{Data analysis pipepline}
 \label{sec:data_analysis_pipeline}
 We will develop the ideas outlined in the last chapter by using the
-``data analysis pipeline'' illustrated in
+``data analysis pipeline'' illustrated ins
 \myfig{data_analysis_pipeline}.\footnote{This pipeline is very much
   inspired by discussions with David Blei, and I imagine he should get
-  credit for it.} This pipeline, which is driven by a specific question
+  credit for it.} This pipeline, which is driven by specific questions
 about a set of data, serves as a recipe for answering questions about
 these data.  It will also help to make the contributions of this
 thesis more explicit. The pipeline has the following steps (this
@@ -234,8 +234,8 @@ in this section we will describe this exact model in more detail.
     Documents $1, \ldots, D$ are treated as \emph{bags of words}, or
     collections of words $w_n$.  Right: graphical model for Latent
     Dirichlet Allocation.  Circles are random variables, arrows
-    connote dependency, and plates represent replication.  The circles
-    represent observed random variables (words in this case).}
+    connote dependency, and plates represent replication.  The shaded
+    circles represent observed random variables (words in this case).}
   \label{fig:bagofwords_lda_gm}
 \end{figure}
 
@@ -270,12 +270,15 @@ latent-variable models.  Several of the most compelling motivations are:
   statistics to correctly apply many of these tools.
 \item Implementation convenience.  Latent-variable models provide
   explicit objective functions.  Once a latent-variable model is
-  selected, implementing and fitting it is often much simpler.
+  selected, implementing and fitting it may be a (mostly) solved
+  problem.  Over the next couple of decades, increasingly
+  sophisticated and powerful tools will be developed to make
+  general-purpose model-fitting much easier.
 \end{enumerate}
 
   The risk with applying latent-variable models is that the
   credibility and careful deliberation we often associate with
-  statistics lends credence to results of fitting a model.  This may
+  statistics lends credence to the results of fitting a model.  This may
   lead researchers to be overconfident in the conclusions they draw
   from their models, particularly when the model is incorrectly
   interpreted, when the data is poorly fit by the model, or when the
@@ -287,7 +290,7 @@ latent-variable models.  Several of the most compelling motivations are:
   As noted in the last chapter, text data is as easy to work with as
   it is ubiquitous. Importantly, researchers and other practitioners
   are becoming more proficient with tools for text analysis.
-  \cite{grimmer:submitted} provides an excellent overview of methods
+  \cite{grimmer:submitted} provide an excellent overview of methods
   for analyzing text for social scientists; we will summarize several
   such methods here.
 
@@ -301,12 +304,12 @@ latent-variable models.  Several of the most compelling motivations are:
   succinctly and efficiently.
 
   In this work we will use the simplifying assumption that each text
-  document is described by a vector $\bm w_d \in \mathcal{R}^V$ of
+  document is described by a vector $\bm w_d \in \mathbb{R}^V$ of
   word counts.  This assumption, known as the \emph{bag of words}
   assumption, removes most of the information in a document (here we
   use ``information'' in a very loose sense).  At the same time, this
   assumption still allows us to capture the ``gist'' of a document
-  very well. One of the simplest bag-of-words models is the unigram
+  very well. One of the simplest bag of words models is the unigram
   model. In the unigram model, every word is assumed to come from
   some multinomial distribution $\beta$ over the vocabulary:
   \begin{align*}
@@ -327,7 +330,7 @@ Dirichlet Allocation \citep{blei:2003}.  Latent Dirichlet allocation
 (LDA) posits a set of $K$ \emph{topics} $\beta_1, \ldots, \beta_K$ to
 formalize what we mean by the \emph{gist} of a document.  LDA
 describes each document $d$ as a mixture $\bm \theta_d$ of $K$ topics,
-where $\sum_{k=1}^K \bm \theta_{dk} = 1$ and $\bm \theta_{dk} > 0$ 
+where $\sum_{k=1}^K \bm \theta_{dk} = 1$ and $\bm \theta_{dk} \ge 0$ 
 for all $d,k$.
 
 Formally, we can represent this using a \emph{generative process} for
@@ -336,7 +339,8 @@ a recipe for creating the observations---documents, in our case---in a
 way that fully specifies the joint probability distribution of all
 random variables:
 \begin{enumerate}
-  \item Draw topics $\bm \beta_1, \ldots, \bm \beta_K \sim \mbox{Dir}(\eta)$.
+  \item Draw topics $\bm \beta_1, \ldots, \bm \beta_K \sim
+    \mbox{Dir}(\eta, \ldots, \eta)$.
     \item For document $d=1, \ldots, D$:
     \begin{enumerate}
     \item Draw topic mixture $\bm \theta_d \sim \mbox{Dir}(\alpha, \ldots, \alpha)$.
@@ -373,7 +377,7 @@ documents.  Before describing how to fit such a model, however, we
 point the reader to the four example topics from LDA in
 \mytab{example_lda_topics}.  Note that some of these ``words'' are
 instead phrases.  This can be done by creating a vocabulary of phrases
-instead of words and describing documents as a mixture of phrases.  We
+instead of words and describing documents as bags of phrases.  We
 describe how to select phrases for a vocabulary in
 \myapp{issue_corpus_preparation}.
 \begin{table}
@@ -621,12 +625,13 @@ samples are often used to summarize statistics such as marginal means
 and variances of $p(x | y)$.  They are unbiased and, given enough
 time, will accurately represent $p(x | y)$.
 
-MCMC methods are used widely, but they have limitations.
-One of these limitations is runtime: while one may need $N$ \emph{iid}
-samples from a distribution $p(x | y)$ to estimate its mean and
-variance, she typically needs many more MCMC samples to estimate these
-statistics.  A poorly-chosen proposal distribution can affect runtime,
-as a Markov chain needs more samples to converge. MCMC algorithms can
+MCMC methods are used widely, but they have limitations.  One of these
+limitations is runtime: while one may need $N$ \emph{iid} samples from
+a distribution $p(x | y)$ to estimate its mean and variance, she
+typically needs many more MCMC samples to estimate these statistics.
+In some MCMC algorithms, one must select a proposal distribution for
+sampling; a poorly-chosen proposal distribution can affect runtime, as
+a Markov chain needs more samples to converge. MCMC algorithms can
 also suffer from memory bottlenecks, as samples are stored and
 convergence is measured.
 
@@ -647,23 +652,23 @@ variational inference here for use in later chapters.
 
 Variational methods posit a simplified\footnote{Simplified compared to
   the true posterior.} family of probability distributions, indexed by
-variational parameters $\theta$, and select the member $q_{\theta}$ of
+variational parameters $\nu$, and select the member $q_{\nu}$ of
 this family that is closest in KL-divergence to the true posterior
 $p(x | y)$:
 \begin{align}
-  \arg \min_{\theta} \mbox{KL}(q_{\theta} || p) = \arg \min_{{\theta}} \int_x q_{\theta}(x) \log \frac{q_{\theta}(x)}{p(x | y)} dx.
+  \arg \min_{\nu} \mbox{KL}(q_{\nu} || p) = \arg \min_{{\nu}} \int_x q_{\nu}(x) \log \frac{q_{\nu}(x)}{p(x | y)} dx.
   \label{eq:variational_objective}
 \end{align}
-Finding the optimal variational distribution $q_\theta$ is equivalent
-to optimizing an ``evidence lower bound'' (ELBO) ($\mathcal{L}_\theta$) on
+Finding the optimal variational distribution $q_\nu$ is equivalent
+to optimizing an ``evidence lower bound'' (ELBO) ($\mathcal{L}_\nu$) on
 the data likelihood
 \begin{eqnarray}
-  \log p(y) \ge & \expectq{\log p(x, y) - \log q_\theta(x)} \\
-  = & \expectq{\log p(x, y)} - H(q_\theta(x)) \\
-  =: & \mathcal{L}_\theta,
+  \log p(y) \ge & \expectq{\log p(x, y) - \log q_\nu(x)} \\
+  = & \expectq{\log p(x, y)} - H(q_\nu(x)) \\
+  =: & \mathcal{L}_\nu,
   \label{eq:traditional_variational_objective}
 \end{eqnarray}
-where $H(q_\theta(x))$ is the entropy of that distribution and the
+where $H(q_\nu(x))$ is the entropy of that distribution and the
 slack of the bound is equal to the KL divergence from
 Equation~\ref{eq:variational_objective}.
 
@@ -692,23 +697,23 @@ distribution \citep{bishop:2006}.  In the case of Latent Dirichlet
 Allocation, for example, \cite{blei:2003} assume that the indicators
 $z_n$ can be described by a fully-factorized product of multinomial
 distributions, and they assume that the posterior distribution of
-topics $\beta$ and mixture proportions $\bm \theta$ can be represented by
+topics $\beta$ and mixture proportions $\bm \nu$ can be represented by
 a fully-factorized product of Dirichlet distributions.
 
 Once a family is selected, the bound in
 Equation~\ref{eq:traditional_variational_objective} is evaluated
 symbolically, as a practitioner fully expands $\expectq{ \log p(x, y)
-  - \log q_\theta(x)}$ and (usually) its gradient. As we will show in
-subsequent chapters, this bound may itself be bounded or approximated
-with a Taylor approximation such as the delta method
-\citep{bickel:2007,braun:2007}. These simplifying assumptions -- an
-approximate, fully factorized posterior with further simplifying
-bounds -- make it possible to express the lower bound in terms of the
-variational parameters $\theta$.  The practitioner then uses these
-bounds and gradients in a coordinate or gradient ascent algorithm.
-This process, and the role of variational inference in statistical
-machine learning will become more clear as we develop several
-algorithms using these methods over the next few chapters.
+  - \log q_\nu(x)}$ and (usually) its gradient using pencil, paper,
+and algebra. As we will show in subsequent chapters, this bound may
+itself be bounded or approximated with a Taylor approximation such as
+the delta method \citep{bickel:2007,braun:2007}. These simplifying
+assumptions -- an approximate, fully factorized posterior with further
+simplifying bounds -- make it possible to express the lower bound in
+terms of the variational parameters $\nu$.  The practitioner then uses
+these bounds and gradients in a coordinate or gradient ascent
+algorithm.  This process, and the role of variational inference in
+statistical machine learning will become more clear as we develop
+several algorithms using these methods over the next few chapters.
 
 We have not yet described a limitation of variational inference: with
 each new set of model assumptions, variational inference requires that
@@ -743,7 +748,7 @@ However, several standard approaches exist.
 \subsubsection{Likelihood of training data}
 We first describe one of the simplest metrics of how well a model is
 fit: its ability to model training data $Y_{\mbox{\small obs},1},$
-$\ldots,$ $Y_{\mbox{\small obs},N_{\mbox{\tiny obs}}}$.  Like before,
+$\ldots,$ $Y_{\mbox{\small obs},N_{\mbox{\tiny obs}}}$.  As before,
 one of the most frequently used metrics for this is the training
 log-likelihood $\log p(Y_{\mbox{\small obs},1}, \ldots,
 Y_{\mbox{\small obs},N_{\mbox{\tiny obs}}})$ of these
@@ -826,7 +831,7 @@ light on these questions, and we will do this with exactly the
 data-analysis recipe that we outlined in
 \mysec{data_analysis_pipeline}.  This recipe involves defining a question,
 describing a model to answer that question using data, fitting that
-model, and drawing inferences from the model.
+model, and drawing inferences using the model.
  
 In the next chapter we will return to a fundamental challenge in
 managing the huge volumes of text now inundating researchers and

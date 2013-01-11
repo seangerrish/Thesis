@@ -163,7 +163,7 @@ of a bill moves this state of the world).  For this reason, lawmakers'
 positions $x_u$ are often called their \emph{ideal points}.
 
 Reparameterizing, we can write the probability $p(v_{ud} | \bm X_u, \bm \zeta_d,
- \bm \psi_d)$ of an affirmative vote
+ \bm \psi_d)$ of an affirmative vote with the probit or logistic function
  \citep{clinton:2004}.  Setting $\bm b_d = 2 (\bm \zeta_d
  - \bm \psi_d )$ and $a_d = (\bm \psi_d^T \bm \psi_d - \bm \zeta_d^T
  \bm \zeta_d )$, we have
@@ -177,7 +177,7 @@ where $\sigma(s)$ is the logistic function $\frac{\exp(s)}{1 +
   the Normal distribution.}  Legislation $d$ can therefore be fully
 characterized by specifying its \emph{polarity} $\bm a_d$ and its
 \emph{popularity} $b_d$. \footnote{Popularity is also called
-  \emph{difficulty}, and polarity is called \emph{polarity}, in the
+  \emph{difficulty}, and polarity is called \emph{discrimination}, in the
   context of educational testing applications of this model
   \citep{clinton:2004}.  We move away from these terms in favor of more
   appropriate terms for this application.}  When the popularity of a
@@ -410,7 +410,7 @@ Our goal in fitting this model is to uncover the posterior
 which can then be used in exploratory or predictive tasks.
 Conditioned on these variables, our analysis proceeds with the
 posterior distribution of the ideal points, polarities and
-difficulties, topics, and coefficients. Computing the posterior exactly
+popularities, topics, and coefficients. Computing the posterior exactly
 is intractable, so we use variational inference to approximate it.  We
 describe this in further detail in \mysec{inference}.
 
@@ -513,7 +513,7 @@ The ideal point topic model relates closely to user-recommendation
 models based on matrix factorization~\citep{salakhutdinov:2008a}.
 Matrix factorization methods for recommendation are akin to
 large-scale spatial behavior models (though usually with no
-``difficulty'' term, which acts as an intercept).  Many of these
+``popularity'' term, which acts as an intercept).  Many of these
 matrix factorization models for user recommendation do not provide a
 method of predicting one user's item preference without other users'
 preferences on the same item.
@@ -594,9 +594,8 @@ implemented with MCMC methods such as Gibbs sampling
 However, in the ideal point topic model, fast Gibbs samplers are
 unavailable because the conditionals needed are not analytically
 computable; an MCMC strategy would require a more complicated sampling
-scheme. We therefore use an alternative algorithm -- which can be applied
-to both the standard ideal point model and the ideal point topic model
--- which uses variational methods \citep{jordan:1999}.
+scheme. We therefore use an alternative algorithm---which can be applied
+to both the standard ideal point model and the ideal point topic model---which uses variational methods \citep{jordan:1999}.
 
 Recall from Chapters 2 and 3 that variational inference requires
 specification of a variational distribution which will serve as a
@@ -605,7 +604,7 @@ proxy for the true posterior distribution.
 % distribution.
 % smg: added a note below.  We use a fully-factorized variational
 Word assignments $z_{dn}$ and topic proportions are governed by
-multinomial parameters $\phi_d$ and Dirichlet parameters $\gamma_d$,
+multinomial parameters $\bm \phi_d$ and Dirichlet parameters $\bm \gamma_d$,
 as in LDA~\citep{blei:2003}.  The variational distribution for
 lawmakers' ideal points $x_u$; bills' parameters $a_d, b_d$; and
 coefficients $\bm \eta$ are Gaussian with respective means $\tau_u$,
@@ -676,7 +675,7 @@ We collected roll-call votes for Congressional sessions 106 through
 111 (January 1997 to January 2011).  We used votes about bills and
 resolutions, and only votes regarding the legislation as a whole
 (as opposed to, e.g., amendments of the legislation). We downloaded
-the data from Govtrack, an independent Website which provides
+the data from \url{www.govtrack.us}, an independent Website which provides
 comprehensive legislative information to the public.  Our
 collection contains 4,447 bills, 1,269 unique lawmakers, and
 1,837,033 \verb!yea! or \verb!Nay! roll-call votes.
@@ -706,7 +705,7 @@ on the $111^{th}$ session (January 2009 to January 2011).
 
 \textbf{Exploring topics with $\ev$.} As noted in \mysec{model}, the
 coefficients $\ev$ relate each topic's weight in a bill with the
-bill's difficulty and polarity parameters. \myfig{topics} shows
+bill's popularity and polarity parameters. \myfig{topics} shows
 some example topics and their corresponding coefficients $\ev$.  Below
 we describe some of these topics in more detail and connect them to
 the data.
@@ -718,7 +717,7 @@ the data.
     as lawmakers and bills.  This plot shows selected topics by
     coefficients $\ev$, for a 64-topic model ($\ev$s are normalized by
     mean and variance).  Two topics (\emph{people, month, recognize, ...}
-    and \emph{clause, motion, chair, ...}) with difficulty 4.68 and
+    and \emph{clause, motion, chair, ...}) with popularity 4.68 and
     polarity 7.4 (respectively) are not shown.}
   \label{fig:topics}
 \end{figure}
@@ -755,11 +754,11 @@ Democratic.
 Another contentious topic was about spaceflight: \emph{space, flood,
 NASA, administrator, research, transportation}.
 This topic was expressed in one of the most-poorly predicted bills of
-the $111^{th}$ Congress.  This bill, the \emph{NASA Authorization Act
-of 2010}, was a "compromise between the Obama administration, which
+the $111^{\textrm{th}}$ Congress.  This bill, the \emph{NASA Authorization Act
+of 2010}, was a ``compromise between the Obama administration, which
 wants... a commercial space industry in which private companies would
 transport astronauts, and House lawmakers, who wanted... one
-government-owned rocket" \citep{herszenhorn:2010}.  In the house vote
+government-owned rocket'' \citep{herszenhorn:2010}.  In the house vote
 (a Senate record was not kept), of 249 Democrats voting on the bill,
 185 voted in favor; of the 173 Republicans, 119 voted in favor.
 Because this bill had mixed but nonpartisan support, the model could
@@ -776,7 +775,7 @@ The average per-lawmaker accuracy in the in-sample fit was 96\%
 accuracy increases with more votes ($\rho=0.51$).  Among lawmakers
 with over 100 votes, only two stand out. Donald Young (713 votes;
 accuracy 0.83) had a pre-defined ideal point (see \mysec{model}). Ron
-Paul, a Republican in the $111^{th}$ Congress, was also poorly
+Paul, a Republican in the $111^{\textrm{th}}$ Congress, was also poorly
 predicted (761 votes; accuracy 0.84).  Paul is known for his
 Libertarian beliefs, even having run for President for the Libertarian
 party in 1988.
@@ -794,7 +793,7 @@ issues in the prediction task.
 \textbf{Prediction on heldout bills.}  We measured predictive accuracy
 and log likelihood for these models under a variety of regularization
 settings (\verb!LARS! is parameterized by $0 < f \le 1$, \verb!L2! is
-parameterized by $\Lambda \ge 0$, and \verb!IPTM! is parameterized by
+parameterized by regression coefficient $\Lambda \ge 0$, and \verb!IPTM! is parameterized by
 topics $K$).
 
 We also devised two baselines for comparison with the three models

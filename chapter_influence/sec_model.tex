@@ -44,7 +44,7 @@ a model of sequential corpora that allows language statistics to drift
 over time.  Probabilistic topic models such as LDA (introduced in the
 last chapter) usually assume that the underlying distribution over
 words is fixed \citep{blei:2003,deerwester:1990,hofmann:1999}. The DTM
-introduced a Markov chain of term distributions to capture
+introduced a Markov chain of topics (i.e., term distributions) to capture
 probabilities that drift over the course of the collection.  The idea
 is simple: topics drift in discrete steps over time.  At each
 ``epoch'', some number of documents are generated based on topics
@@ -80,7 +80,7 @@ represents the word counts in article $d$.
 
 At each epoch $t$, the documents of these articles are drawn independently
 using the topics described by \myeq{softmax}.  More formally, documents
-are generated according to the generative model
+are generated according to the generative process
 \begin{enumerate}
 \item For time $t=1, \ldots, T$:
   \begin{enumerate}
@@ -91,7 +91,7 @@ are generated according to the generative model
   \item For document $d=1, \ldots, D_t$:
     \begin{enumerate}
     \item Draw topic mixture $\theta_d \sim \mbox{Dir}(\alpha, \ldots, \alpha)$.
-    \item For term $n=1, \ldots, N$:
+    \item For position $n=1, \ldots, N$:
       \begin{enumerate}
       \item Draw topic indicator $z_n \sim \mbox{Mult}(\theta_d)$.
       \item Draw the word for the $n$th term in document $d$ according to \myeq{softmax}.
@@ -115,10 +115,10 @@ influential).  The text of documents will provide a window into these
 underlying patterns.
 
 In our model, each article is assigned a normally distributed
-\textit{influence score} $\ell_{td}$, which is a scalar value that
-describes the influence that the $d$th article at time $t$ has on the
-topic.  The higher the influence, the more the words of the article
-affect how the topic drifts.
+\textit{influence score} $\ell_{td}$ for this topic, which is a scalar
+value that describes the influence that the $d$th article at time $t$
+has on the topic.  The higher the influence, the more the words of the
+article affect how the topic drifts.
 
 This is encoded in the time series model.  The more influential a
 document is, the more its words ``nudge'' the topic's natural
@@ -172,7 +172,7 @@ have a high posterior influence score.  We will show in \mysec{results}
 that this estimate of influence is meaningful.
 
 \paragraph{Multiple topics.}  Corpora typically contain multiple
-persistent themes.  Accordingly, the full dynamic topic model contains
+persistent themes.  Accordingly, the full document influence model contains
 multiple topics, each associated with a time series of distributions.
 Conditioned on the topics, articles at each time are modeled
 with latent Dirichlet allocation (LDA).  Each article exhibits the

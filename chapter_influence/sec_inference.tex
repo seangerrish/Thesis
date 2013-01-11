@@ -76,7 +76,7 @@ the above equation because they parameterize the variational
 distribution $q$, and the expectation is taken with respect to this distribution.
 
 \subsection*{Optimizing the variational bound}
-This bound is optimized by variational EM, with an update schedule similar to that in \cite{blei:2006}:
+This bound is optimized by variational EM, with an update schedule similar to that of \cite{blei:2006}:
 \begin{enumerate}
 \item For Topic $k=1, \ldots, K$:
   \begin{enumerate}
@@ -106,7 +106,7 @@ drift $\bm{\Delta_{\beta,t,k}} = (\beta_{t+1,k} - \beta_{t,k})$, where
 the contributions of each document's words are given by the design
 matrix $X = \diag{\exp(-\beta_{t,k})} (\bm W_{t,k} \circ \phi_{t,k}
 )$. ($\diag{x}$ refers to the matrix having the elements of
-$x$ on its diagonal.)
+$x$ on its diagonal, and $\circ$ refers to the element-wise product.)
 %\begin{eqnarray}
 %\bm{\Delta_{\beta,t,k,w}} := & \hspace{-34pt} \exp(-\mv_{t,k,w} + \vv_{t,k,w} / 2) \nonumber \\
 %& \hspace{-11pt} \times \hspace{2pt} (\mv_{t+1,k,w} - \mv_{t,k,w} + \vv_{t,k,w}). \nonumber

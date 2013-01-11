@@ -1,7 +1,7 @@
 \chapter{Quantitative methods for social research in the digital age}
 
 Quantitative social scientists often attempt to understand the
-behavior of political entities, and digital records are one of the
+behavior of society with numbers and data, and digital records are one of the
 most useful resources available to them.  The digital age has brought
 to these researchers a deluge of records---particularly in the
 form of text.  This avalanche of data provides more information to
@@ -15,7 +15,7 @@ articles and blog posts written each day about the events happening in
 the world.  Unfortunately, this flood of information obscures the very
 insights these researchers aim to discover.  Researchers trying to
 make sense of these collections are subject to the high costs of time
-spent poring over these collections in search of the few key insights.
+spent studying these collections in search of the few key insights.
 
  % example questions: how to find phenomena in collections of text
  % how to 
@@ -64,8 +64,7 @@ thesis, I will focus on three specific patterns:
 
 \paragraph{Text data.} Text data is the low-hanging fruit of most
 social science research questions.  It is ubiquitous because it
-can---indeed, it must---be easily created, digitized, and stored. Text
-data serve as an observation which we can use to better understand the
+can---indeed, it must---be easily created, digitized, and stored. It serves as an observation which we can use to better understand the
 story underlying decisions and politics.
 
 Just as text data is invaluable to researchers, the rate of growth of
@@ -91,7 +90,7 @@ questions about causation, prediction, and influence.
 \paragraph{Relational observations.}
 One of the simplest ways to represent more complicated phenomena is to
 use the interaction between pairs of items.  We will refer to such
-pairs (and their relationships) as \emph{dyadic}. In later chapters we
+pairs (and their relationships) as \emph{dyadic}. In later chapters I
 will use spatial models to represent interactions between lawmakers
 and bills (i.e., how congresspersons voted on bills) and between
 countries (i.e., countries' sentiment toward one another).  As we will
@@ -128,8 +127,8 @@ understanding of large collections of text documents.
 
 In this thesis, I will use probabilistic models to encode these
 statistical assumptions.  I will frequently use the paradigm of
-graphical models \citep{pearl:1985} to encode and describe our
-assumptions.  Because these statistical methods provide directed
+graphical models \citep{pearl:1985} to make our
+assumptions more clear.  Because these statistical methods provide directed
 summaries, they can serve as optical lenses for researchers to analyze
 entire collections of documents, which I illustrate as a cartoon in
 \myfig{person_data_lens}.  Statistical methods enable researchers to
@@ -180,23 +179,23 @@ This chapter also provides a high-level introduction to the algorithms
 we will use for Bayesian inference.
 
 \paragraph{Identifying influential documents.} After introducing the
-foundations of this thesis, I begin with a question about the broad
-strokes painted by a document collection. In \mychap{influence}, I
-look at a common challenge in analyzing text collections: that of
-finding the most important and influential documents in a corpus which
-has grown over time.  This is a challenge in understanding collections
-of academic articles, legal opinions, email archives, and many other
-collections. This question even motivated the algorithm behind Larry
-Page and Sergey Brin's PageRank algorithm, which recursively measures
-the influence of Webpages, as measured by the hyperlinks between
-Webpages \citep{garfield:1992,brin:1998,garfield:2002}.  Unlike Web
-pages and academic articles, of course, explicit citations or
-hyperlinks are unavailable, and researchers only see the most basic
-metadata: documents' timestamps.  To this end, I will introduce a
-model for discovering the most influential documents in such a
-collection. I will validate this model on a set of several datasets,
-including several collections of academic articles and a set of
-opinions written by judges in the New York Appellate Courts system.
+foundations of this thesis, I will start with high-level social
+science questions.  In \mychap{influence}, I look at a common challenge
+in analyzing text collections: that of finding the most important and
+influential documents in a corpus which has grown over time.  This is
+a challenge in understanding collections of academic articles, legal
+opinions, email archives, and many other collections. This question
+even motivated the algorithm behind Larry Page and Sergey Brin's
+PageRank algorithm, which recursively measures the influence of
+Webpages, as measured by the hyperlinks between Webpages
+\citep{garfield:1992,brin:1998,garfield:2002}.  Unlike Web pages and
+academic articles, of course, explicit citations or hyperlinks are
+unavailable, and researchers only see the most basic metadata:
+documents' timestamps.  To this end, I will introduce a model for
+discovering the most influential documents in such a collection. I
+will validate this model on a set of several datasets, including
+several collections of academic articles and a set of opinions written
+by judges in the New York Appellate Courts system.
 
 \paragraph{Inferring history from a collection of newspaper articles.}
 In \mychap{foreign_relations} I will zoom in a bit to consider the
@@ -204,11 +203,12 @@ story within a collection of documents and outline a model to better
 understand the relationships between pairs of countries over time.  I
 will fit this to a collection of \emph{New York Times} articles and
 demonstrate that this method discovers a more sophisticated latent
-story among documents than in Chapter 3.  As with the method in Chapter
-3, this collection has only the text of these articles, which I
-augment with external information.  In this chapter I also incorporate
-important ideas from the field of dyadic spatial models, which can
-play a role in modeling various social science phenomena.
+story among documents than in Chapter 3.  As with the method in
+Chapter 3, this collection has only the text of these articles, which
+I augment with external information such as human labels of sentiment.
+In this chapter I also incorporate important ideas from the field of
+dyadic spatial models, which can play a role in modeling various
+social science phenomena.
 
 % I will describe a method to discover
 % which documents are influential on the development of a collection of

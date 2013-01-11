@@ -564,18 +564,18 @@ individuals' affinity toward issues).
 % question, since it assumes we know in the first place how lawmakers
 % vote on different issues.
 
-The issue-adjusted model is conceptually more similar to recent
-models for content recommendation. Specifically, Wang and Blei
-describe a method to recommend academic articles to individuals
-\citep{wang:2011}, and Agarwal and Chen propose \emph{fLDA} to match
-users to Web content \citep{agarwal:2010}. Agarwal et al. learn a
-separate user-item offset $y_{ud}$ and a user-topic affinity which
-interacts with $\expectq{\bm \theta_d | \bm w_d}$ \citep{agarwal:2010}.
-\cite{wang:2011} fit a linear regression, again learning a user-topic
-affinity.  Our model differs in its introduction of
-the polarity $a_d$: lawmakers take a position $z_{uk}$ on issue $k$
-which only creates an affinity toward $k$ if the bill leans the
-correct way.  Finally, we have an explicit goal of interpretability.
+The issue-adjusted model is conceptually more similar to recent models
+for content recommendation. Specifically, \cite{wang:2011} describe a
+method to recommend academic articles to individuals, and
+\cite{agarwal:2010} propose \emph{fLDA} to match users to Web content
+\citep{agarwal:2010}. Agarwal et al. learn a separate user-item offset
+$y_{ud}$ and a user-topic affinity which interacts with $\expectq{\bm
+  \theta_d | \bm w_d}$.  \cite{wang:2011} fit a linear regression,
+again learning a user-topic affinity.  Our model differs in its
+introduction of the polarity $a_d$: lawmakers take a position $z_{uk}$
+on issue $k$ which only creates an affinity toward $k$ if the bill
+leans the correct way.  Finally, we have an explicit goal of
+interpretability.
 
 % dmb: i reworked this below in describing theta and punting on where
 % it comes from.
@@ -695,7 +695,7 @@ samples from $q_{\bm \eta}$:
 \end{align}
 where $y_m=(x_m, \bm z_m, a_m, b_m)$ is a sample from $q_{\bm
   \eta}$. The algorithm proceeds by following this stochastic gradient
-with decreasing step size; we provide more complete details of this
+with decreasing step size; we provide much more complete details of this
 algorithm, along with an empirical analysis of it, in
 \myapp{stochastic_variational_optimization}.
 %%  taking the fully-factorized
@@ -819,7 +819,7 @@ summary of statistics for our datasets in these Congresses in
 %% every two years; this changes the strategy in both chambers every two
 %% years. For this reason, 
 
-We fit both models to two year periods in the House and (separately)
+We fit both models to two-year periods in the House and (separately)
 to two-year periods in the Senate.  Some bills received votes in both
 the House and Senate; in those cases, the issue-adjusted model's
 treatment of the bill in the House was completely independent of its
@@ -951,15 +951,16 @@ Congratulating UMD Men's basketball
 The traditional ideal point model (\myeq{trad_ipm}) uses one parameter
 per lawmaker---$x_u$---to explain all of her voting behavior.  In
 contrast, the issue-adjusted model (\myeq{exploratory_ipm_old}) uses
-$x_u$ along with seventy-four other parameters to describe each
-lawmaker.  How does $x_u$ under these two models differ?  We fit
-ideal points to the 111th House (2009 to 2010) and issue-adjusted
-ideal points $\tilde x_u$ to the same period ($\lambda=1$) and compare
-these ideal points in \myfig{jackman_vs_offset}
+$x_u$ along with seventy-four other parameters---one per issue---to
+describe each lawmaker.  How does $x_u$ under these two models differ?
+We fit ideal points to the 111th House (2009 to 2010) and
+issue-adjusted ideal points $\tilde x_u$ to the same period
+($\lambda=1$) and compare these ideal points in
+\myfig{jackman_vs_offset}
 
 In this figure we use an alternative to a scatterplot called a
 \emph{parallel plot}.  In a parallel plot (which we will use several
-more times in this article), we plot the two variables we wish to
+more times in this chapter), we plot the two variables we wish to
 compare along parallel axes and draw line segments connecting two
 points when they represent the same variable under different
 treatments.  In \myfig{jackman_vs_offset}, the top axis axis
@@ -989,14 +990,14 @@ than classic ideal points.
 \begin{figure}
   \center
   \includegraphics[width=0.8\textwidth]{chapter_inferring_issue_preferences/figures/3393_issue_vs_ideal_sxs.pdf}
-  \label{fig:jackman_vs_offset}
-  \caption{Classic issue-adjusted ideal points $x_u$ (top row) separate lawmakers by party better than un-adjusted ideal points $x_u$ from the
-    issue-adjusted model (bottom row).  Republicans are colored red,
+  \caption{Classic issue-adjusted ideal points $x_u$ (bottom row) separate lawmakers by party better than un-adjusted ideal points $x_u$ from the
+    issue-adjusted model (top row).  Republicans are colored red,
     and Democrats are blue.  These ideal points were estimated in
     the 111th House of Representatives.  The line connecting ideal points from
     each model has opacity proportional to the squared residuals in a linear
     model fit to predict issue-adjusted ideal points from ideal
     points. }
+  \label{fig:jackman_vs_offset}
 \end{figure}
 
 %\subsection{Evaluation of the predictive distribution $p(v_{ud} | x_u, \bm z_u, a_u, b_u)$}
@@ -1158,7 +1159,8 @@ heldout accuracy) and -0.242 in the Senate (93\% heldout accuracy).
     folds using six-fold cross validation for Congresses 106 to 111
     (1999-2010) with regularization $\lambda=1$.  The variational
     distribution had higher heldout log-likelihood for all congresses
-    in both chambers than either } \center
+    in both chambers than the the ideal point model and the
+    issue-adjusted distribution fit from permuted data.} \center
   \begin{tabular}{|c|cccccc|}
     \hline
     \textbf{Model} & \multicolumn{6}{|c|}{\textbf{Senate}} \\
@@ -1382,12 +1384,12 @@ issue-adjusted log likelihood of each vote
 \begin{equation}
   J_{ud} = 1_{\{v_{ud} = \mbox{yea}\}} p - \log(1 + \exp(p)),
 \end{equation}
-where $p = (x_u + \bm z_{u}^T \bm \theta_d ) a_d + b_d$ is the
-log-odds of a vote under the issue adjusted voting model.  We also
-measure the corresponding log-likelihood $I_{ud}$ under the ideal
-point model, using $p=x_u a_d + b_d$ with an ideal point model. The
-improvement of issue $k$ is then the sum of the improvement in
-log-likelihood, weighted by issue $k$:
+where $1_{\ldots}$ is an indicator function and $p = (x_u + \bm z_{u}^T \bm
+\theta_d ) a_d + b_d$ is the log-odds of a vote under the issue
+adjusted voting model.  We also measure the corresponding
+log-likelihood $I_{ud}$ under the ideal point model, using $p=x_u a_d
++ b_d$ with an ideal point model. The improvement of issue $k$ is then
+the sum of the improvement in log-likelihood, weighted by issue $k$:
 \begin{equation}
   \label{eq:likelihood_improvement}
   \mbox{Imp}_k = \frac{\sum_{v_{ud}} \bm \theta_{d_v k} (J_{ud} - I_{ud}) }
@@ -1520,7 +1522,7 @@ for every unit increase in ideal point.
       Sessions}. Democrats are blue and Republicans are red.  Votes
     about \emph{Finance} and \emph{Congressional Sessions} were better
     fit using issue-adjusted ideal points.  For procedural votes such
-    as \emph{Congressional sessions}, lawmakers becoming more
+    as \emph{Congressional sessions}, lawmakers become more
     polarized by political party, behavior predicted by procedural
     cartel theory \citep{cox:1993}. }
   \label{fig:issue_improvements_ideals}
@@ -1555,7 +1557,10 @@ in the last section: permute issue vectors' document labels,
 i.e. $(\bm \theta_1, \ldots, \bm \theta_D) \mapsto (\bm
 \theta_{\pi_i(1)} \ldots \bm \theta_{\pi_i(D)})$, and refit lawmakers'
 adjustments using both the original issue vectors and permuted issue
-vectors, for permutations $\pi_1, \ldots, \pi_{20}$.  We then compare
+vectors, for permutations $\pi_1, \ldots, \pi_{20}$.  By mixing up
+the matching between issue vectors and bills, this serves to separate
+issue adjustments that might arise accidentally from noise in the data from issue
+adjustments that arise from the observed data.  We then compare
 a corrected issue adjustment $\hat z_{uk}$'s absolute value with
 corrected issue adjustments estimated with permuted issue vectors $\bm
 \theta_{\pi_i(d) k}$.
@@ -1750,7 +1755,7 @@ and computed lawmakers' corrected issue adjustments $\hat z_{uk}$, which are
 conditioned on their ideal points as described in
 \mysec{conditional_offsets}.
 \myfig{significant_offsets} illustrates those issue
-preferences for several lawmakers from this Congress which significant
+preferences for two lawmakers from this Congress which significant
 under 20 permutation replications ($p < 0.05$).
 
 %\paragraph{Thomas Carper.} Senator Tom Carper, Democrat from 
@@ -2060,10 +2065,9 @@ substantive votes has been noted and studied over the past century
 ``parties in the House -- especially the majority party -- are a
 species of 'legislative cartel' [ which usurp the power ] to make
 rules governing the structure and process of legislation.''
-A defining assumption made by \citep{cox:2005} is that
+A defining assumption made by \cite{cox:2005} is that
 the majority party delegates an agenda-setting monopoly to senior
-partners in the party, who set the procedural agenda in the House
-\citep{cox:2005}.  As a result, the cartel ensures that senior members
+partners in the party, who set the procedural agenda in the House.  As a result, the cartel ensures that senior members
 hold agenda-setting seats (such as committee chairs) while
 rank-and-file members of the party support agenda-setting decisions.
 
@@ -3167,7 +3171,7 @@ The ideal point model introduced in the last chapter represents one of
 the simplest models of dyadic data.  By framing it as a latent
 variable model as in \cite{clinton:2004}, we were able to use it as a
 modular piece of larger latent-variable models.  By combining it with
-other modules for analyzing text data, including latent Dirichlet
-allocation and text regression, we were able to address two important
+other modules for analyzing text data, including Latent Dirichlet
+Allocation and text regression, we were able to address two important
 shortcomings of ideal points.  As in chapters 3 and 4, this allowed us
 to explicitly state nontrivial assumptions in interesting ways.

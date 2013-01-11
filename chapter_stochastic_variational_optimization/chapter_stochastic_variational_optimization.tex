@@ -21,7 +21,7 @@ painstaking, as evidenced in the tedious update equations in
 Appendix~\ref{chapter:supplementary_materials}.  It involves defining the variational
 family, forming an objective function, taking derivatives with respect
 to the variational parameters, and running an optimization algorithm.
-In this paper, we present an alternative algorithm for variational
+In this appendix, we present an alternative algorithm for variational
 inference.  Our algorithm circumvents many of the challenges to using
 variational inference by optimizing the variational objective function
 stochastically.
@@ -53,9 +53,9 @@ the exponential family.
 % 2 the true posterior is not in the exponential family
 
 There have been several recent algorithms that are similar in spirit
-to ours.  Both Carbonetto et al. and Graves perform variational
+to ours.  Both \cite{carbonetto:2009} and \cite{graves:2011} perform variational
 inference by taking samples from the variational posterior to estimate
-a gradient \citep{carbonetto:2009, graves:2011}.  Carbonetto et
+a gradient.  Carbonetto et
 al. assume that the variational distribution comes from the
 exponential family \citep{carbonetto:2009}.  \cite{graves:2011}
 approximates the first-order gradient for fitting a neural network.
@@ -127,7 +127,7 @@ distribution might be a product $\prod_K \mathcal{N}(\mu_k,
 %  variational inference}.
 
 Optimizing \myeq{stochastic_variational_objective} is equivalent to optimizing
-the ``evidence lower bound'' (ELBO) $\mathcal{L}_\theta$:
+the ``evidence lower bound'' (ELBO) $\mathcal{L}_\theta$ \cite{bishop:2006}:
 \begin{eqnarray}
   \log p(y) \ge \expectq{\log p(x, y) - \log q_\theta(x)}
   =: \mathcal{L}_\theta,

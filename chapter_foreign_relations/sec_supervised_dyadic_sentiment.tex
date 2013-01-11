@@ -81,32 +81,52 @@ the names of the nations and major cities) of each article:
   \label{eq:sentiment_text}
 \end{align}
 For the remainder of this section, we will assume that $\bm \beta$ is
-observed, so that the $s_d$ is normally distributed with mean
-$\bm w_d^T \bm \beta$.  We describe how to fit $\bm \beta$ with
-\myeq{sentiment_text} and human labels in
-Section~\ref{section:mturk}.
+observed, so that the $s_d$ is normally distributed with mean $\bm
+w_d^T \bm \beta$.  We describe how to fit $\bm \beta$ with human
+labels in Section~\ref{section:mturk}.
+
+\paragraph{A brief comment on notation.} Before we describe how to fit
+this model, we pause to summarize our use of notation.  In this
+chapter, we will use notation flexibly when it is convenient.  The
+typical unit of discussion will be the $d$th document occurring at
+time $t$.  The $d$th document discusses two nations, $c_1$ and $c_2$;
+these define a tuple $(\{ c_1, c_2 \}, d, t)$ (where the set $\{ c_1,
+c_2 \} = \{ c_2, c_1 \}$).  We will generally use $d$ to index
+documents, $t$ to index time, and $c$ to index a nation.  When
+document $d$ is given, we may refer to its time as $t_d$ (which is
+unique) or to the two interacting nations as $c_{d,1},c_{d,2}$ or
+$c_1,c_2$.  Alternatively, we may refer to the documents in which a
+nation $c$ appears as $d_{c,1}, \ldots, d_{c,D}$.  As another example,
+we may describe a nation's position $x_{(c_1,d,t)}$ variously as
+$x_{c_{d,1}}$, $x_{d,1}$, or even $x_c$ if the context is
+clear. Finally, the sentiment between two nations (when described by a
+specific document) might be variously described as $s_d$,
+$s_{c_1,c_2}$, $s_{d,t}$, or $s_{c_1,c_2,d,t}$.
 
 \subsection{Modeling interactions with a latent space}
 \label{sec:fr_latent_space_model}
 The second assumption we make in this chapter is that each nation can
-be described by a vector in some latent space, and that the
-relationship between two nations is determined (up to stochasticity)
-by the relationship between these nations' vectors.  We formalize this
-assumption by letting each nation $c$ take a position $\bm \bar
-x_{c,0} \in \mathbb{R}^p$. As above, the sentiment of the relationship
-between these two nations $c_1, c_2$ is described by the scalar
-$s_{c_1,c_2} \in \mathbb{R}$.  This sentiment is determined by the
-interaction of their positions:
+be described by a vector in some $p$-dimensional latent space, and
+that the relationship between two nations is determined (up to
+stochasticity) by the relationship between these nations' vectors.  We
+formalize this assumption by letting each nation $c$ take a position
+$\bm \bar x_{c,0} \in \mathbb{R}^p$. As above, the sentiment of the
+relationship between these two nations $c_1, c_2$ is described by the
+scalar $s_d = s_{c_1,c_2} \in \mathbb{R}$ (we change notation for
+$s$ as appropriate given the context).  This sentiment is determined
+by the interaction of their positions:
 \begin{align}
   \bm x_{c_1,d} \sim \mathcal{N}(\bm \bar x_{c_1, 0}, \sigma_D^2) \nonumber \\
   \bm x_{c_2,d} \sim \mathcal{N}(\bm \bar x_{c_2, 0}, \sigma_D^2) \nonumber \\
-  s_d := \mathcal{F}(\bm x_{c_1,d}, \bm x_{c_2,d}), \label{eq:sentiment_space}
+  s_d := \mathcal{F}(\bm x_{c_1,d}, \bm x_{c_2,d}), \label{eq:sentiment_space},
 \end{align}
 for some suitable function $\mathcal{F}: \mathbb{R}^p \times
 \mathbb{R}^p \rightarrow \mathbb{R}$ (see \mytab{fr_link_functions}
-for examples of $\mathcal{F}$).  We have also introduced the auxiliary
-random variables $x_{c_1}$ and $x_{c_2}$, which can be interpreted as
-the positions these nations take during interaction in an article.  We
+for examples of $\mathcal{F}$), and where we interpret $s_d$ as the
+sentiment between $c_1$ and $c_2$ as reflected by article $d$ (which
+appeared at time $t_d$).  We have also introduced the auxiliary random
+variables $x_{c_1}$ and $x_{c_2}$, which can be interpreted as the
+positions these nations take during interaction in an article.  We
 include them for the algebraic convenience that will become evident
 later.
 
@@ -141,7 +161,9 @@ later.
   per-nation intercepts that indicate how prone a nation is to war;
   distance link functions are based on the distance between nation'
   vectors; and inner-product link functions represent sentiment as a
-  function of nations' political ``orientations''.}
+  function of nations' political ``orientations''.  The notation $2:D$
+  refers to a collection of indices, so that $x_{2:D}$ is a
+  $D-1$-dimensional vector.}
 \end{figure}
 
 If $\mathcal{F}$ is continuous and $c_1$ and $c_2$ are similar (as
@@ -191,10 +213,8 @@ entirely specified by their positions at this time:
 \begin{align}
   x_{c_1,d} \sim \mathcal{N}(\bar x_{c_1, t}, \sigma_D^2) \nonumber \\
   x_{c_2,d} \sim \mathcal{N}(\bar x_{c_2, t}, \sigma_D^2) \nonumber \\
-  s_d := \mathcal{F}(\bm x_{c_1,d}, \bm x_{c_2,d}), \label{eq:sentiment_space}
+  s_d := \mathcal{F}(\bm x_{c_1,d}, \bm x_{c_2,d}). \label{eq:sentiment_space}
 \end{align}
-where we interpret $s_d$ as the sentiment between $c_1$ and $c_2$ as
-reflected by article $d$ (which appeared at time $t_d$).
 
 We reconcile $p(s_d | \bm w, \bm \beta)$ (see \myeq{sentiment_text})
 with \myeq{sentiment_space} by recalling that $\bm \beta$ is treated as
@@ -204,11 +224,11 @@ of nations' sentiment is
   p(s_d, \bm x_{c_1,d}, \bm x_{c_2,d} | \bm w_d, \bm \beta, \bm \bar
   x_{c_1, d}, \bm \bar x_{c_2, d}) & \nonumber \\
   & \hspace{-110pt} \propto
-  p( \mathcal{F}(\bm x_{c_1,t}, \bm x_{c_2,t}) | \bm w_d, \bm \beta)
+  p( \mathcal{F}(\bm x_{c_1,d}, \bm x_{c_2,d}) | \bm w_d, \bm \beta)
   \times p(\bm x_{c_1,d} | \bm \bar x_{c_1, t} )
   \times p(\bm x_{c_2,d} | \bm \bar x_{c_2, t} ) \nonumber \\
   & \hspace{-110pt} =
-  \mathcal{N}( \mathcal{F}(\bm x_{c_1,t}, \bm x_{c_2,t}) |
+  \mathcal{N}( \mathcal{F}(\bm x_{c_1,d}, \bm x_{c_2,d}) |
   \bm w_d^T \bm \beta, \sigma_W^2 )
   \times \mathcal{N}(\bm x_{c_1,d} | \bm \bar x_{c_1, t}, \sigma_D^2)
   \times \mathcal{N}(\bm x_{c_2,d} | \bm \bar x_{c_2, t}, \sigma_D^2).
@@ -243,23 +263,6 @@ performance.
 %     multiple times -- with sentiment $s$.}
 %   \label{fig:countries_by_ip}
 % \end{wrapfigure}
-
-\paragraph{A brief comment on notation.} Before we describe how to fit
-this model, we pause to summarize our use of notation.  In this
-chapter, we will use notation flexibly when it is convenient.  The
-typical unit of discussion will be the $d$th document occurring at
-time $t$.  The $d$th document discusses two nations, $c_1$ and
-$c_2$; these define a tuple $(\{ c_1, c_2 \}, d, t)$ (where the set
-$\{ c_1, c_2 \} = \{ c_2, c_1 \}$).  We will generally use $d$ to
-index documents, $t$ to index time, and $c$ to index a nation.  When
-document $d$ is given, we may refer to its time as $t_d$ (which is
-unique) or to the two interacting nations as $c_{d,1},c_{d,2}$ or
-$c_1,c_2$.  Alternatively, we may refer to the documents in which a
-nation $c$ appears as $d_{c,1}, \ldots, d_{c,D}$.  As another
-example, we may describe a nation's position $x_{(c_1,d,t)}$
-variously as $x_{c_{d,1}}$, $x_{d,1}$, or even $x_c$ if the context is
-clear. Finally, the sentiment between two nations might be variously
-described as $s_d$, $s_{c_1,c_2}$, $s_{d,t}$, or $s_{c_1,c_2,d,t}$.
 
 \subsection*{Related work}
 
@@ -317,13 +320,13 @@ entities.
 We fit the \emph{MAP} objective of this probabilistic model.  By using
 a MAP estimate, we will avoid the tedious derivations from the last
 chapter.  Further, the MAP estimate can be interpreted as a form of
-unregularized variational inference.  We optimize the \emph{MAP}
-objective in this model using an expectation maximization (EM)
-algorithm.
+unregularized variational inference (by letting variance around the
+posterior estimates go to zero).  We optimize the \emph{MAP} objective
+in this model using an expectation maximization (EM) algorithm.
 
 \subsubsection{An expectation maximization algorithm}
 The MAP solution to this problem can be approximated using an
-expectation-maximization (EM) algorithm because of the way we have
+expectation maximization (EM) algorithm because of the way we have
 specified $p(x_{c,d} | \bm \bar x_{c, t_d})$.  This makes inference
 much simpler and allows us to take advantage of a Kalman smoother.
 Instead of optimizing each variable in the objective, we alternate
@@ -354,7 +357,7 @@ variable $\bm \bar x_{c,t}$ in the M step.
 \bar x_{c,t} | x, \beta, s$ of each nation $c$'s position.  Because
 the Markov blanket of each variable $\bm \bar x_{c,t}$ is specified by
 Gaussian distributions, we have that $\underset{\bm \bar x} { \arg
-  \max }\hspace{3pt} p( \bar x | x ) = \expect{x | x}$.  More
+  \max }\hspace{3pt} p( \bar x | x ) = \expect{\bar x | x}$.  More
 generally, this expectation is the optimal value of $\bm \bar x$ given
 the other variables:
 \begin{align}
@@ -412,7 +415,7 @@ and after $t$---are
 \end{align}
 
 % x_{c,d,t}
-\paragraph{E Step.} In the E-step, our goal is to infer each nation's
+\paragraph{E-Step.} In the E-step, our goal is to infer each nation's
 position $x_{c_{d,1}} | \bm \bar{x}_{c,d,t}, x_{c_{d,2}}, s_d, \bm
 w_d$ during interaction $d$ given its expected mean $\bm \bar
 x_{c_{d,1},t_d}$ and the text $\bm w_d$ describing this interaction,
@@ -475,7 +478,8 @@ model.
 \subsection*{Coding sentiment}
 \label{section:sentiment_models}
 
-We next estimated $\bm \beta$ by fitting ridge regression on a subset
+We next estimated $\bm \beta$ by fitting ridge regression (i.e.,
+\myeq{sentiment_text} with a Gaussian prior on $\beta$) on a subset
 of the training examples.  We labeled training examples with
 information from both inexperienced ``workers'' and ``expert labels'',
 representing vastly different ends of the label spectrum (as we will
@@ -485,7 +489,7 @@ see, however, they result in strikingly similar predictions).
 \label{section:mturk}
 
 \emph{Amazon Mechanical Turk} (AMT) is a crowd-sourcing platform which
-provides a \emph{requester} (the author of this thesis) with access to
+provides a \emph{requester} with access to
 thousands of \emph{workers} who perform simple tasks over the
 Internet.  Although the requester can use tests to ensure that workers
 are high-quality, as well as reject the work of low-quality workers,
@@ -548,16 +552,17 @@ of War \citep{sarkees:2010} and Issue Correlates of War
     researchers) as the Correlates of War.
 \end{itemize}
 
-We combined the datasets by treating two nations as having a rating
-of -5 if they are at war at the time an article was written in the
-Correlates of War codes and -1 if there was any contentious issue
-between the nations in the Issue Correlates of War.  All other pairs
-of nations were treated as having a rating of 0.1.  These values are
-somewhat arbitrary (we could have chosen -6.3 for a bad relationship),
-but they were selected to correspond roughly to the range of the
-Mechanical Turk labels.  Further, they were selected once and kept
-fixed---changing them during analysis could compromise the statistical
-power of the results below.
+We used these two sets of ratings to label the collection of \emph{New
+  York Times} paragraphs by combining them and treating two nations as
+having a rating of -5 if they are at war at the time an article was
+written in the Correlates of War codes and -1 if there was any
+contentious issue between the nations in the Issue Correlates of War.
+All other pairs of nations were treated as having a rating of 0.1.
+These values are somewhat arbitrary (we could have chosen -6.3 for a
+bad relationship), but they were selected to correspond roughly to the
+range of the Mechanical Turk labels.  Further, they were selected once
+and kept fixed---changing them during analysis could compromise the
+statistical power of the results below.
 
 As before, we fit the text regression parameters $\bm \beta$ using
 these labels on the training set and evaluated nations' ratings on
@@ -783,7 +788,7 @@ measured this up to 9 dimensions).
 
 \paragraph{The benefit in adding a time-series assumption.}
 We can add more flexibility to this model -- and an ability to model
-much more interesting behavior -- by extending it to the time-series
+much more interesting behavior---by extending it to the time-series
 domain as described in \mysec{fr_time_series_model}.  Under this
 assumption, we allow $\bm \bar x_c$ to drift over time for each
 nation $c$.  Again we fit the model to a range of latent-space
@@ -846,8 +851,8 @@ With both CoW and AMT labels, the relationships between
 nations can be inferred from the distance between their positions.
 In \myfig{fr_intercept_distance_positions}, the United States stands
 out from a cluster of other nations, with Iraq, Iran, and
-Afghanistan--nations with which the U.S. has been at odds in the past
-twenty years--furthest away.
+Afghanistan---nations with which the U.S. has been at odds in the past
+twenty years---furthest away.
 
 Correlates of War and Mechanical Turk labels provide different
 patterns of inter-nation sentiment.  Nations' positions under CoW
@@ -863,7 +868,7 @@ Spearman rank correlation coefficient
 \end{align*}
 between all pairs of nations $c_1, c_2$ in the set $C$ of
 nations. The two-dimensional \verb!intercept/distance! models have
-a Spearman rank correlation coefficient of $\sigma=0.900$.  Of course,
+a Spearman rank correlation coefficient of $\sigma=0.900$. Of course,
 these $|C| \choose{2}$ distances are far from independent, and a
 single outlier in each model could skew the correlation.  To mitigate
 any such effect, we also measured the average correlation coefficient

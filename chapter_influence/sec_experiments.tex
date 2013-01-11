@@ -79,10 +79,12 @@ of these documents.
 
 % smg: Note that this will make us run out of space.
 Inference for 10 topics on each corpus above took about 11 hours to
-converge on a desktop Intel 2.4GHz Core 2 Quad cpu.  Our convergence
+converge on a desktop Intel 2.4GHz Core 2 Quad CPU.  Our convergence
 criterion was met when the evidence lower bound increased by no more
 than 0.01\%.  For the experiments described below, we set topics'
 Markov chain variance $\sigma^2=0.005$ and $\sigma_d=\sigma_l=0.0001$.
+These values were selected to make the topics change at a reasonable,
+``coherent'' rate.
 
 
 % \begin{figure}
@@ -109,7 +111,8 @@ Markov chain variance $\sigma^2=0.005$ and $\sigma_d=\sigma_l=0.0001$.
 \subsection*{Relating posterior influence and citation}
 \label{sec:results}
 
-We studied the DIM with varying numbers of topics.  We measured the
+We studied the DIM with varying numbers of topics (5, 10, 15, 20, 50,
+75, and 100).  We measured the
 relationship between the posterior influence values of each article
 $\ellv_d$ and its citation count $c_d$.
 
