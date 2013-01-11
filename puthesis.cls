@@ -28,8 +28,10 @@
 \def\submitted#1{\gdef\@submitted{#1}}
 \def\@submittedyear{\ifnum\month>10 \stepcounter{subyear}\thesubyear
   \else\thesubyear\fi}
-\def\@submittedmonth{\ifnum\month>10 January\else\ifnum\month>8 November
-  \else\ifnum\month>6 September\else May\fi\fi\fi}
+%\def\@submittedmonth{\ifnum\month>10 January\else\ifnum\month>8 November
+%\def\@submittedmonth{\ifnum\month>10 January\else\ifnum\month>8 November
+%  \else\ifnum\month>6 September\else May\fi\fi\fi}
+\def\@submittedmonth{April}
 \def\advisor#1{\gdef\@advisor{#1}}
 \long\def\@abstract{\@latex@error{No \noexpand\abstract given}\@ehc}
 \newcommand*{\frontmatter}{
